@@ -141,3 +141,40 @@ Chromium download needs Network=Full; auto-memory / `~/.claude/plans` do NOT per
 **Fresh-agent test:** PASS — a new agent loads `CLAUDE.md` (which imports
 `task_plan.md` + `progress.md`), runs the verify commands, and can begin WS1 from
 the exact edits above.
+
+## Session — 2026-06-19 (FTPS auto-deploy to /Test/ — LIVE)
+
+**Phase 2 (hosting) is partially unblocked: a live preview now serves over HTTPS.**
+
+**How it's wired (auto-deploys on every push to `claude/review-claude-md-di5jvm`):**
+GitHub push/`workflow_dispatch` → `.github/workflows/deploy.yml` stages
+`index.html three.html src vendor` + `deploy/.htaccess` → **SamKirkland
+FTP-Deploy-Action over FTPS** → cPanel → served at **https://primordial.video/Test/**.
+- Verified **HTTP 200** for `/Test/`, `/Test/index.html`, `/Test/three.html`.
+- `index.html` = raw WebGL2 build; `three.html` = three.js variant.
+
+**The two things that made it work (both were the blockers):**
+1. **`FTP_PASSWORD` repo secret** (Settings→Secrets→Actions) on the
+   `Test@primordial.video` account. Host + username are inlined in `deploy.yml`,
+   so it's the ONLY secret. Earlier runs failed: `Error: Input required and not
+   supplied: password`.
+2. **FTP account directory must be inside the web root.** It was created at
+   `~/primordial.video/Test` (NOT web-served → 404). Fix = delete + recreate the
+   `Test@primordial.video` FTP account with **Directory = `public_html/Test`**
+   (cPanel can't edit an existing account's dir). Workflow `server-dir: ./`
+   uploads into that home, so no workflow change was needed.
+
+**Environment gotcha (important for future agents):** this cloud container's
+network allows outbound **HTTPS/443 only** — FTP/21 and cPanel/2083 both
+**time out**, so you CANNOT deploy or drive cPanel from the container. The
+GitHub Actions runner does the FTP upload (it has open network). You CAN verify
+deploys with `curl https://primordial.video/Test/...` from the container.
+
+**Decisions:** keep the preview on **`/Test/`** for now (leaves the homepage
+untouched); pointing the same flow at `public_html` root (live homepage) is a
+future step. `Deploy@primordial.video` account still points outside the web root
+(unused).
+
+**Cleanup TODO (non-urgent):** rotate the `Test@primordial.video` FTP password
+(it passed through chat) and update the `FTP_PASSWORD` secret to match — deploy
+keeps working as long as account + secret stay in sync.
