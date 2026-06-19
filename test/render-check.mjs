@@ -98,9 +98,18 @@ try {
   check(a11y.unlabeled.length === 0, 'all interactive controls are labelled' + (a11y.unlabeled.length ? `:\n       - ${a11y.unlabeled.join('\n       - ')}` : ''));
   check(a11y.readoutLive, '#readout is an aria-live region');
 
-  mkdirSync(artifacts, { recursive: true });
-  await page.screenshot({ path: join(artifacts, 'render.png') });
-  console.log('  ->   screenshot: test/artifacts/render.png');
+  // Freeze the render loop so the screenshot isn't starved by the rAF raymarch
+  // on slow software-GL CI runners; the screenshot is a bonus artifact, never a
+  // pass/fail gate.
+  await page.evaluate(() => { if (window.__primordial) window.__primordial.pause = true; });
+  await page.waitForTimeout(150);
+  try {
+    mkdirSync(artifacts, { recursive: true });
+    await page.screenshot({ path: join(artifacts, 'render.png'), timeout: 15000, animations: 'disabled' });
+    console.log('  ->   screenshot: test/artifacts/render.png');
+  } catch (e) {
+    console.warn('  (screenshot skipped: ' + (e && e.message ? e.message.split('\n')[0] : e) + ')');
+  }
 } finally {
   if (browser) await browser.close().catch(() => {});
   if (server) server.kill();

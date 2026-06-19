@@ -30,7 +30,7 @@ const features = { bass: 0, mid: 0, treble: 0, level: 0, beat: 0 };
 
 // Render-health beacon for laptop-free / headless verification
 // (test/render-check.mjs reads window.__primordial). Never affects rendering.
-const health = { frames: 0, glOk: false, error: null };
+const health = { frames: 0, glOk: false, error: null, pause: false };
 if (typeof window !== 'undefined') window.__primordial = health;
 
 // DPR cap for mobile.
@@ -144,6 +144,7 @@ function round2(x) { return Math.round(x * 100) / 100; }
 // Render loop
 // ---------------------------------------------------------------------------
 function frame(now) {
+  if (health.pause) return;          // hard freeze (headless screenshots / teardown)
   requestAnimationFrame(frame);
   if (!running) { lastT = now; return; }
 
