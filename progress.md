@@ -175,6 +175,12 @@ untouched); pointing the same flow at `public_html` root (live homepage) is a
 future step. `Deploy@primordial.video` account still points outside the web root
 (unused).
 
-**Cleanup TODO (non-urgent):** rotate the `Test@primordial.video` FTP password
-(it passed through chat) and update the `FTP_PASSWORD` secret to match — deploy
-keeps working as long as account + secret stay in sync.
+**Cleanup TODO (non-urgent):** ~~rotate the `Test@primordial.video` FTP password
+and update the `FTP_PASSWORD` secret~~ ✅ DONE — rotated + verified in sync (a
+post-rotation deploy authenticated and succeeded).
+
+**⚠️ The `/Test/` visual is a disposable PLACEHOLDER — NOT the target look.**
+It exists only as a canary to prove the deploy chain is live. Do **not** polish,
+tune, or treat the current slime/three.js output as intended art direction; the
+real visual the artist wants there is still TBD and will be built fresh. When
+it is, it auto-ships to the same `/Test/` URL via the existing pipeline.
