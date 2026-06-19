@@ -119,6 +119,8 @@ function describe(relPath, text) {
   // headings, list/table rows, indented continuations, and standalone bold
   // labels (e.g. "**Did:**" in a log) so the description is the informative line.
   if (ext === '.md') {
+    // Skip leading HTML comment block (e.g. <!-- @generated ... -->)
+    text = text.replace(/^<!--[\s\S]*?-->\s*/, '');
     let lines = text.split('\n');
     if (lines[0].trim() === '---') {
       const end = lines.indexOf('---', 1);
@@ -426,7 +428,9 @@ function checkRefs() {
 // Claude-only `@import` lines are converted to plain "See <file>" references.
 function buildAgentsMd() {
   const claude = readFileSync(join(root, 'CLAUDE.md'), 'utf8');
-  const body = claude.replace(/^@(\S+)\s*$/gm, 'See `$1`.');
+  const body = claude
+    .replace(/^@(\S+)\s*$/gm, 'See `$1`.')
+    .replace(/^(See `[^`]+`\.)\n(#)/gm, '$1\n\n$2');
   return `<!-- @generated from CLAUDE.md by tools/gen-docs.mjs — do not edit. -->\n\n${body}`;
 }
 

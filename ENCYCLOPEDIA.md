@@ -32,7 +32,7 @@
 
 | File | Description |
 | --- | --- |
-| [`AGENTS.md`](AGENTS.md) | <!-- @generated from CLAUDE.md by tools/gen-docs.mjs — do not edit. |
+| [`AGENTS.md`](AGENTS.md) | Working notes for agents in this repo. |
 | [`CLAUDE.md`](CLAUDE.md) | Working notes for agents in this repo. |
 | [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md) | Auto-generated — do not edit by hand. |
 | [`LICENSE`](LICENSE) | Software license for the project. |
@@ -42,7 +42,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Executed the adopt-ideas plan (spec: docs/superpowers/specs/2026-06-19-adopt-ideas.md; plan: docs/superpowers/plans/2026-06-19-adopt-ideas.md)… |
+| [`progress.md`](progress.md) | docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md) via subagent-driven development (fresh implementer + reviewer per task) — 7 tasks, all… |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs

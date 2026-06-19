@@ -6,6 +6,7 @@ msg="PreCompact: before context is compacted, update progress.md — append/refr
 if command -v jq >/dev/null 2>&1; then
   jq -nc --arg m "$msg" '{hookSpecificOutput:{hookEventName:"PreCompact",additionalContext:$m}}'
 else
+  # NOTE: keep $msg free of " and \\ — the no-jq fallback does not JSON-escape.
   printf '{"hookSpecificOutput":{"hookEventName":"PreCompact","additionalContext":"%s"}}\n' "$msg"
 fi
 exit 0

@@ -108,6 +108,7 @@ don't skip them):
 | Where a file lives / what it does | `TREE.md` (layout) · `ENCYCLOPEDIA.md` (per-file) | auto-generated |
 
 See `.claude/skills-router.md`.
+
 ## Rules / Constraints
 
 - **Accuracy — verify, don't assume.** State verified facts plainly; label the
