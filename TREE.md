@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 198 files in 73 directories.
+> 199 files in 73 directories.
 
 ```
 Primordial-viz/
@@ -20,6 +20,7 @@ Primordial-viz/
 │   │   ├── gen-docs.sh
 │   │   ├── inject-rules.sh
 │   │   ├── orient.sh
+│   │   ├── precompact-handoff.sh
 │   │   └── suggest-workflow.sh
 │   ├── rules/
 │   │   ├── audio.md
