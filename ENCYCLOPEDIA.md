@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 169 files across 17 categories.
+> 170 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -21,7 +21,7 @@
 - [App — UI](#app--ui) (2)
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (9)
+- [Tooling / Scripts](#tooling--scripts) (10)
 - [Claude Environment](#claude-environment) (78)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
@@ -55,7 +55,7 @@
 
 | File | Description |
 | --- | --- |
-| [`index.html`](index.html) | Primordial — Audio Instrument |
+| [`index.html`](index.html) | Primordial - Audio Instrument |
 | [`src/main.js`](src/main.js) | Bootstrap: start gate -> mic + AudioContext resume, the rAF render loop, wiring audio features -> GL uniforms -> UI, and the dynamic-resolution… |
 
 ## App — Audio
@@ -103,7 +103,7 @@
 | File | Description |
 | --- | --- |
 | [`src/ui/controls.js`](src/ui/controls.js) | HUD controls: builds the panel (sliders from the schema, device picker, look switcher, tap-tempo, perf sliders), wires DOM events to the param store… |
-| [`src/ui/styles.css`](src/ui/styles.css) | Primordial Studio — green-on-black technical HUD. |
+| [`src/ui/styles.css`](src/ui/styles.css) | Primordial Studio - green-on-black technical HUD. |
 
 ## Tests & Verification
 
@@ -146,6 +146,7 @@
 
 | File | Description |
 | --- | --- |
+| [`tools/audit-site.mjs`](tools/audit-site.mjs) | Audit the DEPLOYED surface (index.html + src/) for AI "tells" a visitor could see via View-Source. |
 | [`tools/gen-docs.mjs`](tools/gen-docs.mjs) | Generates two always-current repo maps from a single source of truth: ENCYCLOPEDIA.md — a categorized index of every file, each with a one-line… |
 | [`tools/mcp/lib/browser.mjs`](tools/mcp/lib/browser.mjs) | Shared headless-Chromium launch for the WebGL2 dev tools (shader validation, render checks). |
 | [`tools/mcp/lib/docs.mjs`](tools/mcp/lib/docs.mjs) | Project Q&A: keyword search + retrieval over the repo's own markdown docs, so an assistant can answer questions about the project. |

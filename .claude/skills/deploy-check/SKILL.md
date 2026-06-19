@@ -34,8 +34,11 @@ exact fix.
    - `https://primordial.video/Test/src/main.js` → expect **200**
    - `https://primordial.video/Test/src/` → expect **403** (directory listing off)
    - `https://primordial.video/Test/.ftp-deploy-sync-state.json` → expect **403**
-4. **Report**: one line of status (CI conclusion + live HTTP codes), the root cause
-   if anything's red, and the exact next action. Don't dump logs.
+4. **Audit the source** for AI tells: `npm run audit` (`node tools/audit-site.mjs`)
+   - flags em/en dashes + AI/tooling fingerprints in `index.html` + `src/`. CI gates
+   it too (`verify.yml`).
+5. **Report**: one line of status (CI conclusion + live HTTP codes + audit result),
+   the root cause if anything's red, and the exact next action. Don't dump logs.
 
 ## Re-trigger / loop (optional)
 - After the user fixes a secret, re-run via MCP `actions_run_trigger`

@@ -26,6 +26,9 @@ jobs:
       - name: Smoke test (params / looks / store)
         run: node test/smoke.mjs
 
+      - name: Site audit (no AI tells / fingerprints in the deployed surface)
+        run: node tools/audit-site.mjs
+
       - name: Docs (encyclopedia + tree) up to date
         run: node tools/gen-docs.mjs --check
 

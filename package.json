@@ -6,6 +6,7 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "docs": "node tools/gen-docs.mjs",
+    "audit": "node tools/audit-site.mjs",
     "smoke": "node test/smoke.mjs",
     "render-check": "node test/render-check.mjs",
     "mcp": "node tools/mcp/server.mjs",
