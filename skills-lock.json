@@ -7,6 +7,24 @@
       "skillPath": "skills/accessibility/SKILL.md",
       "computedHash": "10e83284d3395ab5ec2f2db602b663480a37a4ff404d16510eefe86b034fcc1a"
     },
+    "debugging-and-error-recovery": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/debugging-and-error-recovery/SKILL.md",
+      "computedHash": "4d6dd59d6961005d9d341ca2fc0f9b63342bc644fa54feb25b06ed0f031a2c49"
+    },
+    "documentation-and-adrs": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/documentation-and-adrs/SKILL.md",
+      "computedHash": "1c1b33b3c8ff1d5f9fdcf9d8a7a67f82384b3224e88af567fd4688f3f2d9e85b"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336"
+    },
     "performance": {
       "source": "addyosmani/web-quality-skills",
       "sourceType": "github",

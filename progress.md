@@ -364,3 +364,15 @@ user asked for a wider set.)
 
 **Verified:** `gen-docs --check` green (incl. drift gate w/ adopted-skill
 exclusion); router shows both new skills; smoke 12/12; CLAUDE.md 185 lines.
+
+**Round 2 (wider sweep) — adopted 3 more (vetted license + content):**
+- `anthropics/skills@frontend-design` — **Apache-2.0** (first-party; non-document
+  skills are Apache-2.0); for the neon HUD / control surface. Ships `LICENSE.txt`.
+- `addyosmani/agent-skills@debugging-and-error-recovery` — **MIT**.
+- `addyosmani/agent-skills@documentation-and-adrs` — **MIT**.
+Rejected `onewave-ai/...@color-palette-extractor` — **Tailwind**-oriented (wrong
+stack) + no license + unknown author. **Now 10 skills total** (5 ours + 5 adopted,
+all MIT/Apache, provenance in `skills-lock.json`). CLAUDE.md 188 lines — the
+always-loaded `skills:router` block is the growth driver; if it nears 200, move
+the generated block to a linked file. **Verified:** `gen-docs --check` green;
+smoke 12/12.

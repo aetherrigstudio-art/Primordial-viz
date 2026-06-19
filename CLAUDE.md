@@ -112,6 +112,9 @@ don't skip them):
 | deploy | `deploy-cpanel` | Manual deploy checklist for shipping primordial to Namecheap Stellar Plus (cPanel). |
 | design | `thought-based-reasoning` | Structured reasoning harness for design, architecture, and planning decisions in Primordial-viz. |
 | general | `accessibility` | Audit and improve web accessibility following WCAG 2.2 guidelines. |
+| general | `debugging-and-error-recovery` | Guides systematic root-cause debugging. |
+| general | `documentation-and-adrs` | Records decisions and documentation. |
+| general | `frontend-design` | Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. |
 | general | `performance` | Optimize web performance for faster loading and better user experience. |
 | looks | `new-preset` | Scaffold a new visual "look" for primordial — a params-only JSON preset in src/looks/, wired into the look registry (all looks share the slime… |
 | meta | `skill-router` | Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from… |
