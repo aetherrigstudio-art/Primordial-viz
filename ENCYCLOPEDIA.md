@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 178 files across 17 categories.
+> 179 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
-- [Specs & Long-form Docs](#specs--long-form-docs) (4)
+- [Specs & Long-form Docs](#specs--long-form-docs) (5)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -51,6 +51,7 @@
 | [`docs/STANDALONE.md`](docs/STANDALONE.md) | Wrap the Primordial visual app into a native desktop application with [Tauri v2](https://tauri.app). |
 | [`docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md`](docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md) | For agentic workers: implement task-by-task; steps use - [ ] checkboxes. |
 | [`docs/superpowers/plans/2026-06-19-learn-from-corrections.md`](docs/superpowers/plans/2026-06-19-learn-from-corrections.md) | Self-improvement loop #1. |
+| [`docs/superpowers/specs/2026-06-19-visual-workshop-design.md`](docs/superpowers/specs/2026-06-19-visual-workshop-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 
 ## App — Entry & Bootstrap
 
