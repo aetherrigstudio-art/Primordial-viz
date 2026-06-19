@@ -184,18 +184,32 @@ function frame(now) {
   if (renderer.contextLost) { lastT = now; return; }
   resize();
   const params = resolveParams();
-  pipeline.render({
-    time: t,
-    canvasW: canvas.width,
-    canvasH: canvas.height,
-    renderScale: dyn.renderScale,
-    steps: dyn.steps,
-    features,
-    slimeParams: params.slime,
-    postParams: params.post,
-    fft: micActive && analyser ? analyser.freq : null,
-    wave: micActive && analyser ? analyser.wave : null,
-  });
+  try {
+    pipeline.render({
+      time: t,
+      canvasW: canvas.width,
+      canvasH: canvas.height,
+      renderScale: dyn.renderScale,
+      steps: dyn.steps,
+      features,
+      slimeParams: params.slime,
+      postParams: params.post,
+      fft: micActive && analyser ? analyser.freq : null,
+      wave: micActive && analyser ? analyser.wave : null,
+    });
+  } catch (err) {
+    // An unrecoverable GL error (e.g. an incomplete render target on this
+    // device) would otherwise throw every frame. Stop the loop and surface it.
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = 0;
+    health.error = String(err && err.message ? err.message : err);
+    const gate = document.getElementById('gate');
+    if (gate) {
+      gate.classList.remove('hidden');
+      gate.innerHTML = '<h1>Rendering stopped</h1><p>' + health.error + '</p>';
+    }
+    return;
+  }
 
   // --- Perf accounting ---
   const ms = performance.now() - now;

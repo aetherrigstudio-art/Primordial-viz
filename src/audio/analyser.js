@@ -64,7 +64,9 @@ export class Analyser {
       if (d > 0) fl += d;
     }
     this._prevFreq.set(this.freq);
-    fl = Math.min(1, (fl / (this.bins * 255)) * 8);
+    // Gain chosen so percussive onsets span a usable range; tune against a real
+    // track at the venue test (the AnalyserNode's own 0.8 smoothing softens it).
+    fl = Math.min(1, (fl / (this.bins * 255)) * 12);
 
     const b = this._avg(this.freq, this._bassRange[0], this._bassRange[1]);
     const m = this._avg(this.freq, this._midRange[0], this._midRange[1]);
