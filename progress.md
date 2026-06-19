@@ -4,6 +4,38 @@
 
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
 
+## Session - 2026-06-19 (Visual Workshop - sandbox clip loop SHIPPED)
+
+Built the Visual Workshop (spec: `docs/superpowers/specs/2026-06-19-visual-workshop-design.md`,
+plan: `docs/superpowers/plans/2026-06-19-visual-workshop.md`) via subagent-driven
+development (fresh implementer + reviewer per task) - a throwaway sandbox,
+separate from the shipped app, for workshopping visuals via short audio-driven
+clips delivered to the phone.
+
+- `workshop/sketches/<name>/` (committed): each sketch = `<name>.frag.js`
+  (exports `SKETCH_FRAG`, GLSL ES 3.00) + `<name>.json` (`{name,note,bpm,params}`).
+- `workshop/sandbox.html` + `sketch-runner.mjs`: mounts a sketch via the real
+  `Renderer` (now accepts `{slimeFrag,postFrag}`), driven by a deterministic
+  synthetic "fake song" (`workshop/synth-audio.mjs`). Generic uniform upload by
+  name (arrays -> vec3 u<Key>, numbers -> float u<Key>).
+- `npm run clip -- <name>` (`tools/workshop/clip.mjs`): records the sandbox to
+  `workshop/artifacts/<name>.webm` (or `--stills N`, `--secs S`) via Playwright
+  video, no ffmpeg. Artifacts gitignored. Deliver with `SendUserFile`.
+- `/workshop` skill (area design): drives discuss -> (optional) research
+  [creative + implementation best-practice] -> author -> clip -> react ->
+  graduate, with the reference-only licensing guardrail. Graduation applies the
+  mobile budget + visual-qa/audio-dsp review.
+
+Reference sketch `_demo` proves the loop. **Verified:** `npm run health` green,
+`node test/render-check.mjs` green (app unchanged), `npm run clip -- _demo`
+produces a ~800K webm. Per-task reviews clean (2 small fixes applied: runner
+self-halts on render error; clip recorder always kills its server + fast-fails
+on boot error).
+
+**Next:** use it - workshop the real `/Test/` visual. Possible upgrades: real
+sample-track audio, portrait clip option, expose `clip` as an MCP tool, per-genre
+synth presets.
+
 ## Session — 2026-06-19 (WS1 code hardening — DONE)
 
 Executed **WS1** (the documented next-step across ~6 handoffs) on branch
