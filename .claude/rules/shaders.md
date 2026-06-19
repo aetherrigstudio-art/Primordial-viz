@@ -26,10 +26,15 @@ with a proprietary paid tool.
 
 ## Format & porting
 
-- Plain **GLSL ES 3.00** fragment shaders. `#version 300 es` must be **byte
-  one** of the file (no leading whitespace/comment).
-- `.glsl` files load via `fetch()` as text — true no-build. `?raw` imports are
-  Vite-only, not a browser feature; don't rely on them at runtime.
+- Plain **GLSL ES 3.00** fragment shaders, authored as `src/shaders/*.js` ES
+  modules that export the GLSL source as a `/* glsl */`-tagged template-string
+  constant (e.g. `SLIME_FRAG`, `POST_FRAG`, `FULLSCREEN_VERT`). `#version 300 es`
+  must be **byte one** of that exported string (no leading whitespace/comment);
+  the shared `common.glsl.js` exports a version-less chunk concatenated *after*
+  each fragment header.
+- Shaders are **imported** by `src/gl/renderer.js`, not fetched — true no-build,
+  no `.glsl` files on disk. (`?raw` text imports are Vite-only, not a browser
+  feature; don't rely on them at runtime.)
 - Port recipe (when adapting your own prototype): wrap `mainImage` in a real
   `main()` writing an `out vec4`; remap `i*` uniforms → ours
   (`uResolution` / `uTime` / `uMouse` / `uAudioTex`); `texture2D` → `texture` /

@@ -29,8 +29,10 @@ manual checklist is the `deploy-cpanel` skill.
 
 - Force-HTTPS redirect (mic depends on it).
 - `Cache-Control` / `ExpiresByType` for `js` / `css` / `glsl` / `png`.
-- Correct MIME: `AddType text/plain .glsl` (so shader text serves cleanly) and
-  `AddType application/wasm .wasm` if WASM is ever used.
+- Correct MIME: `AddType application/wasm .wasm` if WASM is ever used. (The
+  `.htaccess` also carries an `AddType text/plain .glsl` line, but it is
+  **vestigial** — shaders ship as `.js` ES modules now, so no `.glsl` files are
+  served.)
 
 ## Watch the inode cap
 

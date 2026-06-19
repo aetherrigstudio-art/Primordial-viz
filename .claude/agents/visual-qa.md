@@ -26,7 +26,8 @@ shader unless asked — you report findings.
 - **Dynamic resolution** present so frame time can self-regulate.
 
 **Correctness / GL plumbing:**
-- `#version 300 es` on **byte one** of each `.glsl`.
+- `#version 300 es` on **byte one** of each exported GLSL template string in
+  `src/shaders/*.js`.
 - No FBO is bound as both read and write in the same pass (ping-pong correct).
 - Uniforms the shader reads are actually set in `gl/uniforms.js`; audio texture
   is the 512×2 layout.

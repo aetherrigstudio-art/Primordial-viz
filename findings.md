@@ -2,6 +2,11 @@
 
 > Consolidated from 7 deep-research passes this session. Full verbatim reports + citations go in
 > `research/findings/*.md` during build. Sources are linked inline below.
+>
+> **BUILT DIFFERENTLY:** §D/§G below describe shaders as `src/shaders/*.glsl` loaded
+> via `fetch()` — the build instead ships shaders as `src/shaders/*.js` ES modules
+> (GLSL exported as template strings, imported). Treat the `.glsl`+fetch and
+> `{shader, defaultParams}` notes as superseded; see `CLAUDE.md`.
 
 ## A. Namecheap Stellar Plus (host)
 - cPanel / LiteSpeed / CloudLinux LVE. **Static-first is the ideal fit** (HTTP/2, `.htaccess` cache/MIME).

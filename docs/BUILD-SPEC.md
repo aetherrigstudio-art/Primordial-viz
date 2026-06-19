@@ -1,5 +1,13 @@
 # Plan — New best-practice repo scaffold for the audio-reactive visual instrument
 
+> **BUILT DIFFERENTLY (as-shipped correction):** this is the original planning
+> doc. Two design points changed during the build: shaders ship as
+> `src/shaders/*.js` ES modules (GLSL exported as `/* glsl */` template strings,
+> imported — **not** `.glsl` files fetched at runtime), and a "look" is a
+> params-only preset `{ id, name, description, params }` over one shared slime
+> shader (**not** `{ shader, defaultParams }`). See `CLAUDE.md` and
+> `.claude/rules/shaders.md` for the current reality.
+
 ## Context
 
 The user is an interactive AV artist (Kinect/sensors/cameras/music) who wants to

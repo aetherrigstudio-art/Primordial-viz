@@ -10,7 +10,7 @@ facts live in `.claude/rules/deploy.md`; the quick manual checklist is the
 Into the **`public_html`** root:
 
 - `index.html`
-- `src/` — the whole app (js, `shaders/*.glsl`, `looks/*.json`, `ui/`, …)
+- `src/` — the whole app (js incl. `shaders/*.js`, `looks/*.json`, `ui/`, …)
 - `assets/` — fonts, lookup textures, icons, favicon, og-image
 - `deploy/.htaccess` → uploaded **as `.htaccess`** at the `public_html` root
 
@@ -51,9 +51,10 @@ the tree lean also protects the **~300k inode** cap.
 2. Open the **HTTPS** URL on a phone, click **Start**, grant mic permission.
 3. Play audio in the room — confirm the visual reacts.
 4. Open DevTools → **Network**:
-   - `.glsl` / `.frag` files serve as `text/plain`.
    - `js` / `css` carry a long `Cache-Control` (immutable); `index.html` is
-     `no-cache`.
+     `no-cache`. Shaders ship inside `.js` modules, so they cache like other JS —
+     there are no `.glsl` files (the `.glsl` MIME line in `.htaccess` is harmless
+     but currently unused).
 5. If you change a cached `js`/`css`/`glsl` file later, **cache-bust the
    filename** (or bump a query string) — the immutable cache will otherwise
    serve the old one.
@@ -62,6 +63,7 @@ the tree lean also protects the **~300k inode** cap.
 
 - **Mic prompt never appears** → not on HTTPS, or SSL expired. Check the
   redirect and SSL status.
-- **`.glsl` downloads instead of loading** → the `AddType text/plain .glsl`
-  line in `.htaccess` isn't active; confirm `.htaccess` is at the root.
+- **A shader change doesn't show up** → shaders are bundled in `src/shaders/*.js`
+  and cached immutably like other JS; cache-bust the filename (or a query
+  string) to force the new version.
 - **Old code keeps loading** → the immutable cache; cache-bust the filename.

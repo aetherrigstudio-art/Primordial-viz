@@ -15,7 +15,7 @@ Upload these into the **`public_html`** root (everything else stays out — keep
 the inode count down, ~300k cap):
 
 - `index.html`
-- `src/`  (the whole app — js, shaders/*.glsl, looks/*.json, ui/, …)
+- `src/`  (the whole app — js incl. shaders/*.js, looks/*.json, ui/, …)
 - `assets/`  (fonts, lookup textures, icons, favicon, og-image)
 - `deploy/.htaccess` → place it **as `.htaccess`** at the `public_html` root
 
@@ -39,8 +39,8 @@ the inode count down, ~300k cap):
 - [ ] `.htaccess` present at `public_html` root → HTTPS redirect works.
 - [ ] Open the **HTTPS** URL on a phone; click Start; grant mic.
 - [ ] Confirm the visual reacts to room audio.
-- [ ] DevTools → Network: `.glsl` serves as `text/plain`; js/css are cached
-      (`Cache-Control` / `Expires` headers present).
+- [ ] DevTools → Network: js/css cached (`Cache-Control` / `Expires` present);
+      `index.html` is `no-cache`. (Shaders are `.js` modules — no `.glsl` files.)
 
 ## ⚠️ SSL reminder
 

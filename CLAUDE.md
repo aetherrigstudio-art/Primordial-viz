@@ -12,7 +12,9 @@ mic/line-in, and room audio drives generative "grungy-future-geometric-slimy"
 visuals; the artist operates the controls.
 
 - **No build step.** Plain `index.html` + vanilla ES modules + raw WebGL2 +
-  Web Audio `AnalyserNode`. GLSL ships as `.glsl` text loaded via `fetch()`.
+  Web Audio `AnalyserNode`. GLSL ships **inside `.js` ES modules** as exported
+  `/* glsl */` template-string constants, imported directly — no `fetch()`, no
+  `.glsl` files on disk.
 - **Zero runtime dependencies** by default. Renderer is raw WebGL2 (ogl ~8 KB
   is the only sanctioned fallback). Not three.js.
 - **Host = Namecheap Stellar Plus** (cPanel / LiteSpeed). Static delivery is
@@ -59,7 +61,7 @@ src/
 │   ├── renderer.js  # WebGL2 fullscreen triangle, FBOs, ping-pong
 │   ├── passes.js    # post chain (bloom/feedback/grade), half-res FBOs
 │   └── uniforms.js  # audio features + params → shader uniforms
-├── shaders/         # *.glsl text: slime.frag, post.frag, common.glsl
+├── shaders/         # *.frag.js / *.glsl.js: ES modules exporting GLSL strings
 ├── looks/           # "looks" as JSON data + registry.js
 ├── params/          # schema.js + store.js (versioned localStorage)
 └── ui/              # controls.js + styles.css
@@ -83,8 +85,11 @@ src/
 
 ## Key Patterns
 
-- **Looks / presets are JSON data** in `src/looks/` — `{ shader, defaultParams }`
-  + a `registry.js`. Switching looks is data, not code.
+- **Looks / presets are JSON data** in `src/looks/` — `{ id, name, description,
+  params }` (one shared slime shader; looks vary **params only**) + a
+  `registry.js` that fetches the JSON (resolved via `import.meta.url`) with an
+  inline `INLINE_LOOKS` mirror as the `file://` fallback. Switching looks is
+  data, not code.
 - **Versioned localStorage key** for saved state (e.g. `primordialV1`);
   validate/coerce on load so a schema bump never corrupts a saved set.
 - **512×2 R8 audio texture** — row 0 = `getByteFrequencyData` (fftSize 1024 →
