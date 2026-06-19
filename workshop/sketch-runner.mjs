@@ -18,6 +18,7 @@ window.__primordial = health;
 
 function fail(msg) {
   health.error = msg;
+  health.pause = true; // stop the render loop so the error does not re-fire every frame
   document.body.insertAdjacentHTML(
     'beforeend',
     '<pre style="color:#f55;position:fixed;top:0;left:0;margin:0;padding:8px;' +
