@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <title>Primordial — Audio Instrument (three.js)</title>
+  <link rel="stylesheet" href="./src/ui/styles.css" />
+  <!-- No build step: three.js is vendored and resolved via this import map. -->
+  <script type="importmap">
+  { "imports": { "three": "./vendor/three.module.js" } }
+  </script>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="glcanvas"></canvas>
+
+    <div id="hud">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+      <div class="title">PRIMORDIAL</div>
+      <div id="readout" role="status" aria-live="polite" aria-label="Performance readout">FPS --  --ms</div>
+    </div>
+
+    <div id="panel"></div>
+
+    <div id="gate">
+      <h1>Primordial Studio</h1>
+      <p>An audio-reactive visual instrument (three.js build). Tap start to grant microphone access so live sound drives the slime. The visuals also run without a mic.</p>
+      <button id="startBtn" class="btn primary" type="button">Start with Mic</button>
+      <button id="skipBtn" class="btn" type="button">Visuals Only</button>
+    </div>
+  </div>
+
+  <script type="module" src="./src/three/main.js"></script>
+</body>
+</html>

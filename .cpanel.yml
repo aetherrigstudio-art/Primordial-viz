@@ -1,0 +1,12 @@
+---
+# cPanel Git Version Control deployment (Namecheap Stellar Plus / LiteSpeed).
+# Runs on the server after each push+pull — copies ONLY the static app into
+# public_html (no build step; the site is plain files + a vendored three.js).
+# If $HOME doesn't resolve in your account, replace it with the absolute path
+# shown in cPanel (e.g. /home/<cpanel-user>/public_html).
+deployment:
+  tasks:
+    - export DEPLOYPATH="$HOME/public_html"
+    - /bin/mkdir -p "$DEPLOYPATH"
+    - /bin/cp -R index.html three.html src vendor "$DEPLOYPATH/"
+    - /bin/cp deploy/.htaccess "$DEPLOYPATH/.htaccess"
