@@ -106,6 +106,29 @@ test('coerceParams fills missing keys from schema', () => {
 });
 
 // ---------------------------------------------------------------------------
+// Workshop synthetic audio
+// ---------------------------------------------------------------------------
+const { synthAudio } = await import('../workshop/synth-audio.mjs');
+
+test('synthAudio returns full feature set in range, deterministic', () => {
+  const a = synthAudio(1.23, { bpm: 120 });
+  for (const k of ['bass', 'mid', 'treble', 'level', 'flux', 'beat']) {
+    assert.ok(a[k] >= 0 && a[k] <= 1, `${k} in 0..1`);
+  }
+  assert.ok(a.fft instanceof Uint8Array && a.fft.length === 512, 'fft is Uint8Array(512)');
+  assert.ok(a.wave instanceof Uint8Array && a.wave.length === 512, 'wave is Uint8Array(512)');
+  const b = synthAudio(1.23, { bpm: 120 });
+  assert.deepEqual(a.fft, b.fft, 'deterministic fft');
+  assert.equal(a.bass, b.bass, 'deterministic bass');
+});
+
+test('synthAudio beat pulse peaks on the downbeat', () => {
+  const onBeat = synthAudio(0.0, { bpm: 120 }).beat;     // phase 0
+  const offBeat = synthAudio(0.25, { bpm: 120 }).beat;   // mid-beat (0.5s period)
+  assert.ok(onBeat > offBeat, `beat on-downbeat (${onBeat}) > mid-beat (${offBeat})`);
+});
+
+// ---------------------------------------------------------------------------
 // ParamStore — versioned, defensive persistence
 // ---------------------------------------------------------------------------
 const { ParamStore } = await import('../src/params/store.js');
