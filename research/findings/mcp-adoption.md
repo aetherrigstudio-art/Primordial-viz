@@ -46,9 +46,18 @@
   natively (opaque canvas → flat screenshots + `evaluate_script`). Verdict: skip
   for now; if wanted later, Playwright MCP.
 
-### 3. Context7 — MARGINAL for this repo (deferring was right)
-- Official Upstash product, remote HTTP `https://mcp.context7.com/mcp`, API key
-  optional. Source: https://github.com/upstash/context7
+### 3. Context7 — NOW ADOPTED ON TRIAL (revisited 2026-06-19)
+- **Update:** added to `.mcp.json` + adopted the official `find-docs` skill
+  (`npx ctx7` CLI — robust even when cloud sessions don't load `.mcp.json`, per
+  #54441). Reasoning changed since the original defer: the repo now carries
+  **build/desktop/MCP devDeps** (vite, @tauri-apps/cli, playwright, zod,
+  @modelcontextprotocol/sdk) whose versioned docs Context7 covers and MDN does
+  not. Keyless free tier for the trial. ⚠️ Queries go to Upstash's servers, so
+  **public-library docs only — never proprietary shader code or secrets** (the
+  `find-docs` skill itself warns this). Installer rated `find-docs` **Med Risk**
+  (it runs an external CLI + network), which is inherent to a remote doc service.
+- Official Upstash product (MIT), remote HTTP `https://mcp.context7.com/mcp`, API
+  key optional (`CONTEXT7_API_KEY` header for higher limits). Source: https://github.com/upstash/context7
 - Its value is **versioned npm/framework docs** (React, Next, GSAP…); this app is
   zero-dependency vanilla JS with no demonstrated MDN/WebGL2 coverage — MDN MCP
   supersedes it here.

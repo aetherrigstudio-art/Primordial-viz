@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 156 files in 54 directories.
+> 163 files in 57 directories.
 
 ```
 Primordial-viz/
@@ -49,6 +49,8 @@ Primordial-viz/
 │   │   │   └── SKILL.md
 │   │   ├── executing-plans/
 │   │   │   └── SKILL.md
+│   │   ├── find-docs/
+│   │   │   └── SKILL.md
 │   │   ├── finishing-a-development-branch/
 │   │   │   └── SKILL.md
 │   │   ├── frontend-design/
@@ -69,6 +71,14 @@ Primordial-viz/
 │   │   │   └── SKILL.md
 │   │   ├── spec-driven-implementation/
 │   │   │   └── SKILL.md
+│   │   ├── subagent-driven-development/
+│   │   │   ├── scripts/
+│   │   │   │   ├── review-package
+│   │   │   │   ├── sdd-workspace
+│   │   │   │   └── task-brief
+│   │   │   ├── implementer-prompt.md
+│   │   │   ├── SKILL.md
+│   │   │   └── task-reviewer-prompt.md
 │   │   ├── systematic-debugging/
 │   │   │   ├── condition-based-waiting-example.ts
 │   │   │   ├── condition-based-waiting.md

@@ -437,3 +437,29 @@ value in ephemeral cloud), `subagent-driven-development` (overlaps
 the router a real map; (2) optional prune of `debugging-and-error-recovery`
 (superseded by `systematic-debugging`). **Verified:** `gen-docs --check` green;
 smoke 12/12.
+
+## Session — 2026-06-19 (corrections: subagent-driven-development + Context7)
+
+- **Adopted `obra/superpowers@subagent-driven-development`** (MIT) — corrected an
+  earlier bad call: it does NOT overlap `dispatching-parallel-agents`
+  (parallelize independent tasks) — it's a methodology for **executing an
+  implementation plan via subagents in the current session**. Different tool.
+  Bundled scripts (`task-brief`, `sdd-workspace`, `review-package`) are benign
+  local bash (no network).
+- **Adopted Context7 (user request — "try it out"), set up BOTH ways:**
+  - Skill `upstash/context7@find-docs` (**MIT**) — uses the `npx ctx7` CLI, so it
+    works even when cloud sessions don't load `.mcp.json` (#54441). Installer
+    rated it **Med Risk** (runs an external CLI + network — inherent to a remote
+    doc service, not malicious).
+  - MCP server `context7` → added to `.mcp.json` (`https://mcp.context7.com/mcp`,
+    keyless free tier; `CONTEXT7_API_KEY` header for higher limits later).
+  - **Why now** (vs the original defer in `mcp-adoption.md`): the repo now has
+    build/desktop devDeps (vite, @tauri-apps/cli, playwright, zod, MCP SDK) whose
+    versioned docs Context7 covers and MDN doesn't. Reconciled `mcp-adoption.md §3`.
+  - ⚠️ **Privacy:** Context7 queries go to Upstash — **public-library docs only,
+    never proprietary shader code or secrets** (the skill warns this too).
+  - **Trust dialog** expected on next launch (new MCP server; post-CVE no silent
+    self-approve). Approve `context7` to use the MCP path.
+
+**Now 25 skills** (5 ours + 20 adopted) + 3 MCP servers (mdn, context7, primordial).
+**Verified:** `.mcp.json` valid JSON; `gen-docs --check` green; smoke 12/12.

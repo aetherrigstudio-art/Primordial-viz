@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 156 files across 17 categories.
+> 163 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (9)
-- [Claude Environment](#claude-environment) (66)
+- [Claude Environment](#claude-environment) (73)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
@@ -189,6 +189,7 @@
 | [`.claude/skills/dispatching-parallel-agents/SKILL.md`](.claude/skills/dispatching-parallel-agents/SKILL.md) | Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies |
 | [`.claude/skills/documentation-and-adrs/SKILL.md`](.claude/skills/documentation-and-adrs/SKILL.md) | Records decisions and documentation. Use when making architectural decisions, changing public APIs, shipping features, or when you need to record… |
 | [`.claude/skills/executing-plans/SKILL.md`](.claude/skills/executing-plans/SKILL.md) | Use when you have a written implementation plan to execute in a separate session with review checkpoints |
+| [`.claude/skills/find-docs/SKILL.md`](.claude/skills/find-docs/SKILL.md) | >- |
 | [`.claude/skills/finishing-a-development-branch/SKILL.md`](.claude/skills/finishing-a-development-branch/SKILL.md) | Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by… |
 | [`.claude/skills/frontend-design/LICENSE.txt`](.claude/skills/frontend-design/LICENSE.txt) | Plain-text notes. |
 | [`.claude/skills/frontend-design/SKILL.md`](.claude/skills/frontend-design/SKILL.md) | Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography,… |
@@ -200,6 +201,12 @@
 | [`.claude/skills/requesting-code-review/code-reviewer.md`](.claude/skills/requesting-code-review/code-reviewer.md) | Use this template when dispatching a code reviewer subagent. |
 | [`.claude/skills/skill-router/SKILL.md`](.claude/skills/skill-router/SKILL.md) | Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from… |
 | [`.claude/skills/spec-driven-implementation/SKILL.md`](.claude/skills/spec-driven-implementation/SKILL.md) | Drive a spec-first workflow for substantial features by writing PRODUCT.md before implementation, writing TECH.md when warranted, and keeping both… |
+| [`.claude/skills/subagent-driven-development/SKILL.md`](.claude/skills/subagent-driven-development/SKILL.md) | Use when executing implementation plans with independent tasks in the current session |
+| [`.claude/skills/subagent-driven-development/implementer-prompt.md`](.claude/skills/subagent-driven-development/implementer-prompt.md) | Use this template when dispatching an implementer subagent. |
+| [`.claude/skills/subagent-driven-development/scripts/review-package`](.claude/skills/subagent-driven-development/scripts/review-package) | Generate a review package: commit list, stat summary, and the net diff with extended context, written to a file the reviewer reads in one call. |
+| [`.claude/skills/subagent-driven-development/scripts/sdd-workspace`](.claude/skills/subagent-driven-development/scripts/sdd-workspace) | Resolve and ensure the working-tree directory SDD uses for its short-lived artifacts: task briefs, implementer reports, review packages, and the… |
+| [`.claude/skills/subagent-driven-development/scripts/task-brief`](.claude/skills/subagent-driven-development/scripts/task-brief) | Extract one task's full text from an implementation plan into a file the implementer reads in one call, so the task text never has to be pasted… |
+| [`.claude/skills/subagent-driven-development/task-reviewer-prompt.md`](.claude/skills/subagent-driven-development/task-reviewer-prompt.md) | Use this template when dispatching a task reviewer subagent. |
 | [`.claude/skills/systematic-debugging/CREATION-LOG.md`](.claude/skills/systematic-debugging/CREATION-LOG.md) | Reference example of extracting, structuring, and bulletproofing a critical skill. |
 | [`.claude/skills/systematic-debugging/SKILL.md`](.claude/skills/systematic-debugging/SKILL.md) | Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes |
 | [`.claude/skills/systematic-debugging/condition-based-waiting-example.ts`](.claude/skills/systematic-debugging/condition-based-waiting-example.ts) | Complete implementation of condition-based waiting utilities From: Lace test infrastructure improvements (2025-10-03) Context: Fixed 15 flaky tests… |
