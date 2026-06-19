@@ -207,3 +207,32 @@ it is, it auto-ships to the same `/Test/` URL via the existing pipeline.
 
 **Verified:** `node test/smoke.mjs`, `node --check` on all JS,
 `node tools/gen-docs.mjs --check` (docs in sync). Deploy still ships `/Test/`.
+
+## Session — 2026-06-19 (rule-injector hook — device-aware)
+
+**Built the knowledge-system "rule-injector"** (was the top TODO in the
+Knowledge & context section of `.claude/ROADMAP.md`):
+
+- `.claude/hooks/inject-rules.sh` — **PreToolUse** hook (matcher `Edit|Write`,
+  wired in `.claude/settings.json`). On an edit to `src/shaders/**`/`src/gl/**`
+  it injects the **shaders** rule (mobile budget + write-our-own licensing) and
+  on `src/audio/**` the **audio** rule, via `hookSpecificOutput.additionalContext`
+  — so the load-bearing rules surface *before* the edit instead of relying on the
+  agent to fetch them. Non-blocking (exits 0); no-op on other paths; degrades to
+  a no-op if `jq` is missing.
+- **Device-aware (operator's chosen requirement).** Grounding found the container
+  exposes the operator's client via **`CLAUDE_CODE_ENTRYPOINT`** (this session =
+  `remote_mobile`). The hook branches on it: phone → "no desktop perf rig / Tauri
+  build here; lean on CI + defer real-device FPS to a venue test"; web / CLI
+  variants. It always asserts the **playback** target is a phone GPU (why the
+  budget is non-negotiable) and names the reviewer agent (`visual-qa` / `audio-dsp`).
+- Decided via the new **`thought-based-reasoning`** skill (dogfooded): the key
+  realization was that "device" splits into operator-device (detectable) vs
+  playback-device (always mobile).
+
+**Verified:** unit-tested the hook across shader/audio/gl/no-match paths and
+mobile/web/cli device branches (correct rule, tailored note, valid JSON, clean
+no-op); `settings.json` valid; smoke 12/12; `gen-docs --check` in sync.
+
+**Knowledge-system items remaining (see `.claude/ROADMAP.md`):** drift gate +
+fix the stale `deploy-cpanel` skill; PreCompact "update progress.md" reminder hook.

@@ -76,9 +76,12 @@ keep one source of truth per topic.
 - **`thought-based-reasoning` skill** — structured reasoning harness for
   design/architecture decisions; grounds via the router before proposing. ✅ DONE.
 - **Rule-injector hook (PreToolUse on Edit|Write)** — when the edited path
-  matches `src/shaders/**` / `src/gl/**` / `src/audio/**`, print "read the scoped
-  rule first" so the load-bearing rules surface at the moment of relevance instead
-  of relying on the agent to fetch them. — TODO (highest leverage).
+  matches `src/shaders/**` / `src/gl/**` / `src/audio/**`, inject the scoped rule
+  + the mobile-playback budget into context *before* the edit, so the load-bearing
+  rules surface at the moment of relevance instead of relying on the agent to
+  fetch them. **Device-aware:** reads `CLAUDE_CODE_ENTRYPOINT` to tailor the
+  verification note to the operator's device (phone → no desktop profiler, lean on
+  CI; web/CLI variants). ✅ DONE — `.claude/hooks/inject-rules.sh`.
 - **Drift gate + single source of truth** — one owner per topic (deploy facts →
   `.claude/rules/deploy.md`; the skill + `DEPLOY.md` point to it), plus a
   lightweight staleness check (extend `gen-docs --check`: referenced paths must

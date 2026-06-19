@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 106 files across 16 categories.
+> 107 files across 16 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (9)
-- [Claude Environment](#claude-environment) (17)
+- [Claude Environment](#claude-environment) (18)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
@@ -166,6 +166,7 @@
 | [`.claude/hooks/check-data.sh`](.claude/hooks/check-data.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/check-syntax.sh`](.claude/hooks/check-syntax.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/gen-docs.sh`](.claude/hooks/gen-docs.sh) | PostToolUse hook (matcher: Edit\|Write). |
+| [`.claude/hooks/inject-rules.sh`](.claude/hooks/inject-rules.sh) | PreToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/orient.sh`](.claude/hooks/orient.sh) | SessionStart hook: orient a fresh agent (especially cloud/phone sessions) with zero typing — repo state, branch + recent commits, the latest handoff… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
 | [`.claude/rules/deploy.md`](.claude/rules/deploy.md) | Facts about the host. |

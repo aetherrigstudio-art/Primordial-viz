@@ -29,7 +29,7 @@ Legend: 📱 = you (app/web) · 🤖 = me (repo). Full context: `.claude/ROADMAP
 ## 🤖 Me — knowledge & context system (detail in `.claude/ROADMAP.md`)
 - [x] Knowledge router table in `CLAUDE.md` (work area → required reading)
 - [x] `thought-based-reasoning` skill (structured design/planning reasoning)
-- [ ] Rule-injector PreToolUse hook (surface scoped rules on shader/gl/audio edits)
+- [x] Rule-injector PreToolUse hook (surface scoped rules on shader/gl/audio edits; device-aware via `CLAUDE_CODE_ENTRYPOINT`)
 - [ ] Drift gate + fix the stale `deploy-cpanel` skill (single source of truth)
 - [ ] PreCompact hook: remind to update `progress.md` before compaction
 
