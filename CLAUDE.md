@@ -109,7 +109,7 @@ don't skip them):
 
 - **deploy** — `deploy-cpanel`
 - **design** — `thought-based-reasoning`
-- **general** — `accessibility`, `brainstorming`, `debugging-and-error-recovery`, `documentation-and-adrs`, `frontend-design`, `performance`, `spec-driven-implementation`, `task-management`, `writing-plans`
+- **general** — `accessibility`, `brainstorming`, `debugging-and-error-recovery`, `dispatching-parallel-agents`, `documentation-and-adrs`, `executing-plans`, `finishing-a-development-branch`, `frontend-design`, `performance`, `receiving-code-review`, `requesting-code-review`, `spec-driven-implementation`, `systematic-debugging`, `task-management`, `test-driven-development`, `verification-before-completion`, `writing-plans`, `writing-skills`
 - **looks** — `new-preset`
 - **meta** — `skill-router`
 - **shaders** — `perf-budget`

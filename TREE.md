@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 123 files in 43 directories.
+> 156 files in 54 directories.
 
 ```
 Primordial-viz/
@@ -30,13 +30,26 @@ Primordial-viz/
 │   │   │   │   └── WCAG.md
 │   │   │   └── SKILL.md
 │   │   ├── brainstorming/
+│   │   │   ├── scripts/
+│   │   │   │   ├── frame-template.html
+│   │   │   │   ├── helper.js
+│   │   │   │   ├── server.cjs
+│   │   │   │   ├── start-server.sh
+│   │   │   │   └── stop-server.sh
 │   │   │   ├── SKILL.md
-│   │   │   └── spec-document-reviewer-prompt.md
+│   │   │   ├── spec-document-reviewer-prompt.md
+│   │   │   └── visual-companion.md
 │   │   ├── debugging-and-error-recovery/
 │   │   │   └── SKILL.md
 │   │   ├── deploy-cpanel/
 │   │   │   └── SKILL.md
+│   │   ├── dispatching-parallel-agents/
+│   │   │   └── SKILL.md
 │   │   ├── documentation-and-adrs/
+│   │   │   └── SKILL.md
+│   │   ├── executing-plans/
+│   │   │   └── SKILL.md
+│   │   ├── finishing-a-development-branch/
 │   │   │   └── SKILL.md
 │   │   ├── frontend-design/
 │   │   │   ├── LICENSE.txt
@@ -47,17 +60,48 @@ Primordial-viz/
 │   │   │   └── SKILL.md
 │   │   ├── performance/
 │   │   │   └── SKILL.md
+│   │   ├── receiving-code-review/
+│   │   │   └── SKILL.md
+│   │   ├── requesting-code-review/
+│   │   │   ├── code-reviewer.md
+│   │   │   └── SKILL.md
 │   │   ├── skill-router/
 │   │   │   └── SKILL.md
 │   │   ├── spec-driven-implementation/
 │   │   │   └── SKILL.md
+│   │   ├── systematic-debugging/
+│   │   │   ├── condition-based-waiting-example.ts
+│   │   │   ├── condition-based-waiting.md
+│   │   │   ├── CREATION-LOG.md
+│   │   │   ├── defense-in-depth.md
+│   │   │   ├── find-polluter.sh
+│   │   │   ├── root-cause-tracing.md
+│   │   │   ├── SKILL.md
+│   │   │   ├── test-academic.md
+│   │   │   ├── test-pressure-1.md
+│   │   │   ├── test-pressure-2.md
+│   │   │   └── test-pressure-3.md
 │   │   ├── task-management/
 │   │   │   └── SKILL.md
+│   │   ├── test-driven-development/
+│   │   │   ├── SKILL.md
+│   │   │   └── testing-anti-patterns.md
 │   │   ├── thought-based-reasoning/
 │   │   │   └── SKILL.md
-│   │   └── writing-plans/
-│   │       ├── plan-document-reviewer-prompt.md
-│   │       └── SKILL.md
+│   │   ├── verification-before-completion/
+│   │   │   └── SKILL.md
+│   │   ├── writing-plans/
+│   │   │   ├── plan-document-reviewer-prompt.md
+│   │   │   └── SKILL.md
+│   │   └── writing-skills/
+│   │       ├── examples/
+│   │       │   └── CLAUDE_MD_TESTING.md
+│   │       ├── anthropic-best-practices.md
+│   │       ├── graphviz-conventions.dot
+│   │       ├── persuasion-principles.md
+│   │       ├── render-graphs.js
+│   │       ├── SKILL.md
+│   │       └── testing-skills-with-subagents.md
 │   ├── cloud-setup.sh
 │   ├── ROADMAP.md
 │   ├── settings.json

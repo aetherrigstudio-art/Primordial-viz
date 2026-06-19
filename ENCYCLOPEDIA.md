@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 123 files across 17 categories.
+> 156 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (9)
-- [Claude Environment](#claude-environment) (33)
+- [Claude Environment](#claude-environment) (66)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
@@ -177,21 +177,54 @@
 | [`.claude/skills/accessibility/references/A11Y-PATTERNS.md`](.claude/skills/accessibility/references/A11Y-PATTERNS.md) | Practical, copy-paste-ready patterns for common accessibility requirements. |
 | [`.claude/skills/accessibility/references/WCAG.md`](.claude/skills/accessibility/references/WCAG.md) | html <button>Label</button> <!-- or --> <button aria-label="Close dialog">×</button> |
 | [`.claude/skills/brainstorming/SKILL.md`](.claude/skills/brainstorming/SKILL.md) | You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user… |
+| [`.claude/skills/brainstorming/scripts/frame-template.html`](.claude/skills/brainstorming/scripts/frame-template.html) | Superpowers Brainstorming |
+| [`.claude/skills/brainstorming/scripts/helper.js`](.claude/skills/brainstorming/scripts/helper.js) | JS file. |
+| [`.claude/skills/brainstorming/scripts/server.cjs`](.claude/skills/brainstorming/scripts/server.cjs) | CJS file. |
+| [`.claude/skills/brainstorming/scripts/start-server.sh`](.claude/skills/brainstorming/scripts/start-server.sh) | Start the brainstorm server and output connection info Usage: start-server.sh [--project-dir <path>] [--host <bind-host>] [--url-host… |
+| [`.claude/skills/brainstorming/scripts/stop-server.sh`](.claude/skills/brainstorming/scripts/stop-server.sh) | Stop the brainstorm server and clean up Usage: stop-server.sh <session_dir> Kills the server process. |
 | [`.claude/skills/brainstorming/spec-document-reviewer-prompt.md`](.claude/skills/brainstorming/spec-document-reviewer-prompt.md) | Use this template when dispatching a spec document reviewer subagent. |
+| [`.claude/skills/brainstorming/visual-companion.md`](.claude/skills/brainstorming/visual-companion.md) | Browser-based visual brainstorming companion for showing mockups, diagrams, and options. |
 | [`.claude/skills/debugging-and-error-recovery/SKILL.md`](.claude/skills/debugging-and-error-recovery/SKILL.md) | Guides systematic root-cause debugging. Use when tests fail, builds break, behavior doesn't match expectations, or you encounter any unexpected… |
 | [`.claude/skills/deploy-cpanel/SKILL.md`](.claude/skills/deploy-cpanel/SKILL.md) | Manual deploy checklist for shipping primordial to Namecheap Stellar Plus (cPanel). Invoke deliberately when deploying; not auto-activated. |
+| [`.claude/skills/dispatching-parallel-agents/SKILL.md`](.claude/skills/dispatching-parallel-agents/SKILL.md) | Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies |
 | [`.claude/skills/documentation-and-adrs/SKILL.md`](.claude/skills/documentation-and-adrs/SKILL.md) | Records decisions and documentation. Use when making architectural decisions, changing public APIs, shipping features, or when you need to record… |
+| [`.claude/skills/executing-plans/SKILL.md`](.claude/skills/executing-plans/SKILL.md) | Use when you have a written implementation plan to execute in a separate session with review checkpoints |
+| [`.claude/skills/finishing-a-development-branch/SKILL.md`](.claude/skills/finishing-a-development-branch/SKILL.md) | Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by… |
 | [`.claude/skills/frontend-design/LICENSE.txt`](.claude/skills/frontend-design/LICENSE.txt) | Plain-text notes. |
 | [`.claude/skills/frontend-design/SKILL.md`](.claude/skills/frontend-design/SKILL.md) | Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography,… |
 | [`.claude/skills/new-preset/SKILL.md`](.claude/skills/new-preset/SKILL.md) | Scaffold a new visual "look" for primordial — a params-only JSON preset in src/looks/, wired into the look registry (all looks share the slime… |
 | [`.claude/skills/perf-budget/SKILL.md`](.claude/skills/perf-budget/SKILL.md) | Run the in-app FPS stress-test readout for primordial and read its SMOOTH / OK / TOO-MUCH verdict to set the mobile performance budget (FBO… |
 | [`.claude/skills/performance/SKILL.md`](.claude/skills/performance/SKILL.md) | Optimize web performance for faster loading and better user experience. Use when asked to "speed up my site", "optimize performance", "reduce load… |
+| [`.claude/skills/receiving-code-review/SKILL.md`](.claude/skills/receiving-code-review/SKILL.md) | Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable -… |
+| [`.claude/skills/requesting-code-review/SKILL.md`](.claude/skills/requesting-code-review/SKILL.md) | Use when completing tasks, implementing major features, or before merging to verify work meets requirements |
+| [`.claude/skills/requesting-code-review/code-reviewer.md`](.claude/skills/requesting-code-review/code-reviewer.md) | Use this template when dispatching a code reviewer subagent. |
 | [`.claude/skills/skill-router/SKILL.md`](.claude/skills/skill-router/SKILL.md) | Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from… |
 | [`.claude/skills/spec-driven-implementation/SKILL.md`](.claude/skills/spec-driven-implementation/SKILL.md) | Drive a spec-first workflow for substantial features by writing PRODUCT.md before implementation, writing TECH.md when warranted, and keeping both… |
+| [`.claude/skills/systematic-debugging/CREATION-LOG.md`](.claude/skills/systematic-debugging/CREATION-LOG.md) | Reference example of extracting, structuring, and bulletproofing a critical skill. |
+| [`.claude/skills/systematic-debugging/SKILL.md`](.claude/skills/systematic-debugging/SKILL.md) | Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes |
+| [`.claude/skills/systematic-debugging/condition-based-waiting-example.ts`](.claude/skills/systematic-debugging/condition-based-waiting-example.ts) | Complete implementation of condition-based waiting utilities From: Lace test infrastructure improvements (2025-10-03) Context: Fixed 15 flaky tests… |
+| [`.claude/skills/systematic-debugging/condition-based-waiting.md`](.claude/skills/systematic-debugging/condition-based-waiting.md) | Flaky tests often guess at timing with arbitrary delays. |
+| [`.claude/skills/systematic-debugging/defense-in-depth.md`](.claude/skills/systematic-debugging/defense-in-depth.md) | When you fix a bug caused by invalid data, adding validation at one place feels sufficient. |
+| [`.claude/skills/systematic-debugging/find-polluter.sh`](.claude/skills/systematic-debugging/find-polluter.sh) | Bisection script to find which test creates unwanted files/state Usage: ./find-polluter.sh <file_or_dir_to_check> <test_pattern> Example:… |
+| [`.claude/skills/systematic-debugging/root-cause-tracing.md`](.claude/skills/systematic-debugging/root-cause-tracing.md) | Bugs often manifest deep in the call stack (git init in wrong directory, file created in wrong location, database opened with wrong path). |
+| [`.claude/skills/systematic-debugging/test-academic.md`](.claude/skills/systematic-debugging/test-academic.md) | You have access to the systematic debugging skill at skills/debugging/systematic-debugging |
+| [`.claude/skills/systematic-debugging/test-pressure-1.md`](.claude/skills/systematic-debugging/test-pressure-1.md) | IMPORTANT: This is a real scenario. |
+| [`.claude/skills/systematic-debugging/test-pressure-2.md`](.claude/skills/systematic-debugging/test-pressure-2.md) | IMPORTANT: This is a real scenario. |
+| [`.claude/skills/systematic-debugging/test-pressure-3.md`](.claude/skills/systematic-debugging/test-pressure-3.md) | IMPORTANT: This is a real scenario. |
 | [`.claude/skills/task-management/SKILL.md`](.claude/skills/task-management/SKILL.md) | Simple task management using a shared TASKS.md file. Reference this when the user asks about their tasks, wants to add/complete tasks, or needs help… |
+| [`.claude/skills/test-driven-development/SKILL.md`](.claude/skills/test-driven-development/SKILL.md) | Use when implementing any feature or bugfix, before writing implementation code |
+| [`.claude/skills/test-driven-development/testing-anti-patterns.md`](.claude/skills/test-driven-development/testing-anti-patterns.md) | Load this reference when: writing or changing tests, adding mocks, or tempted to add test-only methods to production code. |
 | [`.claude/skills/thought-based-reasoning/SKILL.md`](.claude/skills/thought-based-reasoning/SKILL.md) | Structured reasoning harness for design, architecture, and planning decisions in Primordial-viz. Frame the problem, pull the right project knowledge… |
+| [`.claude/skills/verification-before-completion/SKILL.md`](.claude/skills/verification-before-completion/SKILL.md) | Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and… |
 | [`.claude/skills/writing-plans/SKILL.md`](.claude/skills/writing-plans/SKILL.md) | Use when you have a spec or requirements for a multi-step task, before touching code |
 | [`.claude/skills/writing-plans/plan-document-reviewer-prompt.md`](.claude/skills/writing-plans/plan-document-reviewer-prompt.md) | Use this template when dispatching a plan document reviewer subagent. |
+| [`.claude/skills/writing-skills/SKILL.md`](.claude/skills/writing-skills/SKILL.md) | Use when creating new skills, editing existing skills, or verifying skills work before deployment |
+| [`.claude/skills/writing-skills/anthropic-best-practices.md`](.claude/skills/writing-skills/anthropic-best-practices.md) | Learn how to write effective Skills that agents can discover and use successfully. |
+| [`.claude/skills/writing-skills/examples/CLAUDE_MD_TESTING.md`](.claude/skills/writing-skills/examples/CLAUDE_MD_TESTING.md) | Testing different documentation variants to find what actually makes agents discover and use skills under pressure. |
+| [`.claude/skills/writing-skills/graphviz-conventions.dot`](.claude/skills/writing-skills/graphviz-conventions.dot) | DOT file. |
+| [`.claude/skills/writing-skills/persuasion-principles.md`](.claude/skills/writing-skills/persuasion-principles.md) | LLMs respond to the same persuasion principles as humans. |
+| [`.claude/skills/writing-skills/render-graphs.js`](.claude/skills/writing-skills/render-graphs.js) | Render graphviz diagrams from a skill's SKILL.md to SVG files. |
+| [`.claude/skills/writing-skills/testing-skills-with-subagents.md`](.claude/skills/writing-skills/testing-skills-with-subagents.md) | Load this reference when: creating or editing skills, before deployment, to verify they work under pressure and resist rationalization. |
 
 ## Deployment
 

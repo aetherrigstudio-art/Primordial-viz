@@ -404,3 +404,36 @@ scales to 30+ skills without nearing the 200-line cap.
 
 **Verified:** `node --check tools/gen-docs.mjs`; `gen-docs --check` green (docs +
 compact region + drift gate); smoke 12/12.
+
+## Session — 2026-06-19 (correct brainstorming + adopt the superpowers workflow)
+
+**Corrected the brainstorming call:** the privacy boundary is the **deployed
+website**, not local dev tooling — `.claude/` never ships (deploy stages only
+`index.html src`) and the repo stays private. So the optional localhost,
+token-authed visual-companion server is fine (and potentially useful). **Restored
+brainstorming to pristine** (scripts + `visual-companion.md` back).
+
+**Adopted 9 of the 14-skill `obra/superpowers` bundle (MIT)** — a coherent
+agentic-dev lifecycle: `systematic-debugging` (151K — supersedes our adopted
+`debugging-and-error-recovery`), `verification-before-completion` (= our
+evidence-before-assertions ethos), `test-driven-development`, `executing-plans`
+(completes brainstorm→plan→execute), `finishing-a-development-branch`,
+`requesting-code-review`, `receiving-code-review`, `dispatching-parallel-agents`,
+`writing-skills` (complements `skill-router`).
+**Skipped (reasons):** `using-superpowers` (forces skill-invocation before every
+response → conflicts with our orient hook + router), `using-git-worktrees` (low
+value in ephemeral cloud), `subagent-driven-development` (overlaps
+`dispatching-parallel-agents`).
+
+**Support scripts vetted benign** (user OK'd local scripts in the private repo):
+`writing-skills/render-graphs.js` (shells to local `dot`/graphviz),
+`systematic-debugging/find-polluter.sh` (test-pollution bisector) — no network.
+
+**Now 23 skills** (5 ours + 18 adopted, all MIT/Apache; provenance in
+`skills-lock.json`). Compact router held CLAUDE.md at **182 lines**.
+
+**Open follow-ups:** (1) the 18 adopted skills all sit under area `general` —
+**area-tagging** them (debugging/planning/review/testing/design/docs) would make
+the router a real map; (2) optional prune of `debugging-and-error-recovery`
+(superseded by `systematic-debugging`). **Verified:** `gen-docs --check` green;
+smoke 12/12.
