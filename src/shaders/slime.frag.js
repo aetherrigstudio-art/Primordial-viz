@@ -22,6 +22,7 @@ uniform float uBass;
 uniform float uMid;
 uniform float uTreble;
 uniform float uLevel;
+uniform float uFlux;           // 0..1 spectral flux (onset energy)
 uniform float uBeat;           // 0..1 decaying pulse on each detected beat
 
 // Look parameters (driven from JSON looks + sliders)
@@ -156,8 +157,9 @@ void main() {
     col += uColB * sss;
     col += vec3(1.0) * spec * (0.6 + 0.8 * uBeat);
 
-    // Treble shimmer riding the surface.
+    // Treble shimmer riding the surface; spectral flux (onsets) flashes the rim.
     col += uColB * 0.15 * uTreble * (0.5 + 0.5 * sin(pos.y * 30.0 + uTime * 5.0));
+    col += uColB * fres * 0.5 * uFlux;
   }
 
   // Add the accumulated volumetric glow regardless of hit, tinted neon.

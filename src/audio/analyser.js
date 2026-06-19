@@ -18,12 +18,14 @@ export class Analyser {
     this.bins = this.node.frequencyBinCount; // 512
     this.freq = new Uint8Array(this.bins);   // getByteFrequencyData
     this.wave = new Uint8Array(this.bins);   // getByteTimeDomainData
+    this._prevFreq = new Uint8Array(this.bins); // last frame's FFT, for flux
 
     // Smoothed bands.
     this.bass = 0;
     this.mid = 0;
     this.treble = 0;
     this.level = 0;
+    this.flux = 0;   // spectral flux: smoothed sum of positive bin-to-bin rises
 
     // Per-band bin ranges over a 1024-fftSize @ ~44.1k: bin width ~43 Hz.
     // bass ~20-250Hz, mid ~250-2k, treble ~2k-8k. Keep simple & musical.
@@ -53,6 +55,17 @@ export class Analyser {
     this.node.getByteFrequencyData(this.freq);
     this.node.getByteTimeDomainData(this.wave);
 
+    // Spectral flux: sum of positive frame-to-frame rises across all bins
+    // (energy newly appearing = an onset). Normalize to 0..1 and apply a gain
+    // so musical onsets read clearly; compute before overwriting prevFreq.
+    let fl = 0;
+    for (let i = 0; i < this.bins; i++) {
+      const d = this.freq[i] - this._prevFreq[i];
+      if (d > 0) fl += d;
+    }
+    this._prevFreq.set(this.freq);
+    fl = Math.min(1, (fl / (this.bins * 255)) * 8);
+
     const b = this._avg(this.freq, this._bassRange[0], this._bassRange[1]);
     const m = this._avg(this.freq, this._midRange[0], this._midRange[1]);
     const t = this._avg(this.freq, this._trebleRange[0], this._trebleRange[1]);
@@ -70,6 +83,7 @@ export class Analyser {
     this.mid = this.mid * s + m * (1 - s);
     this.treble = this.treble * s + t * (1 - s);
     this.level = this.level * s + rms * (1 - s);
+    this.flux = this.flux * s + fl * (1 - s);
   }
 
   // Raw instantaneous bass energy (unsmoothed) for the beat detector.
@@ -83,6 +97,7 @@ export class Analyser {
       mid: this.mid,
       treble: this.treble,
       level: this.level,
+      flux: this.flux,
     };
   }
 }

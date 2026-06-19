@@ -26,7 +26,7 @@ let analyser = null;
 let micActive = false;
 
 // Smoothed beat pulse exposed to shaders.
-const features = { bass: 0, mid: 0, treble: 0, level: 0, beat: 0 };
+const features = { bass: 0, mid: 0, treble: 0, level: 0, flux: 0, beat: 0 };
 
 // Internal render-state handle (frame count / GL status). Never affects rendering.
 const health = { frames: 0, glOk: false, error: null, pause: false };
@@ -160,6 +160,7 @@ function frame(now) {
     features.mid = f.mid;
     features.treble = f.treble;
     features.level = f.level;
+    features.flux = f.flux;
     beat.update(analyser.rawBassEnergy(), dt);
   } else {
     // Silent fallback: gentle synthetic motion so there's life pre-mic.
@@ -167,6 +168,7 @@ function frame(now) {
     features.mid = 0.14 + 0.1 * Math.sin(t * 1.1 + 1.0);
     features.treble = 0.1 + 0.08 * Math.sin(t * 1.7 + 2.0);
     features.level = 0.12 + 0.08 * Math.sin(t * 0.5);
+    features.flux = 0.06 + 0.06 * Math.max(0, Math.sin(t * 2.3));
     beat.update(features.bass, dt);
   }
   features.beat = beat.pulse;

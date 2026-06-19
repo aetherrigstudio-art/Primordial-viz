@@ -24,6 +24,7 @@ export function setSlimeUniforms(gl, U, ctx) {
   gl.uniform1f(U.loc('uMid'), features.mid);
   gl.uniform1f(U.loc('uTreble'), features.treble);
   gl.uniform1f(U.loc('uLevel'), features.level);
+  gl.uniform1f(U.loc('uFlux'), features.flux || 0);
   gl.uniform1f(U.loc('uBeat'), features.beat);
 
   gl.uniform3f(U.loc('uColA'), params.colA[0], params.colA[1], params.colA[2]);
