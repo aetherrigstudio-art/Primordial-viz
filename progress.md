@@ -2,7 +2,7 @@
 
 ## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
 
-- [ ] **learn-from-corrections (self-improvement loop #1)** | decided: hybrid - a UserPromptSubmit `detect-correction.sh` hook nudges when you push back, and a `/lesson` skill captures the lesson durably by ROUTING it to the right home (sharpen the always-loaded `accuracy` rule / fix the stale source doc / note in progress.md), not a write-only dump | next: run `writing-plans`, then build the hook + `/lesson` skill + wire settings.json/router/orient | parked 2026-06-19
+_(none open)_
 
 ## Session 1 — 2026-06-19 (planning + research)
 
@@ -498,3 +498,29 @@ the slim (move the generated `skills:router` block to an imported file) is the
 next maintenance step. **Verified:** settings.json valid; both hooks valid bash;
 `gen-docs --check` green (incl. drift gate); smoke 12/12; hook intent-detection
 unit-tested.
+
+## Session — 2026-06-19 (self-improvement tooling: parking lot + learn-from-corrections)
+
+Built the self-improvement loop's capture machinery, plus support tooling:
+- **`deploy-check`** skill - one-pass deploy health (latest Actions run -> failing
+  logs -> FTP_PASSWORD secret -> curl live /Test/ -> concise root cause). From the
+  /insights report.
+- **`send-report`** skill - SendUserFile the newest /insights report (the
+  `file:///root/...` link is unreachable on mobile; /insights itself is built-in).
+- **Site audit** (`tools/audit-site.mjs`, `npm run audit`, CI step in verify.yml,
+  step in deploy-check) - flags em/en dashes (AI writing tell) + AI/tooling
+  fingerprints in the deployed surface (index.html + src/). Fixed 3 existing em
+  dashes (page <title> + 2 CSS comments) -> hyphens.
+- **Parking lot** - `/park` skill + `## Open threads` section in progress.md +
+  `orient` surfacing, so a thread interrupted by a subject change resumes reliably
+  with full context next session.
+- **Learn-from-corrections (loop #1)** - `/lesson` skill (routes a correction to
+  its durable home: sharpen the always-loaded `accuracy` rule / fix the source
+  doc / note it) + `detect-correction.sh` UserPromptSubmit hook (nudges on a
+  correction; specific phrases only, never bare "no"; unit-tested). Designed via
+  brainstorming, planned via writing-plans (plan in `docs/superpowers/plans/`).
+
+**Now 30 skills.** Loop status: sense (insights/audits) + diagnose + fix + remember
+(corrections->rules, parking) all have machinery now. **Verified:** both new hooks
+valid + unit-tested; settings.json valid; `gen-docs --check` green; smoke 12/12;
+site audit clean.

@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 171 files in 63 directories.
+> 174 files in 64 directories.
 
 ```
 Primordial-viz/
@@ -16,6 +16,7 @@ Primordial-viz/
 │   ├── hooks/
 │   │   ├── check-data.sh
 │   │   ├── check-syntax.sh
+│   │   ├── detect-correction.sh
 │   │   ├── gen-docs.sh
 │   │   ├── inject-rules.sh
 │   │   ├── orient.sh
@@ -58,6 +59,8 @@ Primordial-viz/
 │   │   │   └── SKILL.md
 │   │   ├── frontend-design/
 │   │   │   ├── LICENSE.txt
+│   │   │   └── SKILL.md
+│   │   ├── lesson/
 │   │   │   └── SKILL.md
 │   │   ├── new-preset/
 │   │   │   └── SKILL.md
@@ -136,7 +139,8 @@ Primordial-viz/
 ├── docs/
 │   ├── superpowers/
 │   │   └── plans/
-│   │       └── 2026-06-19-automatic-skill-workflows.md
+│   │       ├── 2026-06-19-automatic-skill-workflows.md
+│   │       └── 2026-06-19-learn-from-corrections.md
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
 ├── research/

@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 171 files across 17 categories.
+> 174 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
-- [Specs & Long-form Docs](#specs--long-form-docs) (3)
+- [Specs & Long-form Docs](#specs--long-form-docs) (4)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (10)
-- [Claude Environment](#claude-environment) (79)
+- [Claude Environment](#claude-environment) (81)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
@@ -40,7 +40,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | State: Phase 0 (scaffold) in progress. |
+| [`progress.md`](progress.md) | _(none open)_ |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -50,6 +50,7 @@
 | [`docs/BUILD-SPEC.md`](docs/BUILD-SPEC.md) | BUILT DIFFERENTLY (as-shipped correction): this is the original planning doc. |
 | [`docs/STANDALONE.md`](docs/STANDALONE.md) | Wrap the Primordial visual app into a native desktop application with [Tauri v2](https://tauri.app). |
 | [`docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md`](docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md) | For agentic workers: implement task-by-task; steps use - [ ] checkboxes. |
+| [`docs/superpowers/plans/2026-06-19-learn-from-corrections.md`](docs/superpowers/plans/2026-06-19-learn-from-corrections.md) | Self-improvement loop #1. |
 
 ## App — Entry & Bootstrap
 
@@ -168,6 +169,7 @@
 | [`.claude/cloud-setup.sh`](.claude/cloud-setup.sh) | Primordial-viz — CLOUD ENVIRONMENT SETUP SCRIPT (reference copy). |
 | [`.claude/hooks/check-data.sh`](.claude/hooks/check-data.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/check-syntax.sh`](.claude/hooks/check-syntax.sh) | PostToolUse hook (matcher: Edit\|Write). |
+| [`.claude/hooks/detect-correction.sh`](.claude/hooks/detect-correction.sh) | UserPromptSubmit hook: when the prompt reads like the user CORRECTING me, inject a NON-BLOCKING nudge to capture the lesson durably via the… |
 | [`.claude/hooks/gen-docs.sh`](.claude/hooks/gen-docs.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/inject-rules.sh`](.claude/hooks/inject-rules.sh) | PreToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/orient.sh`](.claude/hooks/orient.sh) | SessionStart hook: orient a fresh agent (especially cloud/phone sessions) with zero typing — repo state, branch + recent commits, the latest handoff… |
@@ -197,6 +199,7 @@
 | [`.claude/skills/finishing-a-development-branch/SKILL.md`](.claude/skills/finishing-a-development-branch/SKILL.md) | Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by… |
 | [`.claude/skills/frontend-design/LICENSE.txt`](.claude/skills/frontend-design/LICENSE.txt) | Plain-text notes. |
 | [`.claude/skills/frontend-design/SKILL.md`](.claude/skills/frontend-design/SKILL.md) | Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography,… |
+| [`.claude/skills/lesson/SKILL.md`](.claude/skills/lesson/SKILL.md) | Capture a correction or lesson durably so the same mistake doesn't recur. Use right after the user corrects a wrong assumption, an over-applied… |
 | [`.claude/skills/new-preset/SKILL.md`](.claude/skills/new-preset/SKILL.md) | Scaffold a new visual "look" for primordial — a params-only JSON preset in src/looks/, wired into the look registry (all looks share the slime… |
 | [`.claude/skills/park/SKILL.md`](.claude/skills/park/SKILL.md) | Park the current in-progress thread (a design, task, or decision we're partway through) into the "Open threads" list in progress.md with enough… |
 | [`.claude/skills/perf-budget/SKILL.md`](.claude/skills/perf-budget/SKILL.md) | Run the in-app FPS stress-test readout for primordial and read its SMOOTH / OK / TOO-MUCH verdict to set the mobile performance budget (FBO… |
