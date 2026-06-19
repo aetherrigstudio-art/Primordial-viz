@@ -2,9 +2,14 @@
   "scripts": {
     "docs": "node tools/gen-docs.mjs",
     "smoke": "node test/smoke.mjs",
-    "render-check": "node test/render-check.mjs"
+    "render-check": "node test/render-check.mjs",
+    "mcp": "node tools/mcp/server.mjs",
+    "mcp:selftest": "node tools/mcp/selftest.mjs",
+    "mcp:inspect": "npx @modelcontextprotocol/inspector node tools/mcp/server.mjs"
   },
   "devDependencies": {
-    "playwright": "^1.56.1"
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "playwright": "^1.56.1",
+    "zod": "^4.4.3"
   }
 }
