@@ -11,13 +11,12 @@ electronic-music gigs. A musician opens one HTTPS link, grants mic/line-in, and
 room audio drives generative "grungy-future-geometric-slimy" visuals; the artist
 operates the controls.
 
-- **Two front-ends, same idea.** `index.html` → `src/main.js` is the original
-  **raw WebGL2** app (no library). `three.html` → `src/three/main.js` is a
-  **three.js** variant (three is vendored in `vendor/three.module.js`, resolved
-  by an import map). Both are static ES modules and both deploy. `index.html` is
-  the default page served at the site root. GLSL ships **inside `.js` modules**
-  as exported `/* glsl */` template strings — no `fetch()`, no `.glsl` files.
-- **The gig/web path still has no build step.** Plain HTML + ES modules served
+- **One hand-built app, no rendering library.** `index.html` → `src/main.js` is
+  plain **raw WebGL2** + Web Audio `AnalyserNode` — **not three.js**. GLSL ships
+  **inside `.js` modules** as exported `/* glsl */` template strings, imported
+  directly — no `fetch()`, no `.glsl` files on disk. (A three.js variant existed
+  briefly and was removed — the hand-built renderer is the keeper.)
+- **The gig/web path has no build step.** Plain HTML + ES modules served
   statically (`python3 -m http.server`, or the live link). Mic needs HTTPS.
 - **Vite + Tauri are additive, not the web path.** `npm run build` (`vite build`)
   → `dist/` is for the **desktop standalone** (`src-tauri/`, Tauri v2 / Rust —
@@ -36,7 +35,7 @@ operates the controls.
 
 ```bash
 # Serve the static web app locally (localhost is a secure context → mic works)
-python3 -m http.server 8000        # http://localhost:8000/  (index.html or three.html)
+python3 -m http.server 8000        # http://localhost:8000/  (serves index.html)
 
 # Syntax-check an edited module
 node --check src/main.js
@@ -87,13 +86,8 @@ src/
 ├── shaders/         # *.frag.js / *.glsl.js: ES modules exporting GLSL strings
 ├── looks/           # "looks" as JSON data + registry.js
 ├── params/          # schema.js + store.js (versioned localStorage)
-├── three/           # three.js front-end: main.js + pipeline.js (used by three.html)
 └── ui/              # controls.js + styles.css
 ```
-
-The raw-WebGL2 path (`src/gl/*`) and the three.js path (`src/three/*`) are
-parallel renderers over the same audio + looks + ui; pick the one matching the
-HTML entry you're editing (`index.html` vs `three.html`).
 
 ## Rules / Constraints
 
@@ -103,11 +97,11 @@ HTML entry you're editing (`index.html` vs `three.html`).
   a **0.5–0.75 FBO** and upscale; **cap raymarch steps ≤ 64**; use **dynamic
   resolution** (auto-drop scale/steps as frame-time climbs); pause on
   `visibilitychange`. Details in `.claude/rules/shaders.md`.
-- **Keep runtime deps minimal & vendored.** The web path ships only what's in
-  `vendor/` via import maps (currently **three.js**, MIT). `package.json` deps
-  are for the **build / desktop / MCP tooling** (vite, @tauri-apps/cli,
-  playwright, zod, three) — keep them tiny and MIT/permissive. Don't add runtime
-  libraries to the gig path beyond a vendored, import-mapped file.
+- **Zero runtime dependencies on the web path.** `index.html` + `src/` use only
+  raw WebGL2 / Web Audio — no rendering library. `package.json` carries **devDeps
+  only** (vite, @tauri-apps/cli, playwright, zod) for the build / desktop / MCP
+  tooling. Anything ever added to the gig path must be tiny, MIT/permissive, and
+  vendored via an import map.
 - **Backend = PHP 8 only**, and only if truly needed.
 - **WRITE-OUR-OWN shaders.** This is commercial work. Learn techniques from any
   source, but author every shader from a blank file. **Never copy CC BY-NC-SA

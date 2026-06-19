@@ -41,7 +41,7 @@ function listFiles() {
 const CATEGORIES = [
   ['Overview & Planning', (p) => !p.includes('/') && /\.(md|txt)$/i.test(p) || p === 'LICENSE'],
   ['Specs & Long-form Docs', (p) => p.startsWith('docs/')],
-  ['App — Entry & Bootstrap', (p) => p === 'index.html' || p === 'three.html' || p === 'src/main.js'],
+  ['App — Entry & Bootstrap', (p) => p === 'index.html' || p === 'src/main.js'],
   ['App — Audio', (p) => p.startsWith('src/audio/')],
   ['App — Graphics / WebGL', (p) => p.startsWith('src/gl/')],
   ['App — Shaders (GLSL)', (p) => p.startsWith('src/shaders/')],

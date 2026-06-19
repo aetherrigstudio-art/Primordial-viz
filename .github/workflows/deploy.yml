@@ -28,7 +28,7 @@ jobs:
       - name: Stage the static site
         run: |
           mkdir -p site
-          cp -R index.html three.html src vendor site/
+          cp -R index.html src site/
           cp deploy/.htaccess site/.htaccess
 
       - name: Upload to cPanel via FTPS

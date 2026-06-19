@@ -10,9 +10,7 @@ facts live in `.claude/rules/deploy.md`; the quick manual checklist is the
 Into the **`public_html`** root (this is exactly what `.cpanel.yml` copies):
 
 - `index.html` — the entry point (raw WebGL2 app → `src/main.js`)
-- `three.html` — alternate three.js variant (→ `src/three/main.js`)
-- `src/` — the whole app (js incl. `shaders/*.js`, `looks/*.json`, `ui/`, `three/`, …)
-- `vendor/` — vendored `three.module.js` (resolved by the `three.html` import map)
+- `src/` — the whole app (js incl. `shaders/*.js`, `looks/*.json`, `ui/`, …)
 - `deploy/.htaccess` → copied **as `.htaccess`** at the `public_html` root
 
 **Do not upload:** `node_modules/`, `dist/` (the Vite/Tauri **desktop** build —

@@ -7,25 +7,23 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 110 files across 18 categories.
+> 105 files across 16 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
 - [Specs & Long-form Docs](#specs--long-form-docs) (2)
-- [App — Entry & Bootstrap](#app--entry--bootstrap) (3)
+- [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
 - [App — Shaders (GLSL)](#app--shaders-glsl) (4)
 - [App — Looks / Presets](#app--looks--presets) (3)
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
-- [App — Other source](#app--other-source) (2)
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (9)
 - [Claude Environment](#claude-environment) (16)
 - [Deployment](#deployment) (3)
-- [Vendored libraries](#vendored-libraries) (2)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
 
@@ -57,7 +55,6 @@
 | --- | --- |
 | [`index.html`](index.html) | Primordial — Audio Instrument |
 | [`src/main.js`](src/main.js) | Bootstrap: start gate -> mic + AudioContext resume, the rAF render loop, wiring audio features -> GL uniforms -> UI, and the dynamic-resolution… |
-| [`three.html`](three.html) | Primordial — Audio Instrument (three.js) |
 
 ## App — Audio
 
@@ -105,13 +102,6 @@
 | --- | --- |
 | [`src/ui/controls.js`](src/ui/controls.js) | HUD controls: builds the panel (sliders from the schema, device picker, look switcher, tap-tempo, perf sliders), wires DOM events to the param store… |
 | [`src/ui/styles.css`](src/ui/styles.css) | Primordial Studio — green-on-black technical HUD. |
-
-## App — Other source
-
-| File | Description |
-| --- | --- |
-| [`src/three/main.js`](src/three/main.js) | three.js bootstrap — same instrument as src/main.js, rendered through three.js (ThreePipeline) instead of raw WebGL2. |
-| [`src/three/pipeline.js`](src/three/pipeline.js) | three.js port of the render pipeline. |
 
 ## Tests & Verification
 
@@ -192,13 +182,6 @@
 | [`.cpanel.yml`](.cpanel.yml) | CI / workflow configuration. |
 | [`deploy/.htaccess`](deploy/.htaccess) | primordial — Stellar Plus (LiteSpeed/Apache) static config. |
 | [`deploy/DEPLOY.md`](deploy/DEPLOY.md) | This app is static and has no build step. |
-
-## Vendored libraries
-
-| File | Description |
-| --- | --- |
-| [`vendor/three.core.js`](vendor/three.core.js) | @license Copyright 2010-2026 Three.js Authors SPDX-License-Identifier: MIT |
-| [`vendor/three.module.js`](vendor/three.module.js) | @license Copyright 2010-2026 Three.js Authors SPDX-License-Identifier: MIT |
 
 ## Research
 

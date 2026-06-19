@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 110 files in 33 directories.
+> 105 files in 31 directories.
 
 ```
 Primordial-viz/
@@ -81,9 +81,6 @@ Primordial-viz/
 │   │   ├── fullscreen.vert.js
 │   │   ├── post.frag.js
 │   │   └── slime.frag.js
-│   ├── three/
-│   │   ├── main.js
-│   │   └── pipeline.js
 │   ├── ui/
 │   │   ├── controls.js
 │   │   └── styles.css
@@ -131,9 +128,6 @@ Primordial-viz/
 │   │   ├── selftest.mjs
 │   │   └── server.mjs
 │   └── gen-docs.mjs
-├── vendor/
-│   ├── three.core.js
-│   └── three.module.js
 ├── .cpanel.yml
 ├── .gitignore
 ├── .mcp.json
@@ -148,7 +142,6 @@ Primordial-viz/
 ├── README.md
 ├── ROADMAP.md
 ├── task_plan.md
-├── three.html
 ├── TODO.md
 ├── TREE.md
 └── vite.config.js

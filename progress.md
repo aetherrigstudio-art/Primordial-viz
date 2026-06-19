@@ -181,6 +181,29 @@ post-rotation deploy authenticated and succeeded).
 
 **⚠️ The `/Test/` visual is a disposable PLACEHOLDER — NOT the target look.**
 It exists only as a canary to prove the deploy chain is live. Do **not** polish,
-tune, or treat the current slime/three.js output as intended art direction; the
+tune, or treat the current placeholder slime as intended art direction; the
 real visual the artist wants there is still TBD and will be built fresh. When
 it is, it auto-ships to the same `/Test/` URL via the existing pipeline.
+
+## Session — 2026-06-19 (CLAUDE.md reconcile + remove three.js variant)
+
+**Two doc/scope cleanups after a directory review:**
+
+1. **Reconciled `CLAUDE.md` to reality** then trimmed it back: it had claimed
+   "no build step / zero deps / not three.js" while the repo had grown a Vite
+   build, a Tauri desktop app (`src-tauri/`), an MCP server (`tools/mcp/`), and a
+   second three.js front-end. CLAUDE.md now documents Vite/Tauri/MCP as
+   **additive** tooling and the web path as the hand-built raw-WebGL2 app.
+
+2. **Removed the three.js variant** (artist preference: the hand-built renderer
+   is the keeper, matching the original charter). Deleted `three.html`,
+   `src/three/`, and `vendor/` (the 2 MB vendored three.js). Updated everything
+   that referenced them: `.github/workflows/deploy.yml` + `.cpanel.yml` staging
+   (now `index.html src` only), `package.json` (dropped the `three` runtime dep →
+   back to **devDeps only**), `package-lock.json`, `tools/gen-docs.mjs`,
+   `deploy/DEPLOY.md`, and regenerated `ENCYCLOPEDIA.md` + `TREE.md`.
+   `index.html` (raw WebGL2 → `src/main.js`) is now the **sole** front-end.
+   Recoverable from git history if ever wanted back.
+
+**Verified:** `node test/smoke.mjs`, `node --check` on all JS,
+`node tools/gen-docs.mjs --check` (docs in sync). Deploy still ships `/Test/`.
