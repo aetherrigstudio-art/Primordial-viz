@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 76 files in 27 directories.
+> 77 files in 27 directories.
 
 ```
 Primordial-viz/
@@ -50,6 +50,7 @@ Primordial-viz/
 │   │   ├── context-engineering-claude-code.md
 │   │   └── mcp-servers-guide.md
 │   ├── findings/
+│   │   ├── fmhy-tooling.md
 │   │   ├── mcp-adoption.md
 │   │   └── mcp-build-our-own.md
 │   ├── scripts/
