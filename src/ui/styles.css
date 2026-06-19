@@ -130,6 +130,10 @@ html, body {
   color: var(--fg-dim);
   margin: 0;
 }
+.gate-error {
+  color: #ff5a5a;
+  font-weight: bold;
+}
 .btn {
   pointer-events: auto;
   font-family: var(--mono);

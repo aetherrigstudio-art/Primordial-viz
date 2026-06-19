@@ -57,6 +57,7 @@ const dyn = {
 };
 
 let running = true;          // paused when document hidden
+let rafId = 0;               // current requestAnimationFrame handle (for teardown)
 let lastT = performance.now();
 let simTime = 0;             // visual clock (slowed under prefers-reduced-motion)
 let frameCount = 0;
@@ -144,10 +145,14 @@ function round2(x) { return Math.round(x * 100) / 100; }
 // ---------------------------------------------------------------------------
 function frame(now) {
   if (health.pause) return;          // hard freeze (headless screenshots / teardown)
-  requestAnimationFrame(frame);
+  rafId = requestAnimationFrame(frame);
   if (!running) { lastT = now; return; }
 
-  const dt = Math.min(0.1, (now - lastT) / 1000);
+  // Guard dt: a paused/backgrounded tab or a bad clock can yield NaN/negative/
+  // huge deltas; clamp to a sane frame step so the sim clock never jumps.
+  let dt = (now - lastT) / 1000;
+  if (!Number.isFinite(dt) || dt < 0) dt = 0;
+  dt = Math.min(0.1, dt);
   lastT = now;
   simTime += dt * motionScale;
   const t = simTime;
@@ -217,18 +222,36 @@ function frame(now) {
 // ---------------------------------------------------------------------------
 // Mic start (from the Start gate gesture)
 // ---------------------------------------------------------------------------
+function micErrorMessage(err) {
+  const name = err && err.name;
+  if (name === 'NotAllowedError' || name === 'SecurityError') return 'Microphone permission denied.';
+  if (name === 'NotFoundError' || name === 'OverconstrainedError') return 'No audio input device found.';
+  if (name === 'NotReadableError') return 'The input device is in use by another app.';
+  return 'Could not start the microphone.';
+}
+
+// Returns { ok, message }. On failure the caller can show `message` and fall
+// back to the visuals-only path.
 async function startMic(deviceId) {
   try {
-    if (!audioInput) audioInput = new AudioInput();
+    if (!audioInput) {
+      audioInput = new AudioInput();
+      audioInput.onDevicesChanged = (devices, id) => controls.setDevices(devices, id);
+    }
     const source = await audioInput.start(deviceId || null);
+    // iOS/Safari can leave the context suspended even after resume() if not
+    // driven by a trusted gesture; surface it rather than running silently.
+    if (audioInput.ctx && audioInput.ctx.state === 'suspended') {
+      return { ok: false, message: 'Audio is blocked by the browser. Tap again to allow sound.' };
+    }
     if (!analyser) analyser = new Analyser(audioInput.ctx);
     analyser.connect(source);
     micActive = true;
     controls.setDevices(audioInput.devices, audioInput.deviceId);
-    return true;
+    return { ok: true, message: '' };
   } catch (err) {
     console.warn('Mic start failed:', err);
-    return false;
+    return { ok: false, message: micErrorMessage(err) };
   }
 }
 
@@ -253,7 +276,10 @@ async function boot() {
     },
     onLook: (id) => applyLook(id),
     onDevice: async (deviceId) => {
-      if (micActive) await startMic(deviceId);
+      if (micActive) {
+        const res = await startMic(deviceId);
+        if (!res.ok) console.warn('Device switch failed:', res.message);
+      }
     },
     onTap: () => {
       beat.tap();
@@ -284,12 +310,30 @@ async function boot() {
   const gate = document.getElementById('gate');
   const startBtn = document.getElementById('startBtn');
   const skipBtn = document.getElementById('skipBtn');
+
+  // Inline, screen-reader-announced error on the gate (mic failures stay
+  // visible here instead of vanishing into the console).
+  function showGateError(msg) {
+    let p = document.getElementById('gateError');
+    if (!p) {
+      p = document.createElement('p');
+      p.id = 'gateError';
+      p.setAttribute('role', 'alert');
+      p.className = 'gate-error';
+      skipBtn.parentNode.insertBefore(p, skipBtn);
+    }
+    p.textContent = msg + ' You can continue with Visuals Only.';
+  }
+
   startBtn.addEventListener('click', async () => {
-    const ok = await startMic(null);
-    gate.classList.add('hidden');
-    if (!ok) {
-      // Still run with the synthetic fallback.
-      console.info('Running without mic (permission denied or unavailable).');
+    startBtn.disabled = true;
+    const res = await startMic(null);
+    startBtn.disabled = false;
+    if (res.ok) {
+      gate.classList.add('hidden');
+    } else {
+      // Keep the gate up so the operator sees why and can pick Visuals Only.
+      showGateError(res.message);
     }
   });
   skipBtn.addEventListener('click', () => {
@@ -304,7 +348,16 @@ async function boot() {
 
   window.addEventListener('resize', resize, { passive: true });
 
-  requestAnimationFrame(frame);
+  // Teardown on navigation away: stop the loop and release the mic so we don't
+  // leave the capture indicator on or burn battery on a backgrounded page.
+  window.addEventListener('pagehide', () => {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = 0;
+    if (audioInput) audioInput.stop();
+    micActive = false;
+  });
+
+  rafId = requestAnimationFrame(frame);
 }
 
 function finishControlsSetup() {

@@ -11,6 +11,16 @@ export class AudioInput {
     this.deviceId = null;
     this.devices = [];       // [{deviceId, label}]
     this.started = false;
+    this.onDevicesChanged = null; // optional cb(devices, deviceId) on hotplug
+
+    // Refresh the device list when inputs are plugged/unplugged (rules/audio.md).
+    if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+      navigator.mediaDevices.addEventListener('devicechange', () => {
+        this.refreshDevices().then(() => {
+          if (this.onDevicesChanged) this.onDevicesChanged(this.devices, this.deviceId);
+        }).catch(() => { /* ignore enumerate failures */ });
+      });
+    }
   }
 
   // Raw constraints: keep the signal untouched.
