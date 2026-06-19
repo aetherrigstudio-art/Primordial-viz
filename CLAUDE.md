@@ -125,6 +125,12 @@ don't skip them):
 
 ## Rules / Constraints
 
+- **Accuracy — verify, don't assume.** State verified facts plainly; label the
+  unchecked as a guess ("I think / haven't verified"). Before claiming two things
+  **overlap / are redundant / equivalent, read both first.** For what the user
+  wants, or how far a rule's scope reaches, **ask or check the source — don't
+  infer.** For "done / fixed / passing," run the check before claiming it (see the
+  `verification-before-completion` skill).
 - **HTTPS required for mic.** `getUserMedia` only works on a secure context
   (`localhost` or HTTPS). Never assume `file://` works.
 - **Mobile perf budget** (enforced from day one): render the heavy SDF pass to
