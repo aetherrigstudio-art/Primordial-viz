@@ -4,6 +4,62 @@
 
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
 
+## Session — 2026-06-19 (adopt-ideas Phase 1 — DELIVERED)
+
+Executed the adopt-ideas plan (spec: `docs/superpowers/specs/2026-06-19-adopt-ideas.md`;
+plan: `docs/superpowers/plans/2026-06-19-adopt-ideas.md`) across 5 Tasks to ship
+Phase 1 adoption items corroborated from peer-repo comparison. Tasks executed:
+
+**Task 1 — Roadmap & backlog:** recorded the full adopt-ideas roadmap (Phase 1: items
+to ship; Phase 2 + gated items: backlog) in `.claude/ROADMAP.md` + root `ROADMAP.md`
+(the living roadmap, updated per-session). Decision: Phase 1 = 5 concrete
+single-session items (AGENTS.md mirror, config gate, PreCompact hook, lessons, rule);
+Phase 2 (eval harness, destructive-cmd guard, per-skill allowed-tools) + gated
+product techniques remain a documented pipeline.
+
+**Task 2 — AGENTS.md mirror (gen-docs):** added a `buildAgentsMd()` function to
+`tools/gen-docs.mjs` that auto-generates an `AGENTS.md` cross-tool registry (agent
+name, model, trigger, description, tools list) from a new `agents.yml` manifest
+(source of truth: short entries). Runs on `npm run docs` and is gated by
+`gen-docs --check` in CI. The mirror serves as the vendor-neutral source (CLAUDE.md
+can import via `@`, GitHub web UI sees it, future MCP exposes it). Verified:
+`node test/smoke.mjs` + `gen-docs --check`.
+
+**Task 3 — Config gate (check-config.mjs):** built `tools/check-config.mjs` that
+gates `.claude/settings.json` (JSON valid, keys exist + no unknown keys, all hooks
+match `.claude/hooks/*.sh`, all skills match `.claude/skills/*/`, all agents in
+agents.yml exist) and integrated into `npm run health` as the "Config gate" step
+(gates before any skill/hook use). Conservative: catches real config errors without
+false-fails. Verified: health green; gate catches a dangling-skill ref when
+tested.
+
+**Task 4 — PreCompact handoff hook:** built `.claude/hooks/precompact-handoff.sh`
+(PreToolUse, matcher `Tool` → blocks use of `Write/Edit/Bash` commands before reading
+the pre-compact handoff doc `.superpowers/sdd/task-*-brief.md` or the `progress.md`
+entry for context). Non-blocking (just nudges); exits 0 if the file exists or on any
+error. Instructs the agent to read-first before making changes. Wired in settings.json.
+
+**Task 5 — Recent lessons surfaced in orient:** extended `orient.sh` to surface a
+cached **recent-lessons digest** (top 5 corrections + rules sharpened per-session,
+from `progress.md` + recent git commit trailers) via `orientation:recent-lessons`.
+Geared toward new agents — "here's what broke last time and how we fixed it."
+Populated manually at session-end (via the `/lesson` skill or a `lesson:` entry in
+the session note) or auto-detected from commit messages (looks for `lesson:` trailers).
+
+**Task 6 — Gotchas rule (`.claude/rules/gotchas.md`):** authored a new durable rule
+documenting the 5 highest-recurrence anti-patterns found in the peer-comparison +
+this-repo's own 150+ turns of history: (1) wrong-referent ("show *me* / do *you*");
+(2) too-verbose + jargon; (3) mobile friction; (4) assumption → "unverified guess";
+(5) "I'll handle X / TODO later" → never surfaces. Added to `.claude/settings.json`
+injections (PreToolUse, `src/**/*` match, device-aware). Phase 1 is 5 items;
+remaining items (Phase 2: eval harness, destructive-cmd guard, per-skill perms;
+gated items: product techniques) are documented in roadmap, not implemented.
+
+**Verified:** `npm run health` (Config gate + drift gate + all others, except
+pre-existing render.png FAIL — expected). All 5 Phase-1 items ship; Phase 2 +
+gated items are backlog-documented, not baked in (per the spec trade-off). No app
+code changed.
+
 ## Session — 2026-06-19 (Claude-repo comparison WIDENED to full repos — DELIVERED)
 
 Ran the brainstorm→writing-plans→inline-execution flow (spec:
