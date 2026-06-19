@@ -524,3 +524,36 @@ Built the self-improvement loop's capture machinery, plus support tooling:
 (corrections->rules, parking) all have machinery now. **Verified:** both new hooks
 valid + unit-tested; settings.json valid; `gen-docs --check` green; smoke 12/12;
 site audit clean.
+
+## Session — 2026-06-19 (pattern-mining → 3 durable captures)
+
+Mined all 136 user turns across both session transcripts + cross-checked against
+the `/insights` report (independent second opinion). Two analyses converged on the
+same recurring gaps → captured three:
+
+1. **Wrong-referent correction** (most-repeated; distinct from "inaccurate facts"):
+   "put them on MY WEBSITE! not chromium for you to see", "no the main", "I meant
+   the insights skill". Fix: sharpened the always-loaded **Accuracy rule** with a
+   *referent check* — confirm "make/show/put X" is for the deliverable (live site /
+   portfolio / `/Test/`) vs my local sandbox; when in doubt build for the deliverable.
+2. **Too verbose / jargon** (broke sessions via the 500-output-token cap; `/insights`
+   flagged it twice; "im not sure what that all means"). Fix: new always-loaded
+   **Communication** bullet (answer-first, offer depth, low jargon).
+3. **Mobile fights the tooling** (the friction arc — "copy-paste large files doesnt
+   work on android", file:// reports unreachable, FTP blocked). Fix: new
+   **`.claude/rules/mobile-ergonomics.md`** (one value per code-block, no large
+   copy-paste, SendUserFile over file:// links, deploy via GitHub state) surfaced
+   device-aware by the `orient` hook on `*mobile*` sessions.
+
+**Also did the parked CLAUDE.md slim** (prereq for #2's room): moved the generated
+`skills:router` block to **`.claude/skills-router.md`** (imported via `@`), repointed
+`gen-docs.mjs` `regions` at it, updated the `skill-router` skill wording. CLAUDE.md
+**197 → 188 lines**.
+
+**Verified:** `gen-docs --check` green (docs + moved region + drift gate, which
+confirms the new rule path exists); `npm run health` all-pass; `orient.sh` syntax OK
++ the mobile branch fires only on `*mobile*` (unit-checked).
+
+**Open-thread note:** the slim task is now done; remaining halted items unchanged
+(WS1 code fixes, real `/Test/` visual, Phase 6, PreCompact hook, `list_skills` MCP
+tool, `window.__primordial` prod-gating, WS3/WS4, the parked RAG system).

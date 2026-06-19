@@ -43,4 +43,13 @@ echo "Container network: outbound HTTPS(443) ONLY — FTP/21 and cPanel/2083 are
 echo "Health/verify (laptop-free): 'npm run health' (syntax + smoke + site-audit + docs/drift gate in one) ; 'node test/render-check.mjs' (needs Chromium) ; live deploy = the deploy-check skill ; CI = .github/workflows/verify.yml"
 echo "Workflows: for a feature/look build the 'workflow' skill drives a skill chain (.claude/workflows.md); the suggest-workflow hook nudges it from your prompt."
 echo "Rules: mic needs a secure context (HTTPS or localhost). One hand-built raw-WebGL2 app (index.html → src/main.js; NOT three.js). Shaders ship as src/shaders/*.js (no .glsl files). Looks are params-only JSON."
+
+# Device-aware: the operator usually drives this from a phone. Surface the
+# mobile-ergonomics rule so hand-offs don't assume a desktop (one value per
+# code-block; no large copy-paste; SendUserFile over file:// links; deploy via
+# GitHub state, not local FTP). See .claude/rules/mobile-ergonomics.md.
+case "${CLAUDE_CODE_ENTRYPOINT:-}" in
+  *mobile*)
+    echo "Operator device: PHONE — follow .claude/rules/mobile-ergonomics.md: hand values one-per-code-block (no large copy-paste), deliver files with SendUserFile (file:// links don't open), drive deploy through GitHub state (no local FTP), keep replies concise + jargon-light." ;;
+esac
 exit 0

@@ -1,7 +1,7 @@
 ---
 name: skill-router
 area: meta
-description: Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from .claude/skills/*/SKILL.md and report the workflow→skill map. For finding/installing NEW community skills, defer to `npx skills` (skills.sh). Use after adding/editing a local skill, or when unsure which existing skill applies.
+description: Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the "Skills by area" router block (.claude/skills-router.md, imported by CLAUDE.md) from .claude/skills/*/SKILL.md and report the workflow→skill map. For finding/installing NEW community skills, defer to `npx skills` (skills.sh). Use after adding/editing a local skill, or when unsure which existing skill applies.
 ---
 
 # skill-router — route among our skills & keep the local registry in sync
@@ -17,7 +17,8 @@ the always-loaded router so it's wired with no hand-edits.
 
 ## Route to the right local skill
 1. Skill names + descriptions are injected into context every session, and the
-   **Skills by area** table lives in `CLAUDE.md`'s Knowledge router — scan those first.
+   **Skills by area** table lives in `.claude/skills-router.md` (imported into
+   `CLAUDE.md`'s Knowledge router) — scan those first.
 2. Fuzzy match over our docs (works even when the MCP server isn't loaded — cloud/
    phone sessions may not load `.mcp.json`, bug #54441, so prefer the CLI):
    `node tools/mcp/lib/docs.mjs search "<task keywords>"` (every `SKILL.md` is indexed).
@@ -30,10 +31,11 @@ The router's **Skills by area** table is generated from each skill's frontmatter
    and **`area:`** — reuse an existing area when you can: `shaders`, `audio`,
    `looks`, `deploy`, `design`, `meta`. Only coin a new area when none fit.
 2. Regenerate: `node tools/gen-docs.mjs` — rewrites the `@generated skills:router`
-   block in `CLAUDE.md` (plus `ENCYCLOPEDIA.md`/`TREE.md`). The PostToolUse
-   `gen-docs` hook runs this automatically on any skill edit, so it's usually done.
+   block in `.claude/skills-router.md` (plus `ENCYCLOPEDIA.md`/`TREE.md`). The
+   PostToolUse `gen-docs` hook runs this automatically on any skill edit, so it's
+   usually done.
 3. Verify: `node tools/gen-docs.mjs --check` (CI gates this too), and confirm the
-   skill now appears in the CLAUDE.md "Skills by area" table.
+   skill now appears in the "Skills by area" table.
 
 ## Finding NEW skills (external) — use the real tool
 Don't reinvent discovery. To browse/install community skills, use **`npx skills`**

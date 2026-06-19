@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 176 files across 17 categories.
+> 178 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (11)
-- [Claude Environment](#claude-environment) (82)
+- [Claude Environment](#claude-environment) (84)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
@@ -177,8 +177,10 @@
 | [`.claude/hooks/suggest-workflow.sh`](.claude/hooks/suggest-workflow.sh) | UserPromptSubmit hook: when the prompt looks like a substantial build/feature or a new visual-look task, inject a NON-BLOCKING nudge toward the… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
 | [`.claude/rules/deploy.md`](.claude/rules/deploy.md) | Facts about the host. |
+| [`.claude/rules/mobile-ergonomics.md`](.claude/rules/mobile-ergonomics.md) | The operator runs this project from an Android phone, not a laptop. |
 | [`.claude/rules/shaders.md`](.claude/rules/shaders.md) | Scoped to the shader/renderer code. |
 | [`.claude/settings.json`](.claude/settings.json) | Claude Code hooks + permissions for this repo. |
+| [`.claude/skills-router.md`](.claude/skills-router.md) | The routing map of skills by area. |
 | [`.claude/skills/accessibility/SKILL.md`](.claude/skills/accessibility/SKILL.md) | Audit and improve web accessibility following WCAG 2.2 guidelines. Use when asked to "improve accessibility", "a11y audit", "WCAG compliance",… |
 | [`.claude/skills/accessibility/references/A11Y-PATTERNS.md`](.claude/skills/accessibility/references/A11Y-PATTERNS.md) | Practical, copy-paste-ready patterns for common accessibility requirements. |
 | [`.claude/skills/accessibility/references/WCAG.md`](.claude/skills/accessibility/references/WCAG.md) | html <button>Label</button> <!-- or --> <button aria-label="Close dialog">×</button> |
@@ -210,7 +212,7 @@
 | [`.claude/skills/requesting-code-review/SKILL.md`](.claude/skills/requesting-code-review/SKILL.md) | Use when completing tasks, implementing major features, or before merging to verify work meets requirements |
 | [`.claude/skills/requesting-code-review/code-reviewer.md`](.claude/skills/requesting-code-review/code-reviewer.md) | Use this template when dispatching a code reviewer subagent. |
 | [`.claude/skills/send-report/SKILL.md`](.claude/skills/send-report/SKILL.md) | Send the newest /insights usage report to the user as a file. Use after running /insights when the file:/// link can't be opened (mobile/cloud… |
-| [`.claude/skills/skill-router/SKILL.md`](.claude/skills/skill-router/SKILL.md) | Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from… |
+| [`.claude/skills/skill-router/SKILL.md`](.claude/skills/skill-router/SKILL.md) | Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the "Skills by area" router block (.claude/skills-router.md,… |
 | [`.claude/skills/spec-driven-implementation/SKILL.md`](.claude/skills/spec-driven-implementation/SKILL.md) | Drive a spec-first workflow for substantial features by writing PRODUCT.md before implementation, writing TECH.md when warranted, and keeping both… |
 | [`.claude/skills/subagent-driven-development/SKILL.md`](.claude/skills/subagent-driven-development/SKILL.md) | Use when executing implementation plans with independent tasks in the current session |
 | [`.claude/skills/subagent-driven-development/implementer-prompt.md`](.claude/skills/subagent-driven-development/implementer-prompt.md) | Use this template when dispatching an implementer subagent. |

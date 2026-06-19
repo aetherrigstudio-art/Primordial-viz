@@ -105,33 +105,24 @@ don't skip them):
 | A multi-step build / feature / new look | skill `workflow` (chains in `.claude/workflows.md`) | auto-nudged by the `suggest-workflow` hook |
 | Where a file lives / what it does | `TREE.md` (layout) · `ENCYCLOPEDIA.md` (per-file) | auto-generated |
 
-<!-- @generated-start skills:router -->
-**Skills by area** — the routing map (each skill's description is injected every session; auto-generated from `.claude/skills/*/SKILL.md` `area:`, refreshed by `/skill-router` or `node tools/gen-docs.mjs`):
-
-- **debugging** — `debugging-and-error-recovery`, `systematic-debugging`
-- **deploy** — `deploy-check`, `deploy-cpanel`
-- **design** — `thought-based-reasoning`
-- **docs** — `documentation-and-adrs`
-- **looks** — `new-preset`
-- **meta** — `health`, `lesson`, `park`, `send-report`, `skill-router`, `workflow`, `writing-skills`
-- **perf** — `performance`
-- **planning** — `brainstorming`, `executing-plans`, `spec-driven-implementation`, `task-management`, `writing-plans`
-- **research** — `find-docs`
-- **review** — `receiving-code-review`, `requesting-code-review`
-- **shaders** — `perf-budget`
-- **testing** — `test-driven-development`, `verification-before-completion`
-- **ui** — `accessibility`, `frontend-design`
-- **workflow** — `dispatching-parallel-agents`, `finishing-a-development-branch`, `subagent-driven-development`
-<!-- @generated-end skills:router -->
+@.claude/skills-router.md
 
 ## Rules / Constraints
 
 - **Accuracy — verify, don't assume.** State verified facts plainly; label the
   unchecked as a guess ("I think / haven't verified"). Before claiming two things
-  **overlap / are redundant / equivalent, read both first.** For what the user
-  wants, or how far a rule's scope reaches, **ask or check the source — don't
-  infer.** For "done / fixed / passing," run the check before claiming it (see the
+  **overlap / are redundant / equivalent, read both first.** Confirm the
+  **referent before acting** — is "make / show / put X" for *your deliverable*
+  (the live site / portfolio / `/Test/` link) or just my local sandbox? When in
+  doubt, build for the deliverable. For what the user wants, or how far a rule's
+  scope reaches, **ask or check the source — don't infer.** For "done / fixed /
+  passing," run the check before claiming it (see the
   `verification-before-completion` skill).
+- **Communication — concise + plain language.** Lead with the answer or a short
+  summary, then offer depth instead of dumping it (over-long replies hit the
+  output-token cap and break the session). Keep jargon low — the operator drives
+  this from a phone and isn't always deep in the stack. When handing over values
+  or steps, follow `.claude/rules/mobile-ergonomics.md`.
 - **HTTPS required for mic.** `getUserMedia` only works on a secure context
   (`localhost` or HTTPS). Never assume `file://` works.
 - **Mobile perf budget** (enforced from day one): render the heavy SDF pass to

@@ -306,8 +306,9 @@ function buildTree(files) {
 }
 
 // ---------------------------------------------------------------------------
-// Skills router — a generated "Skills by area" table kept in sync inside the
-// CLAUDE.md Knowledge router, between <!-- @generated-start/end skills:router -->.
+// Skills router — a generated "Skills by area" table kept in sync inside
+// .claude/skills-router.md (imported by CLAUDE.md so the always-loaded file stays
+// lean), between <!-- @generated-start/end skills:router -->.
 // Each skill declares its workflow via a frontmatter `area:` field.
 // ---------------------------------------------------------------------------
 function listSkillFiles() {
@@ -361,7 +362,7 @@ function updateRegion(text, name, body) {
   return text.replace(re, `$1${body}\n$2`);
 }
 
-function claudeRouterUpdated(text) {
+function routerRegionUpdated(text) {
   return updateRegion(text, 'skills:router', buildSkillsRouter());
 }
 
@@ -428,7 +429,7 @@ const docs = [
   ['TREE.md', buildTree(files)],
 ];
 // Generated regions kept in sync inside hand-written files (markdown markers).
-const regions = [['CLAUDE.md', claudeRouterUpdated]];
+const regions = [['.claude/skills-router.md', routerRegionUpdated]];
 
 if (process.argv.includes('--check')) {
   let stale = false;
