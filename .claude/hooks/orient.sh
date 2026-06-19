@@ -71,6 +71,15 @@ echo "Health/verify (laptop-free): 'npm run health' (syntax + smoke + site-audit
 echo "Workflows: for a feature/look build the 'workflow' skill drives a skill chain (.claude/workflows.md); the suggest-workflow hook nudges it from your prompt."
 echo "Rules: mic needs a secure context (HTTPS or localhost). One hand-built raw-WebGL2 app (index.html → src/main.js; NOT three.js). Shaders ship as src/shaders/*.js (no .glsl files). Looks are params-only JSON."
 
+# Surface the most recent LESSON entries so past corrections resurface on launch.
+if [ -n "${pcontent:-}" ]; then
+  lessons="$(printf '%s\n' "$pcontent" | grep -iE '^## .*LESSON' | head -2)"
+  if [ -n "$lessons" ]; then
+    echo "Recent lessons (don't repeat these — see progress.md for the fix):"
+    printf '%s\n' "$lessons" | sed 's/^## /  - /'
+  fi
+fi
+
 # Device-aware: the operator usually drives this from a phone. Surface the
 # mobile-ergonomics rule so hand-offs don't assume a desktop (one value per
 # code-block; no large copy-paste; SendUserFile over file:// links; deploy via
