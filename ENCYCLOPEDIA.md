@@ -41,7 +41,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Executed the queued primary-axis task (brief: research/claude-repo-comparison/BRIEF.md). |
+| [`progress.md`](progress.md) | docs/superpowers/plans/2026-06-19-full-repo-comparison.md) to widen the comparison from skills libraries to full repositories. |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -271,7 +271,7 @@
 | [`research/README.md`](research/README.md) | Regenerate full corpus: python3 scripts/crawl-site.py (no API key; stdlib only). |
 | [`research/TODO.md`](research/TODO.md) | MD file. |
 | [`research/claude-repo-comparison/BRIEF.md`](research/claude-repo-comparison/BRIEF.md) | Status: QUEUED for the next agent session. |
-| [`research/claude-repo-comparison/REPORT.md`](research/claude-repo-comparison/REPORT.md) | Date: 2026-06-19 · Axis: Claude-agent tooling + methodology (primary). |
+| [`research/claude-repo-comparison/REPORT.md`](research/claude-repo-comparison/REPORT.md) | Date: 2026-06-19 · Axis: Claude-agent tooling + methodology. |
 | [`research/corpus/claude-code-auto-memory-guide.md`](research/corpus/claude-code-auto-memory-guide.md) | Every AI coding tool has the same dirty secret: on Monday, it doesn't remember anything you told it on Friday. |
 | [`research/corpus/claude-code-best-practices.md`](research/corpus/claude-code-best-practices.md) | Most people who bounce off Claude Code don't bounce off the model. |
 | [`research/corpus/claude-code-workflows-10x-productivity.md`](research/corpus/claude-code-workflows-10x-productivity.md) | Most developers use Claude Code the same way: type a question, get an answer, copy-paste. |
