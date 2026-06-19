@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 186 files across 17 categories.
+> 187 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (12)
-- [Claude Environment](#claude-environment) (84)
+- [Claude Environment](#claude-environment) (85)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
@@ -239,6 +239,7 @@
 | [`.claude/skills/test-driven-development/testing-anti-patterns.md`](.claude/skills/test-driven-development/testing-anti-patterns.md) | Load this reference when: writing or changing tests, adding mocks, or tempted to add test-only methods to production code. |
 | [`.claude/skills/thought-based-reasoning/SKILL.md`](.claude/skills/thought-based-reasoning/SKILL.md) | Structured reasoning harness for design, architecture, and planning decisions in Primordial-viz. Frame the problem, pull the right project knowledge… |
 | [`.claude/skills/verification-before-completion/SKILL.md`](.claude/skills/verification-before-completion/SKILL.md) | Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and… |
+| [`.claude/skills/visual-workshop/SKILL.md`](.claude/skills/visual-workshop/SKILL.md) | Workshop visuals for primordial in a throwaway sandbox, separate from the shipped app - discuss a direction, optionally research similar/trending… |
 | [`.claude/skills/workflow/SKILL.md`](.claude/skills/workflow/SKILL.md) | Drive a named multi-step workflow — an ordered chain of skills/agents — for a substantial build, feature, or new-look task. Use at the START of such… |
 | [`.claude/skills/writing-plans/SKILL.md`](.claude/skills/writing-plans/SKILL.md) | Use when you have a spec or requirements for a multi-step task, before touching code |
 | [`.claude/skills/writing-plans/plan-document-reviewer-prompt.md`](.claude/skills/writing-plans/plan-document-reviewer-prompt.md) | Use this template when dispatching a plan document reviewer subagent. |
