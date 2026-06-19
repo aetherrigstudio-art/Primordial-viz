@@ -29,6 +29,10 @@
           {
             "type": "command",
             "command": ".claude/hooks/check-data.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/gen-docs.sh"
           }
         ]
       }
