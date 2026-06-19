@@ -11,5 +11,6 @@ research/corpus-full/
 *.zip
 # test artifacts (headless render screenshots, etc.)
 test/artifacts/
+workshop/artifacts/
 # os
 .DS_Store

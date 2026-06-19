@@ -10,6 +10,7 @@
     "health": "node tools/health.mjs",
     "smoke": "node test/smoke.mjs",
     "render-check": "node test/render-check.mjs",
+    "clip": "node tools/workshop/clip.mjs",
     "mcp": "node tools/mcp/server.mjs",
     "mcp:selftest": "node tools/mcp/selftest.mjs",
     "mcp:inspect": "npx @modelcontextprotocol/inspector node tools/mcp/server.mjs"
