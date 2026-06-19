@@ -6,35 +6,58 @@ live in the hook (`.claude/hooks/check-syntax.sh`) and the scoped
 
 ## Project Overview
 
-**primordial** is a static-first, audio-reactive WebGL2 visual instrument
-for live electronic-music gigs. A musician opens one HTTPS link, grants
-mic/line-in, and room audio drives generative "grungy-future-geometric-slimy"
-visuals; the artist operates the controls.
+**primordial** is an audio-reactive WebGL2 visual instrument for live
+electronic-music gigs. A musician opens one HTTPS link, grants mic/line-in, and
+room audio drives generative "grungy-future-geometric-slimy" visuals; the artist
+operates the controls.
 
-- **No build step.** Plain `index.html` + vanilla ES modules + raw WebGL2 +
-  Web Audio `AnalyserNode`. GLSL ships **inside `.js` ES modules** as exported
-  `/* glsl */` template-string constants, imported directly — no `fetch()`, no
-  `.glsl` files on disk.
-- **Zero runtime dependencies** by default. Renderer is raw WebGL2 (ogl ~8 KB
-  is the only sanctioned fallback). Not three.js.
-- **Host = Namecheap Stellar Plus** (cPanel / LiteSpeed). Static delivery is
-  the ideal fit. Backend, if ever needed, is **PHP 8 only** — never Node/Python
-  (they fight the Passenger EP=30 / 2 GB cap).
+- **Two front-ends, same idea.** `index.html` → `src/main.js` is the original
+  **raw WebGL2** app (no library). `three.html` → `src/three/main.js` is a
+  **three.js** variant (three is vendored in `vendor/three.module.js`, resolved
+  by an import map). Both are static ES modules and both deploy. `index.html` is
+  the default page served at the site root. GLSL ships **inside `.js` modules**
+  as exported `/* glsl */` template strings — no `fetch()`, no `.glsl` files.
+- **The gig/web path still has no build step.** Plain HTML + ES modules served
+  statically (`python3 -m http.server`, or the live link). Mic needs HTTPS.
+- **Vite + Tauri are additive, not the web path.** `npm run build` (`vite build`)
+  → `dist/` is for the **desktop standalone** (`src-tauri/`, Tauri v2 / Rust —
+  build on a real machine, not a phone) and can optionally be uploaded to static
+  hosting. `dist/` is gitignored. See `docs/STANDALONE.md`.
+- **Local tooling.** A small **MCP server** (`tools/mcp/server.mjs`, wired in
+  `.mcp.json`) exposes look/render/validate helpers; `tools/gen-docs.mjs`
+  (`npm run docs`) regenerates `ENCYCLOPEDIA.md` + `TREE.md`.
+- **Host = Namecheap Stellar Plus** (cPanel / LiteSpeed); static delivery is the
+  ideal fit. Web deploy is **automated**: push → GitHub Actions FTPS →
+  `https://primordial.video/Test/` (see `progress.md` + `deploy/DEPLOY.md`).
+  Backend, if ever needed, is **PHP 8 only** — never Node/Python (they fight the
+  Passenger EP=30 / 2 GB cap).
 
 ## Commands
 
 ```bash
-# Serve locally (localhost is a secure context → mic works)
-python3 -m http.server 8000        # open http://localhost:8000/
+# Serve the static web app locally (localhost is a secure context → mic works)
+python3 -m http.server 8000        # http://localhost:8000/  (index.html or three.html)
 
 # Syntax-check an edited module
 node --check src/main.js
 
-# Stress test / perf budget — open the rig page and read the FPS verdict
-# (SMOOTH / OK / TOO-MUCH); see the perf-budget skill.
+# Optional Vite build / desktop standalone (needs a real machine, not a phone)
+npm run build                      # vite build → dist/
+npm run tauri dev                  # hot-reloading native window (needs Rust + OS webview)
+npm run tauri build                # installers → src-tauri/target/release/bundle/
 
-# Deploy — manual checklist
-# see .claude/skills/deploy-cpanel/SKILL.md and deploy/DEPLOY.md
+# Verify (laptop-free)
+node test/smoke.mjs ; node test/render-check.mjs
+
+# Local MCP server / regenerate docs
+npm run mcp                        # tools/mcp/server.mjs
+npm run docs                       # regenerate ENCYCLOPEDIA.md + TREE.md
+
+# Stress test / perf budget — read the in-HUD FPS verdict (SMOOTH/OK/TOO-MUCH);
+# see the perf-budget skill.
+
+# Deploy — automatic on push (GitHub Actions FTPS → primordial.video/Test/).
+# Manual cPanel checklist: .claude/skills/deploy-cpanel/SKILL.md + deploy/DEPLOY.md
 ```
 
 ## Architecture
@@ -64,8 +87,13 @@ src/
 ├── shaders/         # *.frag.js / *.glsl.js: ES modules exporting GLSL strings
 ├── looks/           # "looks" as JSON data + registry.js
 ├── params/          # schema.js + store.js (versioned localStorage)
+├── three/           # three.js front-end: main.js + pipeline.js (used by three.html)
 └── ui/              # controls.js + styles.css
 ```
+
+The raw-WebGL2 path (`src/gl/*`) and the three.js path (`src/three/*`) are
+parallel renderers over the same audio + looks + ui; pick the one matching the
+HTML entry you're editing (`index.html` vs `three.html`).
 
 ## Rules / Constraints
 
@@ -75,8 +103,11 @@ src/
   a **0.5–0.75 FBO** and upscale; **cap raymarch steps ≤ 64**; use **dynamic
   resolution** (auto-drop scale/steps as frame-time climbs); pause on
   `visibilitychange`. Details in `.claude/rules/shaders.md`.
-- **Keep dependencies at zero.** Prefer raw WebGL2 / Web Audio. Anything added
-  must be tiny, MIT/permissive, pinned in `vendor/` or an import map.
+- **Keep runtime deps minimal & vendored.** The web path ships only what's in
+  `vendor/` via import maps (currently **three.js**, MIT). `package.json` deps
+  are for the **build / desktop / MCP tooling** (vite, @tauri-apps/cli,
+  playwright, zod, three) — keep them tiny and MIT/permissive. Don't add runtime
+  libraries to the gig path beyond a vendored, import-mapped file.
 - **Backend = PHP 8 only**, and only if truly needed.
 - **WRITE-OUR-OWN shaders.** This is commercial work. Learn techniques from any
   source, but author every shader from a blank file. **Never copy CC BY-NC-SA
