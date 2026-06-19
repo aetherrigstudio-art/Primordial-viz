@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 65 files in 24 directories.
+> 68 files in 25 directories.
 
 ```
 Primordial-viz/
@@ -49,6 +49,9 @@ Primordial-viz/
 │   │   ├── claude-md-guide.md
 │   │   ├── context-engineering-claude-code.md
 │   │   └── mcp-servers-guide.md
+│   ├── findings/
+│   │   ├── mcp-adoption.md
+│   │   └── mcp-build-our-own.md
 │   ├── scripts/
 │   │   ├── crawl-site.py
 │   │   └── scrape-blog.py
@@ -85,6 +88,7 @@ Primordial-viz/
 ├── tools/
 │   └── gen-docs.mjs
 ├── .gitignore
+├── .mcp.json
 ├── CLAUDE.md
 ├── ENCYCLOPEDIA.md
 ├── findings.md

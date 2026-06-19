@@ -175,6 +175,7 @@ function describe(relPath, text) {
 function fallback(relPath) {
   const known = {
     'LICENSE': 'Software license for the project.',
+    '.mcp.json': 'Project-scoped MCP server configuration for Claude Code.',
     'package.json': 'npm manifest — scripts + dev dependencies only (the app runtime stays zero-dependency).',
     'package-lock.json': 'Locked dependency tree for reproducible dev-tool installs.',
     '.gitignore': 'Paths excluded from version control.',

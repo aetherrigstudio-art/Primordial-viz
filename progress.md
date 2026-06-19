@@ -59,7 +59,7 @@ zip + git bundle for the user to push to a fresh GitHub repo.
   banners on BUILD-SPEC / findings.
 - **Verified Claude/host facts vs official docs:** auto-memory is on-by-default
   but **machine-local → does NOT survive cloud sessions**; CLAUDE.md <200 lines;
-  commands merged into skills; `.mcp.json` is current; Stellar Plus free SSL is
+  commands merged into skills; Stellar Plus free SSL is
   **not** auto-renewing; ~300k inode cap. `findings.md §B` confirmed accurate.
 - **WS0 verification backbone (laptop-free):** `test/smoke.mjs` (zero-dep
   schema/look/store checks), `test/render-check.mjs` (headless Chromium — WebGL2,
