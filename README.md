@@ -21,8 +21,9 @@ served over HTTPS so `getUserMedia` (the mic) is allowed.
   `AnalyserNode`. No framework, no bundler required.
 - **Audio → GL → UI.** Mic input → band energies + a 512×2 audio texture →
   shader uniforms → screen. A control UI lets the artist perform.
-- **Looks as data.** Each visual "look" is a JSON preset (shader + default
-  params); switching looks is data, not code.
+- **Looks as data.** Each visual "look" is a params-only JSON preset
+  (`{ id, name, description, params }`) over one shared slime shader; switching
+  looks is data, not code.
 - **Commercial-safe shaders.** We **write our own** GLSL from technique
   references — never copy CC BY-NC-SA Shadertoy code (this is paid work).
 
@@ -40,6 +41,18 @@ python3 -m http.server 8000
 Click **Start** (a user gesture is required to resume the `AudioContext` on
 iOS/Safari), pick an input device, and grant mic permission.
 
+## Verify (no browser interaction needed)
+
+```bash
+node test/smoke.mjs         # param/look/store integrity (zero dependencies)
+node test/render-check.mjs  # headless Chromium: shaders compile, app renders, a11y, saves a screenshot
+```
+
+CI (`.github/workflows/verify.yml`) runs both plus `node --check` on every push.
+The render check needs Playwright Chromium (`npx playwright install chromium`);
+note Playwright is a **dev/test-only** dependency — the app's runtime stays
+zero-dependency.
+
 ## Deploy (Namecheap Stellar Plus / cPanel)
 
 Static upload, no build:
@@ -47,7 +60,7 @@ Static upload, no build:
 1. Upload `index.html`, `src/`, and `assets/` into **`public_html`** (cPanel
    File Manager, or cPanel **Git Version Control**).
 2. Place `deploy/.htaccess` at the `public_html` root (force-HTTPS, caching,
-   correct MIME for `.glsl`/`.wasm`).
+   MIME). Shaders ship inside `.js` modules, so no `.glsl` files are served.
 3. Confirm HTTPS is live (free 1-yr Sectigo PositiveSSL ships day one). It is
    **not** auto-renewing — re-issue annually, or set up `acme.sh` over SSH.
 4. Open the HTTPS URL on a phone, grant mic, confirm the visual reacts.
