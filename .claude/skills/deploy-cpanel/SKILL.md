@@ -1,5 +1,6 @@
 ---
 name: deploy-cpanel
+area: deploy
 description: Manual deploy checklist for shipping primordial to Namecheap Stellar Plus (cPanel). Invoke deliberately when deploying; not auto-activated.
 disable-model-invocation: true
 ---

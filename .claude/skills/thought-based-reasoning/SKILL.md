@@ -1,5 +1,6 @@
 ---
 name: thought-based-reasoning
+area: design
 description: Structured reasoning harness for design, architecture, and planning decisions in Primordial-viz. Frame the problem, pull the right project knowledge via the CLAUDE.md router, weigh options against the load-bearing constraints (mobile budget, commercial licensing, cloud/phone continuity), then recommend and surface the real decision before building. Use when asked to design or architect a system, weigh approaches, or "reason/think through" a non-trivial choice.
 ---
 

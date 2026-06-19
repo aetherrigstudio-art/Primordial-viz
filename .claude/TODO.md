@@ -30,8 +30,10 @@ Legend: 📱 = you (app/web) · 🤖 = me (repo). Full context: `.claude/ROADMAP
 - [x] Knowledge router table in `CLAUDE.md` (work area → required reading)
 - [x] `thought-based-reasoning` skill (structured design/planning reasoning)
 - [x] Rule-injector PreToolUse hook (surface scoped rules on shader/gl/audio edits; device-aware via `CLAUDE_CODE_ENTRYPOINT`)
+- [x] Skills auto-registration (`area:` field + gen-docs `@generated skills:router` block + `/find-skill` skill)
 - [ ] Drift gate + fix the stale `deploy-cpanel` skill (single source of truth)
 - [ ] PreCompact hook: remind to update `progress.md` before compaction
+- [ ] `list_skills`/`get_skill` MCP tool (deferred — only worth it past ~20 skills)
 
 ## 🤖 Me — optional polish (needs OK)
 - [ ] Terse output style (phone-friendly)

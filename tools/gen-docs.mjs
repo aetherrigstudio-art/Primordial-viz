@@ -306,6 +306,65 @@ function buildTree(files) {
 }
 
 // ---------------------------------------------------------------------------
+// Skills router — a generated "Skills by area" table kept in sync inside the
+// CLAUDE.md Knowledge router, between <!-- @generated-start/end skills:router -->.
+// Each skill declares its workflow via a frontmatter `area:` field.
+// ---------------------------------------------------------------------------
+function listSkillFiles() {
+  return listFiles().filter((p) => /^\.claude\/skills\/[^/]+\/SKILL\.md$/.test(p));
+}
+
+function skillMeta(path) {
+  const text = readFileSync(join(root, path), 'utf8');
+  const fm = {};
+  if (text.startsWith('---')) {
+    const end = text.indexOf('\n---', 3);
+    if (end > 0) {
+      for (const line of text.slice(3, end).split('\n')) {
+        const m = line.match(/^([A-Za-z][\w-]*):\s*(.*)$/);
+        if (m) fm[m[1].toLowerCase()] = m[2].trim().replace(/^["']|["']$/g, '');
+      }
+    }
+  }
+  return {
+    name: fm.name || basename(dirname(path)),
+    description: fm.description || '',
+    area: fm.area || 'general',
+  };
+}
+
+function buildSkillsRouter() {
+  const byArea = new Map();
+  for (const s of listSkillFiles().map(skillMeta)) {
+    if (!byArea.has(s.area)) byArea.set(s.area, []);
+    byArea.get(s.area).push(s);
+  }
+  const lines = [];
+  lines.push('**Skills by area** — auto-generated from `.claude/skills/*/SKILL.md` `area:` (run `/find-skill` or `node tools/gen-docs.mjs` after adding a skill):');
+  lines.push('');
+  lines.push('| Area | Skill | Use it to… |');
+  lines.push('| --- | --- | --- |');
+  for (const area of [...byArea.keys()].sort()) {
+    for (const s of byArea.get(area).sort((a, b) => a.name.localeCompare(b.name))) {
+      lines.push(`| ${escapeCell(area)} | \`${escapeCell(s.name)}\` | ${escapeCell(tidy(firstSentence(s.description)))} |`);
+    }
+  }
+  return lines.join('\n');
+}
+
+// Replace a marked region in a markdown file. If the markers are absent, leave
+// the file untouched (safe — never corrupts a hand-written file).
+function updateRegion(text, name, body) {
+  const re = new RegExp(`(<!-- @generated-start ${name} -->\\n)[\\s\\S]*?(<!-- @generated-end ${name} -->)`);
+  if (!re.test(text)) return text;
+  return text.replace(re, `$1${body}\n$2`);
+}
+
+function claudeRouterUpdated(text) {
+  return updateRegion(text, 'skills:router', buildSkillsRouter());
+}
+
+// ---------------------------------------------------------------------------
 // Main — write/check both documents.
 // ---------------------------------------------------------------------------
 // Always include the generated docs themselves so the output converges in a
@@ -316,6 +375,8 @@ const docs = [
   ['ENCYCLOPEDIA.md', buildEncyclopedia(files)],
   ['TREE.md', buildTree(files)],
 ];
+// Generated regions kept in sync inside hand-written files (markdown markers).
+const regions = [['CLAUDE.md', claudeRouterUpdated]];
 
 if (process.argv.includes('--check')) {
   let stale = false;
@@ -325,10 +386,23 @@ if (process.argv.includes('--check')) {
     if (current !== content) { console.error(`${name} is stale. Run: node tools/gen-docs.mjs`); stale = true; }
     else console.log(`${name} is up to date.`);
   }
+  for (const [name, fn] of regions) {
+    let current = '';
+    try { current = readFileSync(join(root, name), 'utf8'); } catch { /* missing */ }
+    if (fn(current) !== current) { console.error(`${name} generated region is stale. Run: node tools/gen-docs.mjs`); stale = true; }
+    else console.log(`${name} (generated region) is up to date.`);
+  }
   process.exit(stale ? 1 : 0);
 } else {
   for (const [name, content] of docs) {
     writeFileSync(join(root, name), content);
     console.log(`Wrote ${name} (${content.split('\n').length} lines).`);
+  }
+  for (const [name, fn] of regions) {
+    let current = '';
+    try { current = readFileSync(join(root, name), 'utf8'); } catch { /* missing */ }
+    const next = fn(current);
+    if (next !== current) { writeFileSync(join(root, name), next); console.log(`Updated ${name} generated region.`); }
+    else console.log(`${name} region already current.`);
   }
 }

@@ -89,6 +89,17 @@ keep one source of truth per topic.
   `assets/`, omits the auto-deploy). — TODO.
 - **PreCompact hook** — remind to update `progress.md` before a long session
   compacts, so mid-session continuity isn't lost. — TODO.
+- **Skills auto-registration** — skills declare a frontmatter `area:`;
+  `gen-docs.mjs` regenerates the `@generated skills:router` block in the CLAUDE.md
+  router (run by the existing PostToolUse gen-docs hook on any skill edit; CI-gated
+  by `gen-docs --check`). The `/find-skill` skill is the manual trigger + "which
+  skill for X?" discovery. The **server needs nothing** — every `SKILL.md` is
+  already in the MCP `search_docs` index and `ENCYCLOPEDIA.md`. ✅ DONE.
+- **`list_skills` / `get_skill` MCP tool** — structured skill discovery on the
+  server. Deferred: the harness already injects skill descriptions and MCP
+  doc-search already covers skills, so it adds little until the skill count grows
+  (~20+). Per-session cost is only each skill's description (~80–110 tokens), so
+  the set scales cheaply regardless. — TODO (later).
 
 ## Sources
 - Claude Code cloud / memory / hooks / permission-modes / routines — `code.claude.com/docs`

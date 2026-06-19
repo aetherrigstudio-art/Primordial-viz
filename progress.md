@@ -263,3 +263,36 @@ carry `Co-Authored-By: Claude` → don't make it public without scrubbing histor
 (touches the render-check test contract); a CI grep guard that fails if any
 AI/tooling fingerprint reaches `index.html`/`src/` (fits the roadmap "drift gate").
 **Verified:** smoke 12/12, node --check, fingerprint re-scan clean, gen-docs in sync.
+
+## Session — 2026-06-19 (skills auto-registration + /find-skill)
+
+**Goal:** adding a skill should auto-wire it into the workflow router and be
+discoverable on the server, no hand-edits.
+
+**Grounding result (saved work):** the **server side was already automatic** —
+`SKILL.md` files are git-tracked markdown, so the MCP `search_docs`/`get_doc`
+index and `ENCYCLOPEDIA.md` already include every skill (verified: `search_docs`
+returns `perf-budget/SKILL.md` as the top hit). The only gap was the **router**.
+
+**Built:**
+- Each skill declares a frontmatter **`area:`** (`shaders` perf-budget · `looks`
+  new-preset · `deploy` deploy-cpanel · `design` thought-based-reasoning · `meta`
+  find-skill).
+- **`gen-docs.mjs`** now regenerates a `@generated skills:router` **"Skills by
+  area"** table inside the `CLAUDE.md` Knowledge router (markdown
+  `<!-- @generated-start/end skills:router -->` markers; `updateRegion` leaves the
+  file untouched if markers are absent — safe). `gen-docs --check` now also gates
+  the CLAUDE.md region in CI.
+- The existing **PostToolUse `gen-docs` hook** fires on any skill edit → the router
+  block updates itself. Proven: adding `find-skill` auto-populated the table.
+- **`/find-skill`** skill (`area: meta`) — manual trigger to re-sync + "which skill
+  for task X?" discovery (leans on the MCP doc index that already covers skills).
+
+**Decided (via thought-based-reasoning, dogfooded):** "server" = the MCP server,
+already covered; chose the auto-block-in-CLAUDE.md approach (always-loaded) over a
+separate SKILLS.md; deferred a dedicated `list_skills` MCP tool until the skill
+count grows (skills scale cheaply — only the ~80–110-token description is always-on;
+bodies load on demand).
+
+**Verified:** generated block maps all 5 skills by area; `gen-docs --check` green
+(incl. CLAUDE.md region); `node --check tools/gen-docs.mjs`; smoke 12/12.
