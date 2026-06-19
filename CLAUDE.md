@@ -113,8 +113,9 @@ active plan live in committed files, imported here so they load on launch:
   (needs Playwright Chromium; CI installs it)
 - `.github/workflows/verify.yml` runs both + `node --check` on every push.
 
-Canonical repo: **`Primordial-viz`** (dash). Active branch:
-`claude/primordial-visual-instrument-ai-o7gfcm` → draft PR #1.
+Canonical repo: **`Primordial-viz`** (dash). The current active branch and PR
+live in `progress.md` (last handoff entry) — that file is the source of truth,
+not this line.
 
 Claude-environment docs: `.claude/ROADMAP.md` (roadmap + AI-handoff method &
 template), `.claude/TODO.md` (checklist), `.claude/cloud-setup.sh` (paste into the
