@@ -7,16 +7,22 @@ facts live in `.claude/rules/deploy.md`; the quick manual checklist is the
 
 ## What gets uploaded
 
-Into the **`public_html`** root:
+Into the **`public_html`** root (this is exactly what `.cpanel.yml` copies):
 
-- `index.html`
-- `src/` — the whole app (js incl. `shaders/*.js`, `looks/*.json`, `ui/`, …)
-- `assets/` — fonts, lookup textures, icons, favicon, og-image
-- `deploy/.htaccess` → uploaded **as `.htaccess`** at the `public_html` root
+- `index.html` — the entry point (raw WebGL2 app → `src/main.js`)
+- `three.html` — alternate three.js variant (→ `src/three/main.js`)
+- `src/` — the whole app (js incl. `shaders/*.js`, `looks/*.json`, `ui/`, `three/`, …)
+- `vendor/` — vendored `three.module.js` (resolved by the `three.html` import map)
+- `deploy/.htaccess` → copied **as `.htaccess`** at the `public_html` root
 
-**Do not upload:** `node_modules/`, `research/`, `.claude/`, `docs/`,
+**Do not upload:** `node_modules/`, `dist/` (the Vite/Tauri **desktop** build —
+not the web host), `src-tauri/`, `research/`, `.claude/`, `docs/`,
 `task_plan.md` / `findings.md` / `progress.md`, or any `*.local.*` file. Keeping
 the tree lean also protects the **~300k inode** cap.
+
+> **No build step for the web.** `vite.config.js` and `dist/` exist only for the
+> Tauri **desktop** bundle; the live site is the raw files above. Don't run
+> `vite build` (or upload `dist/`) for hosting.
 
 ## Option A — cPanel File Manager (simplest)
 
@@ -28,13 +34,36 @@ the tree lean also protects the **~300k inode** cap.
 4. Verify the directory structure: `public_html/index.html`,
    `public_html/src/...`, `public_html/.htaccess`.
 
-## Option B — cPanel Git Version Control
+## Option B — cPanel Git Version Control (deploy from GitHub)
 
-1. cPanel → **Git Version Control** → create or clone the repo on the server.
-2. Add a `.cpanel.yml` that copies **only** the shippable tree
-   (`index.html`, `src/`, `assets/`, and the `.htaccess`) into `public_html` —
-   keep `.claude/`, `research/`, `node_modules/` out.
-3. Pull + Deploy from the cPanel Git UI (or via the jailed SSH shell).
+**Recommended when working from a phone:** everything happens in the cPanel +
+GitHub web UIs — no FTP client. `.cpanel.yml` already lives at the repo root and
+copies the shippable tree above, so there's nothing to author.
+
+**1. Connect GitHub → cPanel (one-time, via an SSH deploy key).**
+The repo is private, so the server needs read access:
+- cPanel → **SSH Access → Manage SSH Keys** → *Generate a New Key* (or open an
+  existing one) → view/copy the **public** key.
+- GitHub → repo → **Settings → Deploy keys → Add deploy key** → paste the public
+  key → leave **"Allow write access" unchecked** (read-only) → Save.
+
+**2. Clone the repo onto the server.**
+- cPanel → **Git Version Control → Create** → toggle **"Clone a Repository"** on.
+- **Clone URL:** `git@github.com:aetherrigstudio-art/primordial-viz.git` — use the
+  **SSH** form (`git@…`), not `https://`, so the deploy key is used.
+- Pick a repository path (e.g. `repositories/primordial-viz`) → Create. cPanel
+  clones the **default branch** (`main`).
+
+**3. Deploy.**
+- Git Version Control → **Manage** the repo → **Pull or Deploy** tab → *Update
+  from Remote*, then **Deploy HEAD Commit**. That runs `.cpanel.yml` and copies
+  the app into `public_html`.
+- **Redeploy after each push:** repeat step 3. It is **not** automatic on push
+  unless you later add a GitHub webhook + a cron that pulls.
+
+> **Deploy from `main`.** cPanel clones the default branch, so merge feature
+> branches (e.g. `claude/*`) into `main` before deploying — otherwise the live
+> site won't include the unmerged work.
 
 ## HTTPS / SSL
 
