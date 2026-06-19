@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "encyclopedia": "node tools/gen-encyclopedia.mjs",
+    "docs": "node tools/gen-docs.mjs",
     "smoke": "node test/smoke.mjs",
     "render-check": "node test/render-check.mjs"
   },

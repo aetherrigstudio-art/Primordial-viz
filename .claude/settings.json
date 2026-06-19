@@ -32,7 +32,7 @@
           },
           {
             "type": "command",
-            "command": ".claude/hooks/encyclopedia.sh"
+            "command": ".claude/hooks/gen-docs.sh"
           }
         ]
       }

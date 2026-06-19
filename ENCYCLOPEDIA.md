@@ -3,13 +3,14 @@
 > **Auto-generated — do not edit by hand.** A categorized index of every
 > file in the repository, each with a one-line description taken from the
 > file's own header (leading comment, first sentence, `<title>`, or a JSON
-> `description` field). Regenerate with `node tools/gen-encyclopedia.mjs`;
-> it also refreshes via the PostToolUse hook and is gated in CI.
+> `description` field). Regenerate with `node tools/gen-docs.mjs`; it also
+> refreshes via the PostToolUse hook and is gated in CI. For the directory
+> layout see [`TREE.md`](TREE.md).
 >
-> 64 files across 15 categories.
+> 65 files across 15 categories.
 
 ## Contents
-- [Overview & Planning](#overview--planning) (9)
+- [Overview & Planning](#overview--planning) (10)
 - [Specs & Long-form Docs](#specs--long-form-docs) (1)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
@@ -35,6 +36,7 @@
 | [`README.md`](README.md) | An audio-reactive WebGL2 visual instrument for live electronic-music gigs. |
 | [`ROADMAP.md`](ROADMAP.md) | Phased plan for primordial — the audio-reactive WebGL2 visual instrument. |
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
+| [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
 | [`progress.md`](progress.md) | State: Phase 0 (scaffold) in progress. |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
@@ -110,7 +112,7 @@
 
 | File | Description |
 | --- | --- |
-| [`tools/gen-encyclopedia.mjs`](tools/gen-encyclopedia.mjs) | Generates ENCYCLOPEDIA.md — a categorized index of every file in the repo, each with a one-line description pulled from the file's OWN header… |
+| [`tools/gen-docs.mjs`](tools/gen-docs.mjs) | Generates two always-current repo maps from a single source of truth: ENCYCLOPEDIA.md — a categorized index of every file, each with a one-line… |
 
 ## Claude Environment
 
@@ -123,7 +125,7 @@
 | [`.claude/cloud-setup.sh`](.claude/cloud-setup.sh) | Primordial-viz — CLOUD ENVIRONMENT SETUP SCRIPT (reference copy). |
 | [`.claude/hooks/check-data.sh`](.claude/hooks/check-data.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/check-syntax.sh`](.claude/hooks/check-syntax.sh) | PostToolUse hook (matcher: Edit\|Write). |
-| [`.claude/hooks/encyclopedia.sh`](.claude/hooks/encyclopedia.sh) | PostToolUse hook (matcher: Edit\|Write). |
+| [`.claude/hooks/gen-docs.sh`](.claude/hooks/gen-docs.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/orient.sh`](.claude/hooks/orient.sh) | SessionStart hook: orient a fresh agent (especially cloud/phone sessions) with zero typing — repo state, current branch + recent commits, the verify… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
 | [`.claude/rules/deploy.md`](.claude/rules/deploy.md) | Facts about the host. |

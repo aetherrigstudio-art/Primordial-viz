@@ -1,11 +1,13 @@
 #!/usr/bin/env node
-// Generates ENCYCLOPEDIA.md — a categorized index of every file in the repo,
-// each with a one-line description pulled from the file's OWN header (leading
-// comment, markdown heading/sentence, <title>, or a JSON `description` field).
+// Generates two always-current repo maps from a single source of truth:
+//   ENCYCLOPEDIA.md — a categorized index of every file, each with a one-line
+//                     description pulled from the file's OWN header (leading
+//                     comment, markdown sentence, <title>, or JSON `description`).
+//   TREE.md         — a directory tree of every tracked file.
 // New files self-document: give a file a header comment and it appears here.
 //
-//   node tools/gen-encyclopedia.mjs           # (re)write ENCYCLOPEDIA.md
-//   node tools/gen-encyclopedia.mjs --check    # exit 1 if ENCYCLOPEDIA.md is stale
+//   node tools/gen-docs.mjs           # (re)write ENCYCLOPEDIA.md + TREE.md
+//   node tools/gen-docs.mjs --check    # exit 1 if either is stale (CI gate)
 //
 // Zero runtime dependencies (Node stdlib only). The file list comes from git so
 // it tracks exactly what's version-controlled (respects .gitignore) plus any
@@ -18,7 +20,7 @@ import { dirname, join, extname, basename } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
-const OUT = 'ENCYCLOPEDIA.md';
+const REPO = 'Primordial-viz';
 const MAXLEN = 150; // max description length before ellipsis
 
 // ---------------------------------------------------------------------------
@@ -201,27 +203,26 @@ function descriptionFor(relPath) {
 }
 
 // ---------------------------------------------------------------------------
-// Render the document.
+// ENCYCLOPEDIA.md — categorized index with descriptions.
 // ---------------------------------------------------------------------------
 function escapeCell(s) {
   return s.replace(/\|/g, '\\|');
 }
 
-function build() {
-  const files = listFiles();
+function buildEncyclopedia(files) {
   const groups = new Map(CATEGORIES.map(([name]) => [name, []]));
   for (const f of files) groups.get(categorize(f)).push(f);
-
   const usedCats = CATEGORIES.map(([name]) => name).filter((n) => groups.get(n).length);
 
   const lines = [];
-  lines.push('# Encyclopedia — Primordial-viz');
+  lines.push(`# Encyclopedia — ${REPO}`);
   lines.push('');
   lines.push('> **Auto-generated — do not edit by hand.** A categorized index of every');
   lines.push('> file in the repository, each with a one-line description taken from the');
   lines.push("> file's own header (leading comment, first sentence, `<title>`, or a JSON");
-  lines.push('> `description` field). Regenerate with `node tools/gen-encyclopedia.mjs`;');
-  lines.push('> it also refreshes via the PostToolUse hook and is gated in CI.');
+  lines.push('> `description` field). Regenerate with `node tools/gen-docs.mjs`; it also');
+  lines.push('> refreshes via the PostToolUse hook and is gated in CI. For the directory');
+  lines.push('> layout see [`TREE.md`](TREE.md).');
   lines.push('>');
   lines.push(`> ${files.length} files across ${usedCats.length} categories.`);
   lines.push('');
@@ -246,20 +247,85 @@ function build() {
 }
 
 // ---------------------------------------------------------------------------
-// Main.
+// TREE.md — directory tree (dirs first, then files, alphabetical per level).
 // ---------------------------------------------------------------------------
-const outPath = join(root, OUT);
-const content = build();
+function buildTreeData(files) {
+  const tree = new Map(); // name -> { dir, children:Map }
+  for (const f of files) {
+    const parts = f.split('/');
+    let node = tree;
+    parts.forEach((part, i) => {
+      const isDir = i < parts.length - 1;
+      if (!node.has(part)) node.set(part, { dir: isDir, children: new Map() });
+      const entry = node.get(part);
+      if (isDir) entry.dir = true;
+      node = entry.children;
+    });
+  }
+  return tree;
+}
+
+function renderTree(node, prefix = '') {
+  const entries = [...node.entries()].sort((a, b) => {
+    if (a[1].dir !== b[1].dir) return a[1].dir ? -1 : 1; // directories first
+    return a[0].localeCompare(b[0]);
+  });
+  const out = [];
+  entries.forEach(([name, entry], idx) => {
+    const last = idx === entries.length - 1;
+    out.push(`${prefix}${last ? '└── ' : '├── '}${name}${entry.dir ? '/' : ''}`);
+    if (entry.dir) out.push(...renderTree(entry.children, prefix + (last ? '    ' : '│   ')));
+  });
+  return out;
+}
+
+function buildTree(files) {
+  const dirs = new Set();
+  for (const f of files) {
+    const parts = f.split('/');
+    for (let i = 1; i < parts.length; i++) dirs.add(parts.slice(0, i).join('/'));
+  }
+  const lines = [];
+  lines.push(`# File Tree — ${REPO}`);
+  lines.push('');
+  lines.push('> **Auto-generated — do not edit by hand.** The directory layout of every');
+  lines.push('> tracked file. Regenerate with `node tools/gen-docs.mjs`; it also refreshes');
+  lines.push('> via the PostToolUse hook and is gated in CI. For per-file descriptions see');
+  lines.push('> [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).');
+  lines.push('>');
+  lines.push(`> ${files.length} files in ${dirs.size} directories.`);
+  lines.push('');
+  lines.push('```');
+  lines.push(`${REPO}/`);
+  lines.push(...renderTree(buildTreeData(files)));
+  lines.push('```');
+  return lines.join('\n') + '\n';
+}
+
+// ---------------------------------------------------------------------------
+// Main — write/check both documents.
+// ---------------------------------------------------------------------------
+// Always include the generated docs themselves so the output converges in a
+// single pass even before the files exist on disk (keeps --check stable in CI).
+const OUTPUTS = ['ENCYCLOPEDIA.md', 'TREE.md'];
+const files = [...new Set([...listFiles(), ...OUTPUTS])].sort();
+const docs = [
+  ['ENCYCLOPEDIA.md', buildEncyclopedia(files)],
+  ['TREE.md', buildTree(files)],
+];
 
 if (process.argv.includes('--check')) {
-  let current = '';
-  try { current = readFileSync(outPath, 'utf8'); } catch { /* missing */ }
-  if (current !== content) {
-    console.error(`${OUT} is stale. Run: node tools/gen-encyclopedia.mjs`);
-    process.exit(1);
+  let stale = false;
+  for (const [name, content] of docs) {
+    let current = '';
+    try { current = readFileSync(join(root, name), 'utf8'); } catch { /* missing */ }
+    if (current !== content) { console.error(`${name} is stale. Run: node tools/gen-docs.mjs`); stale = true; }
+    else console.log(`${name} is up to date.`);
   }
-  console.log(`${OUT} is up to date.`);
+  process.exit(stale ? 1 : 0);
 } else {
-  writeFileSync(outPath, content);
-  console.log(`Wrote ${OUT} (${content.split('\n').length} lines).`);
+  for (const [name, content] of docs) {
+    writeFileSync(join(root, name), content);
+    console.log(`Wrote ${name} (${content.split('\n').length} lines).`);
+  }
 }

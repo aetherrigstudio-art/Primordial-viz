@@ -67,6 +67,15 @@ Static upload, no build:
 
 Full step-by-step: [`deploy/DEPLOY.md`](deploy/DEPLOY.md).
 
+## Repository map
+
+- [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md) — every file, categorized, with a one-line
+  description. Auto-generated and kept current by CI.
+- [`TREE.md`](TREE.md) — the directory tree of every tracked file.
+
+Both are produced from a single source by `node tools/gen-docs.mjs` (it also
+runs via a hook on edits and is gated in CI, so neither can go stale).
+
 ## Docs & planning
 
 - [`ROADMAP.md`](ROADMAP.md) — the 7 phased milestones.
