@@ -47,3 +47,13 @@ for hands-off stretches. Versioned localStorage for saved states.
 
 One artist, one track, one live link. Run it at (or rehearsing for) a real gig,
 gather what breaks under real audio and a real venue, and iterate.
+
+## Audio/visual techniques to adopt (from product-domain research, 2026-06-19)
+
+Source: `research/product-domain-comparison/REPORT.md` (technique-only; no AGPL/
+LGPL/preset code copied).
+
+- **Perceptual audio bands (bark/mel)** — improves the existing `src/audio` analyser; NOT gated, can be planned after Phase-1 tooling.
+- **Preset cross-fade** — smooth look-to-look transitions. GATED on the real `/Test/` visual.
+- **Look playlist** — sequence looks over time. GATED on the real `/Test/` visual.
+- **Waveform aligner** — beat-aligned waveform draw. GATED on the real `/Test/` visual.

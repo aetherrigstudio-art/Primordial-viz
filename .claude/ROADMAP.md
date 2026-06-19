@@ -107,3 +107,21 @@ keep one source of truth per topic.
 ## Sources
 - Claude Code cloud / memory / hooks / permission-modes / routines — `code.claude.com/docs`
 - AI agent handoff best practice: agent-toolkit *session-handoff* skill (github.com/softaworks/agent-toolkit); jdhodges.com "Claude Handoff Prompt (2026)"; blakelink.us "Session Handoff Protocol"; Towards Data Science "How Agent Handoffs Work in Multi-Agent Systems"; Microsoft Agent Framework "Handoff"; OpenAI Agents SDK / LangGraph handoff primitive.
+
+## Adopt-ideas roadmap (from comparison research, 2026-06-19)
+
+Source: `research/claude-repo-comparison/REPORT.md` +
+`research/product-domain-comparison/REPORT.md`. Spec:
+`docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md`.
+
+**Phase 1 — cheap wins (git-only) — IN PROGRESS**
+1. `AGENTS.md` cross-tool mirror (gen-docs emits it from `CLAUDE.md`) — portability we alone lack.
+2. Self-auditing config gate (`CLAUDE.md` ≤200 / router markers / settings JSON) in `npm run health`.
+3. PreCompact handoff hook — remind to update `progress.md` before compaction.
+4. Recent `LESSON` entries surfaced in `orient`.
+5. Anti-footgun `.claude/rules/gotchas.md`.
+
+**Phase 2 — higher-effort tooling — BACKLOG**
+6. Eval harness (does a skill/rule actually trigger + help?) — research's #1 gap.
+7. Hardened destructive-command PreToolUse guard (wrapper-depth stripping).
+8. Per-skill `allowed-tools` permissions.
