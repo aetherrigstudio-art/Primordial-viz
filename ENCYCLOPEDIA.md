@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 189 files across 17 categories.
+> 190 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (11)
@@ -24,7 +24,7 @@
 - [Tooling / Scripts](#tooling--scripts) (12)
 - [Claude Environment](#claude-environment) (85)
 - [Deployment](#deployment) (3)
-- [Research](#research) (13)
+- [Research](#research) (14)
 - [CI / Build Config](#ci--build-config) (6)
 - [Other](#other) (6)
 
@@ -41,7 +41,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Built the Visual Workshop (spec: docs/superpowers/specs/2026-06-19-visual-workshop-design.md, plan:… |
+| [`progress.md`](progress.md) | Set up a durable brief for the NEXT container to execute: search GitHub for 3-5 other/similar Claude-based repos and compare them against this one… |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -268,6 +268,7 @@
 | --- | --- |
 | [`research/README.md`](research/README.md) | Regenerate full corpus: python3 scripts/crawl-site.py (no API key; stdlib only). |
 | [`research/TODO.md`](research/TODO.md) | MD file. |
+| [`research/claude-repo-comparison/BRIEF.md`](research/claude-repo-comparison/BRIEF.md) | Status: QUEUED for the next agent session. |
 | [`research/corpus/claude-code-auto-memory-guide.md`](research/corpus/claude-code-auto-memory-guide.md) | Every AI coding tool has the same dirty secret: on Monday, it doesn't remember anything you told it on Friday. |
 | [`research/corpus/claude-code-best-practices.md`](research/corpus/claude-code-best-practices.md) | Most people who bounce off Claude Code don't bounce off the model. |
 | [`research/corpus/claude-code-workflows-10x-productivity.md`](research/corpus/claude-code-workflows-10x-productivity.md) | Most developers use Claude Code the same way: type a question, get an answer, copy-paste. |

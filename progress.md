@@ -2,7 +2,21 @@
 
 ## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
 
+- [ ] **NEXT TASK - compare this repo vs other Claude-based repos** | what: search GitHub for 3-5 other/similar Claude-based repositories and compare them against this one, primary axis = Claude-agent tooling + methodology (CLAUDE.md / skills / hooks / subagents / MCP / docs-automation / process), across 4 dimensions (config&rules, skills/agents/MCP, hooks&automation, process&methodology); later goal = a second comparison on the product domain (raw-WebGL2 / shader / audio-visual apps) | how: FULL brief with all context + tools + selection criteria + deliverable is in `research/claude-repo-comparison/BRIEF.md` - READ IT AND EXECUTE | deliver: `research/claude-repo-comparison/REPORT.md` (committed) + SendUserFile to the operator with a concise summary | set up 2026-06-19
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
+
+## Session - 2026-06-19 (queued next-agent task: Claude-repo comparison)
+
+Set up a durable brief for the NEXT container to execute: search GitHub for 3-5
+other/similar Claude-based repos and compare them against this one (primary axis:
+Claude-agent tooling + methodology; later goal: product-domain / WebGL-audio
+axis), across config&rules, skills/agents/MCP, hooks&automation, and
+process&methodology. Full self-contained brief (context + tools + selection
+criteria + deliverable + definition-of-done) is in
+`research/claude-repo-comparison/BRIEF.md`; surfaced as the top "Open threads"
+entry so the orient hook + ONBOARDING start gate route a fresh agent straight to
+it. The next agent writes `research/claude-repo-comparison/REPORT.md` and
+SendUserFiles it to the operator. No app code changed this step.
 
 ## Session - 2026-06-19 (Visual Workshop - sandbox clip loop SHIPPED)
 
