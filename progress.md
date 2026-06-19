@@ -3,7 +3,42 @@
 ## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
 
 - [ ] **product-domain comparison (raw-WebGL2 / shader / audio-visual web apps)** | what: the SECOND comparison the primary-axis brief deferred — compare Primordial-viz against repos in our PRODUCT domain (raw-WebGL2 / GLSL shader / audio-reactive visual web apps), regardless of Claude usage. Axes: renderer architecture (raw WebGL2 vs lib), audio→FFT→texture approach, mobile perf budget, look/preset systems, deploy. | how: same method as the Claude-axis run — find 3-5 real, active repos, read primary sources, compare in a table + per-repo notes + adopt-vs-ahead synthesis. Context in `research/claude-repo-comparison/BRIEF.md` ("Later goal") + the delivered `REPORT.md`. | deliver: `research/product-domain-comparison/REPORT.md` + SendUserFile summary | parked 2026-06-19 (Claude-axis comparison DONE)
+- [ ] **whole-workflow-systems comparison (Claude-axis, run 4)** | what: the deferred 3rd comparison kind from the full-repo brainstorm — repos that wrap Claude into an end-to-end dev WORKFLOW: ccpm (GitHub-Issues + git-worktree parallel agents), Continuous-Claude-v2 (context mgmt), claude-flow, and similar. Closest to OUR process/continuity machinery specifically (orient hook, committed continuity, parking, lessons). | how: same method — find 3-5 real active workflow-system repos, read primary sources, compare in the master table (Kind: `workflow`) + per-repo notes + adopt-vs-ahead. Context: `docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md` + delivered `REPORT.md`. | deliver: extend `research/claude-repo-comparison/REPORT.md` + SendUserFile | parked 2026-06-19 (full-repo run DONE)
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
+
+## Session — 2026-06-19 (Claude-repo comparison WIDENED to full repos — DELIVERED)
+
+Ran the brainstorm→writing-plans→inline-execution flow (spec:
+`docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md`; plan:
+`docs/superpowers/plans/2026-06-19-full-repo-comparison.md`) to widen the
+comparison from skills libraries to **full repositories**. Merged everything into
+one `research/claude-repo-comparison/REPORT.md` (14-row master table + `Kind`
+column: baseline / skills-lib / config / product / collection).
+
+**Run 2 — 8 full-repo peers** (primary sources, 8 parallel agents):
+- config: `carlrannaberg/claudekit` (compiled TS hook runner, checkpoint/restore),
+  `wshobson/agents` (192 agents, `make garden` drift gate, Monte-Carlo `plugin-eval`),
+  `yzhao062/anywhere-agents` (portable CLI config, hardened `guard.py`),
+  `disler/claude-code-hooks-mastery` (all 13 hooks, but 0-byte CLAUDE.md + NO LICENSE).
+- product: `getsentry/sentry` (glob-scoped AGENTS.md, skills symlinked tool-agnostic,
+  `claude-settings-audit` skill), `cloudflare/workers-sdk` (4-line CLAUDE.md stub →
+  per-package AGENTS.md), `openai/openai-agents-python` (CLAUDE.md→AGENTS.md symlink,
+  `$skill` gates, PLANS.md ExecPlans), `trailofbits/algo` (one dense CLAUDE.md as an
+  anti-footgun manual).
+
+**Run 3 — 4 reader-suggested** (operator asked): added `affaan-m/ECC` (~218k★
+collection — install profiles, AgentShield, memory hooks); EXCLUDED
+`ruvnet/open-claude-code` + `Gitlawb/openclaude` (CLI reimpl/fork — category
+mismatch + IP flags) and `avalonreset/legends-github` (tiny skills suite).
+
+**Headline finding:** two opposite philosophies — real *product* repos keep Claude
+tooling deliberately THIN (vendor-neutral AGENTS.md + strong existing CI, no hooks),
+while *config* repos go deep on machinery. **We're a product repo built like a
+config repo** — unusual, mostly a strength. Top adopt-ideas (now corroborated more
+widely): (1) an **eval harness** (3 peers), (2) **AGENTS.md as cross-tool source +
+CLAUDE.md symlink** (near-universal — the one thing we lack), (3) a **self-auditing
+config gate** (4 peers), (4) a **hardened destructive-command guard**. Parked a
+run-4 "whole-workflow-systems" follow-up. No app code changed.
 
 ## Session — 2026-06-19 (Claude-repo comparison — DELIVERED)
 
