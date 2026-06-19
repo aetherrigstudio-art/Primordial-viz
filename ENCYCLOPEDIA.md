@@ -40,7 +40,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Executed WS1 (the documented next-step across ~6 handoffs) on branch claude/review-claude-md-di5jvm, in 5 verified commits: |
+| [`progress.md`](progress.md) | Built the Visual Workshop (spec: docs/superpowers/specs/2026-06-19-visual-workshop-design.md, plan:… |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
