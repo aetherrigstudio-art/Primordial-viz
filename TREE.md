@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 180 files in 66 directories.
+> 185 files in 69 directories.
 
 ```
 Primordial-viz/
@@ -237,6 +237,14 @@ Primordial-viz/
 │   ├── audit-site.mjs
 │   ├── gen-docs.mjs
 │   └── health.mjs
+├── workshop/
+│   ├── sketches/
+│   │   └── _demo/
+│   │       ├── _demo.frag.js
+│   │       └── _demo.json
+│   ├── sandbox.html
+│   ├── sketch-runner.mjs
+│   └── synth-audio.mjs
 ├── .cpanel.yml
 ├── .gitignore
 ├── .mcp.json

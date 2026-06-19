@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 180 files across 17 categories.
+> 185 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
-- [Other](#other) (1)
+- [Other](#other) (6)
 
 ## Overview & Planning
 
@@ -292,3 +292,8 @@
 | File | Description |
 | --- | --- |
 | [`skills-lock.json`](skills-lock.json) | Configuration / data file. |
+| [`workshop/sandbox.html`](workshop/sandbox.html) | Primordial - Sketch Sandbox |
+| [`workshop/sketch-runner.mjs`](workshop/sketch-runner.mjs) | Boots the workshop sandbox: loads one sketch (?sketch=<name>) using the real renderer plumbing, drives it with synthetic audio, and exposes the… |
+| [`workshop/sketches/_demo/_demo.frag.js`](workshop/sketches/_demo/_demo.frag.js) | Reference sketch: audio-reactive warped plasma with neon rings. |
+| [`workshop/sketches/_demo/_demo.json`](workshop/sketches/_demo/_demo.json) | Configuration / data file. |
+| [`workshop/synth-audio.mjs`](workshop/synth-audio.mjs) | Deterministic synthetic "fake song" for the Visual Workshop sandbox. |
