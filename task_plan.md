@@ -72,11 +72,11 @@ Hooks: `check-syntax.sh` (node --check) + `check-data.sh` (smoke on data edits).
 | WS4 | Repo hygiene (prune vestigial `.htaccess` `.glsl` rules) | todo |
 | WS5 | CLAUDE.md / skills / agents tuning | partial (hooks, continuity @imports, `.claude/ROADMAP.md`+`TODO.md`, `.claude/cloud-setup.sh` done; output-style/MCP optional) |
 
-**Claude env for phone-driven, laptop-free dev — USER actions (only you can do):**
-1. Mobile app: enable push for "input needed" + "task done".
-2. Auto mode as default permission (user-level settings; ignored from project) + keep a small `permissions.deny` for irreversible actions.
-3. Add `Primordial-viz` to the Claude GitHub App's repo access (currently on `perchance-ai-tool` only) → enables phone-driven Auto-fix PRs.
-4. Cloud Environment setup script installs toolchain (`npm ci` + `npx playwright install chromium`) — snapshot-cached, runs once.
+**Claude env for phone-driven, laptop-free dev — USER actions — ✅ ALL DONE:**
+1. ✅ Mobile app: push for "input needed" + "task done".
+2. ✅ Auto mode as default permission. (Still worth a small `permissions.deny` for irreversible actions.)
+3. ✅ `Primordial-viz` added to the Claude GitHub App → phone-driven Auto-fix PRs.
+4. ✅ Cloud Environment setup script pasted (`.claude/cloud-setup.sh`) — installs toolchain, snapshot-cached.
 
 **Durable-memory rule:** cloud wipes everything except git. Auto-memory and
 `~/.claude/plans` do NOT survive. `CLAUDE.md` imports `@task_plan.md` + `@progress.md`

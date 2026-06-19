@@ -123,9 +123,10 @@ modify skills" rule).
 - Verify each area: `node test/smoke.mjs && node test/render-check.mjs`; commit per-area; let `audio-dsp`/`visual-qa` agents review.
 
 **Pending:** WS1 (above) · WS3 (write `research/findings/`) · WS4 (prune vestigial
-`.htaccess` `.glsl` rules) · WS5 (finish CLAUDE.md/skills tuning). **USER:** phone
-push · Auto mode · add `Primordial-viz` to the Claude GitHub App · paste
-`.claude/cloud-setup.sh` into the cloud env (Network=Full).
+`.htaccess` `.glsl` rules) · WS5 (finish CLAUDE.md/skills tuning).
+**USER control plane — ✅ ALL DONE:** phone push, Auto mode, `Primordial-viz`
+added to the Claude GitHub App, cloud setup script pasted (Network=Full).
+(Optional remaining: delete the empty `Primordial.viz` dot repo.)
 
 **Critical files:** `src/main.js` (loop+beacon+reduced-motion) · `src/gl/*` ·
 `src/audio/*` · `src/params/*` · `src/looks/registry.js` · `test/*.mjs` ·

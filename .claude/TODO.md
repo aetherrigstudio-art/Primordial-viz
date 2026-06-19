@@ -4,10 +4,10 @@ Claude-environment checklist **only** (the app's task list is the repo-root `TOD
 Legend: 📱 = you (app/web) · 🤖 = me (repo). Full context: `.claude/ROADMAP.md`.
 
 ## 📱 You — phone control plane (do these to unlock laptop-free flow)
-- [ ] Enable phone **push**: "input needed" + "task done" (Claude mobile app → settings)
-- [ ] Turn on **Auto mode** as default permission (user-level settings)
-- [ ] Add **`Primordial-viz`** to the **Claude GitHub App** repo access (it's only on `perchance-ai-tool` now)
-- [ ] Cloud **Environment → Setup script**: paste `.claude/cloud-setup.sh`; Network = Full; no secrets in env vars
+- [x] Enable phone **push**: "input needed" + "task done" (Claude mobile app → settings)
+- [x] Turn on **Auto mode** as default permission (user-level settings)
+- [x] Add **`Primordial-viz`** to the **Claude GitHub App** repo access
+- [x] Cloud **Environment → Setup script**: pasted `.claude/cloud-setup.sh`; Network = Full; no secrets
 - [ ] (optional) Delete the empty **`Primordial.viz`** (dot) repo to avoid confusion
 
 ## 🤖 Me — done (committed to git)
