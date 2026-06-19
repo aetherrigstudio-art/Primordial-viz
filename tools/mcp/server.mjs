@@ -12,8 +12,10 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { z } from 'zod';
 
 import { validateShaders } from './lib/validate.mjs';
+import { runRenderCheck } from './lib/render.mjs';
 
 const server = new McpServer({ name: 'primordial', version: '0.1.0' });
 
@@ -63,6 +65,45 @@ server.registerTool(
       structuredContent: res,
       isError: !res.ok,
     };
+  },
+);
+
+// render_check — boot the app in headless WebGL2 and report whether it renders
+// (glOk, frames advancing, no console errors, a11y) plus a screenshot. target
+// 'local' serves the repo; 'live' checks the deployed primordial.video.
+server.registerTool(
+  'render_check',
+  {
+    description:
+      'Boot the app in headless Chromium (WebGL2/SwiftShader) and report whether it ' +
+      'renders: WebGL2 available, glOk, frames advancing, no console errors, and the ' +
+      'accessibility DOM. Returns the checks + health beacon and a PNG screenshot. ' +
+      "Set target 'live' to check the deployed https://primordial.video instead of a " +
+      'local server.',
+    inputSchema: {
+      target: z
+        .enum(['local', 'live'])
+        .default('local')
+        .describe("'local' serves and checks the repo; 'live' checks primordial.video"),
+    },
+  },
+  async ({ target }) => {
+    // Small JPEG thumbnail keeps the tool result well under MCP output limits;
+    // the full PNG artifact is produced by the CI render check, not here.
+    const res = await runRenderCheck({
+      target: target || 'local',
+      screenshot: 'jpeg',
+      screenshotQuality: 55,
+      viewport: { width: 640, height: 400 },
+    });
+    const summary =
+      `render_check (${res.url}): ${res.pass ? 'PASS' : 'FAIL'}\n` +
+      res.checks.map((c) => `  ${c.ok ? 'ok  ' : 'FAIL'} ${c.name}${c.detail ? ` (${c.detail})` : ''}`).join('\n');
+    const content = [{ type: 'text', text: summary }];
+    if (res.screenshot) content.push({ type: 'image', data: res.screenshot.toString('base64'), mimeType: res.screenshotMime });
+    // Drop the image buffer from the structured payload; it's in the image block.
+    const { screenshot, ...structured } = res;
+    return { content, structuredContent: structured, isError: !res.pass };
   },
 );
 
