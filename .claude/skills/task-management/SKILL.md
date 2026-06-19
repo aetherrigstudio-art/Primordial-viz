@@ -1,5 +1,6 @@
 ---
 name: task-management
+area: planning
 description: Simple task management using a shared TASKS.md file. Reference this when the user asks about their tasks, wants to add/complete tasks, or needs help tracking commitments.
 user-invocable: false
 ---

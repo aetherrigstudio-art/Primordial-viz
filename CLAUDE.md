@@ -107,12 +107,20 @@ don't skip them):
 <!-- @generated-start skills:router -->
 **Skills by area** — the routing map (each skill's description is injected every session; auto-generated from `.claude/skills/*/SKILL.md` `area:`, refreshed by `/skill-router` or `node tools/gen-docs.mjs`):
 
+- **debugging** — `debugging-and-error-recovery`, `systematic-debugging`
 - **deploy** — `deploy-cpanel`
 - **design** — `thought-based-reasoning`
-- **general** — `accessibility`, `brainstorming`, `debugging-and-error-recovery`, `dispatching-parallel-agents`, `documentation-and-adrs`, `executing-plans`, `find-docs`, `finishing-a-development-branch`, `frontend-design`, `performance`, `receiving-code-review`, `requesting-code-review`, `spec-driven-implementation`, `subagent-driven-development`, `systematic-debugging`, `task-management`, `test-driven-development`, `verification-before-completion`, `writing-plans`, `writing-skills`
+- **docs** — `documentation-and-adrs`
 - **looks** — `new-preset`
-- **meta** — `skill-router`
+- **meta** — `skill-router`, `writing-skills`
+- **perf** — `performance`
+- **planning** — `brainstorming`, `executing-plans`, `spec-driven-implementation`, `task-management`, `writing-plans`
+- **research** — `find-docs`
+- **review** — `receiving-code-review`, `requesting-code-review`
 - **shaders** — `perf-budget`
+- **testing** — `test-driven-development`, `verification-before-completion`
+- **ui** — `accessibility`, `frontend-design`
+- **workflow** — `dispatching-parallel-agents`, `finishing-a-development-branch`, `subagent-driven-development`
 <!-- @generated-end skills:router -->
 
 ## Rules / Constraints

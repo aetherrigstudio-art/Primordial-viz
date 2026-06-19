@@ -1,5 +1,6 @@
 ---
 name: subagent-driven-development
+area: workflow
 description: Use when executing implementation plans with independent tasks in the current session
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: spec-driven-implementation
+area: planning
 description: Drive a spec-first workflow for substantial features by writing PRODUCT.md before implementation, writing TECH.md when warranted, and keeping both specs updated as implementation evolves. Use when starting a significant feature, planning agent-driven implementation, or when the user wants product and tech specs checked into source control.
 ---
 
