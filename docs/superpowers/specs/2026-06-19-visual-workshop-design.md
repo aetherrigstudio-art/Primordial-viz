@@ -17,11 +17,11 @@ gap directly blocks finding the look.
 ## Goal
 
 A **throwaway sandbox loop**, separate from the shipped app, that supports the
-full creative lifecycle — **mood/reference → new directions from scratch →
-refining a look** — with a phone-native feedback loop: I author an experimental
-visual, render it to a short audio-driven **clip**, and send it to the operator
-in chat; we react and iterate; a winner is promoted ("graduated") into the real
-app only on explicit approval.
+full creative lifecycle — **mood/reference → (optional) research & trend scan →
+new directions from scratch → refining a look** — with a phone-native feedback
+loop: I author an experimental visual, render it to a short audio-driven
+**clip**, and send it to the operator in chat; we react and iterate; a winner is
+promoted ("graduated") into the real app only on explicit approval.
 
 ### Success criteria
 
@@ -109,11 +109,14 @@ encodes the method so it is repeatable:
 1. **Mood/reference** — discuss in chat; collect references/palette/vibe words.
    Render reference-style stills if it helps; the brainstorming visual companion
    may be used for mood boards (optional, not required).
-2. **Author** — scaffold or edit a sketch (`workshop/sketches/<name>/`).
-3. **Render** — `npm run clip -- <name>`; deliver the webm/stills to the phone.
-4. **React + iterate** — operator reacts in chat; revise the sketch; re-render.
+2. **Research & trend scan** *(optional, operator opt-in)* — once the vision is
+   clear, scan for similar + **newest/trending** work in that direction and
+   report back concisely (see §Research step). Reference-only; nothing is copied.
+3. **Author** — scaffold or edit a sketch (`workshop/sketches/<name>/`).
+4. **Render** — `npm run clip -- <name>`; deliver the webm/stills to the phone.
+5. **React + iterate** — operator reacts in chat; revise the sketch; re-render.
    Keep prior versions for comparison (`<name>` vs `<name>-v2`).
-5. **Graduate** (only on explicit approval) — either:
+6. **Graduate** (only on explicit approval) — either:
    - promote params into a real look via the `new-preset` skill /
      `create_look` MCP tool, or
    - promote the shader into `src/shaders/` — at which point the **mobile budget
@@ -155,6 +158,41 @@ This is deterministic (reproducible clips) and asset-free. A bundled CC0 sample
 track is a **possible later upgrade** if the synthetic feel proves insufficient —
 out of scope for v1.
 
+## Research step (optional, opt-in)
+
+After the vision is articulated, the operator can opt into a research pass that
+finds **similar examples and the newest/trending designs** in that direction, so
+we explore from an informed starting point instead of a blank page. It is a step
+in the `/workshop` skill (process), not new infrastructure — it reuses existing
+research tooling.
+
+- **Tools:** `WebSearch` / `WebFetch` for current/trending work and the
+  `deep-research` skill for a deeper multi-source pass; `find-docs` / Context7 +
+  the project MCP `search_docs` for *technique* references (how an effect is
+  achieved). Recency matters (trends move faster than any training cutoff), so
+  this leans on live search.
+- **What it scans:** visual direction and trends (e.g. motion/VJ design,
+  generative/shader art, neon/grunge aesthetics, color/texture trends) and the
+  techniques behind them. Sources are noted with their licenses.
+- **Deliverable (phone-native):** a concise, scannable summary — a few named
+  directions/trends, what makes each work, and concrete techniques to try —
+  with source links and any license flags. Reference *stills* may be sent via
+  `SendUserFile`; large dumps are avoided (output-token cap + small screen).
+- **Capture:** if the operator wants it kept, the chosen references + sources +
+  license notes are written to an optional
+  `workshop/sketches/<name>/references.md` (committed) so the inspiration trail
+  is durable and auditable at graduation.
+
+### ⚖️ Licensing guardrail (load-bearing)
+
+This is commercial work. Research is **reference-only**: we study trending work
+and *techniques*, then **author every shader from a blank file**
+(`.claude/rules/shaders.md`). We do **not** copy CC BY-NC-SA Shadertoy/GLSL code
+(NC forbids commercial use; SA forces copyleft). If a specific reference is
+reused at all, it must be MIT/CC0/CC-BY with attribution recorded in
+`references.md`. The research step explicitly surfaces the license of anything it
+finds so this line is never crossed by accident.
+
 ## File layout (new)
 
 ```
@@ -164,7 +202,8 @@ workshop/
 ├── sketches/
 │   └── <name>/
 │       ├── <name>.frag.js
-│       └── <name>.json
+│       ├── <name>.json
+│       └── references.md       # optional: research/trend sources + licenses
 └── artifacts/                 # gitignored: *.webm, *.png
 tools/workshop/
 └── clip.mjs                   # node recorder: npm run clip -- <name> [--stills n]
@@ -180,6 +219,7 @@ tools/workshop/
 | --- | --- | --- |
 | Preview medium | Clips (`.webm`) + stills in chat | Operator on a phone; no deploy lag, no mic; Playwright records webm with zero extra deps. |
 | Audio source | Synthetic scripted "fake song" | Deterministic, asset-free; real sample is a later upgrade. |
+| Research step | Optional, opt-in; reuses web search + `deep-research` | Explore from an informed start; recency needs live search; reference-only keeps licensing safe. |
 | Sketch durability | Committed to git | Cloud wipes everything but git; the history is the creative value. |
 | Artifacts | Gitignored | Binary, regenerable from sketches. |
 | Perf budget | Enforced only at graduation | Explore lush ideas freely; the ≤64/0.5 budget is a *shipping* constraint. |
