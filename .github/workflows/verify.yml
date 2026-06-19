@@ -19,7 +19,7 @@ jobs:
       - name: Syntax-check all JS modules
         run: |
           set -e
-          for f in $(find src test -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.cjs' \)); do
+          for f in $(find src test tools -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.cjs' \)); do
             node --check "$f"
           done
 
@@ -36,6 +36,12 @@ jobs:
 
       - name: Headless render check
         run: node test/render-check.mjs
+
+      - name: Validate shaders (headless WebGL2)
+        run: node tools/mcp/lib/validate.mjs
+
+      - name: MCP server self-test
+        run: node tools/mcp/selftest.mjs
 
       - name: Upload render screenshot
         if: always()

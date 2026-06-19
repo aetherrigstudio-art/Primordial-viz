@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 70 files across 15 categories.
+> 72 files across 15 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -20,7 +20,7 @@
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
 - [Tests & Verification](#tests--verification) (2)
-- [Tooling / Scripts](#tooling--scripts) (3)
+- [Tooling / Scripts](#tooling--scripts) (5)
 - [Claude Environment](#claude-environment) (16)
 - [Deployment](#deployment) (2)
 - [Research](#research) (12)
@@ -113,6 +113,8 @@
 | File | Description |
 | --- | --- |
 | [`tools/gen-docs.mjs`](tools/gen-docs.mjs) | Generates two always-current repo maps from a single source of truth: ENCYCLOPEDIA.md — a categorized index of every file, each with a one-line… |
+| [`tools/mcp/lib/browser.mjs`](tools/mcp/lib/browser.mjs) | Shared headless-Chromium launch for the WebGL2 dev tools (shader validation, render checks). |
+| [`tools/mcp/lib/validate.mjs`](tools/mcp/lib/validate.mjs) | Headless GLSL ES 3.00 validation: compile + link the project's shaders in a real WebGL2 context (ANGLE/SwiftShader via Playwright) — the exact… |
 | [`tools/mcp/selftest.mjs`](tools/mcp/selftest.mjs) | Self-test for the primordial MCP server: spawns server.mjs over stdio using the MCP SDK client, lists tools/resources/prompts, and exits non-zero if… |
 | [`tools/mcp/server.mjs`](tools/mcp/server.mjs) | Primordial-viz MCP server — local stdio dev tools for AI assistants working on this project. |
 

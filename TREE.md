@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 70 files in 26 directories.
+> 72 files in 27 directories.
 
 ```
 Primordial-viz/
@@ -87,6 +87,9 @@ Primordial-viz/
 │   └── smoke.mjs
 ├── tools/
 │   ├── mcp/
+│   │   ├── lib/
+│   │   │   ├── browser.mjs
+│   │   │   └── validate.mjs
 │   │   ├── selftest.mjs
 │   │   └── server.mjs
 │   └── gen-docs.mjs

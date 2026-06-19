@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "scripts": {
     "docs": "node tools/gen-docs.mjs",
     "smoke": "node test/smoke.mjs",

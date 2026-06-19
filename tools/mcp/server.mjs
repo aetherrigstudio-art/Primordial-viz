@@ -13,6 +13,8 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 
+import { validateShaders } from './lib/validate.mjs';
+
 const server = new McpServer({ name: 'primordial', version: '0.1.0' });
 
 // Skeleton tool — confirms the server is wired and discoverable. Real tool groups
@@ -37,6 +39,31 @@ server.registerTool(
       },
     ],
   }),
+);
+
+// validate_shaders — compile + link the project's GLSL ES 3.00 shaders in a real
+// headless WebGL2 context. Highest-value tool: catches shader errors before they
+// reach the browser. Wraps lib/validate.mjs (also runnable as a CLI / in CI).
+server.registerTool(
+  'validate_shaders',
+  {
+    description:
+      "Compile and link the project's GLSL ES 3.00 shaders in a headless WebGL2 " +
+      '(ANGLE/SwiftShader) context — the exact pipeline the browser uses. Returns ' +
+      'per-program compile/link status and any error logs. Takes no arguments.',
+    inputSchema: {},
+  },
+  async () => {
+    const res = await validateShaders();
+    const summary = res.ok
+      ? 'All shaders compiled and linked.'
+      : 'Shader validation FAILED:\n' + res.errors.join('\n');
+    return {
+      content: [{ type: 'text', text: summary }],
+      structuredContent: res,
+      isError: !res.ok,
+    };
+  },
 );
 
 const transport = new StdioServerTransport();
