@@ -4,7 +4,7 @@
 :root {
   --bg: #000000;
   --fg: #2bff88;
-  --fg-dim: #137a44;
+  --fg-dim: #2faa63;
   --fg-faint: rgba(43, 255, 136, 0.25);
   --panel: rgba(0, 12, 6, 0.82);
   --warn: #ffcf3a;
@@ -200,7 +200,6 @@ html, body {
   appearance: none;
   height: 4px;
   background: var(--fg-faint);
-  outline: none;
 }
 .row input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -255,6 +254,20 @@ html, body {
 }
 
 .hidden { display: none !important; }
+
+/* Keyboard focus visibility (a11y) — restores a clear ring without showing it
+   on mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+.row input[type="range"]:focus-visible { outline-offset: 6px; }
+
+/* Respect reduced-motion for UI transitions; the WebGL clock is slowed in
+   main.js via prefers-reduced-motion. */
+@media (prefers-reduced-motion: reduce) {
+  #panel { transition: none; }
+}
 
 /* Landscape / wide: dock the panel to a fixed side column. */
 @media (min-width: 720px) {

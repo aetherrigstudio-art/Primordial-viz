@@ -1,0 +1,43 @@
+name: verify
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Syntax-check all JS modules
+        run: |
+          set -e
+          for f in $(find src test -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.cjs' \)); do
+            node --check "$f"
+          done
+
+      - name: Smoke test (params / looks / store)
+        run: node test/smoke.mjs
+
+      - name: Install Playwright Chromium
+        run: |
+          npm ci || npm install
+          npx playwright install --with-deps chromium
+
+      - name: Headless render check
+        run: node test/render-check.mjs
+
+      - name: Upload render screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-screenshot
+          path: test/artifacts/render.png
+          if-no-files-found: ignore

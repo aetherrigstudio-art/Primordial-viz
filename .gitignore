@@ -9,5 +9,7 @@ CLAUDE.local.md
 # full scraped corpus (curated subset only is committed)
 research/corpus-full/
 *.zip
+# test artifacts (headless render screenshots, etc.)
+test/artifacts/
 # os
 .DS_Store

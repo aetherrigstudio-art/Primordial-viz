@@ -54,7 +54,7 @@ export class Controls {
     panel.appendChild(el('div', { class: 'section-title' }, 'Source / Look'));
 
     // Look switcher.
-    this.lookSelect = el('select');
+    this.lookSelect = el('select', { 'aria-label': 'Look' });
     this.lookSelect.addEventListener('change', () => {
       if (this.cb.onLook) this.cb.onLook(this.lookSelect.value);
     });
@@ -62,7 +62,7 @@ export class Controls {
       el('label', { text: 'Look' }), this.lookSelect));
 
     // Device picker.
-    this.deviceSelect = el('select');
+    this.deviceSelect = el('select', { 'aria-label': 'Input device' });
     this.deviceSelect.addEventListener('change', () => {
       if (this.cb.onDevice) this.cb.onDevice(this.deviceSelect.value);
     });
@@ -118,6 +118,7 @@ export class Controls {
       min: String(entry.min),
       max: String(entry.max),
       step: String(entry.step),
+      'aria-label': entry.label,
     });
     input.value = String(value);
     const valEl = el('span', { class: 'val' }, fmt(entry, value));

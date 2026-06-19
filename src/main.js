@@ -28,8 +28,23 @@ let micActive = false;
 // Smoothed beat pulse exposed to shaders.
 const features = { bass: 0, mid: 0, treble: 0, level: 0, beat: 0 };
 
+// Render-health beacon for laptop-free / headless verification
+// (test/render-check.mjs reads window.__primordial). Never affects rendering.
+const health = { frames: 0, glOk: false, error: null };
+if (typeof window !== 'undefined') window.__primordial = health;
+
 // DPR cap for mobile.
 const MAX_DPR = 1.5;
+
+// Accessibility: honor prefers-reduced-motion by slowing the visual clock
+// (the background is the app, so we dampen rather than freeze).
+let motionScale = 1;
+function updateMotionPref() {
+  motionScale =
+    typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 0.15
+      : 1;
+}
 
 // Dynamic-resolution controller state.
 const dyn = {
@@ -44,6 +59,7 @@ const dyn = {
 
 let running = true;          // paused when document hidden
 let lastT = performance.now();
+let simTime = 0;             // visual clock (slowed under prefers-reduced-motion)
 let frameCount = 0;
 let fpsAccumT = 0;
 let fpsAccumFrames = 0;
@@ -133,7 +149,8 @@ function frame(now) {
 
   const dt = Math.min(0.1, (now - lastT) / 1000);
   lastT = now;
-  const t = now / 1000;
+  simTime += dt * motionScale;
+  const t = simTime;
 
   // --- Audio update ---
   if (micActive && analyser) {
@@ -189,6 +206,7 @@ function frame(now) {
     }
   }
   frameCount++;
+  health.frames = frameCount;
 }
 
 // ---------------------------------------------------------------------------
@@ -213,9 +231,14 @@ async function startMic(deviceId) {
 // Wiring
 // ---------------------------------------------------------------------------
 async function boot() {
+  updateMotionPref();
+  if (typeof matchMedia === 'function') {
+    matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', updateMotionPref);
+  }
   resize();
   renderer = new Renderer(canvas);
   pipeline = new Pipeline(renderer);
+  health.glOk = true;
 
   controls = new Controls(store, {
     onParam: () => { /* store already updated; loop reads live */ },
@@ -296,6 +319,7 @@ function applyLook(id) {
 
 boot().catch((err) => {
   console.error('Boot failed:', err);
+  health.error = String(err && err.message ? err.message : err);
   const gate = document.getElementById('gate');
   if (gate) {
     gate.innerHTML = '<h1>WebGL2 unavailable</h1><p>' +
