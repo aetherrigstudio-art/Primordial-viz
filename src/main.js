@@ -117,7 +117,7 @@ function updateDynamicRes(ms) {
   if (dyn.msAvg > SLOW) {
     // Drop steps first (cheaper visual hit), then scale.
     if (dyn.steps > 28) dyn.steps -= 4;
-    else if (dyn.renderScale > 0.4) dyn.renderScale = Math.max(0.4, dyn.renderScale - 0.05);
+    else if (dyn.renderScale > 0.5) dyn.renderScale = Math.max(0.5, dyn.renderScale - 0.05);
     else return;
     dyn.cooldown = 30;
     syncPerfToUI();

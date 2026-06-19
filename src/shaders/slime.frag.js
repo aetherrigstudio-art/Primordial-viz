@@ -107,7 +107,9 @@ void main() {
   vec3 pos = ro;
   int steps = uSteps;
 
-  for (int i = 0; i < 96; i++) {
+  // Hard loop bound matches the step cap (rules/shaders.md: raymarch steps <=64);
+  // the dynamic uSteps budget rides below it.
+  for (int i = 0; i < 64; i++) {
     if (i >= steps) break;
     pos = ro + rd * t;
     float d = mapScene(pos);

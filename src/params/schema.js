@@ -26,8 +26,8 @@ export const PARAM_SCHEMA = [
 
 // Performance knobs (not part of a look; persisted separately).
 export const PERF_SCHEMA = [
-  { key: 'renderScale', label: 'Render Scale', type: 'range', min: 0.3, max: 1.0, step: 0.05, default: 0.7 },
-  { key: 'steps', label: 'Ray Steps', type: 'range', min: 24, max: 96, step: 4, default: 64 },
+  { key: 'renderScale', label: 'Render Scale', type: 'range', min: 0.5, max: 1.0, step: 0.05, default: 0.7 },
+  { key: 'steps', label: 'Ray Steps', type: 'range', min: 24, max: 64, step: 4, default: 64 },
 ];
 
 export const DEFAULTS = (() => {
