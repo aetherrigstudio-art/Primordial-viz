@@ -138,6 +138,14 @@ active plan live in committed files, imported here so they load on launch:
   (needs Playwright Chromium; CI installs it)
 - `.github/workflows/verify.yml` runs both + `node --check` on every push.
 
+**Container limits (fresh cloud/phone session).** Outbound network is **HTTPS
+(443) only** — **FTP/21 and cPanel/2083 are blocked**, so you cannot deploy or
+drive cPanel from the container. Web deploy runs on **GitHub Actions** (push to
+the working branch, or trigger `deploy.yml` via the GitHub MCP); verify the live
+site by `curl`-ing `https://primordial.video/Test/`. The `FTP_PASSWORD` secret
+lives in GitHub and survives container wipes. Re-run/inspect CI via the GitHub
+MCP, not local FTP.
+
 Canonical repo: **`Primordial-viz`** (dash). The current active branch and PR
 live in `progress.md` (last handoff entry) — that file is the source of truth,
 not this line.
