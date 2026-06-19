@@ -296,3 +296,36 @@ bodies load on demand).
 
 **Verified:** generated block maps all 5 skills by area; `gen-docs --check` green
 (incl. CLAUDE.md region); `node --check tools/gen-docs.mjs`; smoke 12/12.
+
+## Session — 2026-06-19 (skill-router rename + drift gate)
+
+Grounded in the repo's Claude research (`findings.md §B`, `research/findings/mcp-*`).
+
+**1. Renamed `find-skill` → `skill-router`** (avoids colliding with the popular
+`npx skills` / `find-skills` community tool — vercel-labs/skills + skills.sh, which
+*discovers/installs external* skills). Our skill is now scoped to its unique job —
+the **local** in-repo router-sync + routing — and explicitly **defers external
+discovery/install to `npx skills`** (with a license/supply-chain review note). The
+generated `skills:router` note in CLAUDE.md and the gen-docs string now say
+`/skill-router`.
+
+**2. Drift gate (the recurring failure: docs drifted from reality twice).**
+`gen-docs.mjs` now runs `checkRefs()` — backtick-quoted, **repo-rooted** paths in
+`CLAUDE.md`, `deploy/DEPLOY.md`, `.claude/rules/*`, `.claude/skills/*` must exist;
+`gen-docs --check` gates it in CI. **Conservative** (skips bare filenames, globs,
+placeholders, vars, and — crucially — **fenced code blocks**, whose ``` fences
+otherwise mis-pair the inline-code scan; that was a real bug found + fixed in
+testing) so it never false-fails CI. Proven: it catches a dangling
+`src/three/main.js` ref and is clean at rest.
+
+**3. Fixed the first drift offender** — the `deploy-cpanel` skill: dropped the
+nonexistent `assets/`, and it now leads with the automatic Actions-FTPS deploy
+(manual cPanel is the full-site/homepage fallback).
+
+**Decided via thought-based-reasoning (dogfooded):** complement `npx skills`
+rather than compete; root the drift gate at known top-level entries for zero false
+positives. Deferred: adopting the `npx skills` ecosystem (needs license review),
+PreCompact hook, phone-resilient CLI-first discovery doc.
+
+**Verified:** `node --check tools/gen-docs.mjs`; `gen-docs --check` green (docs +
+CLAUDE.md region + drift gate); gate catches a dangling ref; smoke 12/12.

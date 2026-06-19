@@ -173,9 +173,9 @@
 | [`.claude/rules/shaders.md`](.claude/rules/shaders.md) | Scoped to the shader/renderer code. |
 | [`.claude/settings.json`](.claude/settings.json) | Claude Code hooks + permissions for this repo. |
 | [`.claude/skills/deploy-cpanel/SKILL.md`](.claude/skills/deploy-cpanel/SKILL.md) | Manual deploy checklist for shipping primordial to Namecheap Stellar Plus (cPanel). Invoke deliberately when deploying; not auto-activated. |
-| [`.claude/skills/find-skill/SKILL.md`](.claude/skills/find-skill/SKILL.md) | Find the right skill for the task at hand, and keep the skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from… |
 | [`.claude/skills/new-preset/SKILL.md`](.claude/skills/new-preset/SKILL.md) | Scaffold a new visual "look" for primordial — a params-only JSON preset in src/looks/, wired into the look registry (all looks share the slime… |
 | [`.claude/skills/perf-budget/SKILL.md`](.claude/skills/perf-budget/SKILL.md) | Run the in-app FPS stress-test readout for primordial and read its SMOOTH / OK / TOO-MUCH verdict to set the mobile performance budget (FBO… |
+| [`.claude/skills/skill-router/SKILL.md`](.claude/skills/skill-router/SKILL.md) | Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from… |
 | [`.claude/skills/thought-based-reasoning/SKILL.md`](.claude/skills/thought-based-reasoning/SKILL.md) | Structured reasoning harness for design, architecture, and planning decisions in Primordial-viz. Frame the problem, pull the right project knowledge… |
 
 ## Deployment

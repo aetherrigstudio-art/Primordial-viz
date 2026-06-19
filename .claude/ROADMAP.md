@@ -82,17 +82,20 @@ keep one source of truth per topic.
   fetch them. **Device-aware:** reads `CLAUDE_CODE_ENTRYPOINT` to tailor the
   verification note to the operator's device (phone → no desktop profiler, lean on
   CI; web/CLI variants). ✅ DONE — `.claude/hooks/inject-rules.sh`.
-- **Drift gate + single source of truth** — one owner per topic (deploy facts →
-  `.claude/rules/deploy.md`; the skill + `DEPLOY.md` point to it), plus a
-  lightweight staleness check (extend `gen-docs --check`: referenced paths must
-  exist). First cleanup: the stale `deploy-cpanel` skill (lists a nonexistent
-  `assets/`, omits the auto-deploy). — TODO.
+- **Drift gate + single source of truth** — ✅ DONE. `gen-docs.mjs` has a
+  `checkRefs()` pass (gated by `gen-docs --check` in CI): backtick-quoted,
+  repo-rooted paths in the knowledge docs (`CLAUDE.md`, `deploy/DEPLOY.md`,
+  `.claude/rules/*`, `.claude/skills/*`) must exist — catches "file renamed/deleted
+  but a doc still points at it." Conservative (skips globs, placeholders, bare
+  filenames, and fenced code blocks) to never false-fail CI. Fixed the first
+  offender: the stale `deploy-cpanel` skill (dropped the nonexistent `assets/`;
+  now leads with the auto-deploy path).
 - **PreCompact hook** — remind to update `progress.md` before a long session
   compacts, so mid-session continuity isn't lost. — TODO.
 - **Skills auto-registration** — skills declare a frontmatter `area:`;
   `gen-docs.mjs` regenerates the `@generated skills:router` block in the CLAUDE.md
   router (run by the existing PostToolUse gen-docs hook on any skill edit; CI-gated
-  by `gen-docs --check`). The `/find-skill` skill is the manual trigger + "which
+  by `gen-docs --check`). The `/skill-router` skill is the manual trigger + "which
   skill for X?" discovery. The **server needs nothing** — every `SKILL.md` is
   already in the MCP `search_docs` index and `ENCYCLOPEDIA.md`. ✅ DONE.
 - **`list_skills` / `get_skill` MCP tool** — structured skill discovery on the

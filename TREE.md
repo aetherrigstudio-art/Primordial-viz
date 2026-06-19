@@ -26,11 +26,11 @@ Primordial-viz/
 │   ├── skills/
 │   │   ├── deploy-cpanel/
 │   │   │   └── SKILL.md
-│   │   ├── find-skill/
-│   │   │   └── SKILL.md
 │   │   ├── new-preset/
 │   │   │   └── SKILL.md
 │   │   ├── perf-budget/
+│   │   │   └── SKILL.md
+│   │   ├── skill-router/
 │   │   │   └── SKILL.md
 │   │   └── thought-based-reasoning/
 │   │       └── SKILL.md

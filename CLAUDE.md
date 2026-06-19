@@ -105,14 +105,14 @@ don't skip them):
 | Where a file lives / what it does | `TREE.md` (layout) · `ENCYCLOPEDIA.md` (per-file) | auto-generated |
 
 <!-- @generated-start skills:router -->
-**Skills by area** — auto-generated from `.claude/skills/*/SKILL.md` `area:` (run `/find-skill` or `node tools/gen-docs.mjs` after adding a skill):
+**Skills by area** — auto-generated from `.claude/skills/*/SKILL.md` `area:` (run `/skill-router` or `node tools/gen-docs.mjs` after adding a skill):
 
 | Area | Skill | Use it to… |
 | --- | --- | --- |
 | deploy | `deploy-cpanel` | Manual deploy checklist for shipping primordial to Namecheap Stellar Plus (cPanel). |
 | design | `thought-based-reasoning` | Structured reasoning harness for design, architecture, and planning decisions in Primordial-viz. |
 | looks | `new-preset` | Scaffold a new visual "look" for primordial — a params-only JSON preset in src/looks/, wired into the look registry (all looks share the slime… |
-| meta | `find-skill` | Find the right skill for the task at hand, and keep the skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from… |
+| meta | `skill-router` | Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from… |
 | shaders | `perf-budget` | Run the in-app FPS stress-test readout for primordial and read its SMOOTH / OK / TOO-MUCH verdict to set the mobile performance budget (FBO… |
 <!-- @generated-end skills:router -->
 

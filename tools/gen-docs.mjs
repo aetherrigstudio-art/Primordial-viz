@@ -14,7 +14,7 @@
 // new, not-yet-committed files. Deterministic output → safe as a CI gate.
 
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname, basename } from 'node:path';
 
@@ -340,7 +340,7 @@ function buildSkillsRouter() {
     byArea.get(s.area).push(s);
   }
   const lines = [];
-  lines.push('**Skills by area** — auto-generated from `.claude/skills/*/SKILL.md` `area:` (run `/find-skill` or `node tools/gen-docs.mjs` after adding a skill):');
+  lines.push('**Skills by area** — auto-generated from `.claude/skills/*/SKILL.md` `area:` (run `/skill-router` or `node tools/gen-docs.mjs` after adding a skill):');
   lines.push('');
   lines.push('| Area | Skill | Use it to… |');
   lines.push('| --- | --- | --- |');
@@ -362,6 +362,44 @@ function updateRegion(text, name, body) {
 
 function claudeRouterUpdated(text) {
   return updateRegion(text, 'skills:router', buildSkillsRouter());
+}
+
+// ---------------------------------------------------------------------------
+// Drift gate — repo-rooted paths referenced in the knowledge docs must exist.
+// Conservative by design (zero false positives over correctness): only checks
+// backtick-quoted tokens that contain '/', have no glob/placeholder/space, and
+// are rooted at a real top-level repo entry. Catches "this file was renamed/
+// deleted but a doc still points at it"; intentionally skips bare filenames and
+// abstract paths (public_html, band lists like bass/mid/treble) to never
+// false-fail CI. Scanned docs: CLAUDE.md, deploy/DEPLOY.md, rules, skills.
+// ---------------------------------------------------------------------------
+function refDocs() {
+  return [
+    'CLAUDE.md',
+    'deploy/DEPLOY.md',
+    ...listFiles().filter((p) => /^\.claude\/rules\/[^/]+\.md$/.test(p) || /^\.claude\/skills\/[^/]+\/SKILL\.md$/.test(p)),
+  ].filter((p) => existsSync(join(root, p)));
+}
+
+function checkRefs() {
+  const topLevel = new Set(listFiles().map((p) => p.split('/')[0]));
+  const missing = [];
+  for (const doc of refDocs()) {
+    // Strip fenced code blocks first — their ``` fences otherwise mis-pair the
+    // inline-code backtick scan below (and code examples aren't path references).
+    const text = readFileSync(join(root, doc), 'utf8').replace(/```[\s\S]*?```/g, '');
+    const seen = new Set();
+    for (const m of text.matchAll(/`([^`]+)`/g)) {
+      const tok = m[1].trim().replace(/\/+$/, '');
+      if (!tok.includes('/')) continue;            // skip bare filenames (ambiguous)
+      if (/[\s*<>{}()|$~?:,…]/.test(tok)) continue; // skip globs / placeholders / vars / URLs / prose ellipses
+      if (!topLevel.has(tok.split('/')[0])) continue; // only paths rooted at a real repo entry
+      if (seen.has(tok)) continue;
+      seen.add(tok);
+      if (!existsSync(join(root, tok))) missing.push(`${doc} → \`${tok}\``);
+    }
+  }
+  return missing;
 }
 
 // ---------------------------------------------------------------------------
@@ -392,6 +430,14 @@ if (process.argv.includes('--check')) {
     if (fn(current) !== current) { console.error(`${name} generated region is stale. Run: node tools/gen-docs.mjs`); stale = true; }
     else console.log(`${name} (generated region) is up to date.`);
   }
+  const missingRefs = checkRefs();
+  if (missingRefs.length) {
+    console.error('Referenced repo paths are missing (drift) — fix the path or update the doc:');
+    for (const r of missingRefs) console.error(`  ${r}`);
+    stale = true;
+  } else {
+    console.log('Referenced repo paths all exist.');
+  }
   process.exit(stale ? 1 : 0);
 } else {
   for (const [name, content] of docs) {
@@ -404,5 +450,10 @@ if (process.argv.includes('--check')) {
     const next = fn(current);
     if (next !== current) { writeFileSync(join(root, name), next); console.log(`Updated ${name} generated region.`); }
     else console.log(`${name} region already current.`);
+  }
+  const missingRefs = checkRefs();
+  if (missingRefs.length) {
+    console.warn('⚠ drift — referenced repo paths missing (fix the path or update the doc):');
+    for (const r of missingRefs) console.warn(`  ${r}`);
   }
 }

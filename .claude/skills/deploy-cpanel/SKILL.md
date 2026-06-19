@@ -7,7 +7,10 @@ disable-model-invocation: true
 
 # deploy-cpanel — Stellar Plus deploy checklist
 
-Manual-only. Print this checklist and walk it. Full prose is in
+Manual-only. **The normal path is automatic** — a push to the working branch
+deploys via GitHub Actions FTPS to `https://primordial.video/Test/` (see
+`deploy/DEPLOY.md`). Use this checklist for a **manual full-site** push to the
+`public_html` root (e.g. promoting to the live homepage). Full prose is in
 `deploy/DEPLOY.md`; host facts are in `.claude/rules/deploy.md`.
 
 ## What ships to `public_html`
@@ -17,7 +20,6 @@ the inode count down, ~300k cap):
 
 - `index.html`
 - `src/`  (the whole app — js incl. shaders/*.js, looks/*.json, ui/, …)
-- `assets/`  (fonts, lookup textures, icons, favicon, og-image)
 - `deploy/.htaccess` → place it **as `.htaccess`** at the `public_html` root
 
 **Do NOT upload:** `node_modules/`, `research/`, `.claude/`, `docs/`,
@@ -27,7 +29,7 @@ the inode count down, ~300k cap):
 
 **A — File Manager (simplest):**
 1. cPanel → File Manager → `public_html`.
-2. Upload a zip of `index.html` + `src/` + `assets/`, then Extract.
+2. Upload a zip of `index.html` + `src/`, then Extract.
 3. Upload `.htaccess` (enable "show hidden files" to see it).
 
 **B — cPanel Git Version Control:**
