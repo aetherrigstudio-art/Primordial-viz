@@ -3,14 +3,12 @@ name: deploy
 # Auto-deploy the static site to the TEST folder on primordial.video over FTPS,
 # using the dedicated Test@primordial.video FTP account (jailed to its own
 # folder). Runs on push to the working branch or a manual / GitHub-MCP trigger.
-# The live homepage is never touched — files land in that account's folder,
-# served at https://primordial.video/Test/.
+# Files land in that account's folder, served at https://primordial.video/Test/.
 #
-# Requires three repository SECRETS (Settings → Secrets and variables → Actions):
-#   FTP_HOST      premium252.web-hosting.com   (the cPanel server hostname)
-#   FTP_USERNAME  Test@primordial.video
-#   FTP_PASSWORD  the password set on that FTP account
-# FTPS is encrypted; never commit these values.
+# Host + username are inlined below (not sensitive). The ONLY secret you need to
+# add is the password:
+#   FTP_PASSWORD  → the password on the Test@primordial.video FTP account
+# (Settings → Secrets and variables → Actions → New repository secret.)
 
 on:
   push:
@@ -36,11 +34,9 @@ jobs:
       - name: Upload to cPanel via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
+          server: premium252.web-hosting.com
+          username: Test@primordial.video
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./site/
-          # The Test FTP account is jailed to its own folder, so its root IS the
-          # target — upload to "./".
           server-dir: ./
