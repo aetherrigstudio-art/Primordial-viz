@@ -4,6 +4,41 @@
 
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
 
+## Session — 2026-06-19 (WS1 code hardening — DONE)
+
+Executed **WS1** (the documented next-step across ~6 handoffs) on branch
+`claude/review-claude-md-di5jvm`, in 5 verified commits:
+
+1. **GL correctness** (`renderer.js`): audio texture LINEAR→**NEAREST** (512×2 R8
+   maps 1:1 to texels); `resizeFbo()` now does **checkFramebufferStatus** with an
+   RGBA16F→RGBA8 fallback + throw if still incomplete; **webglcontextlost/restored**
+   handlers (resources rebuilt via new `_createResources()`, `fboW/H`→0 to force
+   realloc); render loop skips drawing while `renderer.contextLost`.
+2. **Perf budget**: `schema.js` steps max 96→**64**, renderScale min 0.3→**0.5**;
+   `main.js` dynamic-res floor 0.4→**0.5**; `slime.frag.js` raymarch hard bound
+   96→**64**. Now matches `rules/shaders.md` (steps ≤64).
+3. **Spectral flux** (`analyser.js`): smoothed sum of positive frame-to-frame FFT
+   bin rises (onset energy), gained ×12, in `features`; wired `uFlux` through
+   `uniforms.js` + a subtle rim-flash in `slime.frag.js`. Completes the
+   `{bass,mid,treble,level,flux}` set (`rules/audio.md`).
+4. **Robustness** (`input.js`/`main.js`): `devicechange` listener (hotplug refresh
+   via `onDevicesChanged`); `startMic` returns `{ok,message}` and mic failures
+   (denied / no device / in-use / still-suspended) surface as a screen-reader
+   `role=alert` on the gate (operator can pick Visuals Only); `dt` NaN/neg/huge
+   guard; `cancelAnimationFrame` + mic release on `pagehide`.
+5. **Review fixes**: wrapped `pipeline.render()` so a fatal GL error stops the loop
+   + shows the gate (was un-caught); flux gain 8→12. Reviewed by **audio-dsp** +
+   **visual-qa** agents (both: ship-ready).
+
+**Verified:** `node test/render-check.mjs` (headless Chromium — shaders compile,
+loop advances, no console errors), `npm run health` (all gates: JS syntax, smoke
+12/12, site audit, docs+drift). Pushed.
+
+**Next:** **verify-live** items (need a real track/phone, not testable here):
+flux gain/punch, dynamic-res feel, mic-error UX on a phone. Then the real `/Test/`
+visual (still a placeholder), Phase 6 (first collab), WS3 (`research/findings/`),
+WS4 (prune vestigial `.glsl`/`.htaccess` rules). Parked: non-local RAG system.
+
 ## Session 1 — 2026-06-19 (planning + research)
 
 **Did:**
