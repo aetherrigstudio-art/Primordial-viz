@@ -109,7 +109,7 @@ don't skip them):
 **Skills by area** — the routing map (each skill's description is injected every session; auto-generated from `.claude/skills/*/SKILL.md` `area:`, refreshed by `/skill-router` or `node tools/gen-docs.mjs`):
 
 - **debugging** — `debugging-and-error-recovery`, `systematic-debugging`
-- **deploy** — `deploy-cpanel`
+- **deploy** — `deploy-check`, `deploy-cpanel`
 - **design** — `thought-based-reasoning`
 - **docs** — `documentation-and-adrs`
 - **looks** — `new-preset`
