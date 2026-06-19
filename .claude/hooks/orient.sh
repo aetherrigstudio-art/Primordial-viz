@@ -12,6 +12,7 @@ cd "$root" 2>/dev/null || exit 0
 
 echo "PRIMORDIAL — session orientation"
 echo "Canonical repo: Primordial-viz (dash). Full state + active plan: task_plan.md + progress.md (imported by CLAUDE.md)."
+echo "New here? START HERE -> ONBOARDING.md (start gate + role routes). Before editing: confirm the branch + the next step below, read your task's rule, and get 'npm run health' green; restate the next step to the user first."
 
 if command -v git >/dev/null 2>&1; then
   echo "Branch: $(git branch --show-current 2>/dev/null || echo '?')"

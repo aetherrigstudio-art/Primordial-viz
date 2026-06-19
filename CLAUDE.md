@@ -160,6 +160,10 @@ The cloud container is wiped between sessions; **only git-committed files
 survive** (auto-memory and `~/.claude/plans` do not). The current state and the
 active plan live in committed files, imported here so they load on launch:
 
+**Fresh agent? Start with `ONBOARDING.md`** — the start gate (confirm state +
+verify before editing) and role-aware first-reads. The imports below are the
+full state.
+
 @task_plan.md
 @progress.md
 

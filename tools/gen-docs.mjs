@@ -389,6 +389,7 @@ function refDocs() {
   const adopted = adoptedSkills();
   return [
     'CLAUDE.md',
+    'ONBOARDING.md',
     'deploy/DEPLOY.md',
     ...listFiles().filter((p) =>
       /^\.claude\/rules\/[^/]+\.md$/.test(p) ||

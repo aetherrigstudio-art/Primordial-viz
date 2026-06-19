@@ -7,10 +7,10 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 188 files across 17 categories.
+> 189 files across 17 categories.
 
 ## Contents
-- [Overview & Planning](#overview--planning) (10)
+- [Overview & Planning](#overview--planning) (11)
 - [Specs & Long-form Docs](#specs--long-form-docs) (7)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
@@ -35,6 +35,7 @@
 | [`CLAUDE.md`](CLAUDE.md) | Working notes for agents in this repo. |
 | [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md) | Auto-generated — do not edit by hand. |
 | [`LICENSE`](LICENSE) | Software license for the project. |
+| [`ONBOARDING.md`](ONBOARDING.md) | The single entry point for an AI agent starting work on Primordial-viz. |
 | [`README.md`](README.md) | An audio-reactive WebGL2 visual instrument for live electronic-music gigs. |
 | [`ROADMAP.md`](ROADMAP.md) | Phased plan for primordial — the audio-reactive WebGL2 visual instrument. |
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
