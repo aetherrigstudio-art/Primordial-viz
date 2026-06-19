@@ -47,7 +47,7 @@ function makeUniformSetter(gl, prog) {
 }
 
 export class Renderer {
-  constructor(canvas) {
+  constructor(canvas, opts = {}) {
     const gl = canvas.getContext('webgl2', {
       alpha: false,
       antialias: false,
@@ -61,6 +61,11 @@ export class Renderer {
 
     this.canvas = canvas;
     this.gl = gl;
+
+    // Shader sources default to the shipped slime/post pair; the workshop
+    // sandbox passes a sketch's fragment source here to preview it.
+    this.slimeFrag = opts.slimeFrag || SLIME_FRAG;
+    this.postFrag = opts.postFrag || POST_FRAG;
 
     // Set true between a webglcontextlost event and a successful restore; the
     // render loop skips drawing while it's set (GL calls on a lost context are
@@ -95,8 +100,8 @@ export class Renderer {
     // Empty VAO so a bound VAO exists for the attribute-less draw.
     this.vao = gl.createVertexArray();
 
-    this.slimeProg = linkProgram(gl, FULLSCREEN_VERT, SLIME_FRAG);
-    this.postProg = linkProgram(gl, FULLSCREEN_VERT, POST_FRAG);
+    this.slimeProg = linkProgram(gl, FULLSCREEN_VERT, this.slimeFrag);
+    this.postProg = linkProgram(gl, FULLSCREEN_VERT, this.postFrag);
     this.slimeU = makeUniformSetter(gl, this.slimeProg);
     this.postU = makeUniformSetter(gl, this.postProg);
 
