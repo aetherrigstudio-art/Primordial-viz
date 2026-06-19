@@ -2,8 +2,6 @@
 
 ## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
 
-- [ ] **product-domain comparison (raw-WebGL2 / shader / audio-visual web apps)** | what: the SECOND comparison the primary-axis brief deferred — compare Primordial-viz against repos in our PRODUCT domain (raw-WebGL2 / GLSL shader / audio-reactive visual web apps), regardless of Claude usage. Axes: renderer architecture (raw WebGL2 vs lib), audio→FFT→texture approach, mobile perf budget, look/preset systems, deploy. | how: same method as the Claude-axis run — find 3-5 real, active repos, read primary sources, compare in a table + per-repo notes + adopt-vs-ahead synthesis. Context in `research/claude-repo-comparison/BRIEF.md` ("Later goal") + the delivered `REPORT.md`. | deliver: `research/product-domain-comparison/REPORT.md` + SendUserFile summary | parked 2026-06-19 (Claude-axis comparison DONE)
-- [ ] **whole-workflow-systems comparison (Claude-axis, run 4)** | what: the deferred 3rd comparison kind from the full-repo brainstorm — repos that wrap Claude into an end-to-end dev WORKFLOW: ccpm (GitHub-Issues + git-worktree parallel agents), Continuous-Claude-v2 (context mgmt), claude-flow, and similar. Closest to OUR process/continuity machinery specifically (orient hook, committed continuity, parking, lessons). | how: same method — find 3-5 real active workflow-system repos, read primary sources, compare in the master table (Kind: `workflow`) + per-repo notes + adopt-vs-ahead. Context: `docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md` + delivered `REPORT.md`. | deliver: extend `research/claude-repo-comparison/REPORT.md` + SendUserFile | parked 2026-06-19 (full-repo run DONE)
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
 
 ## Session — 2026-06-19 (Claude-repo comparison WIDENED to full repos — DELIVERED)
@@ -64,6 +62,50 @@ transferable theme is **evaluation**.
 
 **Parked the follow-up:** product-domain comparison (raw-WebGL2 / shader /
 audio-visual apps) is now the top Open thread. No app code changed.
+
+## Session — 2026-06-19 (two comparison runs: workflow-systems + product-domain)
+
+Executed the two parked comparison threads sequentially via the proven method
+(discovery -> one general-purpose agent per repo in parallel reading primary
+sources -> synthesize table + per-repo notes + adopt-vs-ahead). On branch
+`claude/onboarding-hxwhw6`.
+
+**Run 4 — whole-workflow systems (Claude-axis, extends `research/claude-repo-comparison/REPORT.md`).**
+Slate (all MIT unless noted, all active, primary-source-profiled): `automazeio/ccpm`
+(~8.2k, PM via GitHub Issues + worktrees), `ruvnet/ruflo`/claude-flow (~60k,
+swarm/consensus meta-harness, is itself an MCP server), `eyaltoledano/claude-task-master`
+(~27.6k, **MIT WITH Commons Clause** — can't resell/host), `parcadei/Continuous-Claude-v3`
+(~3.8k, the closest continuity peer — ledgers+YAML handoffs+save/wipe/resume on a
+Postgres+pgvector+daemon stack), `github/spec-kit` (~114k, first-party spec-driven
+constitution->specify->plan->tasks->implement with hard Phase-Gates). Added 5 `Kind:
+workflow` rows (14->19), per-repo notes, folded into synthesis; updated Three->Four
+runs. **Key honest finding:** continuity is **no longer unique** (Continuous-Claude
+proves the pattern); our edge is **constraint-fit** — git-only, zero-infra,
+branch-scoped, phone-friendly — vs their heavy stacks. Cheapest borrows (both git-only,
+already half-parked): a **PreCompact handoff hook** and **surfacing recent lessons in
+orient**.
+
+**Run 5 — product-domain (NEW `research/product-domain-comparison/REPORT.md`).**
+Axis = our product (raw-WebGL2 / shader / audio-reactive web apps). Slate:
+`jberg/butterchurn` (MIT engine, ~1.9k, Milkdrop->WebGL2, preset cross-fade),
+`hydra-synth/hydra` (**AGPL**, ~2.6k, regl, DSL-as-look), `projectM-visualizer/projectm`
+(**LGPL-2.1**, ~4.3k, C++/Emscripten->WebGL2, own DSP+beat detect), `fand/veda`/vedajs
+(**MIT**, ~531, three.js, **Shadertoy-style audio texture — our closest cousin**),
+`hvianna/audioMotion-analyzer` (**AGPL**, ~922, Canvas2D library, state-of-the-art
+audio features). Dimensions: renderer / audio->features / mobile budget / looks /
+deploy+license. **Key findings:** (1) we are the **only peer purpose-built for the
+mobile gig path** — none of the five ship dynamic-res + step-cap + pause-on-hidden;
+(2) our **512x2 Shadertoy audio texture is independently validated by VEDA**; (3)
+**licensing punchline** — only VEDA is MIT; hydra+audioMotion are AGPL (hard blockers),
+projectM is LGPL, and every Milkdrop path drags preset art with its own terms — which
+**vindicates our write-our-own posture**. Adopt (technique only): preset cross-fade,
+perceptual bands (bark/mel), look playlist, waveform aligner.
+
+**Verified:** `npm run health` — only the pre-existing gitignored `render.png` drift
+fails (acceptable); no app code touched; no gen-docs regen triggered (research-only
+edits). Both runs committed + pushed (`33ebd33`, `1cc5d3d`). **Delivery note:**
+`SendUserFile` is unavailable in this agent environment — both reports are committed
+to the branch; operator can read them in-repo (paths above).
 
 ## Session - 2026-06-19 (LESSON + FIX: continuity is branch-scoped)
 
