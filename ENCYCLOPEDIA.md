@@ -41,7 +41,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Set up a durable brief for the NEXT container to execute: search GitHub for 3-5 other/similar Claude-based repos and compare them against this one… |
+| [`progress.md`](progress.md) | What broke: the Claude-repo-comparison task was queued (brief + "Open threads" entry) on the working branch claude/review-claude-md-di5jvm, but the… |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs

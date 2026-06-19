@@ -5,6 +5,35 @@
 - [ ] **NEXT TASK - compare this repo vs other Claude-based repos** | what: search GitHub for 3-5 other/similar Claude-based repositories and compare them against this one, primary axis = Claude-agent tooling + methodology (CLAUDE.md / skills / hooks / subagents / MCP / docs-automation / process), across 4 dimensions (config&rules, skills/agents/MCP, hooks&automation, process&methodology); later goal = a second comparison on the product domain (raw-WebGL2 / shader / audio-visual apps) | how: FULL brief with all context + tools + selection criteria + deliverable is in `research/claude-repo-comparison/BRIEF.md` - READ IT AND EXECUTE | deliver: `research/claude-repo-comparison/REPORT.md` (committed) + SendUserFile to the operator with a concise summary | set up 2026-06-19
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
 
+## Session - 2026-06-19 (LESSON + FIX: continuity is branch-scoped)
+
+**What broke:** the Claude-repo-comparison task was queued (brief + "Open threads"
+entry) on the working branch `claude/review-claude-md-di5jvm`, but the next
+session started on a DIFFERENT branch (`claude/onboarding-z2z67e`) forked off
+`main`. `main` is **67 commits behind** the working branch, so that session's
+orient hook + continuity docs had none of it - the queued task was silently
+missed. Root cause: "only committed files survive" is true only **on the branch
+you committed to**; new tasks fork off stale `main`.
+
+**Fix applied (this branch):**
+- `orient.sh` is now **cross-branch aware**: best-effort `git fetch`, detect the
+  most-recently-updated remote branch, read the handoff + open threads FROM IT,
+  and print a loud WARNING + the exact `git checkout` when the session is on a
+  different branch. Verified by simulating a wrong-branch session - it surfaced
+  the queued task and the switch command. Also fixed a latent bug: the "Latest
+  progress entry" line used `tail -1` (oldest heading) - now reads the newest
+  (top) entry.
+- Documented the rule in `ONBOARDING.md` ("Continuity is BRANCH-SCOPED") and
+  `CLAUDE.md`: keep durable state + `.claude/` reaching `main` (merge regularly)
+  or new sessions start blind.
+
+**LINCHPIN (needs operator):** these guards only reach a future session once they
+are on the branch it forks from = **`main`**. The working branch must be merged
+to `main` (I am branch-restricted to `claude/review-claude-md-di5jvm` and cannot
+push to `main` without explicit permission). Until then, start sessions ON the
+working branch. Recommended: merge/PR this branch to `main`, then keep `main`
+current.
+
 ## Session - 2026-06-19 (queued next-agent task: Claude-repo comparison)
 
 Set up a durable brief for the NEXT container to execute: search GitHub for 3-5

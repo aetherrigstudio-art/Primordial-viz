@@ -14,8 +14,11 @@ echo "PRIMORDIAL — session orientation"
 echo "Canonical repo: Primordial-viz (dash). Full state + active plan: task_plan.md + progress.md (imported by CLAUDE.md)."
 echo "New here? START HERE -> ONBOARDING.md (start gate + role routes). Before editing: confirm the branch + the next step below, read your task's rule, and get 'npm run health' green; restate the next step to the user first."
 
+cur=""
+active=""
 if command -v git >/dev/null 2>&1; then
-  echo "Branch: $(git branch --show-current 2>/dev/null || echo '?')"
+  cur="$(git branch --show-current 2>/dev/null || echo '?')"
+  echo "Branch: ${cur:-?}"
   dirty="$(git status --porcelain 2>/dev/null | grep -c . || true)"
   if [ "${dirty:-0}" != "0" ]; then
     echo "Working tree: ${dirty} uncommitted change(s) — only COMMITTED files survive a new container; commit before the session ends."
@@ -24,14 +27,37 @@ if command -v git >/dev/null 2>&1; then
   fi
   echo "Recent commits:"
   git log --oneline -5 2>/dev/null | sed 's/^/  /'
+
+  # Cross-branch continuity. The latest handoff + open threads live on whichever
+  # branch is MOST RECENTLY updated. A fresh container can start on a stale or
+  # different branch (a new task often forks off main, which lags the working
+  # branch) and would otherwise load a stale local progress.md and silently miss
+  # queued work. So: fetch (best-effort, time-boxed, never errors the session),
+  # find the most-recent remote branch, read continuity FROM IT, and warn to switch.
+  if command -v timeout >/dev/null 2>&1; then timeout 15 git fetch --quiet origin 2>/dev/null || true
+  else git fetch --quiet origin 2>/dev/null || true; fi
+  active="$(git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/remotes/origin 2>/dev/null | grep -v '/HEAD$' | head -1)"
+  active="${active#origin/}"
+  if [ -n "$active" ] && [ -n "$cur" ] && [ "$cur" != "?" ] && [ "$active" != "$cur" ]; then
+    echo "WARNING — ACTIVE WORK IS ON ANOTHER BRANCH: origin/${active} is the most recently updated; you are on '${cur}'."
+    echo "  The handoff + open threads below are read from origin/${active}. Switch with: git checkout ${active}  (or branch/rebase from it). Do NOT start new work on '${cur}' or the branches diverge again."
+  fi
 fi
 
-# Latest handoff pointer — the source of truth for "what's next".
-if [ -f progress.md ]; then
-  last="$(grep '^## ' progress.md 2>/dev/null | tail -1)"
-  [ -n "$last" ] && echo "Latest progress entry: ${last#\#\# }  → read the tail of progress.md for the handoff / next step."
-  # Open threads — parked work to resume (the '## Open threads' section).
-  open="$(awk '/^## Open threads/{f=1;next} f&&/^## /{f=0} f&&/^- \[ \]/{print}' progress.md 2>/dev/null)"
+# Load progress.md from the active branch when we are on a different one, so the
+# handoff + open threads are never the stale local copy; fall back to local.
+pcontent=""
+if [ -n "$active" ] && [ -n "$cur" ] && [ "$active" != "$cur" ]; then
+  pcontent="$(git show "origin/${active}:progress.md" 2>/dev/null)"
+fi
+[ -z "$pcontent" ] && [ -f progress.md ] && pcontent="$(cat progress.md 2>/dev/null)"
+
+if [ -n "$pcontent" ]; then
+  # Newest session entry = first '## ' heading after the Open threads section
+  # (newest entries are kept at the top, just under Open threads).
+  last="$(printf '%s\n' "$pcontent" | grep '^## ' | grep -v 'Open threads' | head -1)"
+  [ -n "$last" ] && echo "Latest progress entry: ${last#\#\# }  → newest entries are at the TOP of progress.md; read there for the handoff / next step."
+  open="$(printf '%s\n' "$pcontent" | awk '/^## Open threads/{f=1;next} f&&/^## /{f=0} f&&/^- \[ \]/{print}')"
   if [ -n "$open" ]; then
     n="$(printf '%s\n' "$open" | grep -c .)"
     echo "Open threads ($n) — parked work to resume (run /park to add; remove the line when done):"

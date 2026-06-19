@@ -183,8 +183,16 @@ lives in GitHub and survives container wipes. Re-run/inspect CI via the GitHub
 MCP, not local FTP.
 
 Canonical repo: **`Primordial-viz`** (dash). The current active branch and PR
-live in `progress.md` (last handoff entry) — that file is the source of truth,
-not this line.
+live in `progress.md` (newest handoff entry at the top) — that file is the source
+of truth, not this line.
+
+**Continuity is branch-scoped.** Committed files survive only on the branch they
+were committed to. New tasks can fork a fresh branch off the default branch
+(`main`), which may lag the active working branch — so the `orient` hook now
+fetches the most-recently-updated branch, surfaces its handoff + open threads,
+and WARNS (with the `git checkout`) when you are elsewhere. **Heed it.** And keep
+durable state + `.claude/` reaching `main` (merge regularly) or new sessions
+start blind. See `ONBOARDING.md` ("Continuity is BRANCH-SCOPED").
 
 Claude-environment docs: `.claude/ROADMAP.md` (roadmap + AI-handoff method &
 template), `.claude/TODO.md` (checklist), `.claude/cloud-setup.sh` (paste into the

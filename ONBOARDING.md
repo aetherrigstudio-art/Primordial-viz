@@ -51,6 +51,25 @@ as `src/shaders/*.js` (no `.glsl` files). Looks are params-only JSON.
 ## Live state (not here - kept fresh elsewhere)
 
 Branch, the current next step, and parked "open threads" are in the orient block
-above and the tail of `progress.md`. The imported `task_plan.md` + `progress.md`
-are the full state. This file changes rarely; the state files change every
-session.
+above and the top of `progress.md` (newest entries first). The imported
+`task_plan.md` + `progress.md` are the full state. This file changes rarely; the
+state files change every session.
+
+## Continuity is BRANCH-SCOPED (read this)
+
+"Only committed files survive a wipe" - true, but they survive **on the branch
+you committed them to**. A new task often spawns a fresh branch off the default
+branch (`main`), which can lag the active working branch by many commits - so a
+session can start with stale or missing continuity (a handoff queued on the
+working branch will not be on `main`). Guards now in place:
+
+- The `orient` hook **fetches and detects the most recently updated remote
+  branch**, reads the handoff + open threads FROM IT, and prints a loud WARNING
+  with the exact `git checkout` if you are on a different branch. **Heed it:**
+  switch to the active branch before starting work, or your changes diverge.
+- **Keep the fork base current.** Durable continuity (`progress.md`,
+  `task_plan.md`, queued briefs) and `.claude/` tooling only reach future
+  sessions once they are on the branch new sessions fork from (the default branch
+  `main`). Merge the working branch to `main` regularly, or new sessions keep
+  starting blind. Do not let a long-lived feature branch drift dozens of commits
+  ahead of `main`.
