@@ -1,0 +1,42 @@
+name: deploy
+
+# Auto-deploy the static site to the TEST folder on primordial.video over FTPS,
+# using the dedicated Test@primordial.video FTP account (jailed to its own
+# folder). Runs on push to the working branch or a manual / GitHub-MCP trigger.
+# Files land in that account's folder, served at https://primordial.video/Test/.
+#
+# Host + username are inlined below (not sensitive). The ONLY secret you need to
+# add is the password:
+#   FTP_PASSWORD  → the password on the Test@primordial.video FTP account
+# (Settings → Secrets and variables → Actions → New repository secret.)
+
+on:
+  push:
+    branches: [claude/review-claude-md-di5jvm]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-test
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Stage the static site
+        run: |
+          mkdir -p site
+          cp -R index.html src site/
+          cp deploy/.htaccess site/.htaccess
+
+      - name: Upload to cPanel via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: premium252.web-hosting.com
+          username: Test@primordial.video
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./site/
+          server-dir: ./

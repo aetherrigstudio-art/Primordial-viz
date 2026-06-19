@@ -26,10 +26,18 @@ Legend: 📱 = you (app/web) · 🤖 = me (repo). Full context: `.claude/ROADMAP
 - [ ] **WS4** repo hygiene — prune vestigial `.glsl` rules in `deploy/.htaccess`
 - [ ] **WS5** finish CLAUDE.md / skills / agents tuning
 
+## 🤖 Me — knowledge & context system (detail in `.claude/ROADMAP.md`)
+- [x] Knowledge router table in `CLAUDE.md` (work area → required reading)
+- [x] `thought-based-reasoning` skill (structured design/planning reasoning)
+- [x] Rule-injector PreToolUse hook (surface scoped rules on shader/gl/audio edits; device-aware via `CLAUDE_CODE_ENTRYPOINT`)
+- [x] Skills auto-registration (`area:` field + gen-docs `@generated skills:router` block + `/skill-router` skill, complements `npx skills`)
+- [x] Drift gate (`gen-docs checkRefs` — referenced repo paths must exist; CI-gated) + fixed the stale `deploy-cpanel` skill
+- [ ] PreCompact hook: remind to update `progress.md` before compaction
+- [ ] `list_skills`/`get_skill` MCP tool (deferred — only worth it past ~20 skills)
+
 ## 🤖 Me — optional polish (needs OK)
 - [ ] Terse output style (phone-friendly)
 - [ ] Context7 MCP (`.mcp.json` + `enabledMcpjsonServers`)
-- [ ] PreCompact hook: remind to update `progress.md` before compaction
 - [ ] New `verify` / `deploy` skills (adding skills needs your OK)
 
 ## Handoff rule (every session)

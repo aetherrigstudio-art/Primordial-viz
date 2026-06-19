@@ -12,7 +12,7 @@
 // check-on-edit hook.
 
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -106,6 +106,29 @@ test('coerceParams fills missing keys from schema', () => {
 });
 
 // ---------------------------------------------------------------------------
+// Workshop synthetic audio
+// ---------------------------------------------------------------------------
+const { synthAudio } = await import('../workshop/synth-audio.mjs');
+
+test('synthAudio returns full feature set in range, deterministic', () => {
+  const a = synthAudio(1.23, { bpm: 120 });
+  for (const k of ['bass', 'mid', 'treble', 'level', 'flux', 'beat']) {
+    assert.ok(a[k] >= 0 && a[k] <= 1, `${k} in 0..1`);
+  }
+  assert.ok(a.fft instanceof Uint8Array && a.fft.length === 512, 'fft is Uint8Array(512)');
+  assert.ok(a.wave instanceof Uint8Array && a.wave.length === 512, 'wave is Uint8Array(512)');
+  const b = synthAudio(1.23, { bpm: 120 });
+  assert.deepEqual(a.fft, b.fft, 'deterministic fft');
+  assert.equal(a.bass, b.bass, 'deterministic bass');
+});
+
+test('synthAudio beat pulse peaks on the downbeat', () => {
+  const onBeat = synthAudio(0.0, { bpm: 120 }).beat;     // phase 0
+  const offBeat = synthAudio(0.25, { bpm: 120 }).beat;   // mid-beat (0.5s period)
+  assert.ok(onBeat > offBeat, `beat on-downbeat (${onBeat}) > mid-beat (${offBeat})`);
+});
+
+// ---------------------------------------------------------------------------
 // ParamStore — versioned, defensive persistence
 // ---------------------------------------------------------------------------
 const { ParamStore } = await import('../src/params/store.js');
@@ -184,6 +207,26 @@ await atest('registry loadLooks() returns inline set matching the JSON files', a
     assert.deepEqual(inline, jsonLooks[id], `inline "${id}" matches src/looks JSON`);
   }
 });
+
+// ---------------------------------------------------------------------------
+// Workshop sketches - each must export a GLSL ES 3.00 frag + a valid json
+// ---------------------------------------------------------------------------
+const sketchRoot = join(root, 'workshop', 'sketches');
+if (existsSync(sketchRoot)) {
+  const names = readdirSync(sketchRoot, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name);
+  for (const name of names) {
+    await atest(`workshop sketch ${name} is valid`, async () => {
+      const mod = await import(join(sketchRoot, name, name + '.frag.js'));
+      assert.ok(typeof mod.SKETCH_FRAG === 'string', 'exports SKETCH_FRAG string');
+      assert.ok(mod.SKETCH_FRAG.startsWith('#version 300 es'),
+        'frag begins with "#version 300 es" (byte one)');
+      const j = JSON.parse(readFileSync(join(sketchRoot, name, name + '.json'), 'utf8'));
+      assert.ok(j.name && typeof j.params === 'object', 'json has name + params object');
+    });
+  }
+}
 
 // ---------------------------------------------------------------------------
 console.log(`\n${pass} passed, ${fail} failed`);

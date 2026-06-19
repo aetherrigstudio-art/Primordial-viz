@@ -26,10 +26,9 @@ let analyser = null;
 let micActive = false;
 
 // Smoothed beat pulse exposed to shaders.
-const features = { bass: 0, mid: 0, treble: 0, level: 0, beat: 0 };
+const features = { bass: 0, mid: 0, treble: 0, level: 0, flux: 0, beat: 0 };
 
-// Render-health beacon for laptop-free / headless verification
-// (test/render-check.mjs reads window.__primordial). Never affects rendering.
+// Internal render-state handle (frame count / GL status). Never affects rendering.
 const health = { frames: 0, glOk: false, error: null, pause: false };
 if (typeof window !== 'undefined') window.__primordial = health;
 
@@ -58,6 +57,7 @@ const dyn = {
 };
 
 let running = true;          // paused when document hidden
+let rafId = 0;               // current requestAnimationFrame handle (for teardown)
 let lastT = performance.now();
 let simTime = 0;             // visual clock (slowed under prefers-reduced-motion)
 let frameCount = 0;
@@ -118,7 +118,7 @@ function updateDynamicRes(ms) {
   if (dyn.msAvg > SLOW) {
     // Drop steps first (cheaper visual hit), then scale.
     if (dyn.steps > 28) dyn.steps -= 4;
-    else if (dyn.renderScale > 0.4) dyn.renderScale = Math.max(0.4, dyn.renderScale - 0.05);
+    else if (dyn.renderScale > 0.5) dyn.renderScale = Math.max(0.5, dyn.renderScale - 0.05);
     else return;
     dyn.cooldown = 30;
     syncPerfToUI();
@@ -145,10 +145,14 @@ function round2(x) { return Math.round(x * 100) / 100; }
 // ---------------------------------------------------------------------------
 function frame(now) {
   if (health.pause) return;          // hard freeze (headless screenshots / teardown)
-  requestAnimationFrame(frame);
+  rafId = requestAnimationFrame(frame);
   if (!running) { lastT = now; return; }
 
-  const dt = Math.min(0.1, (now - lastT) / 1000);
+  // Guard dt: a paused/backgrounded tab or a bad clock can yield NaN/negative/
+  // huge deltas; clamp to a sane frame step so the sim clock never jumps.
+  let dt = (now - lastT) / 1000;
+  if (!Number.isFinite(dt) || dt < 0) dt = 0;
+  dt = Math.min(0.1, dt);
   lastT = now;
   simTime += dt * motionScale;
   const t = simTime;
@@ -161,6 +165,7 @@ function frame(now) {
     features.mid = f.mid;
     features.treble = f.treble;
     features.level = f.level;
+    features.flux = f.flux;
     beat.update(analyser.rawBassEnergy(), dt);
   } else {
     // Silent fallback: gentle synthetic motion so there's life pre-mic.
@@ -168,25 +173,43 @@ function frame(now) {
     features.mid = 0.14 + 0.1 * Math.sin(t * 1.1 + 1.0);
     features.treble = 0.1 + 0.08 * Math.sin(t * 1.7 + 2.0);
     features.level = 0.12 + 0.08 * Math.sin(t * 0.5);
+    features.flux = 0.06 + 0.06 * Math.max(0, Math.sin(t * 2.3));
     beat.update(features.bass, dt);
   }
   features.beat = beat.pulse;
 
   // --- Render ---
+  // Skip drawing while the GL context is lost (calls would no-op); the browser
+  // fires webglcontextrestored to recreate resources and clear the flag.
+  if (renderer.contextLost) { lastT = now; return; }
   resize();
   const params = resolveParams();
-  pipeline.render({
-    time: t,
-    canvasW: canvas.width,
-    canvasH: canvas.height,
-    renderScale: dyn.renderScale,
-    steps: dyn.steps,
-    features,
-    slimeParams: params.slime,
-    postParams: params.post,
-    fft: micActive && analyser ? analyser.freq : null,
-    wave: micActive && analyser ? analyser.wave : null,
-  });
+  try {
+    pipeline.render({
+      time: t,
+      canvasW: canvas.width,
+      canvasH: canvas.height,
+      renderScale: dyn.renderScale,
+      steps: dyn.steps,
+      features,
+      slimeParams: params.slime,
+      postParams: params.post,
+      fft: micActive && analyser ? analyser.freq : null,
+      wave: micActive && analyser ? analyser.wave : null,
+    });
+  } catch (err) {
+    // An unrecoverable GL error (e.g. an incomplete render target on this
+    // device) would otherwise throw every frame. Stop the loop and surface it.
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = 0;
+    health.error = String(err && err.message ? err.message : err);
+    const gate = document.getElementById('gate');
+    if (gate) {
+      gate.classList.remove('hidden');
+      gate.innerHTML = '<h1>Rendering stopped</h1><p>' + health.error + '</p>';
+    }
+    return;
+  }
 
   // --- Perf accounting ---
   const ms = performance.now() - now;
@@ -213,18 +236,36 @@ function frame(now) {
 // ---------------------------------------------------------------------------
 // Mic start (from the Start gate gesture)
 // ---------------------------------------------------------------------------
+function micErrorMessage(err) {
+  const name = err && err.name;
+  if (name === 'NotAllowedError' || name === 'SecurityError') return 'Microphone permission denied.';
+  if (name === 'NotFoundError' || name === 'OverconstrainedError') return 'No audio input device found.';
+  if (name === 'NotReadableError') return 'The input device is in use by another app.';
+  return 'Could not start the microphone.';
+}
+
+// Returns { ok, message }. On failure the caller can show `message` and fall
+// back to the visuals-only path.
 async function startMic(deviceId) {
   try {
-    if (!audioInput) audioInput = new AudioInput();
+    if (!audioInput) {
+      audioInput = new AudioInput();
+      audioInput.onDevicesChanged = (devices, id) => controls.setDevices(devices, id);
+    }
     const source = await audioInput.start(deviceId || null);
+    // iOS/Safari can leave the context suspended even after resume() if not
+    // driven by a trusted gesture; surface it rather than running silently.
+    if (audioInput.ctx && audioInput.ctx.state === 'suspended') {
+      return { ok: false, message: 'Audio is blocked by the browser. Tap again to allow sound.' };
+    }
     if (!analyser) analyser = new Analyser(audioInput.ctx);
     analyser.connect(source);
     micActive = true;
     controls.setDevices(audioInput.devices, audioInput.deviceId);
-    return true;
+    return { ok: true, message: '' };
   } catch (err) {
     console.warn('Mic start failed:', err);
-    return false;
+    return { ok: false, message: micErrorMessage(err) };
   }
 }
 
@@ -249,7 +290,10 @@ async function boot() {
     },
     onLook: (id) => applyLook(id),
     onDevice: async (deviceId) => {
-      if (micActive) await startMic(deviceId);
+      if (micActive) {
+        const res = await startMic(deviceId);
+        if (!res.ok) console.warn('Device switch failed:', res.message);
+      }
     },
     onTap: () => {
       beat.tap();
@@ -280,12 +324,30 @@ async function boot() {
   const gate = document.getElementById('gate');
   const startBtn = document.getElementById('startBtn');
   const skipBtn = document.getElementById('skipBtn');
+
+  // Inline, screen-reader-announced error on the gate (mic failures stay
+  // visible here instead of vanishing into the console).
+  function showGateError(msg) {
+    let p = document.getElementById('gateError');
+    if (!p) {
+      p = document.createElement('p');
+      p.id = 'gateError';
+      p.setAttribute('role', 'alert');
+      p.className = 'gate-error';
+      skipBtn.parentNode.insertBefore(p, skipBtn);
+    }
+    p.textContent = msg + ' You can continue with Visuals Only.';
+  }
+
   startBtn.addEventListener('click', async () => {
-    const ok = await startMic(null);
-    gate.classList.add('hidden');
-    if (!ok) {
-      // Still run with the synthetic fallback.
-      console.info('Running without mic (permission denied or unavailable).');
+    startBtn.disabled = true;
+    const res = await startMic(null);
+    startBtn.disabled = false;
+    if (res.ok) {
+      gate.classList.add('hidden');
+    } else {
+      // Keep the gate up so the operator sees why and can pick Visuals Only.
+      showGateError(res.message);
     }
   });
   skipBtn.addEventListener('click', () => {
@@ -300,7 +362,16 @@ async function boot() {
 
   window.addEventListener('resize', resize, { passive: true });
 
-  requestAnimationFrame(frame);
+  // Teardown on navigation away: stop the loop and release the mic so we don't
+  // leave the capture indicator on or burn battery on a backgrounded page.
+  window.addEventListener('pagehide', () => {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = 0;
+    if (audioInput) audioInput.stop();
+    micActive = false;
+  });
+
+  rafId = requestAnimationFrame(frame);
 }
 
 function finishControlsSetup() {

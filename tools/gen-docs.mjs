@@ -14,7 +14,7 @@
 // new, not-yet-committed files. Deterministic output → safe as a CI gate.
 
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, extname, basename } from 'node:path';
 
@@ -50,9 +50,11 @@ const CATEGORIES = [
   ['App — UI', (p) => p.startsWith('src/ui/')],
   ['App — Other source', (p) => p.startsWith('src/')],
   ['Tests & Verification', (p) => p.startsWith('test/')],
+  ['Desktop / Standalone (Tauri)', (p) => p.startsWith('src-tauri/') || p === 'vite.config.js'],
   ['Tooling / Scripts', (p) => p.startsWith('tools/')],
   ['Claude Environment', (p) => p.startsWith('.claude/')],
-  ['Deployment', (p) => p.startsWith('deploy/')],
+  ['Deployment', (p) => p.startsWith('deploy/') || p === '.cpanel.yml'],
+  ['Vendored libraries', (p) => p.startsWith('vendor/')],
   ['Research', (p) => p.startsWith('research/')],
   ['CI / Build Config', (p) => p.startsWith('.github/') || /^(package(-lock)?\.json|\.gitignore|\.mcp\.json|\.editorconfig)$/.test(p)],
   ['Other', () => true],
@@ -175,6 +177,7 @@ function describe(relPath, text) {
 function fallback(relPath) {
   const known = {
     'LICENSE': 'Software license for the project.',
+    '.mcp.json': 'Project-scoped MCP server configuration for Claude Code.',
     'package.json': 'npm manifest — scripts + dev dependencies only (the app runtime stays zero-dependency).',
     'package-lock.json': 'Locked dependency tree for reproducible dev-tool installs.',
     '.gitignore': 'Paths excluded from version control.',
@@ -303,6 +306,119 @@ function buildTree(files) {
 }
 
 // ---------------------------------------------------------------------------
+// Skills router — a generated "Skills by area" table kept in sync inside
+// .claude/skills-router.md (imported by CLAUDE.md so the always-loaded file stays
+// lean), between <!-- @generated-start/end skills:router -->.
+// Each skill declares its workflow via a frontmatter `area:` field.
+// ---------------------------------------------------------------------------
+function listSkillFiles() {
+  return listFiles().filter((p) => /^\.claude\/skills\/[^/]+\/SKILL\.md$/.test(p));
+}
+
+function skillMeta(path) {
+  const text = readFileSync(join(root, path), 'utf8');
+  const fm = {};
+  if (text.startsWith('---')) {
+    const end = text.indexOf('\n---', 3);
+    if (end > 0) {
+      for (const line of text.slice(3, end).split('\n')) {
+        const m = line.match(/^([A-Za-z][\w-]*):\s*(.*)$/);
+        if (m) fm[m[1].toLowerCase()] = m[2].trim().replace(/^["']|["']$/g, '');
+      }
+    }
+  }
+  return {
+    name: fm.name || basename(dirname(path)),
+    description: fm.description || '',
+    area: fm.area || 'general',
+  };
+}
+
+function buildSkillsRouter() {
+  // Compact routing map only (area → skill names). Each skill's full description
+  // is already injected into context every session by the harness, so repeating
+  // it here would be redundant and would bloat the always-loaded CLAUDE.md — this
+  // stays one line per area so it scales to dozens of skills.
+  const byArea = new Map();
+  for (const s of listSkillFiles().map(skillMeta)) {
+    if (!byArea.has(s.area)) byArea.set(s.area, []);
+    byArea.get(s.area).push(s.name);
+  }
+  const lines = [];
+  lines.push('**Skills by area** — the routing map (each skill\'s description is injected every session; auto-generated from `.claude/skills/*/SKILL.md` `area:`, refreshed by `/skill-router` or `node tools/gen-docs.mjs`):');
+  lines.push('');
+  for (const area of [...byArea.keys()].sort()) {
+    const names = byArea.get(area).sort().map((n) => `\`${escapeCell(n)}\``).join(', ');
+    lines.push(`- **${escapeCell(area)}** — ${names}`);
+  }
+  return lines.join('\n');
+}
+
+// Replace a marked region in a markdown file. If the markers are absent, leave
+// the file untouched (safe — never corrupts a hand-written file).
+function updateRegion(text, name, body) {
+  const re = new RegExp(`(<!-- @generated-start ${name} -->\\n)[\\s\\S]*?(<!-- @generated-end ${name} -->)`);
+  if (!re.test(text)) return text;
+  return text.replace(re, `$1${body}\n$2`);
+}
+
+function routerRegionUpdated(text) {
+  return updateRegion(text, 'skills:router', buildSkillsRouter());
+}
+
+// ---------------------------------------------------------------------------
+// Drift gate — repo-rooted paths referenced in the knowledge docs must exist.
+// Conservative by design (zero false positives over correctness): only checks
+// backtick-quoted tokens that contain '/', have no glob/placeholder/space, and
+// are rooted at a real top-level repo entry. Catches "this file was renamed/
+// deleted but a doc still points at it"; intentionally skips bare filenames and
+// abstract paths (public_html, band lists like bass/mid/treble) to never
+// false-fail CI. Scanned docs: CLAUDE.md, deploy/DEPLOY.md, rules, skills.
+// ---------------------------------------------------------------------------
+// Skills adopted from the ecosystem (via `npx skills`, tracked in skills-lock.json)
+// are third-party — exclude them from the drift gate, which polices OUR authored
+// docs, not external content (their example paths can collide with our dir names).
+function adoptedSkills() {
+  try {
+    const lock = JSON.parse(readFileSync(join(root, 'skills-lock.json'), 'utf8'));
+    return new Set(Object.keys(lock.skills || {}));
+  } catch { return new Set(); }
+}
+
+function refDocs() {
+  const adopted = adoptedSkills();
+  return [
+    'CLAUDE.md',
+    'ONBOARDING.md',
+    'deploy/DEPLOY.md',
+    ...listFiles().filter((p) =>
+      /^\.claude\/rules\/[^/]+\.md$/.test(p) ||
+      (/^\.claude\/skills\/[^/]+\/SKILL\.md$/.test(p) && !adopted.has(p.split('/')[2]))),
+  ].filter((p) => existsSync(join(root, p)));
+}
+
+function checkRefs() {
+  const topLevel = new Set(listFiles().map((p) => p.split('/')[0]));
+  const missing = [];
+  for (const doc of refDocs()) {
+    // Strip fenced code blocks first — their ``` fences otherwise mis-pair the
+    // inline-code backtick scan below (and code examples aren't path references).
+    const text = readFileSync(join(root, doc), 'utf8').replace(/```[\s\S]*?```/g, '');
+    const seen = new Set();
+    for (const m of text.matchAll(/`([^`]+)`/g)) {
+      const tok = m[1].trim().replace(/\/+$/, '');
+      if (!tok.includes('/')) continue;            // skip bare filenames (ambiguous)
+      if (/[\s*<>{}()|$~?:,…]/.test(tok)) continue; // skip globs / placeholders / vars / URLs / prose ellipses
+      if (!topLevel.has(tok.split('/')[0])) continue; // only paths rooted at a real repo entry
+      if (seen.has(tok)) continue;
+      seen.add(tok);
+      if (!existsSync(join(root, tok))) missing.push(`${doc} → \`${tok}\``);
+    }
+  }
+  return missing;
+}
+
+// ---------------------------------------------------------------------------
 // Main — write/check both documents.
 // ---------------------------------------------------------------------------
 // Always include the generated docs themselves so the output converges in a
@@ -313,6 +429,8 @@ const docs = [
   ['ENCYCLOPEDIA.md', buildEncyclopedia(files)],
   ['TREE.md', buildTree(files)],
 ];
+// Generated regions kept in sync inside hand-written files (markdown markers).
+const regions = [['.claude/skills-router.md', routerRegionUpdated]];
 
 if (process.argv.includes('--check')) {
   let stale = false;
@@ -322,10 +440,36 @@ if (process.argv.includes('--check')) {
     if (current !== content) { console.error(`${name} is stale. Run: node tools/gen-docs.mjs`); stale = true; }
     else console.log(`${name} is up to date.`);
   }
+  for (const [name, fn] of regions) {
+    let current = '';
+    try { current = readFileSync(join(root, name), 'utf8'); } catch { /* missing */ }
+    if (fn(current) !== current) { console.error(`${name} generated region is stale. Run: node tools/gen-docs.mjs`); stale = true; }
+    else console.log(`${name} (generated region) is up to date.`);
+  }
+  const missingRefs = checkRefs();
+  if (missingRefs.length) {
+    console.error('Referenced repo paths are missing (drift) — fix the path or update the doc:');
+    for (const r of missingRefs) console.error(`  ${r}`);
+    stale = true;
+  } else {
+    console.log('Referenced repo paths all exist.');
+  }
   process.exit(stale ? 1 : 0);
 } else {
   for (const [name, content] of docs) {
     writeFileSync(join(root, name), content);
     console.log(`Wrote ${name} (${content.split('\n').length} lines).`);
+  }
+  for (const [name, fn] of regions) {
+    let current = '';
+    try { current = readFileSync(join(root, name), 'utf8'); } catch { /* missing */ }
+    const next = fn(current);
+    if (next !== current) { writeFileSync(join(root, name), next); console.log(`Updated ${name} generated region.`); }
+    else console.log(`${name} region already current.`);
+  }
+  const missingRefs = checkRefs();
+  if (missingRefs.length) {
+    console.warn('⚠ drift — referenced repo paths missing (fix the path or update the doc):');
+    for (const r of missingRefs) console.warn(`  ${r}`);
   }
 }

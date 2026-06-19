@@ -1,5 +1,119 @@
 # Progress Log — primordial
 
+## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
+
+- [ ] **NEXT TASK - compare this repo vs other Claude-based repos** | what: search GitHub for 3-5 other/similar Claude-based repositories and compare them against this one, primary axis = Claude-agent tooling + methodology (CLAUDE.md / skills / hooks / subagents / MCP / docs-automation / process), across 4 dimensions (config&rules, skills/agents/MCP, hooks&automation, process&methodology); later goal = a second comparison on the product domain (raw-WebGL2 / shader / audio-visual apps) | how: FULL brief with all context + tools + selection criteria + deliverable is in `research/claude-repo-comparison/BRIEF.md` - READ IT AND EXECUTE | deliver: `research/claude-repo-comparison/REPORT.md` (committed) + SendUserFile to the operator with a concise summary | set up 2026-06-19
+- [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
+
+## Session - 2026-06-19 (LESSON + FIX: continuity is branch-scoped)
+
+**What broke:** the Claude-repo-comparison task was queued (brief + "Open threads"
+entry) on the working branch `claude/review-claude-md-di5jvm`, but the next
+session started on a DIFFERENT branch (`claude/onboarding-z2z67e`) forked off
+`main`. `main` is **67 commits behind** the working branch, so that session's
+orient hook + continuity docs had none of it - the queued task was silently
+missed. Root cause: "only committed files survive" is true only **on the branch
+you committed to**; new tasks fork off stale `main`.
+
+**Fix applied (this branch):**
+- `orient.sh` is now **cross-branch aware**: best-effort `git fetch`, detect the
+  most-recently-updated remote branch, read the handoff + open threads FROM IT,
+  and print a loud WARNING + the exact `git checkout` when the session is on a
+  different branch. Verified by simulating a wrong-branch session - it surfaced
+  the queued task and the switch command. Also fixed a latent bug: the "Latest
+  progress entry" line used `tail -1` (oldest heading) - now reads the newest
+  (top) entry.
+- Documented the rule in `ONBOARDING.md` ("Continuity is BRANCH-SCOPED") and
+  `CLAUDE.md`: keep durable state + `.claude/` reaching `main` (merge regularly)
+  or new sessions start blind.
+
+**LINCHPIN (needs operator):** these guards only reach a future session once they
+are on the branch it forks from = **`main`**. The working branch must be merged
+to `main` (I am branch-restricted to `claude/review-claude-md-di5jvm` and cannot
+push to `main` without explicit permission). Until then, start sessions ON the
+working branch. Recommended: merge/PR this branch to `main`, then keep `main`
+current.
+
+## Session - 2026-06-19 (queued next-agent task: Claude-repo comparison)
+
+Set up a durable brief for the NEXT container to execute: search GitHub for 3-5
+other/similar Claude-based repos and compare them against this one (primary axis:
+Claude-agent tooling + methodology; later goal: product-domain / WebGL-audio
+axis), across config&rules, skills/agents/MCP, hooks&automation, and
+process&methodology. Full self-contained brief (context + tools + selection
+criteria + deliverable + definition-of-done) is in
+`research/claude-repo-comparison/BRIEF.md`; surfaced as the top "Open threads"
+entry so the orient hook + ONBOARDING start gate route a fresh agent straight to
+it. The next agent writes `research/claude-repo-comparison/REPORT.md` and
+SendUserFiles it to the operator. No app code changed this step.
+
+## Session - 2026-06-19 (Visual Workshop - sandbox clip loop SHIPPED)
+
+Built the Visual Workshop (spec: `docs/superpowers/specs/2026-06-19-visual-workshop-design.md`,
+plan: `docs/superpowers/plans/2026-06-19-visual-workshop.md`) via subagent-driven
+development (fresh implementer + reviewer per task) - a throwaway sandbox,
+separate from the shipped app, for workshopping visuals via short audio-driven
+clips delivered to the phone.
+
+- `workshop/sketches/<name>/` (committed): each sketch = `<name>.frag.js`
+  (exports `SKETCH_FRAG`, GLSL ES 3.00) + `<name>.json` (`{name,note,bpm,params}`).
+- `workshop/sandbox.html` + `sketch-runner.mjs`: mounts a sketch via the real
+  `Renderer` (now accepts `{slimeFrag,postFrag}`), driven by a deterministic
+  synthetic "fake song" (`workshop/synth-audio.mjs`). Generic uniform upload by
+  name (arrays -> vec3 u<Key>, numbers -> float u<Key>).
+- `npm run clip -- <name>` (`tools/workshop/clip.mjs`): records the sandbox to
+  `workshop/artifacts/<name>.webm` (or `--stills N`, `--secs S`) via Playwright
+  video, no ffmpeg. Artifacts gitignored. Deliver with `SendUserFile`.
+- `/workshop` skill (area design): drives discuss -> (optional) research
+  [creative + implementation best-practice] -> author -> clip -> react ->
+  graduate, with the reference-only licensing guardrail. Graduation applies the
+  mobile budget + visual-qa/audio-dsp review.
+
+Reference sketch `_demo` proves the loop. **Verified:** `npm run health` green,
+`node test/render-check.mjs` green (app unchanged), `npm run clip -- _demo`
+produces a ~800K webm. Per-task reviews clean (2 small fixes applied: runner
+self-halts on render error; clip recorder always kills its server + fast-fails
+on boot error).
+
+**Next:** use it - workshop the real `/Test/` visual. Possible upgrades: real
+sample-track audio, portrait clip option, expose `clip` as an MCP tool, per-genre
+synth presets.
+
+## Session — 2026-06-19 (WS1 code hardening — DONE)
+
+Executed **WS1** (the documented next-step across ~6 handoffs) on branch
+`claude/review-claude-md-di5jvm`, in 5 verified commits:
+
+1. **GL correctness** (`renderer.js`): audio texture LINEAR→**NEAREST** (512×2 R8
+   maps 1:1 to texels); `resizeFbo()` now does **checkFramebufferStatus** with an
+   RGBA16F→RGBA8 fallback + throw if still incomplete; **webglcontextlost/restored**
+   handlers (resources rebuilt via new `_createResources()`, `fboW/H`→0 to force
+   realloc); render loop skips drawing while `renderer.contextLost`.
+2. **Perf budget**: `schema.js` steps max 96→**64**, renderScale min 0.3→**0.5**;
+   `main.js` dynamic-res floor 0.4→**0.5**; `slime.frag.js` raymarch hard bound
+   96→**64**. Now matches `rules/shaders.md` (steps ≤64).
+3. **Spectral flux** (`analyser.js`): smoothed sum of positive frame-to-frame FFT
+   bin rises (onset energy), gained ×12, in `features`; wired `uFlux` through
+   `uniforms.js` + a subtle rim-flash in `slime.frag.js`. Completes the
+   `{bass,mid,treble,level,flux}` set (`rules/audio.md`).
+4. **Robustness** (`input.js`/`main.js`): `devicechange` listener (hotplug refresh
+   via `onDevicesChanged`); `startMic` returns `{ok,message}` and mic failures
+   (denied / no device / in-use / still-suspended) surface as a screen-reader
+   `role=alert` on the gate (operator can pick Visuals Only); `dt` NaN/neg/huge
+   guard; `cancelAnimationFrame` + mic release on `pagehide`.
+5. **Review fixes**: wrapped `pipeline.render()` so a fatal GL error stops the loop
+   + shows the gate (was un-caught); flux gain 8→12. Reviewed by **audio-dsp** +
+   **visual-qa** agents (both: ship-ready).
+
+**Verified:** `node test/render-check.mjs` (headless Chromium — shaders compile,
+loop advances, no console errors), `npm run health` (all gates: JS syntax, smoke
+12/12, site audit, docs+drift). Pushed.
+
+**Next:** **verify-live** items (need a real track/phone, not testable here):
+flux gain/punch, dynamic-res feel, mic-error UX on a phone. Then the real `/Test/`
+visual (still a placeholder), Phase 6 (first collab), WS3 (`research/findings/`),
+WS4 (prune vestigial `.glsl`/`.htaccess` rules). Parked: non-local RAG system.
+
 ## Session 1 — 2026-06-19 (planning + research)
 
 **Did:**
@@ -59,7 +173,7 @@ zip + git bundle for the user to push to a fresh GitHub repo.
   banners on BUILD-SPEC / findings.
 - **Verified Claude/host facts vs official docs:** auto-memory is on-by-default
   but **machine-local → does NOT survive cloud sessions**; CLAUDE.md <200 lines;
-  commands merged into skills; `.mcp.json` is current; Stellar Plus free SSL is
+  commands merged into skills; Stellar Plus free SSL is
   **not** auto-renewing; ~300k inode cap. `findings.md §B` confirmed accurate.
 - **WS0 verification backbone (laptop-free):** `test/smoke.mjs` (zero-dep
   schema/look/store checks), `test/render-check.mjs` (headless Chromium — WebGL2,
@@ -141,3 +255,415 @@ Chromium download needs Network=Full; auto-memory / `~/.claude/plans` do NOT per
 **Fresh-agent test:** PASS — a new agent loads `CLAUDE.md` (which imports
 `task_plan.md` + `progress.md`), runs the verify commands, and can begin WS1 from
 the exact edits above.
+
+## Session — 2026-06-19 (FTPS auto-deploy to /Test/ — LIVE)
+
+**Phase 2 (hosting) is partially unblocked: a live preview now serves over HTTPS.**
+
+**How it's wired (auto-deploys on every push to `claude/review-claude-md-di5jvm`):**
+GitHub push/`workflow_dispatch` → `.github/workflows/deploy.yml` stages
+`index.html three.html src vendor` + `deploy/.htaccess` → **SamKirkland
+FTP-Deploy-Action over FTPS** → cPanel → served at **https://primordial.video/Test/**.
+- Verified **HTTP 200** for `/Test/`, `/Test/index.html`, `/Test/three.html`.
+- `index.html` = raw WebGL2 build; `three.html` = three.js variant.
+
+**The two things that made it work (both were the blockers):**
+1. **`FTP_PASSWORD` repo secret** (Settings→Secrets→Actions) on the
+   `Test@primordial.video` account. Host + username are inlined in `deploy.yml`,
+   so it's the ONLY secret. Earlier runs failed: `Error: Input required and not
+   supplied: password`.
+2. **FTP account directory must be inside the web root.** It was created at
+   `~/primordial.video/Test` (NOT web-served → 404). Fix = delete + recreate the
+   `Test@primordial.video` FTP account with **Directory = `public_html/Test`**
+   (cPanel can't edit an existing account's dir). Workflow `server-dir: ./`
+   uploads into that home, so no workflow change was needed.
+
+**Environment gotcha (important for future agents):** this cloud container's
+network allows outbound **HTTPS/443 only** — FTP/21 and cPanel/2083 both
+**time out**, so you CANNOT deploy or drive cPanel from the container. The
+GitHub Actions runner does the FTP upload (it has open network). You CAN verify
+deploys with `curl https://primordial.video/Test/...` from the container.
+
+**Decisions:** keep the preview on **`/Test/`** for now (leaves the homepage
+untouched); pointing the same flow at `public_html` root (live homepage) is a
+future step. `Deploy@primordial.video` account still points outside the web root
+(unused).
+
+**Cleanup TODO (non-urgent):** ~~rotate the `Test@primordial.video` FTP password
+and update the `FTP_PASSWORD` secret~~ ✅ DONE — rotated + verified in sync (a
+post-rotation deploy authenticated and succeeded).
+
+**⚠️ The `/Test/` visual is a disposable PLACEHOLDER — NOT the target look.**
+It exists only as a canary to prove the deploy chain is live. Do **not** polish,
+tune, or treat the current placeholder slime as intended art direction; the
+real visual the artist wants there is still TBD and will be built fresh. When
+it is, it auto-ships to the same `/Test/` URL via the existing pipeline.
+
+## Session — 2026-06-19 (CLAUDE.md reconcile + remove three.js variant)
+
+**Two doc/scope cleanups after a directory review:**
+
+1. **Reconciled `CLAUDE.md` to reality** then trimmed it back: it had claimed
+   "no build step / zero deps / not three.js" while the repo had grown a Vite
+   build, a Tauri desktop app (`src-tauri/`), an MCP server (`tools/mcp/`), and a
+   second three.js front-end. CLAUDE.md now documents Vite/Tauri/MCP as
+   **additive** tooling and the web path as the hand-built raw-WebGL2 app.
+
+2. **Removed the three.js variant** (artist preference: the hand-built renderer
+   is the keeper, matching the original charter). Deleted `three.html`,
+   `src/three/`, and `vendor/` (the 2 MB vendored three.js). Updated everything
+   that referenced them: `.github/workflows/deploy.yml` + `.cpanel.yml` staging
+   (now `index.html src` only), `package.json` (dropped the `three` runtime dep →
+   back to **devDeps only**), `package-lock.json`, `tools/gen-docs.mjs`,
+   `deploy/DEPLOY.md`, and regenerated `ENCYCLOPEDIA.md` + `TREE.md`.
+   `index.html` (raw WebGL2 → `src/main.js`) is now the **sole** front-end.
+   Recoverable from git history if ever wanted back.
+
+**Verified:** `node test/smoke.mjs`, `node --check` on all JS,
+`node tools/gen-docs.mjs --check` (docs in sync). Deploy still ships `/Test/`.
+
+## Session — 2026-06-19 (rule-injector hook — device-aware)
+
+**Built the knowledge-system "rule-injector"** (was the top TODO in the
+Knowledge & context section of `.claude/ROADMAP.md`):
+
+- `.claude/hooks/inject-rules.sh` — **PreToolUse** hook (matcher `Edit|Write`,
+  wired in `.claude/settings.json`). On an edit to `src/shaders/**`/`src/gl/**`
+  it injects the **shaders** rule (mobile budget + write-our-own licensing) and
+  on `src/audio/**` the **audio** rule, via `hookSpecificOutput.additionalContext`
+  — so the load-bearing rules surface *before* the edit instead of relying on the
+  agent to fetch them. Non-blocking (exits 0); no-op on other paths; degrades to
+  a no-op if `jq` is missing.
+- **Device-aware (operator's chosen requirement).** Grounding found the container
+  exposes the operator's client via **`CLAUDE_CODE_ENTRYPOINT`** (this session =
+  `remote_mobile`). The hook branches on it: phone → "no desktop perf rig / Tauri
+  build here; lean on CI + defer real-device FPS to a venue test"; web / CLI
+  variants. It always asserts the **playback** target is a phone GPU (why the
+  budget is non-negotiable) and names the reviewer agent (`visual-qa` / `audio-dsp`).
+- Decided via the new **`thought-based-reasoning`** skill (dogfooded): the key
+  realization was that "device" splits into operator-device (detectable) vs
+  playback-device (always mobile).
+
+**Verified:** unit-tested the hook across shader/audio/gl/no-match paths and
+mobile/web/cli device branches (correct rule, tailored note, valid JSON, clean
+no-op); `settings.json` valid; smoke 12/12; `gen-docs --check` in sync.
+
+**Knowledge-system items remaining (see `.claude/ROADMAP.md`):** drift gate +
+fix the stale `deploy-cpanel` skill; PreCompact "update progress.md" reminder hook.
+
+## Session — 2026-06-19 (client-side privacy: strip AI/tooling fingerprints)
+
+**Operator requirement:** the deployed site must show **no proof it's AI-assisted**
+and expose **no reachable AI** to visitors. Audited the deployed surface
+(`index.html` + `src/` + `.htaccess` — the no-build static site is fully
+View-Source-readable). No live AI endpoint exists (only same-origin look JSON
+fetch; MCP server is dev-only, never deployed). Fixed three confirmed live leaks:
+
+1. **Directory listing was OPEN** — `/Test/src/`, `/src/looks/`, `/src/shaders/`
+   returned browsable indexes → added `Options -Indexes` to `deploy/.htaccess`.
+2. **`/Test/.ftp-deploy-sync-state.json` was public (HTTP 200)** — the
+   FTP-Deploy-Action's file manifest → added `<FilesMatch "^\.">  Require all
+   denied` to deny dotfiles.
+3. **AI-tooling fingerprints in deployed source** — `registry.js` comment named
+   `tools/mcp/lib/looks.mjs`; `main.js` comment named `test/render-check.mjs`.
+   Reworded both to tool-agnostic (the `@generated` marker is preserved — the
+   `looks.mjs` regex matches `[^\n]*` after the marker, verified by smoke).
+
+New durable rule in `.claude/rules/deploy.md` ("Client-side privacy") so a future
+agent can't reintroduce fingerprints. **Note:** repo is private; commit trailers
+carry `Co-Authored-By: Claude` → don't make it public without scrubbing history.
+
+**Follow-ups:** gate `window.__primordial`/`__looks` so they're absent in prod
+(touches the render-check test contract); a CI grep guard that fails if any
+AI/tooling fingerprint reaches `index.html`/`src/` (fits the roadmap "drift gate").
+**Verified:** smoke 12/12, node --check, fingerprint re-scan clean, gen-docs in sync.
+
+## Session — 2026-06-19 (skills auto-registration + /find-skill)
+
+**Goal:** adding a skill should auto-wire it into the workflow router and be
+discoverable on the server, no hand-edits.
+
+**Grounding result (saved work):** the **server side was already automatic** —
+`SKILL.md` files are git-tracked markdown, so the MCP `search_docs`/`get_doc`
+index and `ENCYCLOPEDIA.md` already include every skill (verified: `search_docs`
+returns `perf-budget/SKILL.md` as the top hit). The only gap was the **router**.
+
+**Built:**
+- Each skill declares a frontmatter **`area:`** (`shaders` perf-budget · `looks`
+  new-preset · `deploy` deploy-cpanel · `design` thought-based-reasoning · `meta`
+  find-skill).
+- **`gen-docs.mjs`** now regenerates a `@generated skills:router` **"Skills by
+  area"** table inside the `CLAUDE.md` Knowledge router (markdown
+  `<!-- @generated-start/end skills:router -->` markers; `updateRegion` leaves the
+  file untouched if markers are absent — safe). `gen-docs --check` now also gates
+  the CLAUDE.md region in CI.
+- The existing **PostToolUse `gen-docs` hook** fires on any skill edit → the router
+  block updates itself. Proven: adding `find-skill` auto-populated the table.
+- **`/find-skill`** skill (`area: meta`) — manual trigger to re-sync + "which skill
+  for task X?" discovery (leans on the MCP doc index that already covers skills).
+
+**Decided (via thought-based-reasoning, dogfooded):** "server" = the MCP server,
+already covered; chose the auto-block-in-CLAUDE.md approach (always-loaded) over a
+separate SKILLS.md; deferred a dedicated `list_skills` MCP tool until the skill
+count grows (skills scale cheaply — only the ~80–110-token description is always-on;
+bodies load on demand).
+
+**Verified:** generated block maps all 5 skills by area; `gen-docs --check` green
+(incl. CLAUDE.md region); `node --check tools/gen-docs.mjs`; smoke 12/12.
+
+## Session — 2026-06-19 (skill-router rename + drift gate)
+
+Grounded in the repo's Claude research (`findings.md §B`, `research/findings/mcp-*`).
+
+**1. Renamed `find-skill` → `skill-router`** (avoids colliding with the popular
+`npx skills` / `find-skills` community tool — vercel-labs/skills + skills.sh, which
+*discovers/installs external* skills). Our skill is now scoped to its unique job —
+the **local** in-repo router-sync + routing — and explicitly **defers external
+discovery/install to `npx skills`** (with a license/supply-chain review note). The
+generated `skills:router` note in CLAUDE.md and the gen-docs string now say
+`/skill-router`.
+
+**2. Drift gate (the recurring failure: docs drifted from reality twice).**
+`gen-docs.mjs` now runs `checkRefs()` — backtick-quoted, **repo-rooted** paths in
+`CLAUDE.md`, `deploy/DEPLOY.md`, `.claude/rules/*`, `.claude/skills/*` must exist;
+`gen-docs --check` gates it in CI. **Conservative** (skips bare filenames, globs,
+placeholders, vars, and — crucially — **fenced code blocks**, whose ``` fences
+otherwise mis-pair the inline-code scan; that was a real bug found + fixed in
+testing) so it never false-fails CI. Proven: it catches a dangling
+`src/three/main.js` ref and is clean at rest.
+
+**3. Fixed the first drift offender** — the `deploy-cpanel` skill: dropped the
+nonexistent `assets/`, and it now leads with the automatic Actions-FTPS deploy
+(manual cPanel is the full-site/homepage fallback).
+
+**Decided via thought-based-reasoning (dogfooded):** complement `npx skills`
+rather than compete; root the drift gate at known top-level entries for zero false
+positives. Deferred: adopting the `npx skills` ecosystem (needs license review),
+PreCompact hook, phone-resilient CLI-first discovery doc.
+
+**Verified:** `node --check tools/gen-docs.mjs`; `gen-docs --check` green (docs +
+CLAUDE.md region + drift gate); gate catches a dangling ref; smoke 12/12.
+
+## Session — 2026-06-19 (adopt community skills via `npx skills`)
+
+Used the real **`npx skills`** (vercel-labs, skills.sh) to discover community
+skills — wide sweep across webgl/shader/audio/perf/a11y/deploy/security/testing/
+docs. **Most of the ecosystem is wrong-stack for us** (three.js/R3F, React/
+Tailwind, Firebase, Flutter, Go/Python, Vercel/Azure) — filtered hard.
+
+**Adopted (vetted: read SKILL.md + license, markdown-only, no scripts):**
+- `addyosmani/web-quality-skills@performance` — **MIT** (Lighthouse web perf).
+- `addyosmani/web-quality-skills@accessibility` — **MIT** (WCAG 2.2; + WCAG/
+  A11Y reference docs). Reinforces our existing a11y pass.
+Installed with `--copy` (real files survive a container wipe) → `.claude/skills/
+{performance,accessibility}/`; provenance + content hashes in `skills-lock.json`.
+
+**Rejected (with reasons):**
+- `anthropics/skills@webapp-testing` (first-party, safe) — but **Python**
+  Playwright; mismatches our **JS** `render-check` + PHP-only host. Wrong stack.
+- `useai-pro/openclaw-skills-security@skill-vetter` — **no license** + unverified
+  OpenClaw provenance → fails its own (and our commercial) vetting gate.
+
+**Infra:** the drift gate (`gen-docs checkRefs`) now **excludes adopted skills**
+(those in `skills-lock.json`) — it polices OUR authored docs, not third-party
+content whose example paths can collide with our dir names. Adopted skills
+auto-register in the router under area `general` (the skill-router system handled
+them with zero manual wiring).
+
+**Adoption policy (durable):** treat every ecosystem skill as third-party —
+read its SKILL.md, confirm MIT/CC0/CC-BY license, prefer markdown-only / no
+scripts, prefer first-party (anthropics) or reputable (addyosmani) authors;
+`skills-lock.json` records provenance. (More candidates still being curated —
+user asked for a wider set.)
+
+**Verified:** `gen-docs --check` green (incl. drift gate w/ adopted-skill
+exclusion); router shows both new skills; smoke 12/12; CLAUDE.md 185 lines.
+
+**Round 2 (wider sweep) — adopted 3 more (vetted license + content):**
+- `anthropics/skills@frontend-design` — **Apache-2.0** (first-party; non-document
+  skills are Apache-2.0); for the neon HUD / control surface. Ships `LICENSE.txt`.
+- `addyosmani/agent-skills@debugging-and-error-recovery` — **MIT**.
+- `addyosmani/agent-skills@documentation-and-adrs` — **MIT**.
+Rejected `onewave-ai/...@color-palette-extractor` — **Tailwind**-oriented (wrong
+stack) + no license + unknown author. **Now 10 skills total** (5 ours + 5 adopted,
+all MIT/Apache, provenance in `skills-lock.json`). CLAUDE.md 188 lines — the
+always-loaded `skills:router` block is the growth driver; if it nears 200, move
+the generated block to a linked file. **Verified:** `gen-docs --check` green;
+smoke 12/12.
+
+**Round 3 (meta/workflow tier) — adopted 4 (all license-vetted, commercial-OK):**
+- `obra/superpowers@brainstorming` — **MIT** (232K installs). HARD-GATE "design
+  before implementing." ⚠️ shipped a `scripts/` **local WebSocket server** +
+  telemetry-named flag + a remote brand-image URL — diligence showed **no data
+  egress** (the flag only toggles branding; the server is an optional localhost
+  visual UI). For our lean/privacy/phone-driven repo we **stripped `scripts/` +
+  `visual-companion.md`** (kept the standalone methodology; added an adaptation
+  note). MIT permits the modification.
+- `obra/superpowers@writing-plans` — MIT. Plan/spec discipline.
+- `warpdotdev/common-skills@spec-driven-implementation` — MIT (Warp). PRODUCT.md/
+  TECH.md spec-first workflow.
+- `anthropics/knowledge-work-plugins@task-management` — **Apache-2.0** (first-party).
+Rejected the overlap set (planning-with-files, critical-thinking, obra
+systematic-debugging, deep-research) — duplicate our own systems / a built-in.
+
+**Now 14 skills** (5 ours + 9 adopted). **ALL skills are markdown/license only —
+no third-party executable code in the repo** (verified). User is fine with up to
+~30 skills.
+
+**Scaling fix:** the always-loaded `skills:router` block is now a **compact
+routing map** (one line per `area`, skill names only — descriptions are already
+injected each session by the harness, so the old per-skill table was redundant).
+CLAUDE.md **192 → 182 lines**; the block now grows ~1 line per new area, so it
+scales to 30+ skills without nearing the 200-line cap.
+
+**Verified:** `node --check tools/gen-docs.mjs`; `gen-docs --check` green (docs +
+compact region + drift gate); smoke 12/12.
+
+## Session — 2026-06-19 (correct brainstorming + adopt the superpowers workflow)
+
+**Corrected the brainstorming call:** the privacy boundary is the **deployed
+website**, not local dev tooling — `.claude/` never ships (deploy stages only
+`index.html src`) and the repo stays private. So the optional localhost,
+token-authed visual-companion server is fine (and potentially useful). **Restored
+brainstorming to pristine** (scripts + `visual-companion.md` back).
+
+**Adopted 9 of the 14-skill `obra/superpowers` bundle (MIT)** — a coherent
+agentic-dev lifecycle: `systematic-debugging` (151K — supersedes our adopted
+`debugging-and-error-recovery`), `verification-before-completion` (= our
+evidence-before-assertions ethos), `test-driven-development`, `executing-plans`
+(completes brainstorm→plan→execute), `finishing-a-development-branch`,
+`requesting-code-review`, `receiving-code-review`, `dispatching-parallel-agents`,
+`writing-skills` (complements `skill-router`).
+**Skipped (reasons):** `using-superpowers` (forces skill-invocation before every
+response → conflicts with our orient hook + router), `using-git-worktrees` (low
+value in ephemeral cloud), `subagent-driven-development` (overlaps
+`dispatching-parallel-agents`).
+
+**Support scripts vetted benign** (user OK'd local scripts in the private repo):
+`writing-skills/render-graphs.js` (shells to local `dot`/graphviz),
+`systematic-debugging/find-polluter.sh` (test-pollution bisector) — no network.
+
+**Now 23 skills** (5 ours + 18 adopted, all MIT/Apache; provenance in
+`skills-lock.json`). Compact router held CLAUDE.md at **182 lines**.
+
+**Open follow-ups:** (1) the 18 adopted skills all sit under area `general` —
+**area-tagging** them (debugging/planning/review/testing/design/docs) would make
+the router a real map; (2) optional prune of `debugging-and-error-recovery`
+(superseded by `systematic-debugging`). **Verified:** `gen-docs --check` green;
+smoke 12/12.
+
+## Session — 2026-06-19 (corrections: subagent-driven-development + Context7)
+
+- **Adopted `obra/superpowers@subagent-driven-development`** (MIT) — corrected an
+  earlier bad call: it does NOT overlap `dispatching-parallel-agents`
+  (parallelize independent tasks) — it's a methodology for **executing an
+  implementation plan via subagents in the current session**. Different tool.
+  Bundled scripts (`task-brief`, `sdd-workspace`, `review-package`) are benign
+  local bash (no network).
+- **Adopted Context7 (user request — "try it out"), set up BOTH ways:**
+  - Skill `upstash/context7@find-docs` (**MIT**) — uses the `npx ctx7` CLI, so it
+    works even when cloud sessions don't load `.mcp.json` (#54441). Installer
+    rated it **Med Risk** (runs an external CLI + network — inherent to a remote
+    doc service, not malicious).
+  - MCP server `context7` → added to `.mcp.json` (`https://mcp.context7.com/mcp`,
+    keyless free tier; `CONTEXT7_API_KEY` header for higher limits later).
+  - **Why now** (vs the original defer in `mcp-adoption.md`): the repo now has
+    build/desktop devDeps (vite, @tauri-apps/cli, playwright, zod, MCP SDK) whose
+    versioned docs Context7 covers and MDN doesn't. Reconciled `mcp-adoption.md §3`.
+  - ⚠️ **Privacy:** Context7 queries go to Upstash — **public-library docs only,
+    never proprietary shader code or secrets** (the skill warns this too).
+  - **Trust dialog** expected on next launch (new MCP server; post-CVE no silent
+    self-approve). Approve `context7` to use the MCP path.
+
+**Now 25 skills** (5 ours + 20 adopted) + 3 MCP servers (mdn, context7, primordial).
+**Verified:** `.mcp.json` valid JSON; `gen-docs --check` green; smoke 12/12.
+
+## Session — 2026-06-19 (privacy soften · accuracy rule · automatic workflows)
+
+Four things, the last two designed *with* our own skills (dogfooded):
+1. **Softened the client-side privacy rule** (`rules/deploy.md`) — scoped to the
+   **deployed site only**; `.claude/`, `tools/`, scripts, MCP, private repo are
+   out of scope. "Lock down what's served; relax for everything local."
+2. **Area-tagged all 20 adopted skills** → the `skills:router` is now a real map
+   (debugging/planning/review/testing/ui/perf/docs/research/workflow/meta).
+3. **Accuracy rule** (CLAUDE.md, always-loaded) — corrects my recurring
+   "assert-the-unverified" failure: label guesses; read both before claiming
+   overlap/equivalence; ask/check for intent & rule-scope; verify before "done".
+   Reasoned via `thought-based-reasoning`.
+4. **Automatic skill-workflow system** — designed via `brainstorming`, planned via
+   `writing-plans` (plan in `docs/superpowers/plans/`):
+   - `.claude/workflows.md` — named chains: **feature** (brainstorming→writing-plans
+     →executing-plans→TDD→verification→code-review→finishing-branch) and
+     **new-look** (new-preset→perf-budget→visual-qa→verification).
+   - `workflow` skill (area `meta`) — drives a chain with each step's gates.
+   - `.claude/hooks/suggest-workflow.sh` (**UserPromptSubmit**) — detects
+     feature/look intent and injects a **non-blocking** nudge (unit-tested:
+     catches build/implement/preset/new-look; silent on "take a look"/unrelated).
+   - Wired in `settings.json`; surfaced in the router + `orient` hook.
+   The chains bake in the anti-assumption gates (design-first, verify-before-done),
+   so the workflow system reinforces #3.
+
+**Now 26 skills.** ⚠️ **CLAUDE.md is at 197/200** — next addition crosses the cap;
+the slim (move the generated `skills:router` block to an imported file) is the
+next maintenance step. **Verified:** settings.json valid; both hooks valid bash;
+`gen-docs --check` green (incl. drift gate); smoke 12/12; hook intent-detection
+unit-tested.
+
+## Session — 2026-06-19 (self-improvement tooling: parking lot + learn-from-corrections)
+
+Built the self-improvement loop's capture machinery, plus support tooling:
+- **`deploy-check`** skill - one-pass deploy health (latest Actions run -> failing
+  logs -> FTP_PASSWORD secret -> curl live /Test/ -> concise root cause). From the
+  /insights report.
+- **`send-report`** skill - SendUserFile the newest /insights report (the
+  `file:///root/...` link is unreachable on mobile; /insights itself is built-in).
+- **Site audit** (`tools/audit-site.mjs`, `npm run audit`, CI step in verify.yml,
+  step in deploy-check) - flags em/en dashes (AI writing tell) + AI/tooling
+  fingerprints in the deployed surface (index.html + src/). Fixed 3 existing em
+  dashes (page <title> + 2 CSS comments) -> hyphens.
+- **Parking lot** - `/park` skill + `## Open threads` section in progress.md +
+  `orient` surfacing, so a thread interrupted by a subject change resumes reliably
+  with full context next session.
+- **Learn-from-corrections (loop #1)** - `/lesson` skill (routes a correction to
+  its durable home: sharpen the always-loaded `accuracy` rule / fix the source
+  doc / note it) + `detect-correction.sh` UserPromptSubmit hook (nudges on a
+  correction; specific phrases only, never bare "no"; unit-tested). Designed via
+  brainstorming, planned via writing-plans (plan in `docs/superpowers/plans/`).
+
+**Now 30 skills.** Loop status: sense (insights/audits) + diagnose + fix + remember
+(corrections->rules, parking) all have machinery now. **Verified:** both new hooks
+valid + unit-tested; settings.json valid; `gen-docs --check` green; smoke 12/12;
+site audit clean.
+
+## Session — 2026-06-19 (pattern-mining → 3 durable captures)
+
+Mined all 136 user turns across both session transcripts + cross-checked against
+the `/insights` report (independent second opinion). Two analyses converged on the
+same recurring gaps → captured three:
+
+1. **Wrong-referent correction** (most-repeated; distinct from "inaccurate facts"):
+   "put them on MY WEBSITE! not chromium for you to see", "no the main", "I meant
+   the insights skill". Fix: sharpened the always-loaded **Accuracy rule** with a
+   *referent check* — confirm "make/show/put X" is for the deliverable (live site /
+   portfolio / `/Test/`) vs my local sandbox; when in doubt build for the deliverable.
+2. **Too verbose / jargon** (broke sessions via the 500-output-token cap; `/insights`
+   flagged it twice; "im not sure what that all means"). Fix: new always-loaded
+   **Communication** bullet (answer-first, offer depth, low jargon).
+3. **Mobile fights the tooling** (the friction arc — "copy-paste large files doesnt
+   work on android", file:// reports unreachable, FTP blocked). Fix: new
+   **`.claude/rules/mobile-ergonomics.md`** (one value per code-block, no large
+   copy-paste, SendUserFile over file:// links, deploy via GitHub state) surfaced
+   device-aware by the `orient` hook on `*mobile*` sessions.
+
+**Also did the parked CLAUDE.md slim** (prereq for #2's room): moved the generated
+`skills:router` block to **`.claude/skills-router.md`** (imported via `@`), repointed
+`gen-docs.mjs` `regions` at it, updated the `skill-router` skill wording. CLAUDE.md
+**197 → 188 lines**.
+
+**Verified:** `gen-docs --check` green (docs + moved region + drift gate, which
+confirms the new rule path exists); `npm run health` all-pass; `orient.sh` syntax OK
++ the mobile branch fires only on `*mobile*` (unit-checked).
+
+**Open-thread note:** the slim task is now done; remaining halted items unchanged
+(WS1 code fixes, real `/Test/` visual, Phase 6, PreCompact hook, `list_skills` MCP
+tool, `window.__primordial` prod-gating, WS3/WS4, the parked RAG system).

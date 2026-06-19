@@ -1,4 +1,4 @@
-/* Primordial Studio — green-on-black technical HUD. Monospace, corner brackets,
+/* Primordial Studio - green-on-black technical HUD. Monospace, corner brackets,
    scanline overlay, touch-friendly, portrait-first. */
 
 :root {
@@ -130,6 +130,10 @@ html, body {
   color: var(--fg-dim);
   margin: 0;
 }
+.gate-error {
+  color: #ff5a5a;
+  font-weight: bold;
+}
 .btn {
   pointer-events: auto;
   font-family: var(--mono);
@@ -255,7 +259,7 @@ html, body {
 
 .hidden { display: none !important; }
 
-/* Keyboard focus visibility (a11y) — restores a clear ring without showing it
+/* Keyboard focus visibility (a11y) - restores a clear ring without showing it
    on mouse clicks. */
 :focus-visible {
   outline: 2px solid var(--fg);

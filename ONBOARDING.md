@@ -1,0 +1,75 @@
+# ONBOARDING - start here (fresh agent)
+
+The single entry point for an AI agent starting work on **Primordial-viz**. The
+*live* state (branch, next step, open threads) is printed by the SessionStart
+orient hook and lives in `progress.md`; this file is the durable how-to-start.
+For full project facts and rules, see `CLAUDE.md` (always loaded).
+
+**What this is:** an audio-reactive, raw-WebGL2 visual instrument for live gigs.
+One hand-built app - `index.html` -> `src/main.js` (NOT three.js). Shaders ship
+as `src/shaders/*.js` (no `.glsl` files). Looks are params-only JSON.
+
+## Start gate - run this before touching code
+
+1. **Read** the orient block (auto-printed at session start) and this file.
+2. **Confirm** the branch and working tree: `git status`. Only git-committed
+   files survive a container wipe.
+3. **Restate** the current next step (from the orient block / the tail of
+   `progress.md`) back to the user in one line before you start - so you don't
+   re-do finished work or build the wrong thing.
+4. **Route**: find your task in the table below and read that rule first.
+5. **Verify**: `npm run health` is green before you start and before you claim
+   "done" (see the `verification-before-completion` skill). Render check:
+   `node test/render-check.mjs`.
+
+## Role routes - read these first, by task
+
+| Working on... | Read first | Also |
+| --- | --- | --- |
+| Shaders / renderer (`src/shaders`, `src/gl`) | `.claude/rules/shaders.md` | agent `visual-qa`, skill `perf-budget` |
+| Audio (`src/audio`) | `.claude/rules/audio.md` | agent `audio-dsp` |
+| A look / preset (`src/looks`, `src/params`) | skill `new-preset` | the `check-data` hook |
+| Deploy / hosting | `.claude/rules/deploy.md` | skill `deploy-check` |
+| Workshopping a visual (no full build) | skill `visual-workshop` (`/workshop`) | the `workshop/` sandbox |
+| A multi-step build / feature / new look | skill `workflow` (`.claude/workflows.md`) | the `suggest-workflow` hook |
+| Where a file lives / what it does | `TREE.md` | `ENCYCLOPEDIA.md` |
+
+## Non-negotiables (one line each; source linked)
+
+- **Mobile perf budget** - heavy pass at 0.5-0.75 render-scale, raymarch steps
+  <= 64, dynamic resolution. `.claude/rules/shaders.md`.
+- **Write our own shaders** - commercial work; learn techniques, author from a
+  blank file, never copy CC BY-NC-SA code. `.claude/rules/shaders.md`.
+- **Only git-committed files survive** a cloud-container wipe - keep
+  `progress.md` + `task_plan.md` current; commit before the session ends.
+- **Phone-driven operator** - hand values one-per-code-block, deliver files with
+  SendUserFile, drive deploy via GitHub state (no local FTP).
+  `.claude/rules/mobile-ergonomics.md`.
+- **Accuracy + verify-before-done** - state verified facts plainly, label
+  guesses, run the check before claiming "done". `CLAUDE.md`.
+
+## Live state (not here - kept fresh elsewhere)
+
+Branch, the current next step, and parked "open threads" are in the orient block
+above and the top of `progress.md` (newest entries first). The imported
+`task_plan.md` + `progress.md` are the full state. This file changes rarely; the
+state files change every session.
+
+## Continuity is BRANCH-SCOPED (read this)
+
+"Only committed files survive a wipe" - true, but they survive **on the branch
+you committed them to**. A new task often spawns a fresh branch off the default
+branch (`main`), which can lag the active working branch by many commits - so a
+session can start with stale or missing continuity (a handoff queued on the
+working branch will not be on `main`). Guards now in place:
+
+- The `orient` hook **fetches and detects the most recently updated remote
+  branch**, reads the handoff + open threads FROM IT, and prints a loud WARNING
+  with the exact `git checkout` if you are on a different branch. **Heed it:**
+  switch to the active branch before starting work, or your changes diverge.
+- **Keep the fork base current.** Durable continuity (`progress.md`,
+  `task_plan.md`, queued briefs) and `.claude/` tooling only reach future
+  sessions once they are on the branch new sessions fork from (the default branch
+  `main`). Merge the working branch to `main` regularly, or new sessions keep
+  starting blind. Do not let a long-lived feature branch drift dozens of commits
+  ahead of `main`.

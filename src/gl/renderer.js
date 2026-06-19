@@ -47,7 +47,7 @@ function makeUniformSetter(gl, prog) {
 }
 
 export class Renderer {
-  constructor(canvas) {
+  constructor(canvas, opts = {}) {
     const gl = canvas.getContext('webgl2', {
       alpha: false,
       antialias: false,
@@ -62,6 +62,37 @@ export class Renderer {
     this.canvas = canvas;
     this.gl = gl;
 
+    // Shader sources default to the shipped slime/post pair; the workshop
+    // sandbox passes a sketch's fragment source here to preview it.
+    this.slimeFrag = opts.slimeFrag || SLIME_FRAG;
+    this.postFrag = opts.postFrag || POST_FRAG;
+
+    // Set true between a webglcontextlost event and a successful restore; the
+    // render loop skips drawing while it's set (GL calls on a lost context are
+    // no-ops at best). Restored automatically when the browser fires
+    // webglcontextrestored.
+    this.contextLost = false;
+
+    canvas.addEventListener('webglcontextlost', (e) => {
+      // Without preventDefault the context is gone for good; with it the
+      // browser will attempt a restore.
+      e.preventDefault();
+      this.contextLost = true;
+    }, false);
+    canvas.addEventListener('webglcontextrestored', () => {
+      this._createResources();
+      this.contextLost = false;
+    }, false);
+
+    this._createResources();
+  }
+
+  // Create (or recreate, after a context-loss restore) every GL resource. Safe
+  // to call again: the GL context hands back fresh objects after a restore, so
+  // we rebuild programs, the FBO, and the audio texture from scratch.
+  _createResources() {
+    const gl = this.gl;
+
     // Float render target for the HDR slime buffer if available.
     this.colorBufferFloat = !!gl.getExtension('EXT_color_buffer_float');
     this.colorBufferHalfFloat = !!gl.getExtension('EXT_color_buffer_half_float');
@@ -69,22 +100,25 @@ export class Renderer {
     // Empty VAO so a bound VAO exists for the attribute-less draw.
     this.vao = gl.createVertexArray();
 
-    this.slimeProg = linkProgram(gl, FULLSCREEN_VERT, SLIME_FRAG);
-    this.postProg = linkProgram(gl, FULLSCREEN_VERT, POST_FRAG);
+    this.slimeProg = linkProgram(gl, FULLSCREEN_VERT, this.slimeFrag);
+    this.postProg = linkProgram(gl, FULLSCREEN_VERT, this.postFrag);
     this.slimeU = makeUniformSetter(gl, this.slimeProg);
     this.postU = makeUniformSetter(gl, this.postProg);
 
-    // Offscreen FBO for the slime pass.
+    // Offscreen FBO for the slime pass. fboW/H reset to 0 so the next
+    // resizeFbo() reallocates the color attachment.
     this.fbo = gl.createFramebuffer();
     this.fboTex = gl.createTexture();
     this.fboW = 0;
     this.fboH = 0;
 
     // Audio texture (512x2). Lazily uploaded each frame by uniforms.js.
+    // NEAREST filtering: the 512x2 R8 layout maps bins/samples 1:1 to texels,
+    // so bilinear smoothing would only blur adjacent bins (see rules/audio.md).
     this.audioTex = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, this.audioTex);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     // Allocate 512x2 R8.
@@ -118,7 +152,21 @@ export class Renderer {
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.fboTex, 0);
+
+    // If a half-float HDR target isn't actually renderable on this device, the
+    // attachment will be incomplete; fall back to RGBA8 once and re-check.
+    let status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    if (status !== gl.FRAMEBUFFER_COMPLETE && (this.colorBufferHalfFloat || this.colorBufferFloat)) {
+      this.colorBufferHalfFloat = false;
+      this.colorBufferFloat = false;
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.fboTex, 0);
+      status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    }
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    if (status !== gl.FRAMEBUFFER_COMPLETE) {
+      throw new Error('Render target incomplete (FBO status 0x' + status.toString(16) + ').');
+    }
   }
 
   // Upload the 512x2 audio data (Uint8Array length 1024: row0=fft, row1=wave).
