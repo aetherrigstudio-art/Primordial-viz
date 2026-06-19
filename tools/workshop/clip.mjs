@@ -42,43 +42,46 @@ const size = { width: 800, height: 450 };
 mkdirSync(artifacts, { recursive: true });
 const port = await freePort();
 const server = spawn('python3', ['-m', 'http.server', String(port)], { cwd: root, stdio: 'ignore' });
-await new Promise((r) => setTimeout(r, 800));
-const url = `http://localhost:${port}/workshop/sandbox.html?sketch=${encodeURIComponent(name)}`;
-
-const browser = await launchBrowser();
 try {
-  if (stills > 0) {
-    const ctx = await browser.newContext({ viewport: size });
-    const page = await ctx.newPage();
-    await page.goto(url, { waitUntil: 'load', timeout: 20000 });
-    await page.waitForFunction(() => window.__primordial && window.__primordial.glOk, { timeout: 10000 });
-    const err = await page.evaluate(() => window.__primordial.error);
-    if (err) throw new Error('sketch failed to boot: ' + err);
-    const out = [];
-    for (let i = 0; i < stills; i++) {
-      await page.waitForTimeout((secs * 1000) / stills);
-      const p = join(artifacts, `${name}-${String(i + 1).padStart(2, '0')}.png`);
-      await page.screenshot({ path: p, timeout: 15000 });
-      out.push(p);
+  await new Promise((r) => setTimeout(r, 800));
+  const url = `http://localhost:${port}/workshop/sandbox.html?sketch=${encodeURIComponent(name)}`;
+
+  const browser = await launchBrowser();
+  try {
+    if (stills > 0) {
+      const ctx = await browser.newContext({ viewport: size });
+      const page = await ctx.newPage();
+      await page.goto(url, { waitUntil: 'load', timeout: 20000 });
+      await page.waitForFunction(() => window.__primordial && (window.__primordial.glOk || window.__primordial.error), { timeout: 10000 });
+      const err = await page.evaluate(() => window.__primordial.error);
+      if (err) throw new Error('sketch failed to boot: ' + err);
+      const out = [];
+      for (let i = 0; i < stills; i++) {
+        await page.waitForTimeout((secs * 1000) / stills);
+        const p = join(artifacts, `${name}-${String(i + 1).padStart(2, '0')}.png`);
+        await page.screenshot({ path: p, timeout: 15000 });
+        out.push(p);
+      }
+      await ctx.close();
+      console.log('stills:\n  ' + out.join('\n  '));
+    } else {
+      const ctx = await browser.newContext({ viewport: size, recordVideo: { dir: artifacts, size } });
+      const page = await ctx.newPage();
+      await page.goto(url, { waitUntil: 'load', timeout: 20000 });
+      await page.waitForFunction(() => window.__primordial && (window.__primordial.glOk || window.__primordial.error), { timeout: 10000 });
+      const err = await page.evaluate(() => window.__primordial.error);
+      if (err) throw new Error('sketch failed to boot: ' + err);
+      await page.waitForTimeout(secs * 1000);
+      const video = page.video();
+      await ctx.close(); // flushes the webm to disk
+      const tmp = await video.path();
+      const dest = join(artifacts, `${name}.webm`);
+      renameSync(tmp, dest);
+      console.log('clip: ' + dest);
     }
-    await ctx.close();
-    console.log('stills:\n  ' + out.join('\n  '));
-  } else {
-    const ctx = await browser.newContext({ viewport: size, recordVideo: { dir: artifacts, size } });
-    const page = await ctx.newPage();
-    await page.goto(url, { waitUntil: 'load', timeout: 20000 });
-    await page.waitForFunction(() => window.__primordial && window.__primordial.glOk, { timeout: 10000 });
-    const err = await page.evaluate(() => window.__primordial.error);
-    if (err) throw new Error('sketch failed to boot: ' + err);
-    await page.waitForTimeout(secs * 1000);
-    const video = page.video();
-    await ctx.close(); // flushes the webm to disk
-    const tmp = await video.path();
-    const dest = join(artifacts, `${name}.webm`);
-    renameSync(tmp, dest);
-    console.log('clip: ' + dest);
+  } finally {
+    await browser.close().catch(() => {});
   }
 } finally {
-  await browser.close().catch(() => {});
   server.kill();
 }
