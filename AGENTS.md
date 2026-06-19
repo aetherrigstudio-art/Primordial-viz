@@ -163,7 +163,7 @@ active plan live in committed files, imported here so they load on launch:
 
 **Fresh agent? Start with `ONBOARDING.md`** — the start gate (confirm state +
 verify before editing) and role-aware first-reads. The imports below are the
-full state.
+full state. See `.claude/rules/gotchas.md` for known foot-guns.
 
 See `task_plan.md`.
 See `progress.md`.

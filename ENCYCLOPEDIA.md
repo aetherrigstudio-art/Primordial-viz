@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 199 files across 17 categories.
+> 200 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (13)
-- [Claude Environment](#claude-environment) (86)
+- [Claude Environment](#claude-environment) (87)
 - [Deployment](#deployment) (3)
 - [Research](#research) (16)
 - [CI / Build Config](#ci--build-config) (6)
@@ -189,6 +189,7 @@
 | [`.claude/hooks/suggest-workflow.sh`](.claude/hooks/suggest-workflow.sh) | UserPromptSubmit hook: when the prompt looks like a substantial build/feature or a new visual-look task, inject a NON-BLOCKING nudge toward the… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
 | [`.claude/rules/deploy.md`](.claude/rules/deploy.md) | Facts about the host. |
+| [`.claude/rules/gotchas.md`](.claude/rules/gotchas.md) | Distilled tribal knowledge so the same loops don't recur (anti-footgun manual, trailofbits pattern). |
 | [`.claude/rules/mobile-ergonomics.md`](.claude/rules/mobile-ergonomics.md) | The operator runs this project from an Android phone, not a laptop. |
 | [`.claude/rules/shaders.md`](.claude/rules/shaders.md) | Scoped to the shader/renderer code. |
 | [`.claude/settings.json`](.claude/settings.json) | Claude Code hooks + permissions for this repo. |
