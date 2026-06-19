@@ -102,6 +102,7 @@ don't skip them):
 | A new look / preset (`src/looks`, `src/params`) | skill `new-preset` | `check-data` hook runs smoke on save |
 | Deploy / hosting | `.claude/rules/deploy.md` (source of truth) | `deploy/DEPLOY.md`; deploy auto-runs via `deploy.yml` |
 | Design / architecture / "reason through" a choice | skill `thought-based-reasoning` | this router + `progress.md` |
+| A multi-step build / feature / new look | skill `workflow` (chains in `.claude/workflows.md`) | auto-nudged by the `suggest-workflow` hook |
 | Where a file lives / what it does | `TREE.md` (layout) · `ENCYCLOPEDIA.md` (per-file) | auto-generated |
 
 <!-- @generated-start skills:router -->
@@ -112,7 +113,7 @@ don't skip them):
 - **design** — `thought-based-reasoning`
 - **docs** — `documentation-and-adrs`
 - **looks** — `new-preset`
-- **meta** — `skill-router`, `writing-skills`
+- **meta** — `skill-router`, `workflow`, `writing-skills`
 - **perf** — `performance`
 - **planning** — `brainstorming`, `executing-plans`, `spec-driven-implementation`, `task-management`, `writing-plans`
 - **research** — `find-docs`

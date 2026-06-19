@@ -463,3 +463,34 @@ smoke 12/12.
 
 **Now 25 skills** (5 ours + 20 adopted) + 3 MCP servers (mdn, context7, primordial).
 **Verified:** `.mcp.json` valid JSON; `gen-docs --check` green; smoke 12/12.
+
+## Session — 2026-06-19 (privacy soften · accuracy rule · automatic workflows)
+
+Four things, the last two designed *with* our own skills (dogfooded):
+1. **Softened the client-side privacy rule** (`rules/deploy.md`) — scoped to the
+   **deployed site only**; `.claude/`, `tools/`, scripts, MCP, private repo are
+   out of scope. "Lock down what's served; relax for everything local."
+2. **Area-tagged all 20 adopted skills** → the `skills:router` is now a real map
+   (debugging/planning/review/testing/ui/perf/docs/research/workflow/meta).
+3. **Accuracy rule** (CLAUDE.md, always-loaded) — corrects my recurring
+   "assert-the-unverified" failure: label guesses; read both before claiming
+   overlap/equivalence; ask/check for intent & rule-scope; verify before "done".
+   Reasoned via `thought-based-reasoning`.
+4. **Automatic skill-workflow system** — designed via `brainstorming`, planned via
+   `writing-plans` (plan in `docs/superpowers/plans/`):
+   - `.claude/workflows.md` — named chains: **feature** (brainstorming→writing-plans
+     →executing-plans→TDD→verification→code-review→finishing-branch) and
+     **new-look** (new-preset→perf-budget→visual-qa→verification).
+   - `workflow` skill (area `meta`) — drives a chain with each step's gates.
+   - `.claude/hooks/suggest-workflow.sh` (**UserPromptSubmit**) — detects
+     feature/look intent and injects a **non-blocking** nudge (unit-tested:
+     catches build/implement/preset/new-look; silent on "take a look"/unrelated).
+   - Wired in `settings.json`; surfaced in the router + `orient` hook.
+   The chains bake in the anti-assumption gates (design-first, verify-before-done),
+   so the workflow system reinforces #3.
+
+**Now 26 skills.** ⚠️ **CLAUDE.md is at 197/200** — next addition crosses the cap;
+the slim (move the generated `skills:router` block to an imported file) is the
+next maintenance step. **Verified:** settings.json valid; both hooks valid bash;
+`gen-docs --check` green (incl. drift gate); smoke 12/12; hook intent-detection
+unit-tested.

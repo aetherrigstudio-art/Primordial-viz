@@ -34,5 +34,6 @@ fi
 echo "Deploy: live preview at https://primordial.video/Test/ — AUTO-deploys on push (GitHub Actions FTPS; .github/workflows/deploy.yml; needs the FTP_PASSWORD repo secret, which lives in GitHub and survives wipes)."
 echo "Container network: outbound HTTPS(443) ONLY — FTP/21 and cPanel/2083 are BLOCKED. Do NOT try to FTP or drive cPanel from here; deploy + re-run CI via GitHub Actions (GitHub MCP tools), and verify by curl-ing the live HTTPS URL."
 echo "Verify (laptop-free): 'node test/smoke.mjs' ; 'node test/render-check.mjs' (needs Playwright Chromium) ; docs gate 'node tools/gen-docs.mjs --check' ; CI = .github/workflows/verify.yml"
+echo "Workflows: for a feature/look build the 'workflow' skill drives a skill chain (.claude/workflows.md); the suggest-workflow hook nudges it from your prompt."
 echo "Rules: mic needs a secure context (HTTPS or localhost). One hand-built raw-WebGL2 app (index.html → src/main.js; NOT three.js). Shaders ship as src/shaders/*.js (no .glsl files). Looks are params-only JSON."
 exit 0

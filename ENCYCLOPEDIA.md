@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 163 files across 17 categories.
+> 167 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
-- [Specs & Long-form Docs](#specs--long-form-docs) (2)
+- [Specs & Long-form Docs](#specs--long-form-docs) (3)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (9)
-- [Claude Environment](#claude-environment) (73)
+- [Claude Environment](#claude-environment) (76)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
@@ -49,6 +49,7 @@
 | --- | --- |
 | [`docs/BUILD-SPEC.md`](docs/BUILD-SPEC.md) | BUILT DIFFERENTLY (as-shipped correction): this is the original planning doc. |
 | [`docs/STANDALONE.md`](docs/STANDALONE.md) | Wrap the Primordial visual app into a native desktop application with [Tauri v2](https://tauri.app). |
+| [`docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md`](docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md) | For agentic workers: implement task-by-task; steps use - [ ] checkboxes. |
 
 ## App — Entry & Bootstrap
 
@@ -169,6 +170,7 @@
 | [`.claude/hooks/gen-docs.sh`](.claude/hooks/gen-docs.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/inject-rules.sh`](.claude/hooks/inject-rules.sh) | PreToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/orient.sh`](.claude/hooks/orient.sh) | SessionStart hook: orient a fresh agent (especially cloud/phone sessions) with zero typing — repo state, branch + recent commits, the latest handoff… |
+| [`.claude/hooks/suggest-workflow.sh`](.claude/hooks/suggest-workflow.sh) | UserPromptSubmit hook: when the prompt looks like a substantial build/feature or a new visual-look task, inject a NON-BLOCKING nudge toward the… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
 | [`.claude/rules/deploy.md`](.claude/rules/deploy.md) | Facts about the host. |
 | [`.claude/rules/shaders.md`](.claude/rules/shaders.md) | Scoped to the shader/renderer code. |
@@ -223,6 +225,7 @@
 | [`.claude/skills/test-driven-development/testing-anti-patterns.md`](.claude/skills/test-driven-development/testing-anti-patterns.md) | Load this reference when: writing or changing tests, adding mocks, or tempted to add test-only methods to production code. |
 | [`.claude/skills/thought-based-reasoning/SKILL.md`](.claude/skills/thought-based-reasoning/SKILL.md) | Structured reasoning harness for design, architecture, and planning decisions in Primordial-viz. Frame the problem, pull the right project knowledge… |
 | [`.claude/skills/verification-before-completion/SKILL.md`](.claude/skills/verification-before-completion/SKILL.md) | Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and… |
+| [`.claude/skills/workflow/SKILL.md`](.claude/skills/workflow/SKILL.md) | Drive a named multi-step workflow — an ordered chain of skills/agents — for a substantial build, feature, or new-look task. Use at the START of such… |
 | [`.claude/skills/writing-plans/SKILL.md`](.claude/skills/writing-plans/SKILL.md) | Use when you have a spec or requirements for a multi-step task, before touching code |
 | [`.claude/skills/writing-plans/plan-document-reviewer-prompt.md`](.claude/skills/writing-plans/plan-document-reviewer-prompt.md) | Use this template when dispatching a plan document reviewer subagent. |
 | [`.claude/skills/writing-skills/SKILL.md`](.claude/skills/writing-skills/SKILL.md) | Use when creating new skills, editing existing skills, or verifying skills work before deployment |
@@ -232,6 +235,7 @@
 | [`.claude/skills/writing-skills/persuasion-principles.md`](.claude/skills/writing-skills/persuasion-principles.md) | LLMs respond to the same persuasion principles as humans. |
 | [`.claude/skills/writing-skills/render-graphs.js`](.claude/skills/writing-skills/render-graphs.js) | Render graphviz diagrams from a skill's SKILL.md to SVG files. |
 | [`.claude/skills/writing-skills/testing-skills-with-subagents.md`](.claude/skills/writing-skills/testing-skills-with-subagents.md) | Load this reference when: creating or editing skills, before deployment, to verify they work under pressure and resist rationalization. |
+| [`.claude/workflows.md`](.claude/workflows.md) | Ordered chains of skills/agents for common task types. |
 
 ## Deployment
 
