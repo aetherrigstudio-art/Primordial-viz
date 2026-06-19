@@ -8,52 +8,72 @@
 // server) and transparently falls back to the inline copies offline.
 
 // --- Inline mirror of the JSON look files (file:// fallback) ----------------
+// @generated-start looks:inline -- edit src/looks/*.json, then: node tools/mcp/lib/looks.mjs sync
 const INLINE_LOOKS = [
   {
-    id: 'slime-green',
-    name: 'Slime Green',
-    description: 'Wet metaball goo, neon green-on-black, heavy churn and glow.',
-    params: {
-      colA: [0.04, 0.85, 0.32],
-      colB: [0.25, 1.0, 0.5],
-      blobCount: 5,
-      sminK: 0.6,
-      warpAmt: 0.6,
-      glow: 1.2,
-      sss: 1.8,
-      bloom: 1.1,
-      grain: 0.12,
-      scanline: 0.18,
-      chroma: 0.006,
-      vignette: 0.72,
-    },
+    "id": "slime-green",
+    "name": "Slime Green",
+    "description": "Wet metaball goo, neon green-on-black, heavy churn and glow.",
+    "params": {
+      "colA": [
+        0.04,
+        0.85,
+        0.32
+      ],
+      "colB": [
+        0.25,
+        1,
+        0.5
+      ],
+      "blobCount": 5,
+      "sminK": 0.6,
+      "warpAmt": 0.6,
+      "glow": 1.2,
+      "sss": 1.8,
+      "bloom": 1.1,
+      "grain": 0.12,
+      "scanline": 0.18,
+      "chroma": 0.006,
+      "vignette": 0.72
+    }
   },
   {
-    id: 'hud-amber',
-    name: 'HUD Amber',
-    description: 'Tighter, drier blobs in an amber technical-HUD palette, crisp scanlines.',
-    params: {
-      colA: [0.9, 0.55, 0.08],
-      colB: [1.0, 0.78, 0.25],
-      blobCount: 4,
-      sminK: 0.4,
-      warpAmt: 0.35,
-      glow: 0.8,
-      sss: 1.0,
-      bloom: 0.8,
-      grain: 0.08,
-      scanline: 0.3,
-      chroma: 0.004,
-      vignette: 0.6,
-    },
-  },
+    "id": "hud-amber",
+    "name": "HUD Amber",
+    "description": "Tighter, drier blobs in an amber technical-HUD palette, crisp scanlines.",
+    "params": {
+      "colA": [
+        0.9,
+        0.55,
+        0.08
+      ],
+      "colB": [
+        1,
+        0.78,
+        0.25
+      ],
+      "blobCount": 4,
+      "sminK": 0.4,
+      "warpAmt": 0.35,
+      "glow": 0.8,
+      "sss": 1,
+      "bloom": 0.8,
+      "grain": 0.08,
+      "scanline": 0.3,
+      "chroma": 0.004,
+      "vignette": 0.6
+    }
+  }
 ];
+// @generated-end looks:inline
 
 // Filenames to attempt fetching, in registry order. Resolved relative to THIS
 // module (src/looks/), not the document, so it works regardless of page path.
-const LOOK_FILES = ['slime-green.json', 'hud-amber.json'].map(
+// @generated-start looks:files
+const LOOK_FILES = ["slime-green.json","hud-amber.json"].map(
   (f) => new URL('./' + f, import.meta.url),
 );
+// @generated-end looks:files
 
 // Load all looks. Tries fetch() first; on any failure returns the inline set.
 export async function loadLooks() {

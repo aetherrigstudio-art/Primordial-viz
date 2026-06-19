@@ -10,12 +10,13 @@
 //
 // IMPORTANT: stdout is the JSON-RPC channel — all logging MUST go to stderr.
 
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
 
 import { validateShaders } from './lib/validate.mjs';
 import { runRenderCheck } from './lib/render.mjs';
+import { listLooks, getLook, saveLook } from './lib/looks.mjs';
 
 const server = new McpServer({ name: 'primordial', version: '0.1.0' });
 
@@ -105,6 +106,106 @@ server.registerTool(
     const { screenshot, ...structured } = res;
     return { content, structuredContent: structured, isError: !res.pass };
   },
+);
+
+// --- Looks / presets -------------------------------------------------------
+// A look is params-only data over the shared slime shader. create/update write
+// the JSON and re-sync registry.js's generated mirror (keeps smoke green).
+const lookParams = z
+  .record(z.string(), z.union([z.number(), z.array(z.number())]))
+  .optional()
+  .describe('Param overrides from src/params/schema.js; omitted keys use defaults.');
+const lookInput = {
+  id: z.string().describe('kebab-case id (also the filename), e.g. "acid-fog"'),
+  name: z.string().describe('Display name shown in the UI'),
+  description: z.string().describe('One-line description'),
+  params: lookParams,
+};
+
+server.registerTool(
+  'list_looks',
+  { description: 'List the project\'s visual "looks" (params-only presets) with their params.', inputSchema: {} },
+  async () => {
+    const looks = listLooks();
+    return {
+      content: [{ type: 'text', text: looks.map((l) => `${l.id} — ${l.name}: ${l.description}`).join('\n') }],
+      structuredContent: { looks },
+    };
+  },
+);
+
+for (const mode of ['create', 'update']) {
+  server.registerTool(
+    `${mode}_look`,
+    {
+      description:
+        `${mode === 'create' ? 'Create a new' : 'Update an existing'} look. Validates params ` +
+        'against src/params/schema.js (out-of-range values are rejected) and re-syncs the ' +
+        'registry mirror so the change is picked up everywhere.',
+      inputSchema: lookInput,
+    },
+    async (input) => {
+      const r = saveLook(input, mode);
+      if (!r.ok) {
+        return { content: [{ type: 'text', text: 'Could not save look:\n- ' + r.errors.join('\n- ') }], isError: true };
+      }
+      return {
+        content: [{ type: 'text', text: `Saved ${r.path} and synced registry.js.` }],
+        structuredContent: { look: r.look, path: r.path },
+      };
+    },
+  );
+}
+
+// Read-only browse of looks as resources (look://<id>).
+server.registerResource(
+  'look',
+  new ResourceTemplate('look://{id}', {
+    list: async () => ({
+      resources: listLooks().map((l) => ({
+        uri: `look://${l.id}`,
+        name: l.name,
+        description: l.description,
+        mimeType: 'application/json',
+      })),
+    }),
+  }),
+  { title: 'Looks', description: 'Params-only visual presets' },
+  async (uri, { id }) => {
+    const look = getLook(id);
+    if (!look) throw new Error(`look '${id}' not found`);
+    return { contents: [{ uri: uri.href, mimeType: 'application/json', text: JSON.stringify(look, null, 2) }] };
+  },
+);
+
+// Guided workflow to draft + save a new look.
+server.registerPrompt(
+  'scaffold_new_look',
+  {
+    title: 'Scaffold a new look',
+    description: 'Draft a new params-only look and save it with create_look.',
+    argsSchema: {
+      name: z.string().describe('Display name, e.g. "Acid Fog"'),
+      base: z.string().optional().describe('Existing look id to start from'),
+    },
+  },
+  ({ name, base }) => ({
+    messages: [
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          text:
+            `Create a new Primordial look named "${name}"` +
+            (base ? ` based on the existing look "${base}"` : '') +
+            '. Pick a kebab-case id and a one-line description, choose param overrides from ' +
+            'src/params/schema.js (palette colA/colB plus blobCount, sminK, warpAmt, glow, sss, ' +
+            'bloom, grain, scanline, chroma, vignette — all within their schema ranges), then call ' +
+            'create_look with { id, name, description, params }.',
+        },
+      },
+    ],
+  }),
 );
 
 const transport = new StdioServerTransport();
