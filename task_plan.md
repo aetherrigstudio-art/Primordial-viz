@@ -51,3 +51,33 @@ opens at a gig (mic/line-in → FFT → generative "grungy-future-geometric-slim
 | Error | Attempt | Resolution |
 |-------|---------|------------|
 | (none yet) | | |
+
+## Session 3 update — own repo, hardening, Claude env (2026-06-19)
+
+**Canonical repo:** `aetherrigstudio-art/Primordial-viz` (DASH). Work on branch
+`claude/primordial-visual-instrument-ai-o7gfcm` → draft PR #1. (Empty `Primordial.viz`
+DOT repo to be deleted by user.)
+
+**Verification backbone (laptop-free) — done:** `test/smoke.mjs`, `test/render-check.mjs`
+(headless Chromium), `.github/workflows/verify.yml`, `package.json` (playwright dev-dep).
+Hooks: `check-syntax.sh` (node --check) + `check-data.sh` (smoke on data edits).
+
+**Hardening workstreams:**
+| WS | Scope | Status |
+|----|-------|--------|
+| WS0 | Verification backbone (smoke + render-check + CI) | ✅ done |
+| WS1 | Code correctness/robustness (NEAREST, step cap 64, renderScale floor, devicechange, flux; WebGL context-loss + FBO checks; audio-error surfacing; NaN guards; dynamic-res hysteresis) | todo |
+| WS2 | Accessibility (labels, aria-live, focus-visible, contrast, reduced-motion) | ✅ done |
+| WS3 | Docs/research honesty (write real research into `research/findings/`) | todo |
+| WS4 | Repo hygiene (prune vestigial `.htaccess` `.glsl` rules) | todo |
+| WS5 | CLAUDE.md / skills / agents tuning | partial (hooks, continuity import done) |
+
+**Claude env for phone-driven, laptop-free dev — USER actions (only you can do):**
+1. Mobile app: enable push for "input needed" + "task done".
+2. Auto mode as default permission (user-level settings; ignored from project) + keep a small `permissions.deny` for irreversible actions.
+3. Add `Primordial-viz` to the Claude GitHub App's repo access (currently on `perchance-ai-tool` only) → enables phone-driven Auto-fix PRs.
+4. Cloud Environment setup script installs toolchain (`npm ci` + `npx playwright install chromium`) — snapshot-cached, runs once.
+
+**Durable-memory rule:** cloud wipes everything except git. Auto-memory and
+`~/.claude/plans` do NOT survive. `CLAUDE.md` imports `@task_plan.md` + `@progress.md`
+so a fresh session auto-orients.

@@ -96,3 +96,22 @@ src/
   512 bins), row 1 = `getByteTimeDomainData`. Matches Shadertoy's iChannel
   layout so audio shaders prototyped elsewhere port with zero rewiring. Details
   in `.claude/rules/audio.md`.
+
+## Session continuity (read first — especially on a fresh cloud/phone session)
+
+The cloud container is wiped between sessions; **only git-committed files
+survive** (auto-memory and `~/.claude/plans` do not). The current state and the
+active plan live in committed files, imported here so they load on launch:
+
+@task_plan.md
+@progress.md
+
+**Verify (laptop-free, runs in-container or CI):**
+- `node test/smoke.mjs` — param/look/store integrity (zero-dep)
+- `node test/render-check.mjs` — headless Chromium: WebGL2, shaders compile,
+  render loop, a11y DOM, saves `test/artifacts/render.png`
+  (needs Playwright Chromium; CI installs it)
+- `.github/workflows/verify.yml` runs both + `node --check` on every push.
+
+Canonical repo: **`Primordial-viz`** (dash). Active branch:
+`claude/primordial-visual-instrument-ai-o7gfcm` → draft PR #1.
