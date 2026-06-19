@@ -72,6 +72,11 @@ try {
       const err = await page.evaluate(() => window.__primordial.error);
       if (err) throw new Error('sketch failed to boot: ' + err);
       await page.waitForTimeout(secs * 1000);
+      // Re-check after the capture window: a render error mid-clip halts the
+      // loop and is recorded into the webm, so surface it rather than reporting
+      // a clean success.
+      const midErr = await page.evaluate(() => window.__primordial.error);
+      if (midErr) throw new Error('sketch errored mid-clip: ' + midErr);
       const video = page.video();
       await ctx.close(); // flushes the webm to disk
       const tmp = await video.path();
