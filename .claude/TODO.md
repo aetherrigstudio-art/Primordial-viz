@@ -7,7 +7,7 @@ Legend: 📱 = you (app/web) · 🤖 = me (repo). Full context: `.claude/ROADMAP
 - [ ] Enable phone **push**: "input needed" + "task done" (Claude mobile app → settings)
 - [ ] Turn on **Auto mode** as default permission (user-level settings)
 - [ ] Add **`Primordial-viz`** to the **Claude GitHub App** repo access (it's only on `perchance-ai-tool` now)
-- [ ] Cloud **Environment → Setup script**: `npm ci` + `npx playwright install chromium`; Network = Full; no secrets in env vars
+- [ ] Cloud **Environment → Setup script**: paste `.claude/cloud-setup.sh`; Network = Full; no secrets in env vars
 - [ ] (optional) Delete the empty **`Primordial.viz`** (dot) repo to avoid confusion
 
 ## 🤖 Me — done (committed to git)
@@ -17,6 +17,8 @@ Legend: 📱 = you (app/web) · 🤖 = me (repo). Full context: `.claude/ROADMAP
 - [x] Accessibility pass (labels, aria-live, focus, contrast, reduced-motion)
 - [x] Hooks: `check-syntax`, `check-data`, SessionStart `orient`
 - [x] Cross-session handoff: `progress.md` / `task_plan.md` + `CLAUDE.md` `@imports`
+- [x] Claude roadmap + TODO + cloud setup script (`.claude/ROADMAP.md`, `.claude/TODO.md`, `.claude/cloud-setup.sh`)
+- [x] Handoff written (latest entry in `progress.md`, per the template)
 
 ## 🤖 Me — pending app hardening (needs your "go")
 - [ ] **WS1** code fixes — NEAREST audio texture, step cap 64, renderScale floor, `devicechange` listener, implement `flux`; WebGL context-loss + FBO-complete checks; getUserMedia/resume error surfacing; dt/FPS NaN guards; dynamic-res hysteresis

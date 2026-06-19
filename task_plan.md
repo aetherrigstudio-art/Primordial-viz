@@ -70,7 +70,7 @@ Hooks: `check-syntax.sh` (node --check) + `check-data.sh` (smoke on data edits).
 | WS2 | Accessibility (labels, aria-live, focus-visible, contrast, reduced-motion) | ✅ done |
 | WS3 | Docs/research honesty (write real research into `research/findings/`) | todo |
 | WS4 | Repo hygiene (prune vestigial `.htaccess` `.glsl` rules) | todo |
-| WS5 | CLAUDE.md / skills / agents tuning | partial (hooks, continuity import done) |
+| WS5 | CLAUDE.md / skills / agents tuning | partial (hooks, continuity @imports, `.claude/ROADMAP.md`+`TODO.md`, `.claude/cloud-setup.sh` done; output-style/MCP optional) |
 
 **Claude env for phone-driven, laptop-free dev — USER actions (only you can do):**
 1. Mobile app: enable push for "input needed" + "task done".

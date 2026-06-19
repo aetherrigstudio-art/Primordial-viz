@@ -92,3 +92,51 @@ CI green. Behavior unchanged except a11y + render beacon + reduced-motion.
   chromium) — it's snapshot-cached, runs once.
 - **Rule:** only git-committed files survive a fresh cloud session — keep this log
   + `task_plan.md` current.
+
+## Handoff — 2026-06-19 (session end · own-repo + Claude env) — READY
+
+**Metadata:** repo `Primordial-viz` (canonical, dash) · branch
+`claude/primordial-visual-instrument-ai-o7gfcm` · draft **PR #1** · CI green ·
+latest commits in `git log` (migration → docs reconcile → WS0/WS2 → CI fix →
+hooks → continuity → roadmap/TODO → cloud-setup).
+
+**Did:** migrated app into its own repo; reconciled docs↔code; WS0 verification
+backbone (`test/smoke.mjs`, `test/render-check.mjs`, CI); WS2 accessibility; CI
+screenshot fix; hooks (`check-syntax`, `check-data`, SessionStart `orient`);
+cross-session continuity (`CLAUDE.md` `@imports`); Claude-only roadmap+TODO
+(`.claude/ROADMAP.md`, `.claude/TODO.md`); finalized cloud setup script
+(`.claude/cloud-setup.sh`).
+
+**Decisions (+why):** durable state = git only (cloud wipes `~/.claude` +
+auto-memory + plans); setup script = one-time cached install, SessionStart hook =
+per-session orient; code is source of truth (shaders are `.js`, looks params-only);
+permission-allow widening + skill edits are user-gated (self-mod guard / "don't
+modify skills" rule).
+
+**Next step (specific) — START WS1, exact edits:**
+- `src/gl/renderer.js:86-87` → `gl.NEAREST` (both MIN/MAG) for the 512×2 audio texture.
+- `src/params/schema.js:30` → `steps` max `96`→`64`; `:29` → `renderScale` min `0.3`→`0.5`; raise the dynamic-res floor in `src/main.js` `updateDynamicRes` (`0.4`→`0.5`).
+- `src/audio/input.js` → add `navigator.mediaDevices.addEventListener('devicechange', …)` to re-refresh devices.
+- `src/audio/analyser.js` → compute `flux` (store prev FFT frame, positive-diff sum, smoothed); expose in `features`; wire `uFlux` in `src/gl/uniforms.js` + a subtle use in `src/shaders/slime.frag.js`.
+- `src/gl/renderer.js` → `webglcontextlost`/`webglcontextrestored` handlers + `checkFramebufferStatus` after FBO attach; surface shader compile/link errors to the start gate.
+- `src/audio/input.js` + `src/main.js` → surface `getUserMedia` rejection + post-`resume()` still-`suspended` state to the gate; guard `dt`/`lastT` & FPS ÷0; add dynamic-res hysteresis; `cancelAnimationFrame` on unload.
+- Verify each area: `node test/smoke.mjs && node test/render-check.mjs`; commit per-area; let `audio-dsp`/`visual-qa` agents review.
+
+**Pending:** WS1 (above) · WS3 (write `research/findings/`) · WS4 (prune vestigial
+`.htaccess` `.glsl` rules) · WS5 (finish CLAUDE.md/skills tuning). **USER:** phone
+push · Auto mode · add `Primordial-viz` to the Claude GitHub App · paste
+`.claude/cloud-setup.sh` into the cloud env (Network=Full).
+
+**Critical files:** `src/main.js` (loop+beacon+reduced-motion) · `src/gl/*` ·
+`src/audio/*` · `src/params/*` · `src/looks/registry.js` · `test/*.mjs` ·
+`.claude/{settings.json,hooks/*,ROADMAP.md,TODO.md,cloud-setup.sh}` ·
+`.github/workflows/verify.yml`.
+
+**Gotchas:** render screenshot must freeze the loop first (CI software-GL CPU
+starvation) — handled via `window.__primordial.pause`; editing `permissions.allow`
+in `.claude/settings.json` is blocked by the self-mod guard (user applies);
+Chromium download needs Network=Full; auto-memory / `~/.claude/plans` do NOT persist.
+
+**Fresh-agent test:** PASS — a new agent loads `CLAUDE.md` (which imports
+`task_plan.md` + `progress.md`), runs the verify commands, and can begin WS1 from
+the exact edits above.

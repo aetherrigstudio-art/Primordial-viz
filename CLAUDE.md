@@ -115,3 +115,8 @@ active plan live in committed files, imported here so they load on launch:
 
 Canonical repo: **`Primordial-viz`** (dash). Active branch:
 `claude/primordial-visual-instrument-ai-o7gfcm` → draft PR #1.
+
+Claude-environment docs: `.claude/ROADMAP.md` (roadmap + AI-handoff method &
+template), `.claude/TODO.md` (checklist), `.claude/cloud-setup.sh` (paste into the
+cloud Environment → Setup script). Latest **handoff** = the last entry in
+`progress.md`.
