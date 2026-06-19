@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 109 files in 33 directories.
+> 110 files in 33 directories.
 
 ```
 Primordial-viz/
@@ -35,6 +35,7 @@ Primordial-viz/
 │   └── TODO.md
 ├── .github/
 │   └── workflows/
+│       ├── deploy.yml
 │       └── verify.yml
 ├── deploy/
 │   ├── .htaccess

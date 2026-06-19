@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 109 files across 18 categories.
+> 110 files across 18 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -27,7 +27,7 @@
 - [Deployment](#deployment) (3)
 - [Vendored libraries](#vendored-libraries) (2)
 - [Research](#research) (13)
-- [CI / Build Config](#ci--build-config) (5)
+- [CI / Build Config](#ci--build-config) (6)
 
 ## Overview & Planning
 
@@ -222,6 +222,7 @@
 
 | File | Description |
 | --- | --- |
+| [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) | CI / workflow configuration. |
 | [`.github/workflows/verify.yml`](.github/workflows/verify.yml) | CI: syntax-check, smoke test, and headless render check on every push. |
 | [`.gitignore`](.gitignore) | deps / build |
 | [`.mcp.json`](.mcp.json) | Project-scoped MCP server configuration for Claude Code. |

@@ -1,0 +1,44 @@
+name: deploy
+
+# Auto-deploy the static site to primordial.video (Namecheap Stellar Plus /
+# cPanel) over FTPS. Runs on a push to main, or manually ("Run workflow" /
+# triggered via the GitHub MCP). Deploying from main (not the feature branch)
+# keeps work-in-progress commits off the live site.
+#
+# Requires three repository SECRETS (Settings → Secrets and variables → Actions):
+#   FTP_HOST      e.g. primordial.video  (or the server hostname from cPanel)
+#   FTP_USERNAME  the cPanel / FTP account username
+#   FTP_PASSWORD  that account's password
+# FTPS is encrypted; never commit these values.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-live
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Stage the static site
+        run: |
+          mkdir -p site
+          cp -R index.html three.html src vendor site/
+          cp deploy/.htaccess site/.htaccess
+
+      - name: Upload to cPanel via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./site/
+          # If your FTP account is jailed to public_html, change this to ./
+          server-dir: ./public_html/
