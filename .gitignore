@@ -1,0 +1,15 @@
+# deps / build
+node_modules/
+dist/
+.cache/
+# personal / secrets
+CLAUDE.local.md
+.claude/settings.local.json
+.env
+# full scraped corpus (curated subset only is committed)
+research/corpus-full/
+*.zip
+# test artifacts (headless render screenshots, etc.)
+test/artifacts/
+# os
+.DS_Store
