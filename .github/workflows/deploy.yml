@@ -1,23 +1,24 @@
 name: deploy
 
-# Auto-deploy the static site to primordial.video (Namecheap Stellar Plus /
-# cPanel) over FTPS. Runs on a push to main, or manually ("Run workflow" /
-# triggered via the GitHub MCP). Deploying from main (not the feature branch)
-# keeps work-in-progress commits off the live site.
+# Auto-deploy the static site to the TEST folder on primordial.video over FTPS,
+# using the dedicated Test@primordial.video FTP account (jailed to its own
+# folder). Runs on push to the working branch or a manual / GitHub-MCP trigger.
+# The live homepage is never touched — files land in that account's folder,
+# served at https://primordial.video/Test/.
 #
 # Requires three repository SECRETS (Settings → Secrets and variables → Actions):
-#   FTP_HOST      e.g. primordial.video  (or the server hostname from cPanel)
-#   FTP_USERNAME  the cPanel / FTP account username
-#   FTP_PASSWORD  that account's password
+#   FTP_HOST      premium252.web-hosting.com   (the cPanel server hostname)
+#   FTP_USERNAME  Test@primordial.video
+#   FTP_PASSWORD  the password set on that FTP account
 # FTPS is encrypted; never commit these values.
 
 on:
   push:
-    branches: [main]
+    branches: [claude/review-claude-md-di5jvm]
   workflow_dispatch:
 
 concurrency:
-  group: deploy-live
+  group: deploy-test
   cancel-in-progress: true
 
 jobs:
@@ -40,5 +41,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./site/
-          # If your FTP account is jailed to public_html, change this to ./
-          server-dir: ./public_html/
+          # The Test FTP account is jailed to its own folder, so its root IS the
+          # target — upload to "./".
+          server-dir: ./
