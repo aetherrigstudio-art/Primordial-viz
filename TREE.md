@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 108 files in 33 directories.
+> 113 files in 36 directories.
 
 ```
 Primordial-viz/
@@ -24,11 +24,18 @@ Primordial-viz/
 │   │   ├── deploy.md
 │   │   └── shaders.md
 │   ├── skills/
+│   │   ├── accessibility/
+│   │   │   ├── references/
+│   │   │   │   ├── A11Y-PATTERNS.md
+│   │   │   │   └── WCAG.md
+│   │   │   └── SKILL.md
 │   │   ├── deploy-cpanel/
 │   │   │   └── SKILL.md
 │   │   ├── new-preset/
 │   │   │   └── SKILL.md
 │   │   ├── perf-budget/
+│   │   │   └── SKILL.md
+│   │   ├── performance/
 │   │   │   └── SKILL.md
 │   │   ├── skill-router/
 │   │   │   └── SKILL.md
@@ -146,6 +153,7 @@ Primordial-viz/
 ├── progress.md
 ├── README.md
 ├── ROADMAP.md
+├── skills-lock.json
 ├── task_plan.md
 ├── TODO.md
 ├── TREE.md

@@ -373,11 +373,24 @@ function claudeRouterUpdated(text) {
 // abstract paths (public_html, band lists like bass/mid/treble) to never
 // false-fail CI. Scanned docs: CLAUDE.md, deploy/DEPLOY.md, rules, skills.
 // ---------------------------------------------------------------------------
+// Skills adopted from the ecosystem (via `npx skills`, tracked in skills-lock.json)
+// are third-party — exclude them from the drift gate, which polices OUR authored
+// docs, not external content (their example paths can collide with our dir names).
+function adoptedSkills() {
+  try {
+    const lock = JSON.parse(readFileSync(join(root, 'skills-lock.json'), 'utf8'));
+    return new Set(Object.keys(lock.skills || {}));
+  } catch { return new Set(); }
+}
+
 function refDocs() {
+  const adopted = adoptedSkills();
   return [
     'CLAUDE.md',
     'deploy/DEPLOY.md',
-    ...listFiles().filter((p) => /^\.claude\/rules\/[^/]+\.md$/.test(p) || /^\.claude\/skills\/[^/]+\/SKILL\.md$/.test(p)),
+    ...listFiles().filter((p) =>
+      /^\.claude\/rules\/[^/]+\.md$/.test(p) ||
+      (/^\.claude\/skills\/[^/]+\/SKILL\.md$/.test(p) && !adopted.has(p.split('/')[2]))),
   ].filter((p) => existsSync(join(root, p)));
 }
 

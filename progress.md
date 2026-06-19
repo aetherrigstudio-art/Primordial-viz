@@ -329,3 +329,38 @@ PreCompact hook, phone-resilient CLI-first discovery doc.
 
 **Verified:** `node --check tools/gen-docs.mjs`; `gen-docs --check` green (docs +
 CLAUDE.md region + drift gate); gate catches a dangling ref; smoke 12/12.
+
+## Session — 2026-06-19 (adopt community skills via `npx skills`)
+
+Used the real **`npx skills`** (vercel-labs, skills.sh) to discover community
+skills — wide sweep across webgl/shader/audio/perf/a11y/deploy/security/testing/
+docs. **Most of the ecosystem is wrong-stack for us** (three.js/R3F, React/
+Tailwind, Firebase, Flutter, Go/Python, Vercel/Azure) — filtered hard.
+
+**Adopted (vetted: read SKILL.md + license, markdown-only, no scripts):**
+- `addyosmani/web-quality-skills@performance` — **MIT** (Lighthouse web perf).
+- `addyosmani/web-quality-skills@accessibility` — **MIT** (WCAG 2.2; + WCAG/
+  A11Y reference docs). Reinforces our existing a11y pass.
+Installed with `--copy` (real files survive a container wipe) → `.claude/skills/
+{performance,accessibility}/`; provenance + content hashes in `skills-lock.json`.
+
+**Rejected (with reasons):**
+- `anthropics/skills@webapp-testing` (first-party, safe) — but **Python**
+  Playwright; mismatches our **JS** `render-check` + PHP-only host. Wrong stack.
+- `useai-pro/openclaw-skills-security@skill-vetter` — **no license** + unverified
+  OpenClaw provenance → fails its own (and our commercial) vetting gate.
+
+**Infra:** the drift gate (`gen-docs checkRefs`) now **excludes adopted skills**
+(those in `skills-lock.json`) — it polices OUR authored docs, not third-party
+content whose example paths can collide with our dir names. Adopted skills
+auto-register in the router under area `general` (the skill-router system handled
+them with zero manual wiring).
+
+**Adoption policy (durable):** treat every ecosystem skill as third-party —
+read its SKILL.md, confirm MIT/CC0/CC-BY license, prefer markdown-only / no
+scripts, prefer first-party (anthropics) or reputable (addyosmani) authors;
+`skills-lock.json` records provenance. (More candidates still being curated —
+user asked for a wider set.)
+
+**Verified:** `gen-docs --check` green (incl. drift gate w/ adopted-skill
+exclusion); router shows both new skills; smoke 12/12; CLAUDE.md 185 lines.
