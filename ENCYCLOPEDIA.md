@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 193 files across 17 categories.
+> 194 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (11)
@@ -24,7 +24,7 @@
 - [Tooling / Scripts](#tooling--scripts) (12)
 - [Claude Environment](#claude-environment) (85)
 - [Deployment](#deployment) (3)
-- [Research](#research) (15)
+- [Research](#research) (16)
 - [CI / Build Config](#ci--build-config) (6)
 - [Other](#other) (6)
 
@@ -281,6 +281,7 @@
 | [`research/findings/fmhy-tooling.md`](research/findings/fmhy-tooling.md) | Deep-research synthesis (4 parallel passes, adversarially verified). |
 | [`research/findings/mcp-adoption.md`](research/findings/mcp-adoption.md) | Deep-research synthesis (5 parallel search angles, adversarially verified). |
 | [`research/findings/mcp-build-our-own.md`](research/findings/mcp-build-our-own.md) | Deep-research synthesis (5 parallel search angles, adversarially verified). |
+| [`research/product-domain-comparison/REPORT.md`](research/product-domain-comparison/REPORT.md) | Date: 2026-06-19 · Axis: the product — raw-WebGL2 / GLSL-shader / audio-reactive visual web apps — regardless of whether the peer uses Claude. |
 | [`research/scripts/crawl-site.py`](research/scripts/crawl-site.py) | Python script. |
 | [`research/scripts/scrape-blog.py`](research/scripts/scrape-blog.py) | Python script. |
 
