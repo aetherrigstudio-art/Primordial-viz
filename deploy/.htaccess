@@ -2,6 +2,16 @@
 # Place this file AS .htaccess at the public_html root.
 
 # ---------------------------------------------------------------------------
+# Hardening — no directory listings (so the source tree can't be enumerated)
+# and no hidden/sensitive dotfiles served (e.g. .htaccess, the deploy tool's
+# .ftp-deploy-sync-state.json file manifest).
+# ---------------------------------------------------------------------------
+Options -Indexes
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# ---------------------------------------------------------------------------
 # Force HTTPS — the mic (getUserMedia) requires a secure context.
 # ---------------------------------------------------------------------------
 <IfModule mod_rewrite.c>

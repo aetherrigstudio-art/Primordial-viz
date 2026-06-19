@@ -8,7 +8,7 @@
 // server) and transparently falls back to the inline copies offline.
 
 // --- Inline mirror of the JSON look files (file:// fallback) ----------------
-// @generated-start looks:inline -- edit src/looks/*.json, then: node tools/mcp/lib/looks.mjs sync
+// @generated-start looks:inline -- mirror of src/looks/*.json; edit the JSON files, not this block.
 const INLINE_LOOKS = [
   {
     "id": "slime-green",

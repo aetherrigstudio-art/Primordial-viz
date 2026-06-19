@@ -236,3 +236,30 @@ no-op); `settings.json` valid; smoke 12/12; `gen-docs --check` in sync.
 
 **Knowledge-system items remaining (see `.claude/ROADMAP.md`):** drift gate +
 fix the stale `deploy-cpanel` skill; PreCompact "update progress.md" reminder hook.
+
+## Session — 2026-06-19 (client-side privacy: strip AI/tooling fingerprints)
+
+**Operator requirement:** the deployed site must show **no proof it's AI-assisted**
+and expose **no reachable AI** to visitors. Audited the deployed surface
+(`index.html` + `src/` + `.htaccess` — the no-build static site is fully
+View-Source-readable). No live AI endpoint exists (only same-origin look JSON
+fetch; MCP server is dev-only, never deployed). Fixed three confirmed live leaks:
+
+1. **Directory listing was OPEN** — `/Test/src/`, `/src/looks/`, `/src/shaders/`
+   returned browsable indexes → added `Options -Indexes` to `deploy/.htaccess`.
+2. **`/Test/.ftp-deploy-sync-state.json` was public (HTTP 200)** — the
+   FTP-Deploy-Action's file manifest → added `<FilesMatch "^\.">  Require all
+   denied` to deny dotfiles.
+3. **AI-tooling fingerprints in deployed source** — `registry.js` comment named
+   `tools/mcp/lib/looks.mjs`; `main.js` comment named `test/render-check.mjs`.
+   Reworded both to tool-agnostic (the `@generated` marker is preserved — the
+   `looks.mjs` regex matches `[^\n]*` after the marker, verified by smoke).
+
+New durable rule in `.claude/rules/deploy.md` ("Client-side privacy") so a future
+agent can't reintroduce fingerprints. **Note:** repo is private; commit trailers
+carry `Co-Authored-By: Claude` → don't make it public without scrubbing history.
+
+**Follow-ups:** gate `window.__primordial`/`__looks` so they're absent in prod
+(touches the render-check test contract); a CI grep guard that fails if any
+AI/tooling fingerprint reaches `index.html`/`src/` (fits the roadmap "drift gate").
+**Verified:** smoke 12/12, node --check, fingerprint re-scan clean, gen-docs in sync.

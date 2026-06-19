@@ -28,8 +28,7 @@ let micActive = false;
 // Smoothed beat pulse exposed to shaders.
 const features = { bass: 0, mid: 0, treble: 0, level: 0, beat: 0 };
 
-// Render-health beacon for laptop-free / headless verification
-// (test/render-check.mjs reads window.__primordial). Never affects rendering.
+// Internal render-state handle (frame count / GL status). Never affects rendering.
 const health = { frames: 0, glOk: false, error: null, pause: false };
 if (typeof window !== 'undefined') window.__primordial = health;
 
