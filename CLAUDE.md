@@ -113,7 +113,7 @@ don't skip them):
 - **design** — `thought-based-reasoning`
 - **docs** — `documentation-and-adrs`
 - **looks** — `new-preset`
-- **meta** — `send-report`, `skill-router`, `workflow`, `writing-skills`
+- **meta** — `park`, `send-report`, `skill-router`, `workflow`, `writing-skills`
 - **perf** — `performance`
 - **planning** — `brainstorming`, `executing-plans`, `spec-driven-implementation`, `task-management`, `writing-plans`
 - **research** — `find-docs`

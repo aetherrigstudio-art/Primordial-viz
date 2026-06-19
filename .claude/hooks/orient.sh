@@ -29,6 +29,13 @@ fi
 if [ -f progress.md ]; then
   last="$(grep '^## ' progress.md 2>/dev/null | tail -1)"
   [ -n "$last" ] && echo "Latest progress entry: ${last#\#\# }  → read the tail of progress.md for the handoff / next step."
+  # Open threads — parked work to resume (the '## Open threads' section).
+  open="$(awk '/^## Open threads/{f=1;next} f&&/^## /{f=0} f&&/^- \[ \]/{print}' progress.md 2>/dev/null)"
+  if [ -n "$open" ]; then
+    n="$(printf '%s\n' "$open" | grep -c .)"
+    echo "Open threads ($n) — parked work to resume (run /park to add; remove the line when done):"
+    printf '%s\n' "$open" | sed 's/^/  /'
+  fi
 fi
 
 echo "Deploy: live preview at https://primordial.video/Test/ — AUTO-deploys on push (GitHub Actions FTPS; .github/workflows/deploy.yml; needs the FTP_PASSWORD repo secret, which lives in GitHub and survives wipes)."

@@ -1,5 +1,9 @@
 # Progress Log — primordial
 
+## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
+
+- [ ] **learn-from-corrections (self-improvement loop #1)** | decided: hybrid - a UserPromptSubmit `detect-correction.sh` hook nudges when you push back, and a `/lesson` skill captures the lesson durably by ROUTING it to the right home (sharpen the always-loaded `accuracy` rule / fix the stale source doc / note in progress.md), not a write-only dump | next: run `writing-plans`, then build the hook + `/lesson` skill + wire settings.json/router/orient | parked 2026-06-19
+
 ## Session 1 — 2026-06-19 (planning + research)
 
 **Did:**
