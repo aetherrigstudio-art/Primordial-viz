@@ -27,12 +27,13 @@ you committed to**; new tasks fork off stale `main`.
   `CLAUDE.md`: keep durable state + `.claude/` reaching `main` (merge regularly)
   or new sessions start blind.
 
-**LINCHPIN (needs operator):** these guards only reach a future session once they
-are on the branch it forks from = **`main`**. The working branch must be merged
-to `main` (I am branch-restricted to `claude/review-claude-md-di5jvm` and cannot
-push to `main` without explicit permission). Until then, start sessions ON the
-working branch. Recommended: merge/PR this branch to `main`, then keep `main`
-current.
+**LINCHPIN - RESOLVED 2026-06-19:** operator approved a **direct merge** of
+`claude/review-claude-md-di5jvm` into `main` (merge commit `79e4998`, no
+conflicts, `README.md` preserved, gates green). `main` now contains the full
+build incl. the cross-branch orient hook + the queued comparison brief, so future
+sessions forking off `main` inherit everything. **Going forward: keep `main`
+current** - merge the working branch to `main` after each batch (or work on
+`main`) so it never drifts dozens of commits behind again.
 
 ## Session - 2026-06-19 (queued next-agent task: Claude-repo comparison)
 
