@@ -419,15 +419,28 @@ function checkRefs() {
 }
 
 // ---------------------------------------------------------------------------
+// AGENTS.md — tool-agnostic mirror of CLAUDE.md for non-Claude harnesses.
+// ---------------------------------------------------------------------------
+// AGENTS.md: a tool-agnostic mirror of CLAUDE.md so non-Claude harnesses
+// (Codex/Cursor/etc.) get the same knowledge. Generated — do not hand-edit.
+// Claude-only `@import` lines are converted to plain "See <file>" references.
+function buildAgentsMd() {
+  const claude = readFileSync(join(root, 'CLAUDE.md'), 'utf8');
+  const body = claude.replace(/^@(\S+)\s*$/gm, 'See `$1`.');
+  return `<!-- @generated from CLAUDE.md by tools/gen-docs.mjs — do not edit. -->\n\n${body}`;
+}
+
+// ---------------------------------------------------------------------------
 // Main — write/check both documents.
 // ---------------------------------------------------------------------------
 // Always include the generated docs themselves so the output converges in a
 // single pass even before the files exist on disk (keeps --check stable in CI).
-const OUTPUTS = ['ENCYCLOPEDIA.md', 'TREE.md'];
+const OUTPUTS = ['ENCYCLOPEDIA.md', 'TREE.md', 'AGENTS.md'];
 const files = [...new Set([...listFiles(), ...OUTPUTS])].sort();
 const docs = [
   ['ENCYCLOPEDIA.md', buildEncyclopedia(files)],
   ['TREE.md', buildTree(files)],
+  ['AGENTS.md', buildAgentsMd()],
 ];
 // Generated regions kept in sync inside hand-written files (markdown markers).
 const regions = [['.claude/skills-router.md', routerRegionUpdated]];

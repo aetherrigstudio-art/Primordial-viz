@@ -7,10 +7,10 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 196 files across 17 categories.
+> 197 files across 17 categories.
 
 ## Contents
-- [Overview & Planning](#overview--planning) (11)
+- [Overview & Planning](#overview--planning) (12)
 - [Specs & Long-form Docs](#specs--long-form-docs) (11)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
@@ -32,6 +32,7 @@
 
 | File | Description |
 | --- | --- |
+| [`AGENTS.md`](AGENTS.md) | <!-- @generated from CLAUDE.md by tools/gen-docs.mjs — do not edit. |
 | [`CLAUDE.md`](CLAUDE.md) | Working notes for agents in this repo. |
 | [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md) | Auto-generated — do not edit by hand. |
 | [`LICENSE`](LICENSE) | Software license for the project. |
