@@ -2,8 +2,33 @@
 
 ## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
 
-- [ ] **NEXT TASK - compare this repo vs other Claude-based repos** | what: search GitHub for 3-5 other/similar Claude-based repositories and compare them against this one, primary axis = Claude-agent tooling + methodology (CLAUDE.md / skills / hooks / subagents / MCP / docs-automation / process), across 4 dimensions (config&rules, skills/agents/MCP, hooks&automation, process&methodology); later goal = a second comparison on the product domain (raw-WebGL2 / shader / audio-visual apps) | how: FULL brief with all context + tools + selection criteria + deliverable is in `research/claude-repo-comparison/BRIEF.md` - READ IT AND EXECUTE | deliver: `research/claude-repo-comparison/REPORT.md` (committed) + SendUserFile to the operator with a concise summary | set up 2026-06-19
+- [ ] **product-domain comparison (raw-WebGL2 / shader / audio-visual web apps)** | what: the SECOND comparison the primary-axis brief deferred — compare Primordial-viz against repos in our PRODUCT domain (raw-WebGL2 / GLSL shader / audio-reactive visual web apps), regardless of Claude usage. Axes: renderer architecture (raw WebGL2 vs lib), audio→FFT→texture approach, mobile perf budget, look/preset systems, deploy. | how: same method as the Claude-axis run — find 3-5 real, active repos, read primary sources, compare in a table + per-repo notes + adopt-vs-ahead synthesis. Context in `research/claude-repo-comparison/BRIEF.md` ("Later goal") + the delivered `REPORT.md`. | deliver: `research/product-domain-comparison/REPORT.md` + SendUserFile summary | parked 2026-06-19 (Claude-axis comparison DONE)
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
+
+## Session — 2026-06-19 (Claude-repo comparison — DELIVERED)
+
+Executed the queued primary-axis task (brief: `research/claude-repo-comparison/BRIEF.md`).
+Compared this repo's Claude-agent tooling/methodology against **4** real, verified
+peers, profiled from **primary sources** via 4 parallel research agents:
+**obra/superpowers** (MIT, ~233k★), **anthropics/skills** (Apache-2.0, ~153k★),
+**shanraisshan/claude-code-best-practice** (MIT, ~58k★), **MuhammadUsmanGM/
+claude-code-best-practices** (MIT, ~48★). Deliverable committed:
+`research/claude-repo-comparison/REPORT.md` (table across the 4 dimensions +
+per-repo notes + adopt-vs-ahead synthesis) and SendUserFile'd to the operator.
+
+**Key findings:** we're ahead on **wipe-proof git continuity**, the **docs/drift
+gate**, breadth of **enforcement hooks**, and a **self-improvement loop**
+(parking + learn-from-corrections) — none of the peers have all of these. Biggest
+gap to adopt: an **eval harness that gates skill/rule changes** (superpowers +
+anthropics both have one; we measure *correctness* but never whether a skill
+actually triggers/helps). Runner-ups to adopt: per-skill `allowed-tools`
+permissions (anthropics), a `lint-claude-md` CI invariant check + cost/benchmark
+tooling (MuhammadUsmanGM). Honest caveat: no peer is a true product-repo peer —
+three are skills/methodology libraries, one a template handbook — so the most
+transferable theme is **evaluation**.
+
+**Parked the follow-up:** product-domain comparison (raw-WebGL2 / shader /
+audio-visual apps) is now the top Open thread. No app code changed.
 
 ## Session - 2026-06-19 (LESSON + FIX: continuity is branch-scoped)
 
