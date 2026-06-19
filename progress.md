@@ -376,3 +376,31 @@ all MIT/Apache, provenance in `skills-lock.json`). CLAUDE.md 188 lines — the
 always-loaded `skills:router` block is the growth driver; if it nears 200, move
 the generated block to a linked file. **Verified:** `gen-docs --check` green;
 smoke 12/12.
+
+**Round 3 (meta/workflow tier) — adopted 4 (all license-vetted, commercial-OK):**
+- `obra/superpowers@brainstorming` — **MIT** (232K installs). HARD-GATE "design
+  before implementing." ⚠️ shipped a `scripts/` **local WebSocket server** +
+  telemetry-named flag + a remote brand-image URL — diligence showed **no data
+  egress** (the flag only toggles branding; the server is an optional localhost
+  visual UI). For our lean/privacy/phone-driven repo we **stripped `scripts/` +
+  `visual-companion.md`** (kept the standalone methodology; added an adaptation
+  note). MIT permits the modification.
+- `obra/superpowers@writing-plans` — MIT. Plan/spec discipline.
+- `warpdotdev/common-skills@spec-driven-implementation` — MIT (Warp). PRODUCT.md/
+  TECH.md spec-first workflow.
+- `anthropics/knowledge-work-plugins@task-management` — **Apache-2.0** (first-party).
+Rejected the overlap set (planning-with-files, critical-thinking, obra
+systematic-debugging, deep-research) — duplicate our own systems / a built-in.
+
+**Now 14 skills** (5 ours + 9 adopted). **ALL skills are markdown/license only —
+no third-party executable code in the repo** (verified). User is fine with up to
+~30 skills.
+
+**Scaling fix:** the always-loaded `skills:router` block is now a **compact
+routing map** (one line per `area`, skill names only — descriptions are already
+injected each session by the harness, so the old per-skill table was redundant).
+CLAUDE.md **192 → 182 lines**; the block now grows ~1 line per new area, so it
+scales to 30+ skills without nearing the 200-line cap.
+
+**Verified:** `node --check tools/gen-docs.mjs`; `gen-docs --check` green (docs +
+compact region + drift gate); smoke 12/12.

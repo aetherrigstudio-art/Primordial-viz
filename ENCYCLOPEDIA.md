@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 117 files across 17 categories.
+> 123 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (9)
-- [Claude Environment](#claude-environment) (27)
+- [Claude Environment](#claude-environment) (33)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
@@ -176,6 +176,8 @@
 | [`.claude/skills/accessibility/SKILL.md`](.claude/skills/accessibility/SKILL.md) | Audit and improve web accessibility following WCAG 2.2 guidelines. Use when asked to "improve accessibility", "a11y audit", "WCAG compliance",… |
 | [`.claude/skills/accessibility/references/A11Y-PATTERNS.md`](.claude/skills/accessibility/references/A11Y-PATTERNS.md) | Practical, copy-paste-ready patterns for common accessibility requirements. |
 | [`.claude/skills/accessibility/references/WCAG.md`](.claude/skills/accessibility/references/WCAG.md) | html <button>Label</button> <!-- or --> <button aria-label="Close dialog">×</button> |
+| [`.claude/skills/brainstorming/SKILL.md`](.claude/skills/brainstorming/SKILL.md) | You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user… |
+| [`.claude/skills/brainstorming/spec-document-reviewer-prompt.md`](.claude/skills/brainstorming/spec-document-reviewer-prompt.md) | Use this template when dispatching a spec document reviewer subagent. |
 | [`.claude/skills/debugging-and-error-recovery/SKILL.md`](.claude/skills/debugging-and-error-recovery/SKILL.md) | Guides systematic root-cause debugging. Use when tests fail, builds break, behavior doesn't match expectations, or you encounter any unexpected… |
 | [`.claude/skills/deploy-cpanel/SKILL.md`](.claude/skills/deploy-cpanel/SKILL.md) | Manual deploy checklist for shipping primordial to Namecheap Stellar Plus (cPanel). Invoke deliberately when deploying; not auto-activated. |
 | [`.claude/skills/documentation-and-adrs/SKILL.md`](.claude/skills/documentation-and-adrs/SKILL.md) | Records decisions and documentation. Use when making architectural decisions, changing public APIs, shipping features, or when you need to record… |
@@ -185,7 +187,11 @@
 | [`.claude/skills/perf-budget/SKILL.md`](.claude/skills/perf-budget/SKILL.md) | Run the in-app FPS stress-test readout for primordial and read its SMOOTH / OK / TOO-MUCH verdict to set the mobile performance budget (FBO… |
 | [`.claude/skills/performance/SKILL.md`](.claude/skills/performance/SKILL.md) | Optimize web performance for faster loading and better user experience. Use when asked to "speed up my site", "optimize performance", "reduce load… |
 | [`.claude/skills/skill-router/SKILL.md`](.claude/skills/skill-router/SKILL.md) | Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the CLAUDE.md "Skills by area" router block from… |
+| [`.claude/skills/spec-driven-implementation/SKILL.md`](.claude/skills/spec-driven-implementation/SKILL.md) | Drive a spec-first workflow for substantial features by writing PRODUCT.md before implementation, writing TECH.md when warranted, and keeping both… |
+| [`.claude/skills/task-management/SKILL.md`](.claude/skills/task-management/SKILL.md) | Simple task management using a shared TASKS.md file. Reference this when the user asks about their tasks, wants to add/complete tasks, or needs help… |
 | [`.claude/skills/thought-based-reasoning/SKILL.md`](.claude/skills/thought-based-reasoning/SKILL.md) | Structured reasoning harness for design, architecture, and planning decisions in Primordial-viz. Frame the problem, pull the right project knowledge… |
+| [`.claude/skills/writing-plans/SKILL.md`](.claude/skills/writing-plans/SKILL.md) | Use when you have a spec or requirements for a multi-step task, before touching code |
+| [`.claude/skills/writing-plans/plan-document-reviewer-prompt.md`](.claude/skills/writing-plans/plan-document-reviewer-prompt.md) | Use this template when dispatching a plan document reviewer subagent. |
 
 ## Deployment
 

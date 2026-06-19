@@ -334,20 +334,21 @@ function skillMeta(path) {
 }
 
 function buildSkillsRouter() {
+  // Compact routing map only (area → skill names). Each skill's full description
+  // is already injected into context every session by the harness, so repeating
+  // it here would be redundant and would bloat the always-loaded CLAUDE.md — this
+  // stays one line per area so it scales to dozens of skills.
   const byArea = new Map();
   for (const s of listSkillFiles().map(skillMeta)) {
     if (!byArea.has(s.area)) byArea.set(s.area, []);
-    byArea.get(s.area).push(s);
+    byArea.get(s.area).push(s.name);
   }
   const lines = [];
-  lines.push('**Skills by area** — auto-generated from `.claude/skills/*/SKILL.md` `area:` (run `/skill-router` or `node tools/gen-docs.mjs` after adding a skill):');
+  lines.push('**Skills by area** — the routing map (each skill\'s description is injected every session; auto-generated from `.claude/skills/*/SKILL.md` `area:`, refreshed by `/skill-router` or `node tools/gen-docs.mjs`):');
   lines.push('');
-  lines.push('| Area | Skill | Use it to… |');
-  lines.push('| --- | --- | --- |');
   for (const area of [...byArea.keys()].sort()) {
-    for (const s of byArea.get(area).sort((a, b) => a.name.localeCompare(b.name))) {
-      lines.push(`| ${escapeCell(area)} | \`${escapeCell(s.name)}\` | ${escapeCell(tidy(firstSentence(s.description)))} |`);
-    }
+    const names = byArea.get(area).sort().map((n) => `\`${escapeCell(n)}\``).join(', ');
+    lines.push(`- **${escapeCell(area)}** — ${names}`);
   }
   return lines.join('\n');
 }
