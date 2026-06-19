@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 174 files across 17 categories.
+> 176 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (10)
@@ -21,8 +21,8 @@
 - [App — UI](#app--ui) (2)
 - [Tests & Verification](#tests--verification) (2)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (10)
-- [Claude Environment](#claude-environment) (81)
+- [Tooling / Scripts](#tooling--scripts) (11)
+- [Claude Environment](#claude-environment) (82)
 - [Deployment](#deployment) (3)
 - [Research](#research) (13)
 - [CI / Build Config](#ci--build-config) (6)
@@ -149,6 +149,7 @@
 | --- | --- |
 | [`tools/audit-site.mjs`](tools/audit-site.mjs) | Audit the DEPLOYED surface (index.html + src/) for AI "tells" a visitor could see via View-Source. |
 | [`tools/gen-docs.mjs`](tools/gen-docs.mjs) | Generates two always-current repo maps from a single source of truth: ENCYCLOPEDIA.md — a categorized index of every file, each with a one-line… |
+| [`tools/health.mjs`](tools/health.mjs) | Consolidated repo health check - runs the local gates in one pass and prints a PASS/FAIL dashboard. |
 | [`tools/mcp/lib/browser.mjs`](tools/mcp/lib/browser.mjs) | Shared headless-Chromium launch for the WebGL2 dev tools (shader validation, render checks). |
 | [`tools/mcp/lib/docs.mjs`](tools/mcp/lib/docs.mjs) | Project Q&A: keyword search + retrieval over the repo's own markdown docs, so an assistant can answer questions about the project. |
 | [`tools/mcp/lib/looks.mjs`](tools/mcp/lib/looks.mjs) | Looks/preset management: list, validate, and create/update the params-only JSON "looks" in src/looks/, keeping src/looks/registry.js's generated… |
@@ -199,6 +200,7 @@
 | [`.claude/skills/finishing-a-development-branch/SKILL.md`](.claude/skills/finishing-a-development-branch/SKILL.md) | Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by… |
 | [`.claude/skills/frontend-design/LICENSE.txt`](.claude/skills/frontend-design/LICENSE.txt) | Plain-text notes. |
 | [`.claude/skills/frontend-design/SKILL.md`](.claude/skills/frontend-design/SKILL.md) | Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography,… |
+| [`.claude/skills/health/SKILL.md`](.claude/skills/health/SKILL.md) | One-pass repo + deploy health check, then route any failure to its fix. Runs the local gates (npm run health - JS syntax, smoke, site audit,… |
 | [`.claude/skills/lesson/SKILL.md`](.claude/skills/lesson/SKILL.md) | Capture a correction or lesson durably so the same mistake doesn't recur. Use right after the user corrects a wrong assumption, an over-applied… |
 | [`.claude/skills/new-preset/SKILL.md`](.claude/skills/new-preset/SKILL.md) | Scaffold a new visual "look" for primordial — a params-only JSON preset in src/looks/, wired into the look registry (all looks share the slime… |
 | [`.claude/skills/park/SKILL.md`](.claude/skills/park/SKILL.md) | Park the current in-progress thread (a design, task, or decision we're partway through) into the "Open threads" list in progress.md with enough… |
