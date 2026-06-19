@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 77 files in 27 directories.
+> 103 files in 31 directories.
 
 ```
 Primordial-viz/
@@ -40,7 +40,8 @@ Primordial-viz/
 │   ├── .htaccess
 │   └── DEPLOY.md
 ├── docs/
-│   └── BUILD-SPEC.md
+│   ├── BUILD-SPEC.md
+│   └── STANDALONE.md
 ├── research/
 │   ├── corpus/
 │   │   ├── claude-code-auto-memory-guide.md
@@ -83,6 +84,34 @@ Primordial-viz/
 │   │   ├── controls.js
 │   │   └── styles.css
 │   └── main.js
+├── src-tauri/
+│   ├── capabilities/
+│   │   └── default.json
+│   ├── icons/
+│   │   ├── 128x128.png
+│   │   ├── 128x128@2x.png
+│   │   ├── 32x32.png
+│   │   ├── icon.icns
+│   │   ├── icon.ico
+│   │   ├── icon.png
+│   │   ├── Square107x107Logo.png
+│   │   ├── Square142x142Logo.png
+│   │   ├── Square150x150Logo.png
+│   │   ├── Square284x284Logo.png
+│   │   ├── Square30x30Logo.png
+│   │   ├── Square310x310Logo.png
+│   │   ├── Square44x44Logo.png
+│   │   ├── Square71x71Logo.png
+│   │   ├── Square89x89Logo.png
+│   │   └── StoreLogo.png
+│   ├── src/
+│   │   ├── lib.rs
+│   │   └── main.rs
+│   ├── .gitignore
+│   ├── build.rs
+│   ├── Cargo.toml
+│   ├── Info.plist
+│   └── tauri.conf.json
 ├── test/
 │   ├── render-check.mjs
 │   └── smoke.mjs
@@ -112,5 +141,6 @@ Primordial-viz/
 ├── ROADMAP.md
 ├── task_plan.md
 ├── TODO.md
-└── TREE.md
+├── TREE.md
+└── vite.config.js
 ```

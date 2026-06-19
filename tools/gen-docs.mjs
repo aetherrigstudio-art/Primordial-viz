@@ -50,6 +50,7 @@ const CATEGORIES = [
   ['App — UI', (p) => p.startsWith('src/ui/')],
   ['App — Other source', (p) => p.startsWith('src/')],
   ['Tests & Verification', (p) => p.startsWith('test/')],
+  ['Desktop / Standalone (Tauri)', (p) => p.startsWith('src-tauri/') || p === 'vite.config.js'],
   ['Tooling / Scripts', (p) => p.startsWith('tools/')],
   ['Claude Environment', (p) => p.startsWith('.claude/')],
   ['Deployment', (p) => p.startsWith('deploy/')],
