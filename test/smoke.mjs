@@ -12,7 +12,7 @@
 // check-on-edit hook.
 
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -207,6 +207,26 @@ await atest('registry loadLooks() returns inline set matching the JSON files', a
     assert.deepEqual(inline, jsonLooks[id], `inline "${id}" matches src/looks JSON`);
   }
 });
+
+// ---------------------------------------------------------------------------
+// Workshop sketches - each must export a GLSL ES 3.00 frag + a valid json
+// ---------------------------------------------------------------------------
+const sketchRoot = join(root, 'workshop', 'sketches');
+if (existsSync(sketchRoot)) {
+  const names = readdirSync(sketchRoot, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name);
+  for (const name of names) {
+    await atest(`workshop sketch ${name} is valid`, async () => {
+      const mod = await import(join(sketchRoot, name, name + '.frag.js'));
+      assert.ok(typeof mod.SKETCH_FRAG === 'string', 'exports SKETCH_FRAG string');
+      assert.ok(mod.SKETCH_FRAG.startsWith('#version 300 es'),
+        'frag begins with "#version 300 es" (byte one)');
+      const j = JSON.parse(readFileSync(join(sketchRoot, name, name + '.json'), 'utf8'));
+      assert.ok(j.name && typeof j.params === 'object', 'json has name + params object');
+    });
+  }
+}
 
 // ---------------------------------------------------------------------------
 console.log(`\n${pass} passed, ${fail} failed`);
