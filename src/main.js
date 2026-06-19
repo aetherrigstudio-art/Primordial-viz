@@ -172,6 +172,9 @@ function frame(now) {
   features.beat = beat.pulse;
 
   // --- Render ---
+  // Skip drawing while the GL context is lost (calls would no-op); the browser
+  // fires webglcontextrestored to recreate resources and clear the flag.
+  if (renderer.contextLost) { lastT = now; return; }
   resize();
   const params = resolveParams();
   pipeline.render({
