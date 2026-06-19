@@ -17,6 +17,8 @@ import { z } from 'zod';
 import { validateShaders } from './lib/validate.mjs';
 import { runRenderCheck } from './lib/render.mjs';
 import { listLooks, getLook, saveLook } from './lib/looks.mjs';
+import { searchDocs, getDoc } from './lib/docs.mjs';
+import { siteHealth } from './lib/site.mjs';
 
 const server = new McpServer({ name: 'primordial', version: '0.1.0' });
 
@@ -206,6 +208,82 @@ server.registerPrompt(
       },
     ],
   }),
+);
+
+// --- Docs / project Q&A ----------------------------------------------------
+server.registerTool(
+  'search_docs',
+  {
+    description:
+      "Keyword-search the project's own markdown docs (README, CLAUDE.md, ROADMAP, " +
+      'findings, .claude rules, etc.; excludes the scraped research corpus). Returns ' +
+      'ranked path + heading + snippet — use get_doc to read a full file.',
+    inputSchema: {
+      query: z.string().describe('Search terms'),
+      limit: z.number().int().min(1).max(25).default(8).optional(),
+    },
+  },
+  async ({ query, limit }) => {
+    const results = searchDocs(query, { limit: limit || 8 });
+    const text = results.length
+      ? results.map((r) => `${r.path}${r.heading ? ` › ${r.heading}` : ''}\n  ${r.snippet}`).join('\n\n')
+      : 'No matches.';
+    return { content: [{ type: 'text', text }], structuredContent: { results } };
+  },
+);
+
+server.registerTool(
+  'get_doc',
+  {
+    description: 'Return a project markdown doc (optionally just one heading\'s section).',
+    inputSchema: {
+      path: z.string().describe('Repo-relative path, e.g. "CLAUDE.md" or "docs/BUILD-SPEC.md"'),
+      section: z.string().optional().describe('Heading text to return just that section'),
+    },
+  },
+  async ({ path, section }) => {
+    try {
+      return { content: [{ type: 'text', text: getDoc(path, { section: section || null }) }] };
+    } catch (err) {
+      return { content: [{ type: 'text', text: err.message }], isError: true };
+    }
+  },
+);
+
+// Expose the two headline docs as resources for @-mention in clients.
+for (const [name, path, title] of [
+  ['readme', 'README.md', 'README'],
+  ['roadmap', 'ROADMAP.md', 'Roadmap'],
+]) {
+  server.registerResource(
+    name,
+    `doc://${name}`,
+    { title, description: `${title} (project doc)`, mimeType: 'text/markdown' },
+    async (uri) => ({ contents: [{ uri: uri.href, mimeType: 'text/markdown', text: getDoc(path) }] }),
+  );
+}
+
+// --- Live-site health (primordial.video) -----------------------------------
+server.registerTool(
+  'site_health',
+  {
+    description:
+      'Read-only health check of the live site https://primordial.video: reachable + ' +
+      'HTTPS status and the TLS certificate days-to-expiry (the SSL is non-renewing, so ' +
+      'a lapse silently breaks the mic). Set render:true to also boot the live page in ' +
+      'headless WebGL2. No credentials; does not deploy.',
+    inputSchema: {
+      render: z.boolean().default(false).optional().describe('Also run the live render check'),
+    },
+  },
+  async ({ render }) => {
+    const res = await siteHealth({ render: !!render });
+    const text =
+      `${res.url}\n  reachable: ${res.reachable}  status: ${res.status ?? 'n/a'}\n` +
+      `  SSL valid to: ${res.ssl.validTo ?? 'n/a'} (${res.ssl.daysToExpiry ?? '?'} days)` +
+      (res.errors.length ? '\n  notes:\n    - ' + res.errors.join('\n    - ') : '');
+    return { content: [{ type: 'text', text }], structuredContent: res, isError: !res.ok };
+  },
 );
 
 const transport = new StdioServerTransport();
