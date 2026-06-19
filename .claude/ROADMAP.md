@@ -32,7 +32,7 @@ Each cloud session = a fresh VM with the repo cloned. Three buckets:
 - `CLAUDE.md` `@imports` `task_plan.md` + `progress.md`; `.claude/hooks/orient.sh` (SessionStart); smoke + render-check + CI; `window.__primordial` render beacon. All committed.
 
 ### D — Optional polish (later) — BACKLOG
-- Terse output style; Context7 MCP (library docs); Routines/`/schedule` for unattended check-ins; a PreCompact "update progress.md" reminder hook; new `verify`/`deploy` skills (needs OK — we don't modify/add skills without it).
+- Terse output style; Context7 MCP (library docs); Routines/`/schedule` for unattended check-ins; new `verify`/`deploy` skills (needs OK). (Knowledge-delivery items live in their own section below.)
 
 ## AI handoff method (how we keep continuity)
 
@@ -61,6 +61,31 @@ Pending: <prioritized list>
 Critical files: <path — purpose>
 Gotchas: <known issues / workarounds>
 ```
+
+## Knowledge & context system (context-delivery hardening)
+
+The rules/agents/skills **content** is strong; the gaps are **delivery**
+(load-bearing rules only load if an agent thinks to read them) and **drift**
+(prose knowledge isn't freshness-gated — `CLAUDE.md` and the `deploy-cpanel`
+skill have both gone stale). The fix is to make knowledge *self-announce* and to
+keep one source of truth per topic.
+
+- **Knowledge router** — a `CLAUDE.md` table mapping each work area to its
+  required reading (shaders → `rules/shaders.md`, audio → `rules/audio.md`, …).
+  Always-loaded, so it can't be skipped. ✅ DONE.
+- **`thought-based-reasoning` skill** — structured reasoning harness for
+  design/architecture decisions; grounds via the router before proposing. ✅ DONE.
+- **Rule-injector hook (PreToolUse on Edit|Write)** — when the edited path
+  matches `src/shaders/**` / `src/gl/**` / `src/audio/**`, print "read the scoped
+  rule first" so the load-bearing rules surface at the moment of relevance instead
+  of relying on the agent to fetch them. — TODO (highest leverage).
+- **Drift gate + single source of truth** — one owner per topic (deploy facts →
+  `.claude/rules/deploy.md`; the skill + `DEPLOY.md` point to it), plus a
+  lightweight staleness check (extend `gen-docs --check`: referenced paths must
+  exist). First cleanup: the stale `deploy-cpanel` skill (lists a nonexistent
+  `assets/`, omits the auto-deploy). — TODO.
+- **PreCompact hook** — remind to update `progress.md` before a long session
+  compacts, so mid-session continuity isn't lost. — TODO.
 
 ## Sources
 - Claude Code cloud / memory / hooks / permission-modes / routines — `code.claude.com/docs`

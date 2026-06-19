@@ -89,6 +89,21 @@ src/
 └── ui/              # controls.js + styles.css
 ```
 
+## Knowledge router — read these BEFORE touching each area
+
+The load-bearing knowledge is scoped. Match what you're doing to its required
+reading (these rules protect mobile perf and the commercial licensing position —
+don't skip them):
+
+| Working on… | Read first | Also |
+| --- | --- | --- |
+| Shaders / renderer (`src/shaders`, `src/gl`) | `.claude/rules/shaders.md` — mobile budget + write-our-own licensing | agent `visual-qa`, skill `perf-budget` |
+| Audio (`src/audio`) | `.claude/rules/audio.md` — AnalyserNode, 512×2 texture, capture | agent `audio-dsp` |
+| A new look / preset (`src/looks`, `src/params`) | skill `new-preset` | `check-data` hook runs smoke on save |
+| Deploy / hosting | `.claude/rules/deploy.md` (source of truth) | `deploy/DEPLOY.md`; deploy auto-runs via `deploy.yml` |
+| Design / architecture / "reason through" a choice | skill `thought-based-reasoning` | this router + `progress.md` |
+| Where a file lives / what it does | `TREE.md` (layout) · `ENCYCLOPEDIA.md` (per-file) | auto-generated |
+
 ## Rules / Constraints
 
 - **HTTPS required for mic.** `getUserMedia` only works on a secure context
