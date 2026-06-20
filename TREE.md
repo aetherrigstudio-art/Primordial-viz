@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 202 files in 73 directories.
+> 205 files in 74 directories.
 
 ```
 Primordial-viz/
@@ -176,6 +176,8 @@ Primordial-viz/
 │   │   ├── fmhy-tooling.md
 │   │   ├── mcp-adoption.md
 │   │   └── mcp-build-our-own.md
+│   ├── fmhy-dev-tools/
+│   │   └── source.md
 │   ├── product-domain-comparison/
 │   │   └── REPORT.md
 │   ├── scripts/
@@ -237,6 +239,7 @@ Primordial-viz/
 │   ├── Info.plist
 │   └── tauri.conf.json
 ├── test/
+│   ├── harvest-links.test.mjs
 │   ├── render-check.mjs
 │   └── smoke.mjs
 ├── tools/
@@ -255,6 +258,7 @@ Primordial-viz/
 │   ├── audit-site.mjs
 │   ├── check-config.mjs
 │   ├── gen-docs.mjs
+│   ├── harvest-links.mjs
 │   └── health.mjs
 ├── workshop/
 │   ├── sketches/
