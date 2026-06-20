@@ -32,6 +32,12 @@ jobs:
       - name: Docs (encyclopedia + tree) up to date
         run: node tools/gen-docs.mjs --check
 
+      - name: Eval-skills Tier-1 static gate
+        run: node tools/eval-skills.mjs
+
+      - name: Eval-skills unit tests
+        run: node --test test/eval-skills.test.mjs
+
       - name: Install Playwright Chromium
         run: |
           npm ci || npm install
