@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 251 files across 17 categories.
+> 262 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
-- [Specs & Long-form Docs](#specs--long-form-docs) (24)
+- [Specs & Long-form Docs](#specs--long-form-docs) (28)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -19,14 +19,14 @@
 - [App — Looks / Presets](#app--looks--presets) (3)
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
-- [Tests & Verification](#tests--verification) (9)
+- [Tests & Verification](#tests--verification) (10)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (28)
-- [Claude Environment](#claude-environment) (89)
+- [Tooling / Scripts](#tooling--scripts) (32)
+- [Claude Environment](#claude-environment) (90)
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
 - [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (11)
+- [Other](#other) (12)
 
 ## Overview & Planning
 
@@ -42,7 +42,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Branch claude/init-r8ukva → PR #4 (CI verify GREEN) → merged to main. |
+| [`progress.md`](progress.md) | Checked all remote branches; 7 were fully merged, 2 had unmerged work — both rescued into main: - Portfolio (sub-project #1) from… |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -64,6 +64,8 @@
 | [`docs/superpowers/plans/2026-06-20-eval-harness.md`](docs/superpowers/plans/2026-06-20-eval-harness.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-fmhy-link-harvester.md`](docs/superpowers/plans/2026-06-20-fmhy-link-harvester.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-portfolio-media-gathering.md`](docs/superpowers/plans/2026-06-20-portfolio-media-gathering.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
+| [`docs/superpowers/plans/2026-06-20-rag-downweight-structural.md`](docs/superpowers/plans/2026-06-20-rag-downweight-structural.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
+| [`docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md`](docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-rag-semantic-recall.md`](docs/superpowers/plans/2026-06-20-rag-semantic-recall.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md`](docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-agent-onboarding-design.md`](docs/superpowers/specs/2026-06-19-agent-onboarding-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
@@ -71,6 +73,8 @@
 | [`docs/superpowers/specs/2026-06-19-visual-workshop-design.md`](docs/superpowers/specs/2026-06-19-visual-workshop-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 | [`docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md`](docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md) | Date: 2026-06-20 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-20-portfolio-media-gathering-design.md`](docs/superpowers/specs/2026-06-20-portfolio-media-gathering-design.md) | Date: 2026-06-20 · Branch: claude/init-r8ukva · Status: design (awaiting user review) · Method: brainstorming → (next) writing-plans. |
+| [`docs/superpowers/specs/2026-06-20-rag-downweight-structural-design.md`](docs/superpowers/specs/2026-06-20-rag-downweight-structural-design.md) | Date: 2026-06-20 · Status: approved (brainstorm) · Area: dev-tooling (tools/rag/) Follows: 2026-06-20-rag-retrieval-polish-design.md (which… |
+| [`docs/superpowers/specs/2026-06-20-rag-retrieval-polish-design.md`](docs/superpowers/specs/2026-06-20-rag-retrieval-polish-design.md) | Date: 2026-06-20 · Status: approved (brainstorm) · Area: dev-tooling (tools/rag/) Source thread: progress.md → "RAG retrieval-quality follow-ups… |
 | [`docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md`](docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md) | Date: 2026-06-20 Status: approved design, ready for writing-plans Brief: research/rag-system/BRIEF.md (the full non-local RAG vision) Parked thread:… |
 | [`docs/superpowers/specs/2026-06-20-secrets-management-design.md`](docs/superpowers/specs/2026-06-20-secrets-management-design.md) | Date: 2026-06-20 · Branch: claude/init-r8ukva · Status: design (for review) · Method: brainstorming (done, parked) → this spec → writing-plans → SDD. |
 
@@ -139,6 +143,7 @@
 | [`test/harvest-links.test.mjs`](test/harvest-links.test.mjs) | MJS file. |
 | [`test/portfolio.test.mjs`](test/portfolio.test.mjs) | MJS file. |
 | [`test/rag.test.mjs`](test/rag.test.mjs) | MJS file. |
+| [`test/reel-ingest.test.mjs`](test/reel-ingest.test.mjs) | MJS file. |
 | [`test/render-check.mjs`](test/render-check.mjs) | test/render-check.mjs — headless-Chromium render check (laptop-free). |
 | [`test/smoke.mjs`](test/smoke.mjs) | test/smoke.mjs — laptop-free logic checks (no browser, no deps). |
 
@@ -197,12 +202,16 @@
 | [`tools/portfolio/sort-vision.mjs`](tools/portfolio/sort-vision.mjs) | tools/portfolio/sort-vision.mjs Score each candidate with a vision model and produce a ranked manifest. |
 | [`tools/portfolio/stage-finals.mjs`](tools/portfolio/stage-finals.mjs) | Parse the keeper ids from the GitHub issue body and stage the chosen finals. |
 | [`tools/rag/README.md`](tools/rag/README.md) | Dev-tooling. |
+| [`tools/rag/ab-model.mjs`](tools/rag/ab-model.mjs) | tools/rag/ab-model.mjs One-off A/B: compare embedding models on the probe set. |
 | [`tools/rag/build-index.mjs`](tools/rag/build-index.mjs) | tools/rag/build-index.mjs Build the committed semantic index: chunk -> embed -> write index.json. |
 | [`tools/rag/chunk.mjs`](tools/rag/chunk.mjs) | Splits the repo's markdown corpus into heading-section chunks for embedding. |
 | [`tools/rag/embed.mjs`](tools/rag/embed.mjs) | tools/rag/embed.mjs Local text embeddings via a small transformer (no doc text leaves the machine, no API key). |
 | [`tools/rag/index.json`](tools/rag/index.json) | Configuration / data file. |
 | [`tools/rag/model.mjs`](tools/rag/model.mjs) | tools/rag/model.mjs Dep-free model constants. |
+| [`tools/rag/probes.mjs`](tools/rag/probes.mjs) | tools/rag/probes.mjs Canonical retrieval probe set: query → substring the #1 result's path must contain. |
+| [`tools/rag/quantize.mjs`](tools/rag/quantize.mjs) | tools/rag/quantize.mjs Dep-free int8 vector compaction for the committed RAG index. |
 | [`tools/rag/retrieve.mjs`](tools/rag/retrieve.mjs) | tools/rag/retrieve.mjs Hybrid semantic + lexical retrieval over the committed index. |
+| [`tools/reel/ingest.mjs`](tools/reel/ingest.mjs) | Reel ingest — turn a video URL (Instagram / YouTube / etc.) OR a local mp4 into something an agent can actually "see": download it, then extract a… |
 | [`tools/workshop/clip.mjs`](tools/workshop/clip.mjs) | Record a workshop sketch to a webm clip (and optional stills) for phone review. |
 
 ## Claude Environment
@@ -259,6 +268,7 @@
 | [`.claude/skills/perf-budget/SKILL.md`](.claude/skills/perf-budget/SKILL.md) | Run the in-app FPS stress-test readout for primordial and read its SMOOTH / OK / TOO-MUCH verdict to set the mobile performance budget (FBO… |
 | [`.claude/skills/performance/SKILL.md`](.claude/skills/performance/SKILL.md) | Optimize web performance for faster loading and better user experience. Use when asked to "speed up my site", "optimize performance", "reduce load… |
 | [`.claude/skills/receiving-code-review/SKILL.md`](.claude/skills/receiving-code-review/SKILL.md) | Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable -… |
+| [`.claude/skills/reel-ingest/SKILL.md`](.claude/skills/reel-ingest/SKILL.md) | Download a video reference (Instagram reel / YouTube short / any URL) or an uploaded mp4, then extract a frame montage + metadata so it can actually… |
 | [`.claude/skills/requesting-code-review/SKILL.md`](.claude/skills/requesting-code-review/SKILL.md) | Use when completing tasks, implementing major features, or before merging to verify work meets requirements |
 | [`.claude/skills/requesting-code-review/code-reviewer.md`](.claude/skills/requesting-code-review/code-reviewer.md) | Use this template when dispatching a code reviewer subagent. |
 | [`.claude/skills/send-report/SKILL.md`](.claude/skills/send-report/SKILL.md) | Send the newest /insights usage report to the user as a file. Use after running /insights when the file:/// link can't be opened (mobile/cloud… |
@@ -362,4 +372,5 @@
 | [`workshop/sketch-runner.mjs`](workshop/sketch-runner.mjs) | Boots the workshop sandbox: loads one sketch (?sketch=<name>) using the real renderer plumbing, drives it with synthetic audio, and exposes the… |
 | [`workshop/sketches/_demo/_demo.frag.js`](workshop/sketches/_demo/_demo.frag.js) | Reference sketch: audio-reactive warped plasma with neon rings. |
 | [`workshop/sketches/_demo/_demo.json`](workshop/sketches/_demo/_demo.json) | Configuration / data file. |
+| [`workshop/sketches/frontpage/BRIEF.md`](workshop/sketches/frontpage/BRIEF.md) | Durable launch point for a visual-workshop session (run after a /clear). |
 | [`workshop/synth-audio.mjs`](workshop/synth-audio.mjs) | Deterministic synthetic "fake song" for the Visual Workshop sandbox. |

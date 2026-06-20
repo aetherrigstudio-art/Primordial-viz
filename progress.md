@@ -1,5 +1,25 @@
 # Progress Log — primordial
 
+## Session — 2026-06-20 (branch rescues: portfolio + whats-next → main)
+
+Checked all remote branches; 7 were fully merged, 2 had unmerged work — both
+rescued into `main`:
+- **Portfolio (sub-project #1)** from `claude/portfolio-media-gathering-m15twg`:
+  kept BOTH paths in one README — Path A local PowerShell
+  (`portfolio/Gather-PortfolioMedia.ps1`, no cloud/secrets) + Path B cloud
+  Drive+Gemini pipeline.
+- **reel-ingest + RAG retrieval-polish** from `claude/whats-next-brainstorming-tdzom3`:
+  `tools/reel/ingest.mjs` + the `reel-ingest` skill (video link → frame montage so
+  an agent can see a reference; realizes conduct §7) + `ffmpeg-static`; RAG
+  `quantize.mjs` (int8 vector compaction — the parked index-churn follow-up),
+  `retrieve.mjs`/`build-index.mjs`/`chunk.mjs` polish, `ab-model.mjs`, `probes.mjs`,
+  specs/plans; `workshop/sketches/frontpage/BRIEF.md`. Conflicts (generated docs +
+  `index.json` + `progress.md`) resolved by regenerating + rebuilding the index.
+
+**Branch DELETION is blocked from this container** (git proxy returns 403 on
+delete-push; no MCP delete-branch tool) — operator deletes the now-merged branches.
+Remaining open thread: secrets sub-project #2 (spec written, awaiting approval).
+
 ## Session — 2026-06-20 (system-prompt ingest → conduct rule + CI fixes; PR #4 → main)
 
 **Branch `claude/init-r8ukva` → PR #4 (CI `verify` GREEN) → merged to `main`.**
@@ -81,8 +101,7 @@ READY TO MERGE; only nits (node-version match, hyphen) fixed. Parked follow-ups:
 fixtures; gate Tier-2 hit-rate once stable; a rule-eval variant.
 
 ## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
-- [ ] **Rescue the `claude/whats-next-brainstorming-tdzom3` branch (unmerged, valuable)** | Reviewed 2026-06-20: NOT duplicate — real work not in `main`. Contains (a) **reel-ingest** tool (`tools/reel/ingest.mjs` + skill + test + `ffmpeg-static` dep): download an IG reel / YT short / mp4 → frame montage so an agent can "see" a video reference (realizes conduct §7 "visual work is visual"); (b) **RAG retrieval polish — actual code**: `tools/rag/retrieve.mjs`, new `quantize.mjs` (int8 vector compaction = the parked index-churn follow-up), `ab-model.mjs`, `probes.mjs`, `build-index.mjs`/`chunk.mjs` + specs/plans; (c) `workshop/sketches/frontpage/BRIEF.md`. CATCH: it changes the same `tools/rag/*` files + index *format* that `main` changed today → needs a careful conflict-resolving merge + index rebuild, not a quick rescue. The portfolio branch was already rescued (kept both local-PS1 + cloud paths). | parked 2026-06-20
-- [ ] **Proton Pass secrets wiring (sub-project #2 — brainstorm parked)** | Approach chosen: A = Proton Pass vault + E2EE expiring Secure Links for sharing + a **secrets registry** (single source of truth) + a **CI/CLI preflight verifier** (checks all required GitHub secrets are present, never prints values). Reframe locked: AI consumes secrets only via GitHub Actions env, NEVER raw in chat; this cloud session can't reach Proton directly. Research done (deep-research agent #5). OPEN: registry scope — all 3 subsystems (portfolio + deploy + Opus-8 keys, Opus-8 marked `planned`) vs portfolio+deploy only. Secrets inventory ~11 keys across 3 subsystems (see .env.example commit 41454da7). ADR-001 (backend-rule-scope) already done. RESOLVED: registry covers all 3 subsystems (Opus-8 `planned`). Spec WRITTEN + delivered: `docs/superpowers/specs/2026-06-20-secrets-management-design.md`. Next: operator approves spec → writing-plans → SDD build. | parked 2026-06-20
+- [ ] **Rescue the `claude/whats-next-brainstorming-tdzom3` branch (unmerged, valuable)** | Reviewed 2026-06-20: NOT duplicate — real work not in `main`. Contains (a) **reel-ingest** tool (`tools/reel/ingest.mjs` + skill + test + `ffmpeg-static` dep): download an IG reel / YT short / mp4 → frame montage so an agent can "see" a video reference (realizes conduct §7 "visual work is visual"); (b) **RAG retrieval polish — actual code**: `tools/rag/retrieve.mjs`, new `quantize.mjs` (int8 vector compaction = the parked index-churn follow-up), `ab-model.mjs`, `probes.mjs`, `build-index.mjs`/`chunk.mjs` + specs/plans; (c) `workshop/sketches/frontpage/BRIEF.md`. CATCH: it changes the same `tools/rag/*` files + index *format* that `main` changed today → needs a careful conflict-resolving merge + index rebuild, not a quick rescue. The portfolio branch was already rescued - [ ] **Proton Pass secrets wiring (sub-project #2 — brainstorm parked)** | Approach chosen: A = Proton Pass vault + E2EE expiring Secure Links for sharing + a **secrets registry** (single source of truth) + a **CI/CLI preflight verifier** (checks all required GitHub secrets are present, never prints values). Reframe locked: AI consumes secrets only via GitHub Actions env, NEVER raw in chat; this cloud session can't reach Proton directly. Research done (deep-research agent #5). OPEN: registry scope — all 3 subsystems (portfolio + deploy + Opus-8 keys, Opus-8 marked `planned`) vs portfolio+deploy only. Secrets inventory ~11 keys across 3 subsystems (see .env.example commit 41454da7). ADR-001 (backend-rule-scope) already done. RESOLVED: registry covers all 3 subsystems (Opus-8 `planned`). Spec WRITTEN + delivered: `docs/superpowers/specs/2026-06-20-secrets-management-design.md`. Next: operator approves spec → writing-plans → SDD build. | parked 2026-06-20
 
 - [ ] **non-local RAG system — GLOBAL/cross-project layer (slice 2+)** | SLICE 1 (in-repo semantic recall) is now BUILT & MERGE-READY on `claude/rag-recall` — see the session entry below + `tools/rag/`. What remains parked: the **hosted, cross-project + global** layer (serve THIS project's knowledge AND a shared layer across the user's other projects). The seam is already in place — every chunk in `tools/rag/index.json` carries `{scope:"project", project:"primordial-viz"}`, so the global layer is a **merge + filter** (load multiple projects' index.json, filter by scope/project; access gate = filter predicate, later auth). When resumed, BRAINSTORM: where the merged index lives (hosted vs git-synced), the gate/permission model, how other repos feed in, MCP surface. Brief: `research/rag-system/BRIEF.md` | parked 2026-06-19, slice-1 built 2026-06-20
 - [ ] **RAG retrieval-quality follow-ups (slice 1 polish)** | (a) self-referential pollution: `docs/superpowers/**` plan/spec docs contain example query phrasings, so they rank #1 for those exact queries — consider excluding/​down-ranking meta-dev docs (operator chose to KEEP planning docs in the corpus for now). (b) `index.json` is ~6MB single-line, fully rewritten on any doc edit (churn) — consider int8/base64 vector compaction. (c) optional: top-level vs best-chunk heading for snippets. None block use | noted 2026-06-20

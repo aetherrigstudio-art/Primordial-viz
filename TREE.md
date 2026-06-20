@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 251 files in 85 directories.
+> 262 files in 88 directories.
 
 ```
 Primordial-viz/
@@ -78,6 +78,8 @@ Primordial-viz/
 │   │   ├── performance/
 │   │   │   └── SKILL.md
 │   │   ├── receiving-code-review/
+│   │   │   └── SKILL.md
+│   │   ├── reel-ingest/
 │   │   │   └── SKILL.md
 │   │   ├── requesting-code-review/
 │   │   │   ├── code-reviewer.md
@@ -169,6 +171,8 @@ Primordial-viz/
 │   │   │   ├── 2026-06-20-eval-harness.md
 │   │   │   ├── 2026-06-20-fmhy-link-harvester.md
 │   │   │   ├── 2026-06-20-portfolio-media-gathering.md
+│   │   │   ├── 2026-06-20-rag-downweight-structural.md
+│   │   │   ├── 2026-06-20-rag-retrieval-polish.md
 │   │   │   └── 2026-06-20-rag-semantic-recall.md
 │   │   └── specs/
 │   │       ├── 2026-06-19-adopt-ideas-roadmap-design.md
@@ -177,6 +181,8 @@ Primordial-viz/
 │   │       ├── 2026-06-19-visual-workshop-design.md
 │   │       ├── 2026-06-20-fmhy-link-harvester-design.md
 │   │       ├── 2026-06-20-portfolio-media-gathering-design.md
+│   │       ├── 2026-06-20-rag-downweight-structural-design.md
+│   │       ├── 2026-06-20-rag-retrieval-polish-design.md
 │   │       ├── 2026-06-20-rag-semantic-recall-design.md
 │   │       └── 2026-06-20-secrets-management-design.md
 │   ├── BUILD-SPEC.md
@@ -280,6 +286,7 @@ Primordial-viz/
 │   ├── harvest-links.test.mjs
 │   ├── portfolio.test.mjs
 │   ├── rag.test.mjs
+│   ├── reel-ingest.test.mjs
 │   ├── render-check.mjs
 │   └── smoke.mjs
 ├── tools/
@@ -301,13 +308,18 @@ Primordial-viz/
 │   │   ├── sort-vision.mjs
 │   │   └── stage-finals.mjs
 │   ├── rag/
+│   │   ├── ab-model.mjs
 │   │   ├── build-index.mjs
 │   │   ├── chunk.mjs
 │   │   ├── embed.mjs
 │   │   ├── index.json
 │   │   ├── model.mjs
+│   │   ├── probes.mjs
+│   │   ├── quantize.mjs
 │   │   ├── README.md
 │   │   └── retrieve.mjs
+│   ├── reel/
+│   │   └── ingest.mjs
 │   ├── workshop/
 │   │   └── clip.mjs
 │   ├── audit-site.mjs
@@ -318,9 +330,11 @@ Primordial-viz/
 │   └── health.mjs
 ├── workshop/
 │   ├── sketches/
-│   │   └── _demo/
-│   │       ├── _demo.frag.js
-│   │       └── _demo.json
+│   │   ├── _demo/
+│   │   │   ├── _demo.frag.js
+│   │   │   └── _demo.json
+│   │   └── frontpage/
+│   │       └── BRIEF.md
 │   ├── sandbox.html
 │   ├── sketch-runner.mjs
 │   └── synth-audio.mjs

@@ -215,7 +215,10 @@ const sketchRoot = join(root, 'workshop', 'sketches');
 if (existsSync(sketchRoot)) {
   const names = readdirSync(sketchRoot, { withFileTypes: true })
     .filter((d) => d.isDirectory())
-    .map((d) => d.name);
+    .map((d) => d.name)
+    // A dir is only a sketch if it carries a <name>.frag.js; brief/notes-only
+    // dirs (e.g. frontpage/BRIEF.md) are docs, not sketches — skip them.
+    .filter((name) => existsSync(join(sketchRoot, name, name + '.frag.js')));
   for (const name of names) {
     await atest(`workshop sketch ${name} is valid`, async () => {
       const mod = await import(join(sketchRoot, name, name + '.frag.js'));

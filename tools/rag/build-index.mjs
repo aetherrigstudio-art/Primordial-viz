@@ -8,10 +8,12 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { chunkCorpus } from './chunk.mjs';
 import { MODEL, DIM } from './model.mjs'; // dep-free — keeps --check model-free
+import { encode } from './quantize.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const INDEX = join(here, 'index.json');
-export const VERSION = 1;
+export const VERSION = 2;
+const SNIPPET_LEN = 200;
 
 export function inputHash(chunks) {
   const h = createHash('sha256');
@@ -20,18 +22,29 @@ export function inputHash(chunks) {
   return h.digest('hex');
 }
 
+function serialize(header, records) {
+  const head = JSON.stringify(header).slice(0, -1); // drop the closing brace
+  const lines = records.map((r) => JSON.stringify(r)).join(',\n');
+  return `${head},"chunks":[\n${lines}\n]}`;
+}
+
 export async function buildIndex() {
   const { embed } = await import('./embed.mjs'); // load the model lib only when building
   const chunks = chunkCorpus();
   const vectors = await embed(chunks.map((c) => c.text));
-  const round = (v) => Math.round(v * 1e6) / 1e6; // keep the committed file lean
-  const idx = {
-    version: VERSION, model: MODEL, dim: DIM,
-    builtFromHash: inputHash(chunks), builtAt: new Date().toISOString(),
-    chunks: chunks.map((c, i) => ({ ...c, vector: Array.from(vectors[i], round) })),
-  };
-  writeFileSync(INDEX, JSON.stringify(idx));
-  return idx;
+  const round = (v) => Math.round(v * 1e6) / 1e6;
+  const records = chunks.map((c, i) => {
+    const { q, scale } = encode(vectors[i]);
+    return {
+      scope: c.scope, project: c.project, path: c.path,
+      title: c.title, heading: c.heading,
+      snippet: c.text.slice(0, SNIPPET_LEN),
+      q, scale: round(scale),
+    };
+  });
+  const header = { version: VERSION, model: MODEL, dim: DIM, builtFromHash: inputHash(chunks) };
+  writeFileSync(INDEX, serialize(header, records));
+  return { ...header, chunks: records };
 }
 
 export function checkIndex() {
