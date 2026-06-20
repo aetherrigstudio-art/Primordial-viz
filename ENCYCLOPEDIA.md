@@ -42,7 +42,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Checked all remote branches; 7 were fully merged, 2 had unmerged work — both rescued into main: - Portfolio (sub-project #1) from… |
+| [`progress.md`](progress.md) | Established the two-agent collaboration channel for the Primordial Studio wedding landing page, with Google Drive as the shared layer: - DESIGN… |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
