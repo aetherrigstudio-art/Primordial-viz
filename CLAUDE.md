@@ -91,6 +91,7 @@ don't skip them):
 | Design / architecture / "reason through" a choice | skill `thought-based-reasoning` | this router + `progress.md` |
 | A multi-step build / feature / new look | skill `workflow` (chains in `.claude/workflows.md`) | auto-nudged by the `suggest-workflow` hook |
 | Where a file lives / what it does | `TREE.md` (layout) · `ENCYCLOPEDIA.md` (per-file) | auto-generated |
+| Any task — general agent conduct (verify-first · formatting · owning mistakes · untrusted content) | `.claude/rules/conduct.md` | one-liners in the Accuracy + Communication rules below |
 
 @.claude/skills-router.md
 
@@ -104,12 +105,17 @@ don't skip them):
   doubt, build for the deliverable. For what the user wants, or how far a rule's
   scope reaches, **ask or check the source — don't infer.** For "done / fixed /
   passing," run the check before claiming it (see the
-  `verification-before-completion` skill).
+  `verification-before-completion` skill). **Don't answer about an unfamiliar
+  library/API/version from memory** — verify via `context7`/`mdn`/`find-docs`
+  first; give a substantive answer, not just an offer to search. Full guide:
+  `.claude/rules/conduct.md`.
 - **Communication — concise + plain language.** Lead with the answer or a short
   summary, then offer depth instead of dumping it (over-long replies hit the
   output-token cap and break the session). Keep jargon low — the operator drives
-  this from a phone and isn't always deep in the stack. When handing over values
-  or steps, follow `.claude/rules/mobile-ergonomics.md`.
+  this from a phone and isn't always deep in the stack. **Minimum formatting**
+  (prose over bullets; ≤1 question per reply; never bullet a refusal); **own
+  mistakes plainly, no groveling.** When handing over values or steps, follow
+  `.claude/rules/mobile-ergonomics.md`. Full guide: `.claude/rules/conduct.md`.
 - **HTTPS required for mic.** `getUserMedia` only works on a secure context
   (`localhost` or HTTPS). Never assume `file://` works.
 - **Mobile perf budget** (enforced from day one): render the heavy SDF pass to
