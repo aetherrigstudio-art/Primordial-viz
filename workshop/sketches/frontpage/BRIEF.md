@@ -5,6 +5,19 @@
 > the disposable placeholder slime. Use the `visual-workshop` skill + the
 > `workshop/` rig (sandbox → `npm run clip` → `SendUserFile` → react → graduate).
 
+## Direction update (2026-06-20): a dynamic canvas, not a hero
+
+The operator redirected the frontpage: it should be a **dynamic, full-page WebGL
+canvas** you move *through* (scroll/pointer-driven), **not** a generated hero
+visual on top of a normal page. New visual vocabulary to incorporate: **point
+clouds, Gaussian splats, and depth maps** (captured/volumetric 3D), alongside or
+instead of the raymarched slime. Full technique/library/license/mobile breakdown
+and the two open decisions (landing-page stack-vs-zero-dep surface; where captured
+content comes from) live in `dynamic-canvas-and-volumetric.md`. Reference-reel
+study + reverse-engineering targets are in `references.md` +
+`reverse-engineering-targets.md`. Treat the hero-framed sections below as the
+*visuals-only fallback* and the slime baseline, not the whole page.
+
 ## The charter
 
 **"grungy-future-geometric-slimy."** Success test: on a **phone**, in the first

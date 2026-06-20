@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 272 files across 17 categories.
+> 273 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (30)
 - [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (14)
+- [Other](#other) (15)
 
 ## Overview & Planning
 
@@ -381,6 +381,7 @@
 | [`workshop/sketches/_demo/_demo.frag.js`](workshop/sketches/_demo/_demo.frag.js) | Reference sketch: audio-reactive warped plasma with neon rings. |
 | [`workshop/sketches/_demo/_demo.json`](workshop/sketches/_demo/_demo.json) | Configuration / data file. |
 | [`workshop/sketches/frontpage/BRIEF.md`](workshop/sketches/frontpage/BRIEF.md) | Durable launch point for a visual-workshop session (run after a /clear). |
+| [`workshop/sketches/frontpage/dynamic-canvas-and-volumetric.md`](workshop/sketches/frontpage/dynamic-canvas-and-volumetric.md) | Direction note (2026-06-20): the operator wants the frontpage to be a dynamic, full-page canvas — a living WebGL experience you move through — not a… |
 | [`workshop/sketches/frontpage/references.md`](workshop/sketches/frontpage/references.md) | Reference-study notes from 8 Instagram reels the operator shared as direction for the primordial frontpage (ingested via the reel-ingest tool,… |
 | [`workshop/sketches/frontpage/reverse-engineering-targets.md`](workshop/sketches/frontpage/reverse-engineering-targets.md) | Real, inspectable public pages and repos that demonstrate the same techniques shown in the operator's reference reels (see references.md). |
 | [`workshop/synth-audio.mjs`](workshop/synth-audio.mjs) | Deterministic synthetic "fake song" for the Visual Workshop sandbox. |
