@@ -5,6 +5,41 @@
 - [ ] **destructive-command guard (Phase 2 item 7)** | what: a PreToolUse hook `.claude/hooks/guard.sh` (matcher Bash) that DENYs irreversible cmds (rm -rf of / ~ $HOME /*, dd of=/dev/*, mkfs, shred, forkbomb, chmod -R 777 /, force-push to main/master) and ASKs on recoverable-risky (git reset --hard, git clean -fd/-fdx, force-push to non-main, rm -rf abs non-root, chmod -R), with leading-wrapper stripping (sudo/nohup/time/env X=Y) so "sudo rm -rf /" is caught; deny patterns ANCHORED to cmd boundaries so a commit msg containing "rm -rf" is NOT blocked; emits JSON permissionDecision deny/ask + reason, no-op if jq missing (mirrors our hooks). Contract VERIFIED vs docs. Design APPROVED-PENDING in chat (only the final "go" was outstanding). | how: implement; unit-test ~12 cases incl. our own `git push -u origin claude/*` + a commit message containing "rm -rf" must ALLOW; register in settings.json PreToolUse matcher Bash; verify + commit. | parked 2026-06-20
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
 
+## Session — 2026-06-20 (FMHY developer-tools harvester — DELIVERED)
+
+Brainstorm→plan→subagent-driven build (spec
+`docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md`, plan
+`docs/superpowers/plans/2026-06-20-fmhy-link-harvester.md`). Turned the operator's
+`share.google` link (→ `https://fmhy.net/developer-tools`) into a structured,
+safety-gated catalog + a Primordial-relevant shortlist. Lives in
+`research/fmhy-dev-tools/`.
+
+- **Harvester** `tools/harvest-links.mjs` (reusable on any markdown link-index):
+  pure `parseIndex` + `renderCatalog` + CLI; unit-tested (`test/harvest-links.test.mjs`).
+  Safety gate excludes piracy/warez/nulled/nsfw; tags `relevant_to_primordial`.
+- **Source** snapshot `source.md` (FMHY raw markdown, 942 links).
+- **Catalog** `links.json` + `CATALOG.md`: **1576 entries, 6 excluded, 268 relevant,
+  52 categories.**
+- **Shortlist** `SHORTLIST.md`: **18** vetted picks (Hosting×7, Graphics×3, Audio×2,
+  CI/Perf×4, Other×2) — top: Pingbreak, Lighthouse, Theatre.js. Curated with a
+  **capped (≤25), depth-1** homepage enrichment; 5 candidates dropped (offline/403/
+  wrong-stack).
+- **README** documents schema, re-run, safety policy, RAG-readiness (links.json is
+  shaped to feed the parked non-local RAG thread later).
+
+**Review-loop catch (the value of SDD):** Task-4 verification found the parser only
+grabbed the FIRST link per FMHY line; many lines list 2-6 tools. Fixed
+`parseIndex` to extract ALL links per list item → **739 → 1576 entries** (>2×), and
+the shortlist's picks then reconciled 20/20 with the catalog. Verified each subagent
+claim against the files directly (per the new cite-evidence guardrail) — Pingbreak's
+catalog "miss" was a false alarm (invisible U+2060 in its name); the 3 off-catalog
+shortlist picks were real FMHY entries the old parser had dropped.
+
+**Verified:** unit test green, `npm run health` green except the expected render.png
+drift. **Parked follow-ons:** deep recursive crawl of linked sites; actual RAG
+ingestion. Both subagents noted `SendUserFile` is unavailable in their env, so the
+controller delivered the shortlist.
+
 ## Session — 2026-06-20 (Phase 2 started: per-skill tool permissions — DONE)
 
 Started Phase 2 with the "per-skill allowed-tools" item. **Verified the mechanism
