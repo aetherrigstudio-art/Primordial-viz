@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 276 files across 17 categories.
+> 278 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (31)
 - [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (15)
+- [Other](#other) (17)
 
 ## Overview & Planning
 
@@ -373,6 +373,8 @@
 
 | File | Description |
 | --- | --- |
+| [`.devcontainer/README.md`](.devcontainer/README.md) | This .devcontainer/ makes a GitHub Codespace (or any dev-container host) boot ready: Node 22 + the repo's dev/test toolchain (npm ci). |
+| [`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json) | Configuration / data file. |
 | [`.env.example`](.env.example) | Example environment variables |
 | [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
 | [`portfolio/Gather-PortfolioMedia.ps1`](portfolio/Gather-PortfolioMedia.ps1) | PS1 file. |
