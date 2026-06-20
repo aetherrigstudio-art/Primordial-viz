@@ -70,3 +70,34 @@ test('pullFolder downloads only media and records destPaths', async () => {
   assert.deepEqual(written.sort(), ['hero.jpg', 'reel.mp4']);
   assert.equal(out.find(o => o.name === 'hero.jpg').type, 'image');
 });
+
+import { sortManifest, groupBursts } from '../tools/portfolio/sort-vision.mjs';
+
+test('groupBursts groups by time and flags best-of-group', () => {
+  const t = '2024-01-01T00:00:00.000Z';
+  const t2 = '2024-01-01T00:00:02.000Z';
+  const far = '2024-01-01T01:00:00.000Z';
+  const items = [
+    makeItem({ id: 'a', path: 'a', type: 'image', score: 40, takenAt: t }),
+    makeItem({ id: 'b', path: 'b', type: 'image', score: 70, takenAt: t2 }),
+    makeItem({ id: 'c', path: 'c', type: 'image', score: 90, takenAt: far }),
+  ];
+  groupBursts(items, { windowSec: 3 });
+  const a = items.find(i => i.id === 'a'), b = items.find(i => i.id === 'b'), c = items.find(i => i.id === 'c');
+  assert.equal(a.dupGroup, b.dupGroup); // same burst
+  assert.notEqual(a.dupGroup, c.dupGroup);
+  assert.equal(b.bestOfGroup, true);  // higher score in the burst
+  assert.equal(a.bestOfGroup, false);
+});
+
+test('sortManifest ranks by model score', async () => {
+  const callModel = async ({ name }) => ({ score: name === 'good.jpg' ? 95 : 10, tags: ['t'], reason: 'r' });
+  const m = await sortManifest({
+    files: [{ name: 'meh.jpg', destPath: 'meh.jpg', type: 'image' }, { name: 'good.jpg', destPath: 'good.jpg', type: 'image' }],
+    callModel,
+    now: 'NOW',
+  });
+  assert.equal(m.generatedAt, 'NOW');
+  assert.equal(m.count, 2);
+  assert.equal(m.items[0].path, 'good.jpg'); // highest score first
+});
