@@ -126,3 +126,23 @@ test('rankBySim leaves non-meta ordering by sim intact', () => {
   const ranked = rankBySim(sem, [], 5);
   assert.equal(ranked[0].path, 'b.md');
 });
+
+test('rankBySim: structural boundary — .claude/ top-level meta is down-weighted, deeper topic docs are not', () => {
+  const sem = [
+    { path: '.claude/ROADMAP.md', heading: '', snippet: '', sim: 0.50 },   // meta → penalized
+    { path: '.claude/rules/shaders.md', heading: '', snippet: '', sim: 0.50 }, // topic → kept
+  ];
+  const ranked = rankBySim(sem, [], 5);
+  assert.equal(ranked[0].path, '.claude/rules/shaders.md', 'deeper topic doc wins');
+  assert.equal(ranked[1].path, '.claude/ROADMAP.md');
+  assert.ok(ranked[0].score > ranked[1].score);
+});
+
+test('rankBySim: a skill doc (deep .claude path) is NOT down-weighted', () => {
+  const sem = [
+    { path: '.claude/skills/new-preset/SKILL.md', heading: '', snippet: '', sim: 0.40 },
+    { path: 'progress.md', heading: '', snippet: '', sim: 0.45 }, // root → penalized below the skill
+  ];
+  const ranked = rankBySim(sem, [], 5);
+  assert.equal(ranked[0].path, '.claude/skills/new-preset/SKILL.md');
+});

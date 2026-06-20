@@ -17,21 +17,19 @@ const INDEX = join(here, 'index.json');
 const SEM_CANDIDATES = 30; // how many top semantic docs to consider
 const LEX_BOOST = 0.15;    // weight of the in-set lexical nudge
 
-// Aggregator / always-loaded / meta docs mention everything, so they score near
-// any query and crowd out the canonical topic doc (a rule, skill, or answer file).
-// A gentle additive penalty pushes them below the specific doc that actually
-// answers the query; they can still appear lower in the list. Tuned on the probe
-// set (tools/rag/ab-model.mjs).
+// Aggregator / meta docs mention everything and crowd out specific answer files.
+// Down-weight by path role (structural), not a hand-curated list (chunk count rejected:
+// size ≠ role). A gentle penalty keeps them visible lower in results.
 const DOWNWEIGHT = 0.08;
 const DOWNWEIGHT_PREFIXES = ['docs/superpowers/', 'research/'];
-const DOWNWEIGHT_FILES = new Set([
-  'CLAUDE.md', 'AGENTS.md', 'README.md', 'ONBOARDING.md', 'TODO.md', 'ROADMAP.md',
-  'progress.md', 'task_plan.md', 'findings.md', 'ENCYCLOPEDIA.md', 'TREE.md',
-  'docs/BUILD-SPEC.md',
-  '.claude/ROADMAP.md', '.claude/TODO.md', '.claude/workflows.md', '.claude/skills-router.md',
-]);
+const DOWNWEIGHT_EXACT = new Set(['docs/BUILD-SPEC.md']); // lone spec under docs/ root
+const isRootDoc = (p) => !p.includes('/');                // root-level state/index doc
+const isClaudeMeta = (p) => /^\.claude\/[^/]+\.md$/.test(p); // .claude/<file>.md (top level only)
 const isDownweighted = (p) =>
-  DOWNWEIGHT_FILES.has(p) || DOWNWEIGHT_PREFIXES.some((x) => p.startsWith(x));
+  isRootDoc(p) ||
+  isClaudeMeta(p) ||
+  DOWNWEIGHT_EXACT.has(p) ||
+  DOWNWEIGHT_PREFIXES.some((x) => p.startsWith(x));
 
 let _idx;
 function loadIndex() {
