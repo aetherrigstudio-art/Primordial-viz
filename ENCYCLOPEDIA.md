@@ -42,7 +42,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Operator pushed back on the "don't edit adopted skills" convention — correctly: those skills are plain markdown, nothing technically locked them. |
+| [`progress.md`](progress.md) | Branch claude/init-r8ukva → PR #4 (CI verify GREEN) → merged to main. |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
