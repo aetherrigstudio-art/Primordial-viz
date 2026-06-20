@@ -11,7 +11,7 @@ const DENY = /\b(piracy|pirated?|warez|crack(ed|s)?|keygen|nulled|torrent|nsfw|p
 const RELEVANT = /\b(host(ing)?|cdn|static\s*site|deploy|netlify|vercel|pages|cloudflare|webgl|web\s*gpu|glsl|shader|graphics?|canvas|render(ing|er)?|audio|sound|dsp|music|asset|texture|font|icon|sprite|image|video|ffmpeg|ci\b|continuous\s*integration|perf(ormance)?|benchmark)\b/i;
 
 const LIST_ITEM = /^\s*[-*]\s+\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)\s*(.*)$/;
-const HEADING = /^(#{2,4})\s+(.*?)\s*#*$/;
+const HEADING = /^(#{1,4})\s+(.*?)\s*#*$/;
 
 export function parseIndex(markdown, { sourceUrl, fetchedAt }) {
   const lines = markdown.split('\n');
