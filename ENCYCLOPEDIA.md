@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 221 files across 17 categories.
+> 222 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -21,7 +21,7 @@
 - [App — UI](#app--ui) (2)
 - [Tests & Verification](#tests--verification) (5)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (20)
+- [Tooling / Scripts](#tooling--scripts) (21)
 - [Claude Environment](#claude-environment) (88)
 - [Deployment](#deployment) (3)
 - [Research](#research) (22)
@@ -176,6 +176,7 @@
 | [`tools/mcp/lib/validate.mjs`](tools/mcp/lib/validate.mjs) | Headless GLSL ES 3.00 validation: compile + link the project's shaders in a real WebGL2 context (ANGLE/SwiftShader via Playwright) — the exact… |
 | [`tools/mcp/selftest.mjs`](tools/mcp/selftest.mjs) | Self-test for the primordial MCP server: spawns server.mjs over stdio using the MCP SDK client, lists tools/resources/prompts, and exits non-zero if… |
 | [`tools/mcp/server.mjs`](tools/mcp/server.mjs) | Primordial-viz MCP server — local stdio dev tools for AI assistants working on this project. |
+| [`tools/rag/README.md`](tools/rag/README.md) | Dev-tooling. |
 | [`tools/rag/build-index.mjs`](tools/rag/build-index.mjs) | tools/rag/build-index.mjs Build the committed semantic index: chunk -> embed -> write index.json. |
 | [`tools/rag/chunk.mjs`](tools/rag/chunk.mjs) | Splits the repo's markdown corpus into heading-section chunks for embedding. |
 | [`tools/rag/embed.mjs`](tools/rag/embed.mjs) | tools/rag/embed.mjs Local text embeddings via a small transformer (no doc text leaves the machine, no API key). |

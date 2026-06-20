@@ -32,6 +32,10 @@ if ! { npm ci --no-audit --no-fund || npm install --no-audit --no-fund; }; then
   echo "[setup] npm install FAILED"; exit 1
 fi
 
+# Pre-warm the local embedding model so the first RAG query in a session is fast
+# (downloads ~25MB once; cached in the snapshot). Non-fatal if offline.
+node -e "import('./tools/rag/embed.mjs').then(m => m.embedOne('warm')).then(() => console.log('rag model warmed')).catch(e => console.error('rag warm skipped:', e.message))" || true
+
 # Chromium for the headless render check. Try with system libs (needs root);
 # fall back to the plain browser download if that isn't permitted.
 if ! { npx playwright install --with-deps chromium || npx playwright install chromium; }; then
