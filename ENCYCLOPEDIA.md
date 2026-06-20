@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 282 files across 17 categories.
+> 284 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (31)
 - [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (20)
+- [Other](#other) (22)
 
 ## Overview & Planning
 
@@ -381,6 +381,8 @@
 | [`clients/wedding-pagoda/TECH.md`](clients/wedding-pagoda/TECH.md) | The technical contract for the build, distilled from the research (wide pass + focused passes 1 & 2). |
 | [`clients/wedding-pagoda/VISION.md`](clients/wedding-pagoda/VISION.md) | Captured from a discussion session (2026-06-20), paused mid-dream. |
 | [`clients/wedding-pagoda/WORKFLOW.md`](clients/wedding-pagoda/WORKFLOW.md) | Output of a wide deep-research pass (4 parallel angles: studio pipeline · frontend-design · raw-WebGL2 build · spec+QA) + 2 focused passes (drapery… |
+| [`clients/wedding-pagoda/references.json`](clients/wedding-pagoda/references.json) | Configuration / data file. |
+| [`clients/wedding-pagoda/references.md`](clients/wedding-pagoda/references.md) | Curated, license-tagged references for the build, drawn from the research (wide + focused passes), a fresh GitHub sweep, and the FMHY tool catalog… |
 | [`portfolio/Gather-PortfolioMedia.ps1`](portfolio/Gather-PortfolioMedia.ps1) | PS1 file. |
 | [`portfolio/README.md`](portfolio/README.md) | Two ways to pull image/video candidates into one place so you can pick the best for the portfolio. |
 | [`server/README.md`](server/README.md) | This folder will contain the retrieval/indexing service that your Android app calls. |
