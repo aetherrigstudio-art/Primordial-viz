@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseFrontmatter, staticChecks, loadFixtures } from '../tools/eval-skills.mjs';
+import { parseFrontmatter, staticChecks, loadFixtures, parsePick, routerSim } from '../tools/eval-skills.mjs';
 
 test('parseFrontmatter reads name/area/description and strips quotes', () => {
   const fm = parseFrontmatter(
@@ -59,4 +59,20 @@ test('loadFixtures throws on a malformed trigger', () => {
     () => loadFixtures.fromString('[{"prompt":"hi"}]', 'triggers'),
     /expect/,
   );
+});
+
+test('parsePick extracts a valid id and rejects unknown', () => {
+  assert.equal(parsePick('{"skill":"new-preset"}', ['new-preset', 'perf-budget']), 'new-preset');
+  assert.equal(parsePick('{"skill":"none"}', ['new-preset']), null);
+  assert.equal(parsePick('{"skill":"made-up"}', ['new-preset']), null);
+});
+
+test('routerSim scores hit-rate against expectations', async () => {
+  const skills = [{ id: 'new-preset', name: 'new-preset', area: 'looks', description: 'Use when adding a look.' }];
+  const fixtures = [{ prompt: 'add a look', expect: ['new-preset'] }];
+  const fakeModel = async () => '{"skill":"new-preset"}';
+  const r = await routerSim({ skills, fixtures, samples: 3, callModel: fakeModel });
+  assert.equal(r.perFixture[0].hits, 3);
+  assert.equal(r.perFixture[0].rate, 1);
+  assert.equal(r.hitRate, 1);
 });

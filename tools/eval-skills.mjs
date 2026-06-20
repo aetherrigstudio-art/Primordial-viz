@@ -189,6 +189,87 @@ export function loadFixtures(path, kind) {
 loadFixtures.fromString = (str, kind) => validateFixtures(JSON.parse(str), kind);
 
 // ---------------------------------------------------------------------------
+// parsePick / PICK_SCHEMA / defaultCallModel / routerSim  (Tier 2)
+// ---------------------------------------------------------------------------
+
+/**
+ * Parse a model JSON response and return the chosen skill id, or null.
+ * Returns null for "none", an unknown id, or unparseable JSON.
+ *
+ * @param {string} text  - raw model output
+ * @param {string[]} validIds - list of known skill ids
+ * @returns {string|null}
+ */
+export function parsePick(text, validIds) {
+  let obj;
+  try { obj = JSON.parse(text); } catch { return null; }
+  const pick = obj && typeof obj.skill === 'string' ? obj.skill : null;
+  if (!pick || pick === 'none') return null;
+  return validIds.includes(pick) ? pick : null;
+}
+
+/** JSON Schema used as output_config.format so picks parse deterministically. */
+const PICK_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  properties: { skill: { type: 'string' } },
+  required: ['skill'],
+};
+
+/**
+ * Default model boundary — dynamically imports @anthropic-ai/sdk.
+ * Only used when no fake callModel is injected; tests never reach this.
+ *
+ * @param {Array<{role:string,content:string}>} messages
+ * @param {{ effort?: string, format?: object }} [opts]
+ * @returns {Promise<string>} raw text from the model
+ */
+export async function defaultCallModel(messages, opts = {}) {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk');
+  const client = new Anthropic(); // reads ANTHROPIC_API_KEY
+  const res = await client.messages.create({
+    model: 'claude-opus-4-8',
+    max_tokens: 1024,
+    output_config: { effort: opts.effort || 'low', format: opts.format },
+    messages,
+  });
+  return res.content.filter((b) => b.type === 'text').map((b) => b.text).join('');
+}
+
+/**
+ * Simulate the trigger-router: for each fixture, call the model `samples` times
+ * and record how often it picks one of the expected skills.
+ *
+ * @param {{ skills: Array, fixtures: Array, samples?: number, callModel?: Function }} opts
+ * @returns {Promise<{ perFixture: Array, hitRate: number }>}
+ */
+export async function routerSim({ skills, fixtures, samples = 3, callModel = defaultCallModel }) {
+  const ids = skills.map((s) => s.id);
+  const catalog = skills.map((s) => `- ${s.id}: ${s.description}`).join('\n');
+  const perFixture = [];
+  for (const fx of fixtures) {
+    const picks = [];
+    for (let i = 0; i < samples; i++) {
+      const text = await callModel(
+        [{
+          role: 'user',
+          content:
+            `You route a user request to at most one skill. Available skills:\n${catalog}\n\n` +
+            `User request: "${fx.prompt}"\n\n` +
+            `Reply ONLY with JSON {"skill":"<id>"} or {"skill":"none"}.`,
+        }],
+        { effort: 'low', format: { type: 'json_schema', schema: PICK_SCHEMA } },
+      );
+      picks.push(parsePick(text, ids));
+    }
+    const hits = picks.filter((p) => p && fx.expect.includes(p)).length;
+    perFixture.push({ prompt: fx.prompt, expect: fx.expect, picks, hits, rate: hits / samples });
+  }
+  const hitRate = perFixture.reduce((a, f) => a + f.rate, 0) / (perFixture.length || 1);
+  return { perFixture, hitRate };
+}
+
+// ---------------------------------------------------------------------------
 // Tier-1 CLI
 // ---------------------------------------------------------------------------
 
