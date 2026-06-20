@@ -1,5 +1,21 @@
 # Progress Log — primordial
 
+## Session — 2026-06-20 (operator's phone `gh` CLI recorded as a tool)
+
+Branch `claude/check-main-branch-yx2q8v`. While helping the operator flip repo
+visibility, confirmed two hard limits from here: the **GitHub MCP tools have no
+repo-settings surface** (no visibility / delete-branch / transfer — only
+create/fork/file/PR), and the **git proxy 403s on delete-push**. The operator
+now runs the **`gh` CLI on the phone via Termux**, which fills exactly that gap.
+
+Recorded it as an operator-side capability in `.claude/rules/mobile-ergonomics.md`
+(the GitHub-UI bullet): when an op needs a setting my container can't reach, hand a
+**single complete `gh` line** to paste. Captured the live gotchas: Termux `pkg
+install gh`; `gh auth login` → GitHub.com → HTTPS → browser; and `gh repo edit
+--visibility` **requires `--accept-visibility-change-consequences`** or it refuses
+(bit us this session). Always **verify the result myself** (anon `curl` status:
+200 public / 404 private) rather than trusting "done".
+
 ## Session — 2026-06-20 (refine hooks: jq→node fallback + mktemp)
 
 Branch `claude/check-main-branch-yx2q8v`. Operator scoped it to the robustness

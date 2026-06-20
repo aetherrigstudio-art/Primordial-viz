@@ -18,6 +18,16 @@ session (the `orient` and `inject-rules` hooks already branch on it).
   your desktop" are unreliable here. Prefer actions *I* can take from the
   container (GitHub MCP tools, commits/pushes) over steps the operator must click
   through. If a step truly needs the operator, make it the smallest possible tap.
+- **The operator has the `gh` CLI on the phone (Termux).** It's the escape hatch
+  for GitHub operations my container can't do — the GitHub MCP tools have **no**
+  repo-settings surface (visibility, delete-branch, transfer), and the git proxy
+  **403s on delete-push**. When you hit one of those, hand the operator a **single,
+  complete `gh` line** to paste (one code block, no flags to assemble by hand).
+  Known gotchas: `gh` is in Termux's repo (`pkg install gh`, not the binary
+  download); `gh auth login` → GitHub.com → HTTPS → browser is the phone path; and
+  **`gh repo edit --visibility` requires `--accept-visibility-change-consequences`**
+  or it refuses. Verify the result yourself (e.g. anonymous `curl -o /dev/null -w
+  '%{http_code}' <repo-url>` → 200 public / 404 private) rather than trusting "done".
 - **`file://` links are unreachable.** Reports/artifacts under `/root/...` or
   `file:///...` don't open on the phone. Deliver the file itself with
   `SendUserFile` (see the `send-report` skill), not a path.
