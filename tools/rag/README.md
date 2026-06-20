@@ -8,8 +8,10 @@ blended with the existing lexical search. Web path stays zero-dependency.
 - `embed.mjs` — local MiniLM embeddings (`@huggingface/transformers`, no egress).
 - `build-index.mjs` — `npm run rag:index` builds the committed `index.json`;
   `--check` is the drift gate (in `npm run health` + CI).
-- `retrieve.mjs` — hybrid (cosine + lexical RRF) retrieval; `semanticSearch()` +
-  a CLI; falls back to lexical if the index is missing.
+- `retrieve.mjs` — hybrid retrieval: ranks by semantic cosine among the top
+  candidates, then a small in-set lexical boost (exact-keyword matches re-order
+  within the relevant set, but can't inject big catch-all docs); `semanticSearch()`
+  + a CLI; falls back to lexical if the index is missing.
 
 ## Surfaces
 - MCP tool `semantic_search` (in `tools/mcp/server.mjs`).
