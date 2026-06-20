@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 212 files across 17 categories.
+> 213 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -24,7 +24,7 @@
 - [Tooling / Scripts](#tooling--scripts) (14)
 - [Claude Environment](#claude-environment) (88)
 - [Deployment](#deployment) (3)
-- [Research](#research) (22)
+- [Research](#research) (23)
 - [CI / Build Config](#ci--build-config) (6)
 - [Other](#other) (6)
 
@@ -290,6 +290,7 @@
 | [`research/corpus/claude-md-guide.md`](research/corpus/claude-md-guide.md) | If you're using Claude Code — Anthropic's agentic coding tool for the terminal — you've probably noticed it works pretty well out of the box. |
 | [`research/corpus/context-engineering-claude-code.md`](research/corpus/context-engineering-claude-code.md) | The difference between developers who get mediocre output from Claude Code and those who get production-ready code on the first try almost always… |
 | [`research/corpus/mcp-servers-guide.md`](research/corpus/mcp-servers-guide.md) | Out of the box, Claude Code can read your files, write code, and run terminal commands. |
+| [`research/eval-harness/BRIEF.md`](research/eval-harness/BRIEF.md) | Status: prep for a brainstorm (NOT a design). |
 | [`research/findings/fmhy-tooling.md`](research/findings/fmhy-tooling.md) | Deep-research synthesis (4 parallel passes, adversarially verified). |
 | [`research/findings/mcp-adoption.md`](research/findings/mcp-adoption.md) | Deep-research synthesis (5 parallel search angles, adversarially verified). |
 | [`research/findings/mcp-build-our-own.md`](research/findings/mcp-build-our-own.md) | Deep-research synthesis (5 parallel search angles, adversarially verified). |
