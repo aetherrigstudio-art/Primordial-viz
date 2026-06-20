@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 232 files in 79 directories.
+> 241 files in 81 directories.
 
 ```
 Primordial-viz/
@@ -142,6 +142,7 @@ Primordial-viz/
 │   └── workflows/
 │       ├── deploy.yml
 │       ├── eval-skills.yml
+│       ├── portfolio.yml
 │       └── verify.yml
 ├── deploy/
 │   ├── .htaccess
@@ -170,6 +171,8 @@ Primordial-viz/
 │   │       └── 2026-06-20-rag-semantic-recall-design.md
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
+├── portfolio/
+│   └── README.md
 ├── research/
 │   ├── claude-repo-comparison/
 │   │   ├── BRIEF.md
@@ -262,6 +265,7 @@ Primordial-viz/
 │   ├── eval-skills.test.mjs
 │   ├── guard.test.mjs
 │   ├── harvest-links.test.mjs
+│   ├── portfolio.test.mjs
 │   ├── rag.test.mjs
 │   ├── render-check.mjs
 │   └── smoke.mjs
@@ -276,6 +280,13 @@ Primordial-viz/
 │   │   │   └── validate.mjs
 │   │   ├── selftest.mjs
 │   │   └── server.mjs
+│   ├── portfolio/
+│   │   ├── build-sheet.mjs
+│   │   ├── normalize-takeout.mjs
+│   │   ├── pull-drive.mjs
+│   │   ├── schema.mjs
+│   │   ├── sort-vision.mjs
+│   │   └── stage-finals.mjs
 │   ├── rag/
 │   │   ├── build-index.mjs
 │   │   ├── chunk.mjs
