@@ -1,5 +1,35 @@
 # Progress Log — primordial
 
+## MILESTONE — 2026-06-20 (cross-agent Drive handoff channel — LIVE)
+
+Established the **two-agent collaboration channel** for the Primordial Studio
+wedding landing page, with **Google Drive as the shared layer**:
+- **DESIGN agent** = claude.ai/design session (produces the HTML/look).
+- **CODE agent** = this Claude Code session in `Primordial-viz` (builds/deploys).
+
+Drive folder **"Primordial Studio — Design Handoff"**
+(`1wd9VRtTRx0xF8HQ7koLASEOeBh0TZmmv`) holds the protocol + both sides of the loop:
+- `HANDOFF` doc (protocol/conventions: newest file wins, never overwrite, bump
+  `-vN`; design tokens live in the HTML `:root`; assets go in `/assets/`).
+- `/from-design/` — DESIGN drops new HTML versions + NOTES.
+- `/from-code/` — **created this session** (CODE agent's side); seeded
+  `STATUS.txt` confirming the channel.
+- `Primordial Studio - Weddings.html` — **v1 design** (25 KB) in the folder root.
+
+**Verified from this session:** the CODE agent (me) has **read AND write** access
+to the folder via the `mcp__Google_Drive__*` tools — read the v1 HTML + HANDOFF,
+and wrote `/from-code/` + `STATUS.txt`. So the loop is fully wired both ways.
+
+**Gotcha logged:** the DESIGN session hit a transient *"Error in input stream"* +
+a Google Drive internal-error-on-create while compiling its question log — both
+transient; retry clears them. That compiled-questions doc lives only in the
+DESIGN session's history (not visible to the CODE agent).
+
+**Next:** on the operator's go, pick up the newest `/from-design/` HTML (currently
+v1 in root), review vs the mobile-perf + a11y rules, then integrate into the repo
+(the parked frontpage thread — `workshop/sketches/frontpage/BRIEF.md`) and open a
+PR, recording the PR link in `/from-code/STATUS.txt`.
+
 ## Session — 2026-06-20 (branch rescues: portfolio + whats-next → main)
 
 Checked all remote branches; 7 were fully merged, 2 had unmerged work — both
