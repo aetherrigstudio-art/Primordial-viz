@@ -98,7 +98,8 @@ stages, with a hard phone↔CI split:
                                                       │  (portfolio-worthiness + tags +
                                                       │  near-dup/burst grouping) → ranked
                                                       │  manifest + a static CONTACT-SHEET
-                                                      │  page, deployed to the live host
+                                                      │  page, uploaded as a GitHub Actions
+                                                      │  artifact (downloadable on the phone)
  ───────────────────────────────────────────────────┼──────────────────────────────────────
  Stage 3  HUMAN TRIAGE                                │
    Open the ranked contact-sheet URL on the phone,   │
@@ -189,8 +190,9 @@ backlog) is **parked** as a possible later "auto-organize new media" add-on.
 
 1. Operator can, from the phone alone, cull Drive + Photos candidates into one
    place without any desktop step.
-2. A `workflow_dispatch` run produces a ranked contact-sheet URL openable on the
-   phone, with near-dups grouped and obvious junk ranked last.
+2. A `workflow_dispatch` run produces a ranked contact-sheet delivered as a
+   downloadable GitHub Actions artifact, openable on the phone, with near-dups
+   grouped and obvious junk ranked last.
 3. Operator taps keepers; the finals are staged for sub-project #3.
 4. No commercial-licensing or privacy landmine: vision engine terms documented;
    no non-commercial model used; secrets via #2, never hard-coded.

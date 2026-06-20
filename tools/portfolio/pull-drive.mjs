@@ -4,6 +4,13 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { classifyType } from './schema.mjs';
 
+export function exifToIso(s) {
+  const m = /^(\d{4}):(\d{2}):(\d{2})[ T](\d{2}):(\d{2}):(\d{2})/.exec(String(s || ''));
+  if (!m) return null;
+  const [, y, mo, d, h, mi, se] = m.map(Number);
+  return new Date(Date.UTC(y, mo - 1, d, h, mi, se)).toISOString();
+}
+
 export async function pullFolder({ driveClient, folderId, write }) {
   const entries = await driveClient.list(folderId);
   const out = [];
@@ -12,7 +19,7 @@ export async function pullFolder({ driveClient, folderId, write }) {
     if (!type) continue;
     const bytes = await driveClient.download(e.id);
     const destPath = write(e.name, bytes);
-    out.push({ id: e.id, name: e.name, destPath, type });
+    out.push({ id: e.id, name: e.name, destPath, type, takenAt: exifToIso(e.imageMediaMetadata?.time) || e.modifiedTime || null });
   }
   return out;
 }
@@ -35,7 +42,7 @@ export function makeDriveClient({ accessToken }) {
       let pageToken;
       do {
         const q = encodeURIComponent(`'${folderId}' in parents and trashed=false`);
-        const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=nextPageToken,files(id,name,mimeType,size)&pageSize=1000${pageToken ? `&pageToken=${pageToken}` : ''}`;
+        const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=nextPageToken,files(id,name,mimeType,size,modifiedTime,imageMediaMetadata(time))&pageSize=1000${pageToken ? `&pageToken=${pageToken}` : ''}`;
         const res = await fetch(url, { headers: auth });
         if (!res.ok) throw new Error(`drive list failed: ${res.status} ${await res.text()}`);
         const json = await res.json();

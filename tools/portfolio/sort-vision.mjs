@@ -54,7 +54,9 @@ export function makeGeminiModel({ apiKey, model = 'gemini-2.0-flash' }) {
   return async function callModel({ path, type }) {
     if (type !== 'image') return { score: 0, tags: ['video'], reason: 'video not scored in v1' };
     const b64 = readFileSync(path).toString('base64');
-    const mime = path.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
+    const ext = path.toLowerCase().slice(path.lastIndexOf('.'));
+    const MIME = { '.png': 'image/png', '.webp': 'image/webp', '.gif': 'image/gif', '.heic': 'image/heic', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg' };
+    const mime = MIME[ext] || 'image/jpeg';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
     const res = await fetch(url, {
       method: 'POST',

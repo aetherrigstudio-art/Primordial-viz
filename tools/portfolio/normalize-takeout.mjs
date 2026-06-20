@@ -1,6 +1,6 @@
 // Flatten an unzipped Google Takeout tree to media files, re-merging the
 // per-file JSON sidecars (renamed to *.supplemental-metadata.json in late 2024).
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { classifyType } from './schema.mjs';
 

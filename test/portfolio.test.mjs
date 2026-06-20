@@ -130,3 +130,30 @@ test('selectFinals returns matching items in manifest order', () => {
   const out = selectFinals(manifest, ['c', 'a']);
   assert.deepEqual(out.map(i => i.id), ['a', 'c']); // manifest order, not keeper order
 });
+
+test('renderSheet uses basename for thumb src (flattened media dir)', () => {
+  const manifest = { generatedAt: 'x', count: 1, items: [
+    { id: 'a', path: 'work/raw/hero.jpg', type: 'image', score: 50, tags: [], reason: '', dupGroup: null, bestOfGroup: true, takenAt: null },
+  ] };
+  const html = renderSheet(manifest, { issueBase: 'https://github.com/o/r/issues/new', thumbBase: 'media/' });
+  assert.ok(html.includes('src="media/hero.jpg"'), 'thumb resolves to flattened basename');
+  assert.ok(!html.includes('work/raw'), 'no nested dir in src');
+});
+
+import { exifToIso } from '../tools/portfolio/pull-drive.mjs';
+test('exifToIso converts Drive EXIF time to ISO (UTC)', () => {
+  assert.equal(exifToIso('2024:01:01 12:00:00'), '2024-01-01T12:00:00.000Z');
+  assert.equal(exifToIso('garbage'), null);
+});
+test('pullFolder sets takenAt from imageMediaMetadata then modifiedTime', async () => {
+  const fakeClient = {
+    async list() { return [
+      { id: '1', name: 'a.jpg', mimeType: 'image/jpeg', size: '1', imageMediaMetadata: { time: '2024:01:01 12:00:00' }, modifiedTime: '2025-05-05T00:00:00.000Z' },
+      { id: '2', name: 'b.jpg', mimeType: 'image/jpeg', size: '1', modifiedTime: '2025-05-05T00:00:00.000Z' },
+    ]; },
+    async download() { return new Uint8Array([1]); },
+  };
+  const out = await pullFolder({ driveClient: fakeClient, folderId: 'F', write: (n) => `/w/${n}` });
+  assert.equal(out.find(o => o.name === 'a.jpg').takenAt, '2024-01-01T12:00:00.000Z');
+  assert.equal(out.find(o => o.name === 'b.jpg').takenAt, '2025-05-05T00:00:00.000Z');
+});

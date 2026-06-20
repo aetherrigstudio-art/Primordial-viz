@@ -28,7 +28,7 @@ export function validateManifest(obj) {
     if (typeof it.id !== 'string') errors.push(`item[${i}].id must be a string`);
     if (typeof it.path !== 'string') errors.push(`item[${i}].path must be a string`);
     if (it.type !== 'image' && it.type !== 'video') errors.push(`item[${i}].type must be image|video`);
-    if (typeof it.score !== 'number' || it.score < 0 || it.score > 100) errors.push(`item[${i}].score out of range`);
+    if (typeof it.score !== 'number' || !Number.isFinite(it.score) || it.score < 0 || it.score > 100) errors.push(`item[${i}].score out of range`);
     if (!Array.isArray(it.tags)) errors.push(`item[${i}].tags must be an array`);
   });
   return { ok: errors.length === 0, errors };

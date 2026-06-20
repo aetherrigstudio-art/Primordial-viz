@@ -1,7 +1,7 @@
 // Render a phone-friendly ranked contact sheet from a manifest. The "Save
 // keepers" button opens a pre-filled GitHub issue (no backend needed).
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, basename } from 'node:path';
 
 const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -10,8 +10,8 @@ export function renderSheet(manifest, { issueBase = 'https://github.com/aetherri
     <figure class="cell${it.bestOfGroup ? '' : ' dup'}">
       <label><input type="checkbox" data-id="${esc(it.id)}">
       ${it.type === 'image'
-        ? `<img loading="lazy" src="${esc(thumbBase + it.path)}" alt="">`
-        : `<video src="${esc(thumbBase + it.path)}" muted preload="metadata"></video>`}
+        ? `<img loading="lazy" src="${esc(thumbBase + basename(it.path))}" alt="">`
+        : `<video src="${esc(thumbBase + basename(it.path))}" muted preload="metadata"></video>`}
       <figcaption><b>${esc(it.score)}</b> ${esc(it.tags.join(' · '))}<br><small>${esc(it.reason)}</small></figcaption>
       </label>
     </figure>`).join('');
