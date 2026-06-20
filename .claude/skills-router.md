@@ -16,7 +16,7 @@ hook) — don't edit between the markers; add/route a skill via the `skill-route
 - **meta** — `health`, `lesson`, `park`, `send-report`, `skill-router`, `workflow`, `writing-skills`
 - **perf** — `performance`
 - **planning** — `brainstorming`, `executing-plans`, `spec-driven-implementation`, `task-management`, `writing-plans`
-- **research** — `find-docs`
+- **research** — `find-docs`, `reel-ingest`
 - **review** — `receiving-code-review`, `requesting-code-review`
 - **shaders** — `perf-budget`
 - **testing** — `test-driven-development`, `verification-before-completion`

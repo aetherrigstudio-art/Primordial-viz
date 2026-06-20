@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 238 files in 80 directories.
+> 241 files in 82 directories.
 
 ```
 Primordial-viz/
@@ -77,6 +77,8 @@ Primordial-viz/
 │   │   ├── performance/
 │   │   │   └── SKILL.md
 │   │   ├── receiving-code-review/
+│   │   │   └── SKILL.md
+│   │   ├── reel-ingest/
 │   │   │   └── SKILL.md
 │   │   ├── requesting-code-review/
 │   │   │   ├── code-reviewer.md
@@ -265,6 +267,7 @@ Primordial-viz/
 │   ├── guard.test.mjs
 │   ├── harvest-links.test.mjs
 │   ├── rag.test.mjs
+│   ├── reel-ingest.test.mjs
 │   ├── render-check.mjs
 │   └── smoke.mjs
 ├── tools/
@@ -289,6 +292,8 @@ Primordial-viz/
 │   │   ├── quantize.mjs
 │   │   ├── README.md
 │   │   └── retrieve.mjs
+│   ├── reel/
+│   │   └── ingest.mjs
 │   ├── workshop/
 │   │   └── clip.mjs
 │   ├── audit-site.mjs

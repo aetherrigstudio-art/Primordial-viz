@@ -12,6 +12,7 @@
     "smoke": "node test/smoke.mjs",
     "render-check": "node test/render-check.mjs",
     "clip": "node tools/workshop/clip.mjs",
+    "reel": "node tools/reel/ingest.mjs",
     "mcp": "node tools/mcp/server.mjs",
     "mcp:selftest": "node tools/mcp/selftest.mjs",
     "mcp:inspect": "npx @modelcontextprotocol/inspector node tools/mcp/server.mjs",
@@ -22,6 +23,7 @@
     "@huggingface/transformers": "^4.2.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@tauri-apps/cli": "^2.11.2",
+    "ffmpeg-static": "^5.3.0",
     "playwright": "^1.56.1",
     "vite": "^8.0.16",
     "zod": "^4.4.3"

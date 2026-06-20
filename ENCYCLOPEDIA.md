@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 238 files across 17 categories.
+> 241 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -19,10 +19,10 @@
 - [App — Looks / Presets](#app--looks--presets) (3)
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
-- [Tests & Verification](#tests--verification) (8)
+- [Tests & Verification](#tests--verification) (9)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (25)
-- [Claude Environment](#claude-environment) (88)
+- [Tooling / Scripts](#tooling--scripts) (26)
+- [Claude Environment](#claude-environment) (89)
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
 - [CI / Build Config](#ci--build-config) (7)
@@ -135,6 +135,7 @@
 | [`test/guard.test.mjs`](test/guard.test.mjs) | MJS file. |
 | [`test/harvest-links.test.mjs`](test/harvest-links.test.mjs) | MJS file. |
 | [`test/rag.test.mjs`](test/rag.test.mjs) | MJS file. |
+| [`test/reel-ingest.test.mjs`](test/reel-ingest.test.mjs) | MJS file. |
 | [`test/render-check.mjs`](test/render-check.mjs) | test/render-check.mjs — headless-Chromium render check (laptop-free). |
 | [`test/smoke.mjs`](test/smoke.mjs) | test/smoke.mjs — laptop-free logic checks (no browser, no deps). |
 
@@ -196,6 +197,7 @@
 | [`tools/rag/probes.mjs`](tools/rag/probes.mjs) | tools/rag/probes.mjs Canonical retrieval probe set: query → substring the #1 result's path must contain. |
 | [`tools/rag/quantize.mjs`](tools/rag/quantize.mjs) | tools/rag/quantize.mjs Dep-free int8 vector compaction for the committed RAG index. |
 | [`tools/rag/retrieve.mjs`](tools/rag/retrieve.mjs) | tools/rag/retrieve.mjs Hybrid semantic + lexical retrieval over the committed index. |
+| [`tools/reel/ingest.mjs`](tools/reel/ingest.mjs) | Reel ingest — turn a video URL (Instagram / YouTube / etc.) OR a local mp4 into something an agent can actually "see": download it, then extract a… |
 | [`tools/workshop/clip.mjs`](tools/workshop/clip.mjs) | Record a workshop sketch to a webm clip (and optional stills) for phone review. |
 
 ## Claude Environment
@@ -251,6 +253,7 @@
 | [`.claude/skills/perf-budget/SKILL.md`](.claude/skills/perf-budget/SKILL.md) | Run the in-app FPS stress-test readout for primordial and read its SMOOTH / OK / TOO-MUCH verdict to set the mobile performance budget (FBO… |
 | [`.claude/skills/performance/SKILL.md`](.claude/skills/performance/SKILL.md) | Optimize web performance for faster loading and better user experience. Use when asked to "speed up my site", "optimize performance", "reduce load… |
 | [`.claude/skills/receiving-code-review/SKILL.md`](.claude/skills/receiving-code-review/SKILL.md) | Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable -… |
+| [`.claude/skills/reel-ingest/SKILL.md`](.claude/skills/reel-ingest/SKILL.md) | Download a video reference (Instagram reel / YouTube short / any URL) or an uploaded mp4, then extract a frame montage + metadata so it can actually… |
 | [`.claude/skills/requesting-code-review/SKILL.md`](.claude/skills/requesting-code-review/SKILL.md) | Use when completing tasks, implementing major features, or before merging to verify work meets requirements |
 | [`.claude/skills/requesting-code-review/code-reviewer.md`](.claude/skills/requesting-code-review/code-reviewer.md) | Use this template when dispatching a code reviewer subagent. |
 | [`.claude/skills/send-report/SKILL.md`](.claude/skills/send-report/SKILL.md) | Send the newest /insights usage report to the user as a file. Use after running /insights when the file:/// link can't be opened (mobile/cloud… |
