@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 235 files in 79 directories.
+> 236 files in 79 directories.
 
 ```
 Primordial-viz/
@@ -158,6 +158,7 @@ Primordial-viz/
 │   │   │   ├── 2026-06-19-visual-workshop.md
 │   │   │   ├── 2026-06-20-eval-harness.md
 │   │   │   ├── 2026-06-20-fmhy-link-harvester.md
+│   │   │   ├── 2026-06-20-rag-downweight-structural.md
 │   │   │   ├── 2026-06-20-rag-retrieval-polish.md
 │   │   │   └── 2026-06-20-rag-semantic-recall.md
 │   │   └── specs/
