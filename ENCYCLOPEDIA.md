@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 270 files across 17 categories.
+> 271 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (30)
 - [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (12)
+- [Other](#other) (13)
 
 ## Overview & Planning
 
@@ -381,4 +381,5 @@
 | [`workshop/sketches/_demo/_demo.frag.js`](workshop/sketches/_demo/_demo.frag.js) | Reference sketch: audio-reactive warped plasma with neon rings. |
 | [`workshop/sketches/_demo/_demo.json`](workshop/sketches/_demo/_demo.json) | Configuration / data file. |
 | [`workshop/sketches/frontpage/BRIEF.md`](workshop/sketches/frontpage/BRIEF.md) | Durable launch point for a visual-workshop session (run after a /clear). |
+| [`workshop/sketches/frontpage/references.md`](workshop/sketches/frontpage/references.md) | Reference-study notes from 8 Instagram reels the operator shared as direction for the primordial frontpage (ingested via the reel-ingest tool,… |
 | [`workshop/synth-audio.mjs`](workshop/synth-audio.mjs) | Deterministic synthetic "fake song" for the Visual Workshop sandbox. |
