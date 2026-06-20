@@ -101,3 +101,17 @@ test('sortManifest ranks by model score', async () => {
   assert.equal(m.count, 2);
   assert.equal(m.items[0].path, 'good.jpg'); // highest score first
 });
+
+import { renderSheet } from '../tools/portfolio/build-sheet.mjs';
+
+test('renderSheet emits a cell per item and a keeper deep-link', () => {
+  const manifest = { generatedAt: 'x', count: 1, items: [
+    { id: 'a&b', path: 'a.jpg', type: 'image', score: 88, tags: ['neon'], reason: 'sharp', dupGroup: null, bestOfGroup: true, takenAt: null },
+  ] };
+  const html = renderSheet(manifest, { issueBase: 'https://github.com/o/r/issues/new' });
+  assert.ok(html.includes('data-id="a&amp;b"'), 'escapes + carries id');
+  assert.ok(html.includes('a.jpg'));
+  assert.ok(html.includes('88'));
+  assert.ok(/issues\/new/.test(html));
+  assert.ok(html.includes('portfolio-keepers'));
+});
