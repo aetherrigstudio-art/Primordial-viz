@@ -14,15 +14,13 @@ tasks are in `.claude/TODO.md`.)
 - [x] Instrument controls (sliders, look switch, device picker, tap tempo, reset)
 - [x] Verification: `test/smoke.mjs` + `test/render-check.mjs` + CI; accessibility pass
 
-## Now — hardening (WS1)
-- [ ] Audio: NEAREST audio-texture filtering; implement `flux`; `devicechange` listener
-- [ ] Mobile budget: ray-step cap ≤64; render-scale floor 0.5
-- [ ] Robustness: WebGL context-loss + FBO-complete checks; surface `getUserMedia`
-      errors; `dt`/FPS NaN guards; dynamic-res hysteresis
-  > Exact edits with file:line = the latest handoff entry in `progress.md`.
+- [x] WS1 hardening: NEAREST audio-texture; `flux`; `devicechange` listener; ray-step
+      cap ≤64; render-scale floor 0.5; WebGL context-loss + FBO-complete checks;
+      `getUserMedia` error surfacing; `dt`/FPS NaN guards; dynamic-res hysteresis
+- [x] Phase 2 hosting: live over **HTTPS** at `primordial.video/Test/` (auto-deploy via Actions FTPS)
 
-## Next
-- [ ] Phase 2 — host on a domain over **HTTPS** (unblocks the mic)
+## Now — the real visual + first collab
+- [ ] Build the real `/Test/` visual — the current one is a disposable placeholder (the headline item)
 - [ ] Verify audio reactivity against real music on a phone
 - [ ] Phase 6 — first artist collaboration
 
