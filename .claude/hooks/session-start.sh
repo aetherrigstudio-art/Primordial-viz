@@ -8,9 +8,10 @@
 # stale or expired snapshot self-heals instead of leaving red gates mid-session.
 # The app RUNTIME stays zero-dependency; this only installs devDeps.
 #
-# Mode: SYNCHRONOUS — the session waits until deps are ready (no race where the
-# agent runs tests/linters before install finishes). Flip to async by emitting
-# '{"async": true, "asyncTimeout": 300000}' as the first stdout line.
+# Mode: ASYNCHRONOUS — installs run in the background so the session starts fast.
+# Tradeoff: the agent may briefly run tests/linters before install finishes (and
+# orient.sh may flag "ENV INCOMPLETE" until it does). Revert to synchronous by
+# removing the async directive line below.
 
 set -uo pipefail
 
@@ -18,6 +19,10 @@ set -uo pipefail
 if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
   exit 0
 fi
+
+# Run in the background so session startup isn't blocked. MUST be the first
+# stdout line (after the web-only early-exit, which prints nothing).
+echo '{"async": true, "asyncTimeout": 300000}'
 
 # Locate the Primordial-viz checkout (the env may clone several repos).
 root="$(cd "$(dirname "$0")/../.." 2>/dev/null && pwd)" || exit 0
