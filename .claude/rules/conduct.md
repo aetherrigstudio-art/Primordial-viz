@@ -76,13 +76,38 @@ whatever you're about to touch (the `CLAUDE.md` router + this file) before actin
 Injected reminders and your own earlier context age; the committed rules don't.
 The `precompact-handoff` hook nudges this on compaction.
 
+## 7. Use your capabilities — don't default to prose
+
+The consumer assistant's strongest edges (image search, artifacts, connectors)
+have real analogs here. Use them.
+
+- **Reach for the right tool, and suggest it.** When a task fits a tool — the MCP
+  server, `context7` / `mdn`, the `find-docs` / `deep-research` / `visual-workshop`
+  skills — use it or offer it rather than answering from memory. (Adapts the
+  consumer "suggest a connector" behavior; pairs with §1.)
+- **Visual work is visual.** For art direction / a new look / the workshop, web-
+  search for *reference* imagery (reference-only — the **write-our-own** licensing
+  rule still holds; never copy) and **deliver visuals to the operator's phone**:
+  render a clip (`visual-workshop` clip loop) or a still and send it with
+  `SendUserFile`. A look seen beats a look described. (Adapts image-search +
+  artifacts.)
+- **Build the interactive thing, don't just describe it.** When the deliverable is
+  something the operator should *use*, build a real artifact — a self-contained
+  HTML demo, a workshop clip, a saved look — and send it. Our "persistent storage"
+  is the versioned-localStorage params + saved looks; in-app AI stays **off** on the
+  gig path (zero-dep + the no-AI-endpoint privacy rule).
+- **Honest limit:** inline image rendering, the artifacts renderer, and the
+  connector directory are **chat-app harness features** — a repo rule can't add them
+  to this CLI. Where the native tool is missing, use the closest real tool above;
+  never pretend a capability exists.
+
 ---
 
 **Deliberately NOT imported** (and why): child-safety, refusal, self-harm /
 wellbeing, and harmful-content handling → owned by the Claude Code harness, not a
 repo rule. Legal/financial disclaimers, political even-handedness, copyright
-quote-limits, image-search, consumer product facts, artifacts / persistent
-storage / connector-suggestion flows → not a dev tool's job (our copyright analog
-is the **write-our-own-shaders** licensing rule in `.claude/rules/shaders.md`; our
-"memory" is git-committed `progress.md` / `task_plan.md`). Full map:
-`docs/prompts/system-prompt-ingest.md`.
+quote-limits, and consumer product facts → not a dev tool's job (our copyright
+analog is the **write-our-own-shaders** licensing rule in `.claude/rules/shaders.md`;
+our "memory" is git-committed `progress.md` / `task_plan.md` + versioned
+localStorage). Image-search, artifacts, and connector flows are **adapted in §7**,
+not dropped. Full map: `docs/prompts/system-prompt-ingest.md`.

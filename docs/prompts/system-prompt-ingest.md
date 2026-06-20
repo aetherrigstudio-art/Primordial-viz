@@ -23,18 +23,19 @@ this repo's agent (dev tool, harness owns safety).
 | `knowledge_cutoff` / `search_instructions` (search-when-uncertain, unrecognized-entity rule, scale tool calls, current date, don't overclaim) | ✅ | conduct §1–2; sharpens the always-loaded **Accuracy** rule. Verify unfamiliar libs/APIs via `context7`/`mdn`/`find-docs`; substantive answer over deflection. |
 | `search_instructions` → copyright limits | 🟰 | Our analog is the **write-our-own-shaders** licensing rule (`.claude/rules/shaders.md`) + "cite evidence / reconcile" (gotchas, conduct §2). |
 | `search_instructions` → `harmful_content_safety` | ⛔ | Harness-owned. |
-| `using_image_search_tool` | ⛔ | No image-output surface in this dev tool. |
+| `using_image_search_tool` | ✅ (adapted) | conduct §7 — web-search *reference* imagery (reference-only per licensing) and deliver visuals to the phone via `SendUserFile` / the `visual-workshop` clip loop. Inline rendering is a chat-app feature this CLI lacks. |
 | `citation_instructions` (claims in own words, cite sources) | 🟰 / ✅ | conduct §2 (reconcile + state in your own words) + the gotchas subagent-reconcile bullet. |
 | `memory_system` | 🟰 | Our durable memory is git-committed `progress.md` / `task_plan.md` (CLAUDE.md continuity section), not the consumer memory feature. |
-| `persistent_storage_for_artifacts` | ⛔ | Consumer artifacts feature; N-A. |
-| `mcp_app_suggestions` (connector directory / suggest flows) | ⛔ / 🟰 | Consumer connector UX; N-A. Our MCP server (`tools/mcp/`) is dev-only. |
-| `computer_use` (skills, file_creation, artifacts, packages, sandbox paths) | ⛔ / 🟰 | Consumer compute sandbox; N-A. Our `.claude/skills/*` + `tools/` are the analog. |
-| `anthropic_api_in_artifacts` ("Claudeception") | ⛔ | Consumer artifacts feature; N-A. |
+| `persistent_storage_for_artifacts` | 🟰 (adapted) | conduct §7 — our analog is versioned-localStorage params + saved looks (CLAUDE.md key patterns). |
+| `mcp_app_suggestions` (connector directory / suggest flows) | ✅ (adapted) | conduct §7 + §1 — reach for / suggest the right tool or skill (MCP server, `context7`/`mdn`, `find-docs`, `deep-research`) instead of answering from memory. The connector *directory UX* is a chat-app feature. |
+| `computer_use` (skills, file_creation, artifacts, packages, sandbox paths) | ✅ (adapted) | conduct §7 — build real artifacts (HTML demo / workshop clip / saved look) and deliver via `SendUserFile`; our `.claude/skills/*` + `tools/` are the skills analog. |
+| `anthropic_api_in_artifacts` ("Claudeception") | ⛔ (by choice) | Build real artifacts (conduct §7), but in-app/in-artifact AI stays OFF on the gig path — zero runtime deps + the no-AI-endpoint privacy rule (`.claude/rules/deploy.md`). |
 | Identity preamble (model = Fable 5) | ⛔ | Harness sets identity; this agent is correctly Claude Opus 4.8. Corrected variant kept in `docs/prompts/claude-opus-4-8-system-prompt.md`. |
 
 ## What changed in the repo
 
-- **New:** `.claude/rules/conduct.md` — the integrated behavior set (6 sections).
+- **New:** `.claude/rules/conduct.md` — the integrated behavior set (7 sections;
+  §7 adapts the consumer image-search / artifacts / connector edges to this CLI).
 - **Sharpened (always-loaded):** the **Accuracy** + **Communication** rules in
   `CLAUDE.md`, plus a router row pointing at `conduct.md`.
 - **Hooks:** `orient.sh` surfaces `conduct.md` each session; `precompact-handoff.sh`
