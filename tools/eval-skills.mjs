@@ -422,7 +422,7 @@ async function main() {
   }
   const wantLLM = args.tier === '2' || args.tier === '3' || args.tier === 'all';
   if (wantLLM && !process.env.ANTHROPIC_API_KEY) {
-    console.log('tiers 2–3: skipped (no ANTHROPIC_API_KEY)');
+    console.log('tiers 2-3: skipped (no ANTHROPIC_API_KEY)');
     return ok;
   }
   if (args.tier === '2' || args.tier === 'all') {
