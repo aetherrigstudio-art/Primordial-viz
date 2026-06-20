@@ -21,3 +21,18 @@ test('chunkDoc sub-splits an oversized section with overlap', () => {
   assert.ok(chunks.length >= 3, `expected >=3 pieces, got ${chunks.length}`);
   assert.ok(chunks.every((c) => c.text.length <= 1500));
 });
+
+import { embed, embedOne, DIM } from '../tools/rag/embed.mjs';
+
+test('embed returns normalized vectors; related text scores higher than unrelated', async () => {
+  const [a, b, c] = await embed([
+    'audio bands drive the visuals',
+    'the FFT feeds the audio-reactive shader',
+    'cPanel SSL certificate renewal',
+  ]);
+  assert.equal(a.length, DIM);
+  const norm = Math.sqrt(a.reduce((s, x) => s + x * x, 0));
+  assert.ok(Math.abs(norm - 1) < 1e-3, `expected unit-norm, got ${norm}`);
+  const dot = (x, y) => x.reduce((s, v, i) => s + v * y[i], 0);
+  assert.ok(dot(a, b) > dot(a, c), 'audio pair should be closer than audio/deploy pair');
+});
