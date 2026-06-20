@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 338 files across 17 categories.
+> 368 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (13)
@@ -22,11 +22,11 @@
 - [Tests & Verification](#tests--verification) (10)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (32)
-- [Claude Environment](#claude-environment) (125)
+- [Claude Environment](#claude-environment) (140)
 - [Deployment](#deployment) (3)
 - [Research](#research) (24)
 - [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (46)
+- [Other](#other) (61)
 
 ## Overview & Planning
 
@@ -283,17 +283,26 @@
 | [`.claude/skills/brainstorming/scripts/stop-server.sh`](.claude/skills/brainstorming/scripts/stop-server.sh) | Stop the brainstorm server and clean up Usage: stop-server.sh <session_dir> Kills the server process. |
 | [`.claude/skills/brainstorming/spec-document-reviewer-prompt.md`](.claude/skills/brainstorming/spec-document-reviewer-prompt.md) | Use this template when dispatching a spec document reviewer subagent. |
 | [`.claude/skills/brainstorming/visual-companion.md`](.claude/skills/brainstorming/visual-companion.md) | Browser-based visual brainstorming companion for showing mockups, diagrams, and options. |
+| [`.claude/skills/codebase-design/DEEPENING.md`](.claude/skills/codebase-design/DEEPENING.md) | How to deepen a cluster of shallow modules safely, given its dependencies. |
+| [`.claude/skills/codebase-design/DESIGN-IT-TWICE.md`](.claude/skills/codebase-design/DESIGN-IT-TWICE.md) | When the user wants to explore alternative interfaces for a chosen deepening candidate, use this parallel sub-agent pattern. |
+| [`.claude/skills/codebase-design/SKILL.md`](.claude/skills/codebase-design/SKILL.md) | Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities,… |
 | [`.claude/skills/debugging-and-error-recovery/SKILL.md`](.claude/skills/debugging-and-error-recovery/SKILL.md) | Guides systematic root-cause debugging. Use when tests fail, builds break, behavior doesn't match expectations, or you encounter any unexpected… |
 | [`.claude/skills/deploy-check/SKILL.md`](.claude/skills/deploy-check/SKILL.md) | Diagnose the deploy pipeline in one pass — check the latest GitHub Actions deploy run, pull failing job logs, confirm the required FTP_PASSWORD… |
 | [`.claude/skills/deploy-cpanel/SKILL.md`](.claude/skills/deploy-cpanel/SKILL.md) | Manual deploy checklist for shipping primordial to Namecheap Stellar Plus (cPanel). Invoke deliberately when deploying; not auto-activated. |
 | [`.claude/skills/dispatching-parallel-agents/SKILL.md`](.claude/skills/dispatching-parallel-agents/SKILL.md) | Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies |
 | [`.claude/skills/documentation-and-adrs/SKILL.md`](.claude/skills/documentation-and-adrs/SKILL.md) | Records decisions and documentation. Use when making architectural decisions, changing public APIs, shipping features, or when you need to record… |
+| [`.claude/skills/domain-modeling/ADR-FORMAT.md`](.claude/skills/domain-modeling/ADR-FORMAT.md) | ADRs live in docs/adr/ and use sequential numbering: 0001-slug.md, 0002-slug.md, etc. |
+| [`.claude/skills/domain-modeling/CONTEXT-FORMAT.md`](.claude/skills/domain-modeling/CONTEXT-FORMAT.md) | md |
+| [`.claude/skills/domain-modeling/SKILL.md`](.claude/skills/domain-modeling/SKILL.md) | Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural… |
 | [`.claude/skills/executing-plans/SKILL.md`](.claude/skills/executing-plans/SKILL.md) | Use when you have a written implementation plan to execute in a separate session with review checkpoints |
 | [`.claude/skills/find-docs/SKILL.md`](.claude/skills/find-docs/SKILL.md) | >- |
 | [`.claude/skills/finishing-a-development-branch/SKILL.md`](.claude/skills/finishing-a-development-branch/SKILL.md) | Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by… |
 | [`.claude/skills/frontend-design/LICENSE.txt`](.claude/skills/frontend-design/LICENSE.txt) | Plain-text notes. |
 | [`.claude/skills/frontend-design/SKILL.md`](.claude/skills/frontend-design/SKILL.md) | Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography,… |
+| [`.claude/skills/grill-with-docs/SKILL.md`](.claude/skills/grill-with-docs/SKILL.md) | A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go. |
 | [`.claude/skills/health/SKILL.md`](.claude/skills/health/SKILL.md) | One-pass repo + deploy health check, then route any failure to its fix. Runs the local gates (npm run health - JS syntax, smoke, site audit,… |
+| [`.claude/skills/improve-codebase-architecture/HTML-REPORT.md`](.claude/skills/improve-codebase-architecture/HTML-REPORT.md) | The architectural review is rendered as a single self-contained HTML file in the OS temp directory. |
+| [`.claude/skills/improve-codebase-architecture/SKILL.md`](.claude/skills/improve-codebase-architecture/SKILL.md) | Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. |
 | [`.claude/skills/legacy-modernizer/SKILL.md`](.claude/skills/legacy-modernizer/SKILL.md) | Designs incremental migration strategies, identifies service boundaries, produces dependency maps and migration roadmaps, and generates API facade… |
 | [`.claude/skills/legacy-modernizer/references/legacy-testing.md`](.claude/skills/legacy-modernizer/references/legacy-testing.md) | Tests that document current behavior (even if buggy) before refactoring. |
 | [`.claude/skills/legacy-modernizer/references/migration-strategies.md`](.claude/skills/legacy-modernizer/references/migration-strategies.md) | python |
@@ -313,6 +322,12 @@
 | [`.claude/skills/requesting-code-review/SKILL.md`](.claude/skills/requesting-code-review/SKILL.md) | Use when completing tasks, implementing major features, or before merging to verify work meets requirements |
 | [`.claude/skills/requesting-code-review/code-reviewer.md`](.claude/skills/requesting-code-review/code-reviewer.md) | Use this template when dispatching a code reviewer subagent. |
 | [`.claude/skills/send-report/SKILL.md`](.claude/skills/send-report/SKILL.md) | Send the newest /insights usage report to the user as a file. Use after running /insights when the file:/// link can't be opened (mobile/cloud… |
+| [`.claude/skills/setup-matt-pocock-skills/SKILL.md`](.claude/skills/setup-matt-pocock-skills/SKILL.md) | Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use… |
+| [`.claude/skills/setup-matt-pocock-skills/domain.md`](.claude/skills/setup-matt-pocock-skills/domain.md) | How the engineering skills should consume this repo's domain documentation when exploring the codebase. |
+| [`.claude/skills/setup-matt-pocock-skills/issue-tracker-github.md`](.claude/skills/setup-matt-pocock-skills/issue-tracker-github.md) | Issues and PRDs for this repo live as GitHub issues. |
+| [`.claude/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md`](.claude/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md) | Issues and PRDs for this repo live as GitLab issues. |
+| [`.claude/skills/setup-matt-pocock-skills/issue-tracker-local.md`](.claude/skills/setup-matt-pocock-skills/issue-tracker-local.md) | Issues and PRDs for this repo live as markdown files in .scratch/. |
+| [`.claude/skills/setup-matt-pocock-skills/triage-labels.md`](.claude/skills/setup-matt-pocock-skills/triage-labels.md) | The skills speak in terms of five canonical triage roles. |
 | [`.claude/skills/skill-router/SKILL.md`](.claude/skills/skill-router/SKILL.md) | Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the "Skills by area" router block (.claude/skills-router.md,… |
 | [`.claude/skills/spec-driven-implementation/SKILL.md`](.claude/skills/spec-driven-implementation/SKILL.md) | Drive a spec-first workflow for substantial features by writing PRODUCT.md before implementation, writing TECH.md when warranted, and keeping both… |
 | [`.claude/skills/subagent-driven-development/SKILL.md`](.claude/skills/subagent-driven-development/SKILL.md) | Use when executing implementation plans with independent tasks in the current session |
@@ -430,6 +445,15 @@
 | [`.agents/skills/astro-framework/rules/content-collections.rule.md`](.agents/skills/astro-framework/rules/content-collections.rule.md) | Rules for content collections and type-safe content |
 | [`.agents/skills/astro-framework/rules/server-islands.rule.md`](.agents/skills/astro-framework/rules/server-islands.rule.md) | Rules for server islands with deferred rendering |
 | [`.agents/skills/astro-framework/rules/sessions.rule.md`](.agents/skills/astro-framework/rules/sessions.rule.md) | Rules for server-side sessions |
+| [`.agents/skills/codebase-design/DEEPENING.md`](.agents/skills/codebase-design/DEEPENING.md) | How to deepen a cluster of shallow modules safely, given its dependencies. |
+| [`.agents/skills/codebase-design/DESIGN-IT-TWICE.md`](.agents/skills/codebase-design/DESIGN-IT-TWICE.md) | When the user wants to explore alternative interfaces for a chosen deepening candidate, use this parallel sub-agent pattern. |
+| [`.agents/skills/codebase-design/SKILL.md`](.agents/skills/codebase-design/SKILL.md) | Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities,… |
+| [`.agents/skills/domain-modeling/ADR-FORMAT.md`](.agents/skills/domain-modeling/ADR-FORMAT.md) | ADRs live in docs/adr/ and use sequential numbering: 0001-slug.md, 0002-slug.md, etc. |
+| [`.agents/skills/domain-modeling/CONTEXT-FORMAT.md`](.agents/skills/domain-modeling/CONTEXT-FORMAT.md) | md |
+| [`.agents/skills/domain-modeling/SKILL.md`](.agents/skills/domain-modeling/SKILL.md) | Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural… |
+| [`.agents/skills/grill-with-docs/SKILL.md`](.agents/skills/grill-with-docs/SKILL.md) | A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go. |
+| [`.agents/skills/improve-codebase-architecture/HTML-REPORT.md`](.agents/skills/improve-codebase-architecture/HTML-REPORT.md) | The architectural review is rendered as a single self-contained HTML file in the OS temp directory. |
+| [`.agents/skills/improve-codebase-architecture/SKILL.md`](.agents/skills/improve-codebase-architecture/SKILL.md) | Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. |
 | [`.agents/skills/legacy-modernizer/SKILL.md`](.agents/skills/legacy-modernizer/SKILL.md) | Designs incremental migration strategies, identifies service boundaries, produces dependency maps and migration roadmaps, and generates API facade… |
 | [`.agents/skills/legacy-modernizer/references/legacy-testing.md`](.agents/skills/legacy-modernizer/references/legacy-testing.md) | Tests that document current behavior (even if buggy) before refactoring. |
 | [`.agents/skills/legacy-modernizer/references/migration-strategies.md`](.agents/skills/legacy-modernizer/references/migration-strategies.md) | python |
@@ -438,6 +462,12 @@
 | [`.agents/skills/legacy-modernizer/references/system-assessment.md`](.agents/skills/legacy-modernizer/references/system-assessment.md) | python |
 | [`.agents/skills/planning-with-files/SKILL.md`](.agents/skills/planning-with-files/SKILL.md) | This skill should be used when starting complex multi-step tasks, research projects, or any task requiring >5 tool calls. Implements Manus-style… |
 | [`.agents/skills/r3f-shaders/SKILL.md`](.agents/skills/r3f-shaders/SKILL.md) | React Three Fiber shaders - GLSL, shaderMaterial, uniforms, custom effects. Use when creating custom visual effects, modifying vertices, writing… |
+| [`.agents/skills/setup-matt-pocock-skills/SKILL.md`](.agents/skills/setup-matt-pocock-skills/SKILL.md) | Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use… |
+| [`.agents/skills/setup-matt-pocock-skills/domain.md`](.agents/skills/setup-matt-pocock-skills/domain.md) | How the engineering skills should consume this repo's domain documentation when exploring the codebase. |
+| [`.agents/skills/setup-matt-pocock-skills/issue-tracker-github.md`](.agents/skills/setup-matt-pocock-skills/issue-tracker-github.md) | Issues and PRDs for this repo live as GitHub issues. |
+| [`.agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md`](.agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md) | Issues and PRDs for this repo live as GitLab issues. |
+| [`.agents/skills/setup-matt-pocock-skills/issue-tracker-local.md`](.agents/skills/setup-matt-pocock-skills/issue-tracker-local.md) | Issues and PRDs for this repo live as markdown files in .scratch/. |
+| [`.agents/skills/setup-matt-pocock-skills/triage-labels.md`](.agents/skills/setup-matt-pocock-skills/triage-labels.md) | The skills speak in terms of five canonical triage roles. |
 | [`.env.example`](.env.example) | Example environment variables |
 | [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
 | [`portfolio/Gather-PortfolioMedia.ps1`](portfolio/Gather-PortfolioMedia.ps1) | PS1 file. |

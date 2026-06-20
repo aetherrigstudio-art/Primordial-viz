@@ -10,13 +10,13 @@ hook) — don't edit between the markers; add/route a skill via the `skill-route
 
 - **debugging** — `debugging-and-error-recovery`, `systematic-debugging`
 - **deploy** — `deploy-check`, `deploy-cpanel`
-- **design** — `thought-based-reasoning`, `visual-workshop`
+- **design** — `codebase-design`, `domain-modeling`, `improve-codebase-architecture`, `thought-based-reasoning`, `visual-workshop`
 - **docs** — `documentation-and-adrs`
 - **general** — `astro-framework`, `legacy-modernizer`, `planning-with-files`, `r3f-shaders`
 - **looks** — `new-preset`
-- **meta** — `health`, `lesson`, `park`, `reorient`, `send-report`, `skill-router`, `workflow`, `writing-skills`
+- **meta** — `health`, `lesson`, `park`, `reorient`, `send-report`, `setup-matt-pocock-skills`, `skill-router`, `workflow`, `writing-skills`
 - **perf** — `performance`
-- **planning** — `brainstorming`, `executing-plans`, `spec-driven-implementation`, `task-management`, `writing-plans`
+- **planning** — `brainstorming`, `executing-plans`, `grill-with-docs`, `spec-driven-implementation`, `task-management`, `writing-plans`
 - **research** — `find-docs`, `reel-ingest`
 - **review** — `receiving-code-review`, `requesting-code-review`
 - **shaders** — `perf-budget`

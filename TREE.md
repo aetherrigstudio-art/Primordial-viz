@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 338 files in 109 directories.
+> 368 files in 119 directories.
 
 ```
 Primordial-viz/
@@ -40,6 +40,19 @@ Primordial-viz/
 │       │   │   └── sessions.rule.md
 │       │   ├── AGENTS.md
 │       │   └── SKILL.md
+│       ├── codebase-design/
+│       │   ├── DEEPENING.md
+│       │   ├── DESIGN-IT-TWICE.md
+│       │   └── SKILL.md
+│       ├── domain-modeling/
+│       │   ├── ADR-FORMAT.md
+│       │   ├── CONTEXT-FORMAT.md
+│       │   └── SKILL.md
+│       ├── grill-with-docs/
+│       │   └── SKILL.md
+│       ├── improve-codebase-architecture/
+│       │   ├── HTML-REPORT.md
+│       │   └── SKILL.md
 │       ├── legacy-modernizer/
 │       │   ├── references/
 │       │   │   ├── legacy-testing.md
@@ -50,8 +63,15 @@ Primordial-viz/
 │       │   └── SKILL.md
 │       ├── planning-with-files/
 │       │   └── SKILL.md
-│       └── r3f-shaders/
-│           └── SKILL.md
+│       ├── r3f-shaders/
+│       │   └── SKILL.md
+│       └── setup-matt-pocock-skills/
+│           ├── domain.md
+│           ├── issue-tracker-github.md
+│           ├── issue-tracker-gitlab.md
+│           ├── issue-tracker-local.md
+│           ├── SKILL.md
+│           └── triage-labels.md
 ├── .claude/
 │   ├── agents/
 │   │   ├── audio-dsp.md
@@ -118,6 +138,10 @@ Primordial-viz/
 │   │   │   ├── SKILL.md
 │   │   │   ├── spec-document-reviewer-prompt.md
 │   │   │   └── visual-companion.md
+│   │   ├── codebase-design/
+│   │   │   ├── DEEPENING.md
+│   │   │   ├── DESIGN-IT-TWICE.md
+│   │   │   └── SKILL.md
 │   │   ├── debugging-and-error-recovery/
 │   │   │   └── SKILL.md
 │   │   ├── deploy-check/
@@ -128,6 +152,10 @@ Primordial-viz/
 │   │   │   └── SKILL.md
 │   │   ├── documentation-and-adrs/
 │   │   │   └── SKILL.md
+│   │   ├── domain-modeling/
+│   │   │   ├── ADR-FORMAT.md
+│   │   │   ├── CONTEXT-FORMAT.md
+│   │   │   └── SKILL.md
 │   │   ├── executing-plans/
 │   │   │   └── SKILL.md
 │   │   ├── find-docs/
@@ -137,7 +165,12 @@ Primordial-viz/
 │   │   ├── frontend-design/
 │   │   │   ├── LICENSE.txt
 │   │   │   └── SKILL.md
+│   │   ├── grill-with-docs/
+│   │   │   └── SKILL.md
 │   │   ├── health/
+│   │   │   └── SKILL.md
+│   │   ├── improve-codebase-architecture/
+│   │   │   ├── HTML-REPORT.md
 │   │   │   └── SKILL.md
 │   │   ├── legacy-modernizer/
 │   │   │   ├── references/
@@ -172,6 +205,13 @@ Primordial-viz/
 │   │   │   └── SKILL.md
 │   │   ├── send-report/
 │   │   │   └── SKILL.md
+│   │   ├── setup-matt-pocock-skills/
+│   │   │   ├── domain.md
+│   │   │   ├── issue-tracker-github.md
+│   │   │   ├── issue-tracker-gitlab.md
+│   │   │   ├── issue-tracker-local.md
+│   │   │   ├── SKILL.md
+│   │   │   └── triage-labels.md
 │   │   ├── skill-router/
 │   │   │   └── SKILL.md
 │   │   ├── spec-driven-implementation/
