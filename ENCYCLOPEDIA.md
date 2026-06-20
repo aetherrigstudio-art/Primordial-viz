@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 217 files across 17 categories.
+> 219 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -19,7 +19,7 @@
 - [App — Looks / Presets](#app--looks--presets) (3)
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
-- [Tests & Verification](#tests--verification) (5)
+- [Tests & Verification](#tests--verification) (7)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (15)
 - [Claude Environment](#claude-environment) (88)
@@ -124,6 +124,8 @@
 | File | Description |
 | --- | --- |
 | [`test/eval-skills.test.mjs`](test/eval-skills.test.mjs) | MJS file. |
+| [`test/eval/outcomes.json`](test/eval/outcomes.json) | Configuration / data file. |
+| [`test/eval/triggers.json`](test/eval/triggers.json) | Configuration / data file. |
 | [`test/guard.test.mjs`](test/guard.test.mjs) | MJS file. |
 | [`test/harvest-links.test.mjs`](test/harvest-links.test.mjs) | MJS file. |
 | [`test/render-check.mjs`](test/render-check.mjs) | test/render-check.mjs — headless-Chromium render check (laptop-free). |

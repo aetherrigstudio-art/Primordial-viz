@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 217 files in 77 directories.
+> 219 files in 78 directories.
 
 ```
 Primordial-viz/
@@ -251,6 +251,9 @@ Primordial-viz/
 │   ├── Info.plist
 │   └── tauri.conf.json
 ├── test/
+│   ├── eval/
+│   │   ├── outcomes.json
+│   │   └── triggers.json
 │   ├── eval-skills.test.mjs
 │   ├── guard.test.mjs
 │   ├── harvest-links.test.mjs
