@@ -2,6 +2,7 @@
 name: skill-router
 area: meta
 description: Route to the right IN-REPO skill and keep the local skill registry in sync — regenerate the "Skills by area" router block (.claude/skills-router.md, imported by CLAUDE.md) from .claude/skills/*/SKILL.md and report the workflow→skill map. For finding/installing NEW community skills, defer to `npx skills` (skills.sh). Use after adding/editing a local skill, or when unsure which existing skill applies.
+allowed-tools: Read, Bash(node tools/gen-docs.mjs *), Bash(node tools/mcp/lib/docs.mjs *)
 ---
 
 # skill-router — route among our skills & keep the local registry in sync

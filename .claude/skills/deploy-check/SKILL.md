@@ -2,6 +2,7 @@
 name: deploy-check
 area: deploy
 description: Diagnose the deploy pipeline in one pass — check the latest GitHub Actions deploy run, pull failing job logs, confirm the required FTP_PASSWORD secret, and verify the live site. Use when a deploy fails, after pushing, or to confirm the site is healthy ("is the deploy ok?", "why did the deploy fail?", "check the live site").
+allowed-tools: Read, Bash(npm run audit), Bash(node tools/audit-site.mjs), Bash(curl *)
 ---
 
 # deploy-check — one-pass deploy health + root-cause

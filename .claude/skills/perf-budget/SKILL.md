@@ -2,6 +2,7 @@
 name: perf-budget
 area: shaders
 description: Run the in-app FPS stress-test readout for primordial and read its SMOOTH / OK / TOO-MUCH verdict to set the mobile performance budget (FBO render-scale, raymarch step cap, dynamic resolution). Use when tuning performance, checking mobile frame rate, deciding render-scale or step count, or diagnosing jank/dropped frames.
+allowed-tools: Read
 ---
 
 # perf-budget — read the FPS verdict, set the budget

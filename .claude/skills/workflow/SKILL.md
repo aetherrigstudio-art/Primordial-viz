@@ -2,6 +2,7 @@
 name: workflow
 area: meta
 description: Drive a named multi-step workflow — an ordered chain of skills/agents — for a substantial build, feature, or new-look task. Use at the START of such a task to run the right chain end-to-end with each step's gates, instead of ad-hoc one-off steps. Reads .claude/workflows.md.
+allowed-tools: Read
 ---
 
 # workflow — run a named skill chain

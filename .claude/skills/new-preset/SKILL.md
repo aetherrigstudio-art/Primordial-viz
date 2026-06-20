@@ -2,6 +2,7 @@
 name: new-preset
 area: looks
 description: Scaffold a new visual "look" for primordial — a params-only JSON preset in src/looks/, wired into the look registry (all looks share the slime shader). Use when asked to add, create, scaffold, or start a new look / preset / visual variation.
+allowed-tools: Read, Write, Edit
 ---
 
 # new-preset — scaffold a visual "look"

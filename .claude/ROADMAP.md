@@ -121,7 +121,16 @@ Source: `research/claude-repo-comparison/REPORT.md` +
 4. Recent `LESSON` entries surfaced in `orient`.
 5. Anti-footgun `.claude/rules/gotchas.md`.
 
-**Phase 2 — higher-effort tooling — BACKLOG**
-6. Eval harness (does a skill/rule actually trigger + help?) — research's #1 gap.
-7. Hardened destructive-command PreToolUse guard (wrapper-depth stripping).
-8. Per-skill `allowed-tools` permissions.
+**Phase 2 — higher-effort tooling**
+6. Eval harness (does a skill/rule actually trigger + help?) — research's #1 gap. — BACKLOG
+7. Hardened destructive-command PreToolUse guard (wrapper-depth stripping). — BACKLOG
+8. Per-skill tool permissions. — ✅ DONE 2026-06-20.
+   - **Key finding (verified vs docs):** skill `allowed-tools` is **ADVISORY** — it
+     *pre-approves* tools (no prompt) but does **not** restrict; every tool stays
+     callable. The enforced lever is the subagent `tools:` allowlist (and skill
+     `disallowed-tools`, which clears each turn). So this item split in two:
+   - **Enforced least-privilege** was **already in place**: `visual-qa` + `audio-dsp`
+     each declare `tools: Read, Grep, Glob, Bash` (no Write/Edit/WebFetch/MCP).
+   - **Fewer phone prompts:** added command-scoped `allowed-tools` to our **12 own
+     skills** (never `Bash(*)`; only the exact commands each runs). Adopted skills
+     left untouched (vendored/hash-locked in `skills-lock.json`).

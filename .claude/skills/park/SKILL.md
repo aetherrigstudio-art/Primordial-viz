@@ -2,6 +2,7 @@
 name: park
 area: meta
 description: Park the current in-progress thread (a design, task, or decision we're partway through) into the "Open threads" list in progress.md with enough context to resume - topic, what's decided so far, and the exact next step. Use when the conversation pivots to a new subject before the current one is finished, so it isn't lost. The orient hook resurfaces parked threads next session.
+allowed-tools: Read, Edit
 ---
 
 # park - capture an interrupted thread so we can resume it reliably

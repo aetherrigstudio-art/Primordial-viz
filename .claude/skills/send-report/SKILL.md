@@ -2,6 +2,7 @@
 name: send-report
 area: meta
 description: Send the newest /insights usage report to the user as a file. Use after running /insights when the file:/// link can't be opened (mobile/cloud sessions can't reach the container filesystem), or when the user asks to "send the report".
+allowed-tools: Read
 ---
 
 # send-report — deliver the latest insights report

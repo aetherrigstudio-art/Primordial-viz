@@ -42,7 +42,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md) via subagent-driven development (fresh implementer + reviewer per task) — 7 tasks, all… |
+| [`progress.md`](progress.md) | Started Phase 2 with the "per-skill allowed-tools" item. |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs

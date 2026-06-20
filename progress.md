@@ -4,6 +4,29 @@
 
 - [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | parked 2026-06-19
 
+## Session — 2026-06-20 (Phase 2 started: per-skill tool permissions — DONE)
+
+Started Phase 2 with the "per-skill allowed-tools" item. **Verified the mechanism
+first (vs official docs) and the premise was wrong:** skill `allowed-tools` is
+**ADVISORY** — it pre-approves tools (no permission prompt) but does NOT restrict;
+every tool stays callable. Real enforcement is the **subagent `tools:`** allowlist
+(and skill `disallowed-tools`, which clears each turn). So the item split:
+
+- **Enforced least-privilege — already in place:** `visual-qa` + `audio-dsp` already
+  declare `tools: Read, Grep, Glob, Bash` (no Write/Edit/WebFetch/MCP). Confirmed, no
+  change needed.
+- **Fewer phone prompts — applied:** added **command-scoped** `allowed-tools` to our
+  **12 own skills** (health, deploy-check, skill-router, visual-workshop, new-preset,
+  park, lesson, perf-budget, thought-based-reasoning, workflow, deploy-cpanel,
+  send-report). Never `Bash(*)` — only the exact commands each skill runs. The **20
+  adopted skills** were left untouched (vendored/hash-locked in `skills-lock.json`).
+
+**Verified:** `gen-docs --check` (frontmatter still parses, router region current),
+`check-config` OK, smoke 15/15; only the expected render.png drift. Honest caveat:
+in Auto/bypass permission mode the prompt-reduction win is modest; the enforced-safety
+half (the real prize) was already done. **Phase 2 remaining:** eval harness (#1 gap)
++ destructive-command guard — both still backlog.
+
 ## Session — 2026-06-19 (adopt-ideas Phase 1 — DELIVERED)
 
 Executed the adopt-ideas plan (spec:

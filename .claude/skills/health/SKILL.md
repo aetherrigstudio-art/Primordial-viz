@@ -2,6 +2,7 @@
 name: health
 area: meta
 description: One-pass repo + deploy health check, then route any failure to its fix. Runs the local gates (npm run health - JS syntax, smoke, site audit, docs+drift gate) and, when it matters, the live deploy (deploy-check). Use to answer "is everything ok?", before claiming a batch of work done, or after a round of changes.
+allowed-tools: Read, Bash(npm run health), Bash(node tools/health.mjs), Bash(node tools/gen-docs.mjs *), Bash(curl *)
 ---
 
 # health - sense the whole repo in one pass, then route to the fix

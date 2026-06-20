@@ -2,6 +2,7 @@
 name: lesson
 area: meta
 description: Capture a correction or lesson durably so the same mistake doesn't recur. Use right after the user corrects a wrong assumption, an over-applied rule, or a stale fact. Routes the lesson to the home that actually changes future behavior (sharpen an always-loaded rule, fix the source-of-truth doc, or note it) - not a write-only log.
+allowed-tools: Read, Edit
 ---
 
 # lesson - turn a correction into a durable behavior change

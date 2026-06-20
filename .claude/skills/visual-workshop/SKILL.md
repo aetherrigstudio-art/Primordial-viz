@@ -2,6 +2,7 @@
 name: visual-workshop
 description: Workshop visuals for primordial in a throwaway sandbox, separate from the shipped app - discuss a direction, optionally research similar/trending designs + implementation best-practice, author an experimental "sketch" shader, render it to a short audio-driven clip delivered to the phone, iterate, then graduate a winner into a real look or shader. Use when exploring art direction, trying a new visual idea, or refining a look without touching the live instrument.
 area: design
+allowed-tools: Read, Write, Bash(npm run clip *), Bash(node test/render-check.mjs), Bash(node test/smoke.mjs)
 ---
 
 # Visual Workshop
