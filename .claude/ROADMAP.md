@@ -135,7 +135,13 @@ Source: `research/claude-repo-comparison/REPORT.md` +
 
 **Phase 2 — higher-effort tooling**
 6. Eval harness (does a skill/rule actually trigger + help?) — research's #1 gap. — BACKLOG
-7. Hardened destructive-command PreToolUse guard (wrapper-depth stripping). — BACKLOG
+7. Hardened destructive-command PreToolUse guard. — ✅ DONE 2026-06-20
+   (`.claude/hooks/guard.mjs`, matcher Bash): DENY irreversible (rm -rf of / ~
+   $HOME /*, dd of=/dev/*, mkfs, shred, forkbomb, chmod -R 777 /, force-push to
+   main/master); ASK recoverable-risky (reset --hard, clean -f*, non-main
+   force-push, recursive rm of abs path, chmod -R). Strips heredoc/quoted DATA
+   (quote-state scanner) + leading sudo/env/nohup/time wrappers; boundary-anchored.
+   Unit-tested. (Node, not bash, for reliable parsing — no jq dep.)
 8. Per-skill tool permissions. — ✅ DONE 2026-06-20.
    - **Key finding (verified vs docs):** skill `allowed-tools` is **ADVISORY** — it
      *pre-approves* tools (no prompt) but does **not** restrict; every tool stays
