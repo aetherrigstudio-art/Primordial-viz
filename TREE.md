@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 265 files in 90 directories.
+> 266 files in 91 directories.
 
 ```
 Primordial-viz/
@@ -157,6 +157,8 @@ Primordial-viz/
 ├── docs/
 │   ├── ANTHROPIC/
 │   │   └── OPUS8-SETUP-PLAN.md
+│   ├── audits/
+│   │   └── 2026-06-20-audit.md
 │   ├── decisions/
 │   │   ├── 001-backend-rule-scope.md
 │   │   └── README.md
