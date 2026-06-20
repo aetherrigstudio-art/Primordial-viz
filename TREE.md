@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 250 files in 85 directories.
+> 251 files in 85 directories.
 
 ```
 Primordial-viz/
@@ -182,6 +182,7 @@ Primordial-viz/
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
 ├── portfolio/
+│   ├── Gather-PortfolioMedia.ps1
 │   └── README.md
 ├── research/
 │   ├── claude-repo-comparison/

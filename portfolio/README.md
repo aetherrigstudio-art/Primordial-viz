@@ -1,11 +1,90 @@
-# Portfolio media pipeline — phone-only runbook
+# Portfolio media gathering
+
+Two ways to pull image/video candidates into one place so you can pick the best
+for the portfolio. Neither is part of the web app and neither ships to the site.
+
+- **Path A — Local PowerShell (on your own Windows PC).** Fast, no cloud, no
+  secrets. Best when your media already lives on your machine or a Google Drive
+  sync folder. See **Path A** below.
+- **Path B — Cloud pipeline (Drive + Gemini, driven from your phone).** Pulls
+  from a Google Drive folder, scores/tags with Gemini, builds a phone contact
+  sheet, lands a finals artifact. Needs one-time OAuth + a Gemini key (store them
+  in Proton Pass → GitHub secrets — that's sub-project #2). See **Path B** below.
+
+They compose: use Path A to coarse-gather onto your PC, upload to a Drive folder,
+then Path B to score + triage. Or just use whichever fits.
+
+---
+
+# Path A — Local gather (run on YOUR Windows PC)
+
+A helper to pull image/video candidates off your own machine + Google Drive sync
+folder into one folder.
+
+> The cloud Claude Code session **cannot** do this for you — it can't see your
+> PC, drives, or Google account. Run the steps below on your own Windows rig
+> (Claude Code desktop/CLI), where your files actually live.
+
+## Quick start
+
+1. Copy `Gather-PortfolioMedia.ps1` to your PC.
+2. Open it and edit the **CONFIG** block at the top:
+   - `$SourceFolders` — the folders to scan (your Google Drive sync folder, project folders).
+   - `$ProjectKeywords` — project names to match (or leave empty for all).
+   - `$After` / `$Before` — date window (or leave empty).
+   - `$Destination` — where keepers get copied.
+3. **Dry run first** (copies nothing — just shows the count + total GB + folders):
+
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\Gather-PortfolioMedia.ps1
+   ```
+
+4. If the count, total size, and largest-files list look sane, **actually copy**:
+
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\Gather-PortfolioMedia.ps1 -Execute
+   ```
+
+The dry run is the safety guard: review before any copy so you don't duplicate
+hundreds of GB of VJ loops or engine textures. The script also skips oversized
+files and noise folders automatically (see `$MaxVideoMB`, `$ExcludePathPatterns`).
+
+## Google Drive vs Google Photos
+
+- **Google Drive** syncs to a local folder on Windows (e.g. `G:\My Drive` or
+  `C:\Users\<you>\My Drive`). Point a `$SourceFolders` entry at it.
+- **Google Photos** does *not* sync to a folder. Export what you want via
+  **Google Takeout** (photos.google.com → albums → Takeout), unzip it, and point
+  a `$SourceFolders` entry at the unzipped Takeout folder.
+
+## Prompt to paste into Claude Code on your PC (optional)
+
+If you'd rather drive it conversationally with Claude Code running locally,
+paste something like this (fill in YOUR specifics):
+
+```
+I want to gather portfolio image/video candidates into C:\PortfolioMedia.
+Scan these folders only: G:\My Drive, D:\Projects.
+Keep only files matching these project names: <name1>, <name2>.
+Date range: modified between 2024-01-01 and 2025-12-31.
+Images: jpg/png/webp/tif/heic under 75 MB. Videos: mp4/mov/webm under 3 GB.
+Skip anything under \node_modules\, \cache\, vj-loop, \unreal\, \textures\.
+FIRST do a dry run: list the count, total size, and the 10 largest matches —
+copy nothing yet. Show me, and wait for my OK before copying.
+```
+
+When Claude proposes the `Get-ChildItem` / `Copy-Item` commands, **review the
+scan paths** before approving so it doesn't walk your whole rig. If it runs long,
+press **Esc** to interrupt and narrow it to one drive.
+
+---
+
+# Path B — Cloud pipeline (phone-only runbook)
 
 Gather raw shots from Google Drive and Google Photos, have Gemini score and tag
 them, get a contact sheet to tap through on your phone, pick keepers, and land
 the final files as a downloadable artifact — all driven from your Android phone
 with no laptop required.
-
----
 
 ## One-time setup
 
@@ -73,8 +152,6 @@ DRIVE_FOLDER_ID
 (Paste the Google Drive folder ID here — the long alphanumeric string from the
 folder's share URL, e.g. `1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms`.)
 
----
-
 ## Coarse cull — Drive
 
 In the **Google Drive** app:
@@ -86,8 +163,6 @@ In the **Google Drive** app:
 
 Paste it as the `DRIVE_FOLDER_ID` secret (or supply it as the workflow input at
 run time to override the secret).
-
----
 
 ## Coarse cull — Google Photos via Gemini
 
@@ -113,8 +188,6 @@ Once verified:
 4. When the Takeout zip arrives, unzip it and upload the media files into the
    same Drive folder you created above.
 
----
-
 ## Run the pipeline
 
 In the **GitHub mobile app**:
@@ -130,8 +203,6 @@ The workflow will:
 - Build an HTML contact sheet.
 - Upload the sheet as the **contact-sheet** artifact.
 
----
-
 ## Triage — pick your keepers
 
 1. Download the **contact-sheet** artifact from the completed Actions run.
@@ -142,8 +213,6 @@ The workflow will:
 5. Submit the issue.
 
 The `stage` job in the same workflow triggers automatically on that issue.
-
----
 
 ## Keeper hand-back (manifest persistence)
 
@@ -160,15 +229,11 @@ and push before or after submitting the keepers issue.
 Fast-follow option: automate this by having the gather job commit the manifest
 to a `portfolio-work` branch — noted for a future iteration.
 
----
-
 ## Finals artifact
 
 After the `stage` job completes, download the **portfolio-finals** artifact.
 It contains only your selected keepers, ready for sub-project #3 (touch-up /
 delivery).
-
----
 
 ## Secrets reference
 

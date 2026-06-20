@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 250 files across 17 categories.
+> 251 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
 - [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (10)
+- [Other](#other) (11)
 
 ## Overview & Planning
 
@@ -354,7 +354,8 @@
 | --- | --- |
 | [`.env.example`](.env.example) | Example environment variables |
 | [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
-| [`portfolio/README.md`](portfolio/README.md) | Gather raw shots from Google Drive and Google Photos, have Gemini score and tag them, get a contact sheet to tap through on your phone, pick… |
+| [`portfolio/Gather-PortfolioMedia.ps1`](portfolio/Gather-PortfolioMedia.ps1) | PS1 file. |
+| [`portfolio/README.md`](portfolio/README.md) | Two ways to pull image/video candidates into one place so you can pick the best for the portfolio. |
 | [`server/README.md`](server/README.md) | This folder will contain the retrieval/indexing service that your Android app calls. |
 | [`skills-lock.json`](skills-lock.json) | Configuration / data file. |
 | [`workshop/sandbox.html`](workshop/sandbox.html) | Primordial - Sketch Sandbox |
