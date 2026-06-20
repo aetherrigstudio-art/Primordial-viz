@@ -102,7 +102,7 @@ stages, with a hard phone↔CI split:
                                                       │  artifact (downloadable on the phone)
  ───────────────────────────────────────────────────┼──────────────────────────────────────
  Stage 3  HUMAN TRIAGE                                │
-   Open the ranked contact-sheet URL on the phone,   │
+   Open the ranked contact-sheet artifact on phone,  │
    swipe top-down, tap keepers → writes a small       │
    "keepers" list back (see Triage hand-back)         │  CI pulls the keepers → hands the
                                                       │  finals to sub-project #3 (touch-up)
