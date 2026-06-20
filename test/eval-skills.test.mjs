@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseFrontmatter, staticChecks, loadFixtures, parsePick, routerSim, outcomeAB } from '../tools/eval-skills.mjs';
+import { parseFrontmatter, staticChecks, loadFixtures, parsePick, routerSim, outcomeAB, formatReport } from '../tools/eval-skills.mjs';
 
 test('parseFrontmatter reads name/area/description and strips quotes', () => {
   const fm = parseFrontmatter(
@@ -75,6 +75,15 @@ test('routerSim scores hit-rate against expectations', async () => {
   assert.equal(r.perFixture[0].hits, 3);
   assert.equal(r.perFixture[0].rate, 1);
   assert.equal(r.hitRate, 1);
+});
+
+test('formatReport renders a trigger hit-rate summary', () => {
+  const out = formatReport('triggers', {
+    perFixture: [{ prompt: 'add a look', expect: ['new-preset'], hits: 2, rate: 0.67 }],
+    hitRate: 0.67,
+  });
+  assert.match(out, /hitRate/i);
+  assert.match(out, /new-preset/);
 });
 
 test('outcomeAB reports positive lift when skill body helps', async () => {

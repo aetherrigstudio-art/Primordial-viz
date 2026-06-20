@@ -374,7 +374,68 @@ function runTier1() {
   return errors.length === 0;
 }
 
+// ---------------------------------------------------------------------------
+// formatReport  (Tier 2/3 output)
+// ---------------------------------------------------------------------------
+
+/**
+ * Render a human-readable summary for tier-2 trigger or tier-3 outcome results.
+ *
+ * @param {'triggers'|'outcomes'} kind
+ * @param {{ perFixture: Array, hitRate?: number, avgLift?: number }} result
+ * @returns {string}
+ */
+export function formatReport(kind, result) {
+  const lines = [];
+  if (kind === 'triggers') {
+    for (const f of result.perFixture)
+      lines.push(`  [${(f.rate * 100).toFixed(0)}%] ${f.expect.join('|')} — "${f.prompt}"`);
+    lines.push(`tier2 hitRate: ${(result.hitRate * 100).toFixed(0)}%`);
+  } else {
+    for (const f of result.perFixture)
+      lines.push(`  ${f.skill}: with=${f.withScore.toFixed(2)} without=${f.withoutScore.toFixed(2)} lift=${f.lift.toFixed(2)}`);
+    lines.push(`tier3 avgLift: ${result.avgLift.toFixed(2)}`);
+  }
+  return lines.join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// parseArgs / main  (unified CLI dispatcher)
+// ---------------------------------------------------------------------------
+
+function parseArgs(argv) {
+  const a = { tier: '1', samples: 3 };
+  for (let i = 0; i < argv.length; i++) {
+    if (argv[i] === '--tier') a.tier = argv[++i];
+    else if (argv[i] === '--samples') a.samples = Number(argv[++i]);
+  }
+  return a;
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const skills = loadSkills(root);
+  let ok = true;
+
+  if (args.tier === '1' || args.tier === 'all') {
+    ok = runTier1() && ok;
+  }
+  const wantLLM = args.tier === '2' || args.tier === '3' || args.tier === 'all';
+  if (wantLLM && !process.env.ANTHROPIC_API_KEY) {
+    console.log('tiers 2–3: skipped (no ANTHROPIC_API_KEY)');
+    return ok;
+  }
+  if (args.tier === '2' || args.tier === 'all') {
+    const r = await routerSim({ skills, fixtures: loadFixtures('test/eval/triggers.json', 'triggers'), samples: args.samples });
+    console.log(formatReport('triggers', r));
+  }
+  if (args.tier === '3' || args.tier === 'all') {
+    const r = await outcomeAB({ skills, fixtures: loadFixtures('test/eval/outcomes.json', 'outcomes'), samples: 1 });
+    console.log(formatReport('outcomes', r));
+  }
+  return ok;
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const ok = runTier1();
-  process.exit(ok ? 0 : 1);
+  main().then((ok) => process.exit(ok ? 0 : 1)).catch((e) => { console.error(e); process.exit(2); });
 }
