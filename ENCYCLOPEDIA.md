@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 264 files across 17 categories.
+> 270 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -24,7 +24,7 @@
 - [Tooling / Scripts](#tooling--scripts) (32)
 - [Claude Environment](#claude-environment) (91)
 - [Deployment](#deployment) (3)
-- [Research](#research) (24)
+- [Research](#research) (30)
 - [CI / Build Config](#ci--build-config) (8)
 - [Other](#other) (12)
 
@@ -342,6 +342,12 @@
 | [`research/fmhy-dev-tools/links.json`](research/fmhy-dev-tools/links.json) | Configuration / data file. |
 | [`research/fmhy-dev-tools/source.md`](research/fmhy-dev-tools/source.md) | [◄◄ Back to Wiki Index](https://www.reddit.com/r/FREEMEDIAHECKYEAH/wiki/tools-index) |
 | [`research/landing-page-rag/BRIEF.md`](research/landing-page-rag/BRIEF.md) | Self-contained task for a fresh agent. |
+| [`research/landing-page-rag/README.md`](research/landing-page-rag/README.md) | Curated, our-own-words reference knowledge for building a top-tier landing page for primordial / the artist. |
+| [`research/landing-page-rag/copy-and-voice.md`](research/landing-page-rag/copy-and-voice.md) | How to write the words on primordial's landing page so they're concise, confident, and unmistakably the voice of an electronic-music visual artist —… |
+| [`research/landing-page-rag/motion-and-feel.md`](research/landing-page-rag/motion-and-feel.md) | How to make a landing page feel alive and intentional without it feeling busy, janky, or slow — and how to do that on primordial's phone-first,… |
+| [`research/landing-page-rag/reference-study-method.md`](research/landing-page-rag/reference-study-method.md) | How to gather landing-page references the right way for primordial — to learn from award-quality work without copying it, and to turn what you see… |
+| [`research/landing-page-rag/structure-and-conversion.md`](research/landing-page-rag/structure-and-conversion.md) | How to lay out a landing page so a first-time visitor understands it, believes it, and acts — in that order. |
+| [`research/landing-page-rag/type-and-layout.md`](research/landing-page-rag/type-and-layout.md) | How to make a page look intentional rather than templated through typography, spacing, and grid — tuned to primordial's dark neon-HUD aesthetic. |
 | [`research/product-domain-comparison/REPORT.md`](research/product-domain-comparison/REPORT.md) | Date: 2026-06-19 · Axis: the product — raw-WebGL2 / GLSL-shader / audio-reactive visual web apps — regardless of whether the peer uses Claude. |
 | [`research/rag-system/BRIEF.md`](research/rag-system/BRIEF.md) | Status: prep for a brainstorm. |
 | [`research/scripts/crawl-site.py`](research/scripts/crawl-site.py) | Python script. |
