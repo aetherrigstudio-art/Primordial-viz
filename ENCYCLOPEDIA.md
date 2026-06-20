@@ -42,7 +42,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Built the parked, approved guard. |
+| [`progress.md`](progress.md) | Brainstorm → writing-plans → subagent-driven-development (fresh implementer + reviewer per task; whole-branch opus review at the end). |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
