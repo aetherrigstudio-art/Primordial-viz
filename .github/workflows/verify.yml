@@ -61,6 +61,9 @@ jobs:
       - name: MCP lib tests (state / catalog)
         run: node --test test/state.test.mjs test/catalog.test.mjs
 
+      - name: Hook tests (jq + node-fallback paths)
+        run: node --test test/hooks.test.mjs
+
       - name: Upload render screenshot
         if: always()
         uses: actions/upload-artifact@v4

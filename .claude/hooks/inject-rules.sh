@@ -11,10 +11,24 @@ set -u
 
 payload="$(cat 2>/dev/null || true)"
 
-# Need jq to read the path and to emit valid JSON; without it, no-op.
-command -v jq >/dev/null 2>&1 || exit 0
+# Need jq OR node to read the path and emit valid JSON; without both, no-op.
+command -v jq >/dev/null 2>&1 || command -v node >/dev/null 2>&1 || exit 0
 
-file="$(printf '%s' "$payload" | jq -r '.tool_input.file_path // empty' 2>/dev/null || true)"
+# Emit {hookSpecificOutput:{hookEventName, additionalContext}} as JSON, jq or node.
+emit_ctx() {  # emit_ctx <eventName> <text>
+  if command -v jq >/dev/null 2>&1; then
+    jq -cn --arg e "$1" --arg c "$2" '{hookSpecificOutput:{hookEventName:$e,additionalContext:$c}}'
+  else
+    node -e 'process.stdout.write(JSON.stringify({hookSpecificOutput:{hookEventName:process.argv[1],additionalContext:process.argv[2]}})+"\n")' "$1" "$2"
+  fi
+}
+
+# Extract tool_input.file_path: jq if present, else node.
+if command -v jq >/dev/null 2>&1; then
+  file="$(printf '%s' "$payload" | jq -r '.tool_input.file_path // empty' 2>/dev/null || true)"
+else
+  file="$(printf '%s' "$payload" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{process.stdout.write(String(JSON.parse(s).tool_input?.file_path||""))}catch{}})' 2>/dev/null || true)"
+fi
 [ -n "$file" ] || exit 0
 
 # Classify the edited area → which scoped rule + reviewer agent applies.
@@ -45,5 +59,5 @@ esac
 
 ctx="[rule-injector] Editing ${area} (${file##*/}). READ ${rule} FIRST — load-bearing: ${what}. ${note} ${verify} After the change, have the ${agent} agent review."
 
-jq -cn --arg c "$ctx" '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:$c}}'
+emit_ctx "PreToolUse" "$ctx"
 exit 0

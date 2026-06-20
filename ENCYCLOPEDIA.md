@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 268 files across 17 categories.
+> 269 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -19,7 +19,7 @@
 - [App — Looks / Presets](#app--looks--presets) (3)
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
-- [Tests & Verification](#tests--verification) (12)
+- [Tests & Verification](#tests--verification) (13)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (34)
 - [Claude Environment](#claude-environment) (91)
@@ -142,6 +142,7 @@
 | [`test/eval/triggers.json`](test/eval/triggers.json) | Configuration / data file. |
 | [`test/guard.test.mjs`](test/guard.test.mjs) | MJS file. |
 | [`test/harvest-links.test.mjs`](test/harvest-links.test.mjs) | MJS file. |
+| [`test/hooks.test.mjs`](test/hooks.test.mjs) | Tests the shell hooks' payload parse/emit, on BOTH the jq path and a node fallback path (jq absent). |
 | [`test/portfolio.test.mjs`](test/portfolio.test.mjs) | MJS file. |
 | [`test/rag.test.mjs`](test/rag.test.mjs) | MJS file. |
 | [`test/reel-ingest.test.mjs`](test/reel-ingest.test.mjs) | MJS file. |

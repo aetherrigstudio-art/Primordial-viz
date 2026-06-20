@@ -1,5 +1,29 @@
 # Progress Log — primordial
 
+## Session — 2026-06-20 (refine hooks: jq→node fallback + mktemp)
+
+Branch `claude/check-main-branch-yx2q8v`. Operator scoped it to the robustness
+win (declined the shared-helper refactor and the gen-docs perf gate).
+
+**The gap:** five hooks (`check-syntax`, `check-data`, `inject-rules`,
+`suggest-workflow`, `detect-correction`) read their stdin JSON payload via `jq`
+and **silently no-op if jq is absent** (e.g. a fresh container before
+`cloud-setup`), so the syntax/smoke gates and the context nudges could quietly
+stop firing — even though `node` is always present (guard.mjs + state.mjs already
+chose node for this reason).
+
+**Fixed:** each hook now prefers jq but falls back to a tiny inline `node -e`
+JSON parse (and node `JSON.stringify` for the emit), so it fires with or without
+jq. Kept each hook self-contained (no shared sourced file — operator's call, also
+avoids a single point of failure). Also swapped the fixed `/tmp/check-syntax.err`
+/ `/tmp/smoke-hook.out` for `mktemp` + an `EXIT` trap (no cross-edit races, no
+stale files).
+
+**Verified:** new `test/hooks.test.mjs` (10/10) spawns each hook on BOTH the
+normal env and a PATH sandbox with node-but-no-jq, asserting identical valid-JSON
+output and that the broken-JS gate still exits 2 without jq; added as a CI step.
+`npm run health` green; docs + RAG index regenerated.
+
 ## Session — 2026-06-20 (migrate project knowledge into the MCP server)
 
 Branch `claude/check-main-branch-yx2q8v`. Planned via `thought-based-reasoning`
