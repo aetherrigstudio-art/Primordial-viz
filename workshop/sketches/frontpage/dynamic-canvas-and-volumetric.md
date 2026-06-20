@@ -117,6 +117,35 @@ hold. Also open: **where the captured content comes from** (self-captured scenes
 objects via phone photogrammetry or Luma; the artist; abstract/procedural). These
 two decisions set what gets built next — see the operator Q&A.
 
+## Compute offload — servers do the heavy lifting (operator decision, 2026-06-20)
+
+The operator is phone-only until a laptop returns and asked to push heavy work to
+servers. Split it in two — they have different answers:
+
+**Dev-time heavy lifting (the operator's constraint) — yes, offload it.**
+- This **cloud container** runs the non-GPU heavy work: builds, CI, depth-map
+  generation (CPU ML), point-cloud processing, clip rendering (headless Chromium,
+  software GL). It has **no GPU**, so it can't *train* Gaussian splats.
+- **GitHub Actions** runs builds/CI (and could run a GPU job or the desktop/Tauri
+  build on a real-OS runner).
+- **Gaussian-splat creation is a hosted-GPU service**: phone capture → Luma /
+  Polycam / similar trains the splat in their cloud → download `.ply`/`.spz` →
+  ship. The phone only captures + receives; no local heavy compute. (Verify each
+  service's **commercial output license** — the 3DGS data-licensing trap above.)
+
+**Runtime heavy lifting (the visitor's phone) — only partially offloadable.**
+A server can't render the live page on someone else's device unless we either
+**pre-bake to streamed video** (zero visitor-GPU but not live-interactive) or
+**cloud-stream frames** (real-time but costly, always-on, and fights the static
+Namecheap host). Realistic model: **server pre-bakes + optimizes** (compress, LOD,
+`.spz`), the visitor's phone renders the lean result, cheap depth-parallax on top.
+The mobile budget still governs what ships — pushed toward near-zero by pre-baking.
+
+**Consequence:** since *creation* is server-side either way, the stack fork
+collapses to "what does the *shipped page* run." Resolved direction = **hybrid**:
+pre-bake/optimize on servers, ship a lean canvas, gate live splats to capable
+devices with a point-cloud / pre-baked-video fallback.
+
 ## Suggested build path (pending the decisions above)
 
 Start budget-safe and library-free regardless of the fork: a **depth-parallax
