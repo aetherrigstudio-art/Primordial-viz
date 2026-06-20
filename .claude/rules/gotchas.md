@@ -8,6 +8,12 @@ trailofbits pattern). Add to this when a non-obvious failure costs real time.
   regression. The drift gate (`gen-docs --check` → `checkRefs`) now **skips gitignored
   paths** (`isIgnored`), so a doc may reference it in backticks without a false drift
   FAIL. (Previously this caused an "expected" `npm run health`/CI failure; fixed.)
+- **Rebuild the RAG index only AFTER committing/staging new `.md` docs.** `docFiles()`
+  lists **git-tracked** markdown (`git ls-files '*.md'`, no `--others`). Add a new doc,
+  leave it untracked, run `npm run rag:index` → the build EXCLUDES it, so
+  `build-index.mjs --check` passes locally, then FAILS in CI once the doc is committed
+  (now tracked → extra chunks → `index.json` stale). Order: commit the doc, THEN
+  `npm run rag:index`, THEN commit the index. Re-run it after editing any corpus `.md`.
 - **Looks must be fetched relative to the module, not the page.** `src/looks/registry.js`
   resolves JSON via `import.meta.url` (with an inline `INLINE_LOOKS` `file://` fallback);
   fetching `/looks/*.json` 404s. Don't "fix" it back to a page-relative path.
