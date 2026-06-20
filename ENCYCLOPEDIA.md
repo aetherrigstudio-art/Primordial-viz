@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 236 files across 17 categories.
+> 237 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -21,7 +21,7 @@
 - [App — UI](#app--ui) (2)
 - [Tests & Verification](#tests--verification) (8)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (24)
+- [Tooling / Scripts](#tooling--scripts) (25)
 - [Claude Environment](#claude-environment) (88)
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
@@ -42,7 +42,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Resolved the parked "RAG retrieval-quality follow-ups (slice 1 polish)" thread via brainstorm → writing-plans → inline execution. |
+| [`progress.md`](progress.md) | Completed the Task-1/2/3 workstream on branch claude/whats-next-brainstorming-tdzom3 (plan:… |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -193,6 +193,7 @@
 | [`tools/rag/embed.mjs`](tools/rag/embed.mjs) | tools/rag/embed.mjs Local text embeddings via a small transformer (no doc text leaves the machine, no API key). |
 | [`tools/rag/index.json`](tools/rag/index.json) | Configuration / data file. |
 | [`tools/rag/model.mjs`](tools/rag/model.mjs) | tools/rag/model.mjs Dep-free model constants. |
+| [`tools/rag/probes.mjs`](tools/rag/probes.mjs) | tools/rag/probes.mjs Canonical retrieval probe set: query → substring the #1 result's path must contain. |
 | [`tools/rag/quantize.mjs`](tools/rag/quantize.mjs) | tools/rag/quantize.mjs Dep-free int8 vector compaction for the committed RAG index. |
 | [`tools/rag/retrieve.mjs`](tools/rag/retrieve.mjs) | tools/rag/retrieve.mjs Hybrid semantic + lexical retrieval over the committed index. |
 | [`tools/workshop/clip.mjs`](tools/workshop/clip.mjs) | Record a workshop sketch to a webm clip (and optional stills) for phone review. |

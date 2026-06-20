@@ -1,5 +1,38 @@
 # Progress Log — primordial
 
+## Session — 2026-06-20 (RAG structural down-weight + probe regression guard — BUILT & VERIFIED)
+
+Completed the Task-1/2/3 workstream on branch `claude/whats-next-brainstorming-tdzom3`
+(plan: `docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md`).
+
+**Structural down-weight (Task 1):** replaced the brittle 16-file explicit list in
+`tools/rag/retrieve.mjs` with a **structural predicate** (`isDownweighted`):
+root-level `*.md` files, `.claude/<file>.md` (top-level meta only — skill/rule docs
+at deeper paths are NOT down-weighted), the existing `docs/superpowers/`, `research/`,
+`docs/BUILD-SPEC.md` prefixes, and the new session-plan/spec paths
+(`docs/superpowers/plans/`, `docs/superpowers/specs/`). The hand list is gone.
+New unit tests (`.claude/<file>.md` boundary; `skills/` at depth not penalised)
+added to `test/rag.test.mjs` — 13 → 16 tests, all passing.
+
+**Chunk-count heuristic rejected (by measurement):** the spec floated weighting by
+chunk count as a proxy for "aggregator size." Measured it: skill docs (`.claude/skills/`)
+are the largest chunks, ~400–800 tokens each — they would have been wrongly penalised.
+Size ≠ role. The structural predicate is the right lever; no chunk-count code built.
+
+**Probe regression test (Task 2):** 6 canonical probe/expect pairs extracted to
+`tools/rag/probes.mjs` (shared module). `test/rag.test.mjs` runs all 6 through the
+real pipeline (self-skips if model unavailable — exits 0). `tools/rag/ab-model.mjs`
+refactored to import from the shared module. Probe result: **6/6 canonical** (unchanged
+from prior session; structural predicate is no worse and is more principled).
+
+**Index rebuild (Task 3):** new planning/spec/progress markdown added to the corpus by
+this branch made the committed `tools/rag/index.json` stale. Rebuilt via
+`npm run rag:index` (1460 chunks, MiniLM, dim 384). `--check` confirms up to date.
+
+**Verified:** `node --test test/rag.test.mjs` **16/16**; `npm run rag:index -- --check`
+up to date; `npm run health` green — 6/7 gates pass; only the known/expected
+`test/artifacts/render.png` drift (gitignored artifact, absent in-container) fails.
+
 ## Session — 2026-06-20 (RAG retrieval polish — BUILT & VERIFIED)
 
 Resolved the parked "RAG retrieval-quality follow-ups (slice 1 polish)" thread via
