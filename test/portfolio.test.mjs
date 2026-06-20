@@ -23,3 +23,26 @@ test('validateManifest catches bad score and count', () => {
   assert.ok(r.errors.some(e => /count/.test(e)));
   assert.ok(r.errors.some(e => /score/.test(e)));
 });
+
+import { mergeSidecar, normalizeTree } from '../tools/portfolio/normalize-takeout.mjs';
+
+test('mergeSidecar reads photoTakenTime', () => {
+  const r = mergeSidecar('IMG_1.jpg', { photoTakenTime: { timestamp: '1700000000' } });
+  assert.equal(r.takenAt, new Date(1700000000 * 1000).toISOString());
+});
+
+test('normalizeTree pairs media with supplemental sidecar', () => {
+  const fakeFs = {
+    readdirTree: () => [
+      { name: 'IMG_1.jpg', absPath: '/t/IMG_1.jpg' },
+      { name: 'IMG_1.jpg.supplemental-metadata.json', absPath: '/t/IMG_1.jpg.supplemental-metadata.json' },
+      { name: 'clip.mov', absPath: '/t/clip.mov' },
+      { name: 'metadata.json', absPath: '/t/metadata.json' }, // album-level, ignored
+    ],
+    readJson: (p) => p.includes('IMG_1') ? { photoTakenTime: { timestamp: '1700000000' } } : {},
+  };
+  const out = normalizeTree('/t', { fs: fakeFs });
+  assert.equal(out.length, 2); // IMG_1.jpg + clip.mov (media only)
+  const img = out.find(o => o.name === 'IMG_1.jpg');
+  assert.equal(img.takenAt, new Date(1700000000 * 1000).toISOString());
+});
