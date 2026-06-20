@@ -6,6 +6,7 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "docs": "node tools/gen-docs.mjs",
+    "rag:index": "node tools/rag/build-index.mjs",
     "audit": "node tools/audit-site.mjs",
     "health": "node tools/health.mjs",
     "smoke": "node test/smoke.mjs",

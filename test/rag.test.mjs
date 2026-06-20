@@ -36,3 +36,18 @@ test('embed returns normalized vectors; related text scores higher than unrelate
   const dot = (x, y) => x.reduce((s, v, i) => s + v * y[i], 0);
   assert.ok(dot(a, b) > dot(a, c), 'audio pair should be closer than audio/deploy pair');
 });
+
+import { inputHash, checkIndex } from '../tools/rag/build-index.mjs';
+import { chunkCorpus } from '../tools/rag/chunk.mjs';
+
+test('inputHash is stable for the same chunks and changes when text changes', () => {
+  const chunks = chunkCorpus();
+  assert.equal(inputHash(chunks), inputHash(chunks));
+  const mutated = chunks.map((c, i) => (i === 0 ? { ...c, text: c.text + ' EDIT' } : c));
+  assert.notEqual(inputHash(chunks), inputHash(mutated));
+});
+
+test('checkIndex passes against the committed index', () => {
+  const r = checkIndex();
+  assert.equal(r.ok, true, r.reason || '');
+});
