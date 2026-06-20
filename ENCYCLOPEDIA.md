@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 220 files across 17 categories.
+> 230 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
-- [Specs & Long-form Docs](#specs--long-form-docs) (15)
+- [Specs & Long-form Docs](#specs--long-form-docs) (17)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -19,9 +19,9 @@
 - [App — Looks / Presets](#app--looks--presets) (3)
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
-- [Tests & Verification](#tests--verification) (7)
+- [Tests & Verification](#tests--verification) (8)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (15)
+- [Tooling / Scripts](#tooling--scripts) (22)
 - [Claude Environment](#claude-environment) (88)
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
@@ -59,11 +59,13 @@
 | [`docs/superpowers/plans/2026-06-19-visual-workshop.md`](docs/superpowers/plans/2026-06-19-visual-workshop.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-eval-harness.md`](docs/superpowers/plans/2026-06-20-eval-harness.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-fmhy-link-harvester.md`](docs/superpowers/plans/2026-06-20-fmhy-link-harvester.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
+| [`docs/superpowers/plans/2026-06-20-rag-semantic-recall.md`](docs/superpowers/plans/2026-06-20-rag-semantic-recall.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md`](docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-agent-onboarding-design.md`](docs/superpowers/specs/2026-06-19-agent-onboarding-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 | [`docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md`](docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-visual-workshop-design.md`](docs/superpowers/specs/2026-06-19-visual-workshop-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 | [`docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md`](docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md) | Date: 2026-06-20 · Status: approved, ready for plan. |
+| [`docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md`](docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md) | Date: 2026-06-20 Status: approved design, ready for writing-plans Brief: research/rag-system/BRIEF.md (the full non-local RAG vision) Parked thread:… |
 
 ## App — Entry & Bootstrap
 
@@ -128,6 +130,7 @@
 | [`test/eval/triggers.json`](test/eval/triggers.json) | Configuration / data file. |
 | [`test/guard.test.mjs`](test/guard.test.mjs) | MJS file. |
 | [`test/harvest-links.test.mjs`](test/harvest-links.test.mjs) | MJS file. |
+| [`test/rag.test.mjs`](test/rag.test.mjs) | MJS file. |
 | [`test/render-check.mjs`](test/render-check.mjs) | test/render-check.mjs — headless-Chromium render check (laptop-free). |
 | [`test/smoke.mjs`](test/smoke.mjs) | test/smoke.mjs — laptop-free logic checks (no browser, no deps). |
 
@@ -179,6 +182,13 @@
 | [`tools/mcp/lib/validate.mjs`](tools/mcp/lib/validate.mjs) | Headless GLSL ES 3.00 validation: compile + link the project's shaders in a real WebGL2 context (ANGLE/SwiftShader via Playwright) — the exact… |
 | [`tools/mcp/selftest.mjs`](tools/mcp/selftest.mjs) | Self-test for the primordial MCP server: spawns server.mjs over stdio using the MCP SDK client, lists tools/resources/prompts, and exits non-zero if… |
 | [`tools/mcp/server.mjs`](tools/mcp/server.mjs) | Primordial-viz MCP server — local stdio dev tools for AI assistants working on this project. |
+| [`tools/rag/README.md`](tools/rag/README.md) | Dev-tooling. |
+| [`tools/rag/build-index.mjs`](tools/rag/build-index.mjs) | tools/rag/build-index.mjs Build the committed semantic index: chunk -> embed -> write index.json. |
+| [`tools/rag/chunk.mjs`](tools/rag/chunk.mjs) | Splits the repo's markdown corpus into heading-section chunks for embedding. |
+| [`tools/rag/embed.mjs`](tools/rag/embed.mjs) | tools/rag/embed.mjs Local text embeddings via a small transformer (no doc text leaves the machine, no API key). |
+| [`tools/rag/index.json`](tools/rag/index.json) | Configuration / data file. |
+| [`tools/rag/model.mjs`](tools/rag/model.mjs) | tools/rag/model.mjs Dep-free model constants. |
+| [`tools/rag/retrieve.mjs`](tools/rag/retrieve.mjs) | tools/rag/retrieve.mjs Hybrid semantic + lexical retrieval over the committed index. |
 | [`tools/workshop/clip.mjs`](tools/workshop/clip.mjs) | Record a workshop sketch to a webm clip (and optional stills) for phone review. |
 
 ## Claude Environment

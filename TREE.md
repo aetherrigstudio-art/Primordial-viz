@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 220 files in 78 directories.
+> 230 files in 79 directories.
 
 ```
 Primordial-viz/
@@ -157,13 +157,15 @@ Primordial-viz/
 │   │   │   ├── 2026-06-19-learn-from-corrections.md
 │   │   │   ├── 2026-06-19-visual-workshop.md
 │   │   │   ├── 2026-06-20-eval-harness.md
-│   │   │   └── 2026-06-20-fmhy-link-harvester.md
+│   │   │   ├── 2026-06-20-fmhy-link-harvester.md
+│   │   │   └── 2026-06-20-rag-semantic-recall.md
 │   │   └── specs/
 │   │       ├── 2026-06-19-adopt-ideas-roadmap-design.md
 │   │       ├── 2026-06-19-agent-onboarding-design.md
 │   │       ├── 2026-06-19-full-repo-comparison-design.md
 │   │       ├── 2026-06-19-visual-workshop-design.md
-│   │       └── 2026-06-20-fmhy-link-harvester-design.md
+│   │       ├── 2026-06-20-fmhy-link-harvester-design.md
+│   │       └── 2026-06-20-rag-semantic-recall-design.md
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
 ├── research/
@@ -258,6 +260,7 @@ Primordial-viz/
 │   ├── eval-skills.test.mjs
 │   ├── guard.test.mjs
 │   ├── harvest-links.test.mjs
+│   ├── rag.test.mjs
 │   ├── render-check.mjs
 │   └── smoke.mjs
 ├── tools/
@@ -271,6 +274,14 @@ Primordial-viz/
 │   │   │   └── validate.mjs
 │   │   ├── selftest.mjs
 │   │   └── server.mjs
+│   ├── rag/
+│   │   ├── build-index.mjs
+│   │   ├── chunk.mjs
+│   │   ├── embed.mjs
+│   │   ├── index.json
+│   │   ├── model.mjs
+│   │   ├── README.md
+│   │   └── retrieve.mjs
 │   ├── workshop/
 │   │   └── clip.mjs
 │   ├── audit-site.mjs

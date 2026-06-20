@@ -20,7 +20,7 @@ export function docFiles() {
     .split('\n')
     .map((s) => s.trim())
     .filter(Boolean)
-    .filter((p) => !p.startsWith('research/corpus/')); // external scrape, not project knowledge
+    .filter((p) => !p.startsWith('research/corpus/') && !p.startsWith('research/fmhy-dev-tools/')); // external scrapes, not project knowledge
 }
 
 // Rank docs by term-frequency over the query terms; return the best matching line

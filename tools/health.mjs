@@ -18,6 +18,7 @@ const checks = [
   ['Smoke (params / looks / store)', () => run('node', ['test/smoke.mjs'])],
   ['Site audit (no AI tells / fingerprints)', () => run('node', ['tools/audit-site.mjs'])],
   ['Docs + drift gate', () => run('node', ['tools/gen-docs.mjs', '--check'])],
+  ['RAG index drift gate', () => run('node', ['tools/rag/build-index.mjs', '--check'])],
   ['Config gate (CLAUDE.md cap / router / settings)', () => run('node', ['tools/check-config.mjs'])],
   ['Eval-skills (Tier-1 static gate)', () => run('node', ['tools/eval-skills.mjs'])],
 ];
