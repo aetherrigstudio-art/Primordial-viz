@@ -46,3 +46,27 @@ test('normalizeTree pairs media with supplemental sidecar', () => {
   const img = out.find(o => o.name === 'IMG_1.jpg');
   assert.equal(img.takenAt, new Date(1700000000 * 1000).toISOString());
 });
+
+import { pullFolder } from '../tools/portfolio/pull-drive.mjs';
+
+test('pullFolder downloads only media and records destPaths', async () => {
+  const fakeClient = {
+    async list() {
+      return [
+        { id: '1', name: 'hero.jpg', mimeType: 'image/jpeg', size: '10' },
+        { id: '2', name: 'notes.txt', mimeType: 'text/plain', size: '5' },
+        { id: '3', name: 'reel.mp4', mimeType: 'video/mp4', size: '20' },
+      ];
+    },
+    async download(id) { return new Uint8Array([id.charCodeAt(0)]); },
+  };
+  const written = [];
+  const out = await pullFolder({
+    driveClient: fakeClient,
+    folderId: 'F',
+    write: (name) => { written.push(name); return `/work/${name}`; },
+  });
+  assert.equal(out.length, 2); // jpg + mp4, not txt
+  assert.deepEqual(written.sort(), ['hero.jpg', 'reel.mp4']);
+  assert.equal(out.find(o => o.name === 'hero.jpg').type, 'image');
+});
