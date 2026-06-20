@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 209 files across 17 categories.
+> 210 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -24,7 +24,7 @@
 - [Tooling / Scripts](#tooling--scripts) (14)
 - [Claude Environment](#claude-environment) (87)
 - [Deployment](#deployment) (3)
-- [Research](#research) (21)
+- [Research](#research) (22)
 - [CI / Build Config](#ci--build-config) (6)
 - [Other](#other) (6)
 
@@ -297,6 +297,7 @@
 | [`research/fmhy-dev-tools/links.json`](research/fmhy-dev-tools/links.json) | Configuration / data file. |
 | [`research/fmhy-dev-tools/source.md`](research/fmhy-dev-tools/source.md) | [◄◄ Back to Wiki Index](https://www.reddit.com/r/FREEMEDIAHECKYEAH/wiki/tools-index) |
 | [`research/product-domain-comparison/REPORT.md`](research/product-domain-comparison/REPORT.md) | Date: 2026-06-19 · Axis: the product — raw-WebGL2 / GLSL-shader / audio-reactive visual web apps — regardless of whether the peer uses Claude. |
+| [`research/rag-system/BRIEF.md`](research/rag-system/BRIEF.md) | Status: prep for a brainstorm. |
 | [`research/scripts/crawl-site.py`](research/scripts/crawl-site.py) | Python script. |
 | [`research/scripts/scrape-blog.py`](research/scripts/scrape-blog.py) | Python script. |
 
