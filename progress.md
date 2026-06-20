@@ -2,7 +2,53 @@
 
 ## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
 
-- [ ] **non-local RAG system (cross-project + global)** | want: a hosted (non-local) retrieval system that serves THIS project's knowledge AND a shared/global layer across the user's other projects, since workflows/info overlap and could be reused | needs: separation + access gates between per-project and global scopes (best architecture is TBD - user is unsure) | when resumed, BRAINSTORM the architecture: scoping/namespaces (per-project vs global), the gate/permission model, hosted vs self-hosted store + embedder, how it ingests this repo's docs (ENCYCLOPEDIA/TREE/rules/skills) and stays in sync, and whether it surfaces as an MCP server. Likely lives outside this repo (cross-project infra) but parked here for now | **ONBOARDING BRIEF READY → `research/rag-system/BRIEF.md` (start there; run /brainstorming with it)** | parked 2026-06-19, brief 2026-06-20
+- [ ] **non-local RAG system — GLOBAL/cross-project layer (slice 2+)** | SLICE 1 (in-repo semantic recall) is now BUILT & MERGE-READY on `claude/rag-recall` — see the session entry below + `tools/rag/`. What remains parked: the **hosted, cross-project + global** layer (serve THIS project's knowledge AND a shared layer across the user's other projects). The seam is already in place — every chunk in `tools/rag/index.json` carries `{scope:"project", project:"primordial-viz"}`, so the global layer is a **merge + filter** (load multiple projects' index.json, filter by scope/project; access gate = filter predicate, later auth). When resumed, BRAINSTORM: where the merged index lives (hosted vs git-synced), the gate/permission model, how other repos feed in, MCP surface. Brief: `research/rag-system/BRIEF.md` | parked 2026-06-19, slice-1 built 2026-06-20
+- [ ] **RAG retrieval-quality follow-ups (slice 1 polish)** | (a) self-referential pollution: `docs/superpowers/**` plan/spec docs contain example query phrasings, so they rank #1 for those exact queries — consider excluding/​down-ranking meta-dev docs (operator chose to KEEP planning docs in the corpus for now). (b) `index.json` is ~6MB single-line, fully rewritten on any doc edit (churn) — consider int8/base64 vector compaction. (c) optional: top-level vs best-chunk heading for snippets. None block use | noted 2026-06-20
+
+## Session — 2026-06-20 (RAG slice 1: in-repo semantic recall — BUILT, MERGE-READY)
+
+Brainstorm → writing-plans → subagent-driven-development (fresh implementer +
+reviewer per task; whole-branch opus review at the end). Branch `claude/rag-recall`.
+Spec `docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md`; plan
+`docs/superpowers/plans/2026-06-20-rag-semantic-recall.md`. Slice 1 of the parked
+non-local RAG vision = **semantic (vector) recall over this repo's markdown docs**,
+git-persisted, local-embedder, surfaced via the MCP server + a CLI.
+
+**Shipped (`tools/rag/`, all dev-tooling — web path keeps zero runtime deps):**
+- `chunk.mjs` — corpus → heading-section chunks (reuses `docFiles()`; oversize split).
+- `model.mjs` — dep-free constants (MiniLM, dim 384) so the drift gate loads no model.
+- `embed.mjs` — **local** `@huggingface/transformers` MiniLM (devDep; no doc text egress).
+- `build-index.mjs` — `npm run rag:index` builds committed `tools/rag/index.json`
+  (1355 chunks); `--check` is a **model-free + dep-free** drift gate (~186ms) wired
+  into `npm run health` + CI (`verify.yml`), mirroring `gen-docs --check`.
+- `retrieve.mjs` — hybrid: rank by semantic cosine among top-30 candidates, then a
+  small **in-set** lexical boost (`LEX_BOOST=0.15`) that re-orders within the
+  relevant set but can't inject big catch-all docs. `semanticSearch()` + CLI;
+  lexical fallback if the index is missing/incompatible.
+- MCP tool `semantic_search` (keeps `search_docs` lexical as fast-path/fallback).
+- `tools/rag/README.md` documents the pieces + the global seam.
+
+**The key save (value of the review loop):** the planned **RRF** fusion *flattened*
+the cosine signal (scores ~0.03, big docs like progress.md/ENCYCLOPEDIA won). I
+caught it during Task-4 QA, diagnosed (pure-semantic was good; RRF discards
+magnitude; lexical-normalized blend over-rewarded big docs), and replaced it with
+the semantic-ranked + in-set-boost algorithm — **verified** to put the right doc in
+top 1–4 across 6 probe queries (e.g. "how is the app deployed" → `deploy-cpanel`
+#1; "looks and presets" → `new-preset` #1; shader-licensing → `shaders.md`).
+
+**Operator decision:** excluded the external **FMHY** tool catalog
+(`research/fmhy-dev-tools/`) from the corpus (external scrape, like the already-
+excluded `research/corpus/`); KEPT planning/spec docs in.
+
+**The global seam (built as data only):** every chunk carries `{scope, project}`
+→ slice 2 is a merge+filter, not a rewrite. No hosting/DB/global code built (YAGNI).
+
+**Verified:** 7/7 rag tests; MCP selftest lists `semantic_search`; RAG drift gate
+PASS; whole-branch opus review = **READY TO MERGE** (no Critical/Important). The
+ONE `npm run health` failure is the **pre-existing** `CLAUDE.md → render.png`
+docs-drift (gitignored artifact, fails identically at branch base — gotchas.md),
+unrelated to this work. Parked follow-ups: global layer (slice 2), self-referential
+meta-doc pollution, index.json compaction (see Open threads).
 
 ## Session — 2026-06-20 (Phase 2: destructive-command guard — DONE)
 
