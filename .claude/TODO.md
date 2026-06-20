@@ -21,8 +21,8 @@ Legend: 📱 = you (app/web) · 🤖 = me (repo). Full context: `.claude/ROADMAP
 - [x] Handoff written (latest entry in `progress.md`, per the template)
 
 ## 🤖 Me — pending app hardening (needs your "go")
-- [ ] **WS1** code fixes — NEAREST audio texture, step cap 64, renderScale floor, `devicechange` listener, implement `flux`; WebGL context-loss + FBO-complete checks; getUserMedia/resume error surfacing; dt/FPS NaN guards; dynamic-res hysteresis
-- [ ] **WS3** docs/research honesty — write real research into `research/findings/`
+- [x] **WS1** code fixes — NEAREST audio texture, step cap 64, renderScale floor, `devicechange` listener, `flux`; WebGL context-loss + FBO-complete checks; getUserMedia/resume error surfacing; dt/FPS NaN guards; dynamic-res hysteresis (done — see progress.md "WS1 code hardening")
+- [~] **WS3** docs/research honesty — `research/findings/` now has real notes (mcp-adoption, mcp-build-our-own, fmhy-tooling); extend as needed
 - [ ] **WS4** repo hygiene — prune vestigial `.glsl` rules in `deploy/.htaccess`
 - [ ] **WS5** finish CLAUDE.md / skills / agents tuning
 
@@ -32,12 +32,17 @@ Legend: 📱 = you (app/web) · 🤖 = me (repo). Full context: `.claude/ROADMAP
 - [x] Rule-injector PreToolUse hook (surface scoped rules on shader/gl/audio edits; device-aware via `CLAUDE_CODE_ENTRYPOINT`)
 - [x] Skills auto-registration (`area:` field + gen-docs `@generated skills:router` block + `/skill-router` skill, complements `npx skills`)
 - [x] Drift gate (`gen-docs checkRefs` — referenced repo paths must exist; CI-gated) + fixed the stale `deploy-cpanel` skill
-- [ ] PreCompact hook: remind to update `progress.md` before compaction
+- [x] PreCompact hook (`.claude/hooks/precompact-handoff.sh`) — remind to update `progress.md` before compaction
+- [x] Self-auditing config gate (`tools/check-config.mjs` in `npm run health`: CLAUDE.md ≤200 / router markers / settings.json valid)
+- [x] `AGENTS.md` cross-tool mirror (gen-docs generates it from CLAUDE.md; gated by `gen-docs --check`)
+- [x] Recent `LESSON` entries surfaced in the `orient` hook
+- [x] Anti-footgun rule `.claude/rules/gotchas.md` (+ subagent claim-verification guardrail)
+- [x] Per-skill `allowed-tools` on our 12 own skills (advisory pre-approval; subagent `tools:` is the enforced lever, already in place)
 - [ ] `list_skills`/`get_skill` MCP tool (deferred — only worth it past ~20 skills)
 
 ## 🤖 Me — optional polish (needs OK)
 - [ ] Terse output style (phone-friendly)
-- [ ] Context7 MCP (`.mcp.json` + `enabledMcpjsonServers`)
+- [x] Context7 MCP (`.mcp.json`) + `find-docs` skill — added
 - [ ] New `verify` / `deploy` skills (adding skills needs your OK)
 
 ## Handoff rule (every session)

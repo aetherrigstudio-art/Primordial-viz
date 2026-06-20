@@ -26,7 +26,7 @@ operates the controls.
   hosting. `dist/` is gitignored. See `docs/STANDALONE.md`.
 - **Local tooling.** A small **MCP server** (`tools/mcp/server.mjs`, wired in
   `.mcp.json`) exposes look/render/validate helpers; `tools/gen-docs.mjs`
-  (`npm run docs`) regenerates `ENCYCLOPEDIA.md` + `TREE.md`.
+  (`npm run docs`) regenerates `ENCYCLOPEDIA.md` + `TREE.md` + `AGENTS.md`.
 - **Host = Namecheap Stellar Plus** (cPanel / LiteSpeed); static delivery is the
   ideal fit. Web deploy is **automated**: push → GitHub Actions FTPS →
   `https://primordial.video/Test/` (see `progress.md` + `deploy/DEPLOY.md`).
@@ -47,12 +47,12 @@ npm run build                      # vite build → dist/
 npm run tauri dev                  # hot-reloading native window (needs Rust + OS webview)
 npm run tauri build                # installers → src-tauri/target/release/bundle/
 
-# Verify (laptop-free)
-node test/smoke.mjs ; node test/render-check.mjs
+# Verify (laptop-free) — one-pass gate (syntax+smoke+audit+drift+config), then headless render
+npm run health ; node test/render-check.mjs
 
 # Local MCP server / regenerate docs
 npm run mcp                        # tools/mcp/server.mjs
-npm run docs                       # regenerate ENCYCLOPEDIA.md + TREE.md
+npm run docs                       # regenerate ENCYCLOPEDIA.md + TREE.md + AGENTS.md
 
 # Stress test / perf budget — read the in-HUD FPS verdict (SMOOTH/OK/TOO-MUCH);
 # see the perf-budget skill.

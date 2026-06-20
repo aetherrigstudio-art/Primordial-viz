@@ -90,8 +90,20 @@ keep one source of truth per topic.
   filenames, and fenced code blocks) to never false-fail CI. Fixed the first
   offender: the stale `deploy-cpanel` skill (dropped the nonexistent `assets/`;
   now leads with the auto-deploy path).
-- **PreCompact hook** — remind to update `progress.md` before a long session
-  compacts, so mid-session continuity isn't lost. — TODO.
+- **PreCompact hook** — reminds to update `progress.md` before a long session
+  compacts, so mid-session continuity isn't lost. ✅ DONE —
+  `.claude/hooks/precompact-handoff.sh` (non-blocking `additionalContext`).
+- **Self-auditing config gate** — `tools/check-config.mjs` (CLAUDE.md ≤200 lines /
+  skills:router markers present / settings.json valid) wired into `npm run health`.
+  ✅ DONE. Kills the recurring "CLAUDE.md crept over 200" drift.
+- **`AGENTS.md` cross-tool mirror** — `gen-docs.mjs` generates `AGENTS.md` from
+  `CLAUDE.md` (`@import`→plain refs), gated by `gen-docs --check`, so the same
+  knowledge works under Codex/Cursor. ✅ DONE.
+- **Recent lessons in `orient`** — the SessionStart hook surfaces the latest
+  `LESSON` entries from `progress.md` so past corrections resurface. ✅ DONE.
+- **Anti-footgun rule** — `.claude/rules/gotchas.md` (render.png drift expected,
+  looks-registry 404, render-check freeze, HTTPS-443-only, git-only, + the
+  subagent claim-verification guardrail). ✅ DONE.
 - **Skills auto-registration** — skills declare a frontmatter `area:`;
   `gen-docs.mjs` regenerates the `@generated skills:router` block in the CLAUDE.md
   router (run by the existing PostToolUse gen-docs hook on any skill edit; CI-gated
