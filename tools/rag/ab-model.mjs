@@ -5,20 +5,11 @@
 // web path. Run: node tools/rag/ab-model.mjs
 import { pipeline } from '@huggingface/transformers';
 import { chunkCorpus } from './chunk.mjs';
+import { PROBES } from './probes.mjs';
 
 const MODELS = [
   { key: 'minilm', id: 'Xenova/all-MiniLM-L6-v2', qPrefix: '' },
   { key: 'bge', id: 'Xenova/bge-small-en-v1.5', qPrefix: 'Represent this sentence for searching relevant passages: ' },
-];
-
-// probe query → substring the canonical answer doc's path must contain
-const PROBES = [
-  { q: 'how is the app deployed', expect: 'deploy-cpanel' },
-  { q: 'how do looks and presets work', expect: 'new-preset' },
-  { q: 'shader licensing write our own', expect: 'shaders.md' },
-  { q: 'audio bands texture analysis', expect: 'audio.md' },
-  { q: 'mobile performance budget step cap', expect: 'shaders.md' },
-  { q: 'what survives a cloud session', expect: 'gotchas' },
 ];
 
 const dot = (a, b) => { let s = 0; for (let i = 0; i < a.length; i++) s += a[i] * b[i]; return s; };

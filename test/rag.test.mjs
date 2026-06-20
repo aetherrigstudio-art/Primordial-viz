@@ -146,3 +146,25 @@ test('rankBySim: a skill doc (deep .claude path) is NOT down-weighted', () => {
   const ranked = rankBySim(sem, [], 5);
   assert.equal(ranked[0].path, '.claude/skills/new-preset/SKILL.md');
 });
+
+import { PROBES } from '../tools/rag/probes.mjs';
+
+// The probe set needs the local embedder; in a model-free environment it can't run,
+// so detect availability once and skip rather than fail.
+let MODEL_OK = false;
+try {
+  const m = await import('../tools/rag/embed.mjs');
+  await m.embedOne('availability probe');
+  MODEL_OK = true;
+} catch { MODEL_OK = false; }
+
+test('probe set: canonical doc is #1 through the real pipeline', { skip: !MODEL_OK ? 'embedder unavailable' : false }, async () => {
+  for (const p of PROBES) {
+    const results = await semanticSearch(p.q, { limit: 1 });
+    assert.ok(results.length > 0, `no results for "${p.q}"`);
+    assert.ok(
+      results[0].path.includes(p.expect),
+      `"${p.q}" → expected #1 to contain ${p.expect}, got ${results[0].path}`,
+    );
+  }
+});
