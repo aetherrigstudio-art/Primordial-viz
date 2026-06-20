@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 284 files across 17 categories.
+> 287 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
-- [Specs & Long-form Docs](#specs--long-form-docs) (31)
+- [Specs & Long-form Docs](#specs--long-form-docs) (34)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -53,6 +53,9 @@
 | [`docs/BUILD-SPEC.md`](docs/BUILD-SPEC.md) | BUILT DIFFERENTLY (as-shipped correction): this is the original planning doc. |
 | [`docs/STANDALONE.md`](docs/STANDALONE.md) | Wrap the Primordial visual app into a native desktop application with [Tauri v2](https://tauri.app). |
 | [`docs/decisions/001-backend-rule-scope.md`](docs/decisions/001-backend-rule-scope.md) | Accepted |
+| [`docs/decisions/002-wedding-landing-renderer.md`](docs/decisions/002-wedding-landing-renderer.md) | Accepted |
+| [`docs/decisions/003-volumetric-acquire-not-train.md`](docs/decisions/003-volumetric-acquire-not-train.md) | Accepted |
+| [`docs/decisions/004-wedding-landing-is-its-own-surface.md`](docs/decisions/004-wedding-landing-is-its-own-surface.md) | Accepted |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
 | [`docs/prompts/claude-opus-4-8-system-prompt.md`](docs/prompts/claude-opus-4-8-system-prompt.md) | This is your pasted Claude system prompt, re-pointed from Claude Fable 5 to the model actually running, Claude Opus 4.8. |
 | [`docs/prompts/system-prompt-ingest.md`](docs/prompts/system-prompt-ingest.md) | A thorough, auditable pass over the full consumer assistant system prompt (the "Fable 5" prompt the operator supplied), recording the disposition of… |
