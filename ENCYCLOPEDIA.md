@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 234 files across 17 categories.
+> 235 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
-- [Specs & Long-form Docs](#specs--long-form-docs) (19)
+- [Specs & Long-form Docs](#specs--long-form-docs) (20)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -66,6 +66,7 @@
 | [`docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md`](docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-visual-workshop-design.md`](docs/superpowers/specs/2026-06-19-visual-workshop-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 | [`docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md`](docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md) | Date: 2026-06-20 · Status: approved, ready for plan. |
+| [`docs/superpowers/specs/2026-06-20-rag-downweight-structural-design.md`](docs/superpowers/specs/2026-06-20-rag-downweight-structural-design.md) | Date: 2026-06-20 · Status: approved (brainstorm) · Area: dev-tooling (tools/rag/) Follows: 2026-06-20-rag-retrieval-polish-design.md (which… |
 | [`docs/superpowers/specs/2026-06-20-rag-retrieval-polish-design.md`](docs/superpowers/specs/2026-06-20-rag-retrieval-polish-design.md) | Date: 2026-06-20 · Status: approved (brainstorm) · Area: dev-tooling (tools/rag/) Source thread: progress.md → "RAG retrieval-quality follow-ups… |
 | [`docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md`](docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md) | Date: 2026-06-20 Status: approved design, ready for writing-plans Brief: research/rag-system/BRIEF.md (the full non-local RAG vision) Parked thread:… |
 
