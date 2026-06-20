@@ -89,4 +89,26 @@ case "${CLAUDE_CODE_ENTRYPOINT:-}" in
   *mobile*)
     echo "Operator device: PHONE — follow .claude/rules/mobile-ergonomics.md: hand values one-per-code-block (no large copy-paste), deliver files with SendUserFile (file:// links don't open), drive deploy through GitHub state (no local FTP), keep replies concise + jargon-light." ;;
 esac
+
+# ── THE NEXT TASK — singular, imperative, LAST in context ─────────────────────
+# Agents skim a long orient block and either pick their own thread or none, so a
+# menu of equal-weight open threads gets ignored. Fix: elevate exactly ONE task,
+# print it as the final thing the model reads (recency), and GATE the first
+# action on restating it. Source of truth = the Open threads in progress.md, so
+# this tracks whatever the operator parks (no hardcoding) and changes with the
+# task: a thread tagged (NEXT) or "next-container task" wins, else the first one.
+if [ -n "${open:-}" ]; then
+  next="$(printf '%s\n' "$open" | grep -iE '\(NEXT\)|next-container task' | head -1)"
+  [ -z "$next" ] && next="$(printf '%s\n' "$open" | head -1)"
+  # Title = text between the first ** ** pair; else the whole line minus the checkbox.
+  title="$(printf '%s\n' "$next" | sed -n 's/^[^*]*\*\*\([^*]*\)\*\*.*/\1/p')"
+  [ -z "$title" ] && title="$(printf '%s\n' "$next" | sed 's/^[[:space:]]*- \[ \] *//')"
+  # Next step = an explicit 'Next:' clause on the line, if the operator wrote one.
+  step="$(printf '%s\n' "$next" | grep -oiE '(Next|next step)[:.][^|]*' | tail -1)"
+  echo ""
+  echo ">>> NEXT TASK — do THIS unless the user redirects <<<"
+  echo "  ${title}"
+  [ -n "$step" ] && echo "  -> ${step}"
+  echo "  GATE (before your FIRST tool call): restate this task + the branch ('${cur:-?}') to the user and confirm it's still what they want. If you work on anything else, say so and why FIRST — don't silently pick a different thread or invent work. Full context for this thread is its line under 'Open threads' above + progress.md."
+fi
 exit 0
