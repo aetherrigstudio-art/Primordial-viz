@@ -133,8 +133,14 @@ Source: `research/claude-repo-comparison/REPORT.md` +
 4. Recent `LESSON` entries surfaced in `orient`.
 5. Anti-footgun `.claude/rules/gotchas.md`.
 
-**Phase 2 — higher-effort tooling**
-6. Eval harness (does a skill/rule actually trigger + help?) — research's #1 gap. — BACKLOG
+**Phase 2 — higher-effort tooling — ✅ DONE 2026-06-20**
+6. Eval harness (does a skill/rule actually trigger + help?) — research's #1 gap. — ✅ DONE 2026-06-20
+   (`tools/eval-skills.mjs`): pure core + one injected `callModel` boundary, three tiers —
+   **Tier-1 static** (frontmatter/description quality; deterministic; GATES `npm run health` +
+   CI; exempts official skills via `skills-lock.json`; folds YAML block scalars), **Tier-2
+   trigger** router-sim (REPORTS hit-rate), **Tier-3 outcome A/B** proxy (REPORTS lift). LLM
+   tiers self-skip with no `ANTHROPIC_API_KEY`; on-demand `eval-skills.yml`. 11 tokenless unit
+   tests. Built brainstorm→writing-plans→subagent-driven; whole-branch review = ready-to-merge.
 7. Hardened destructive-command PreToolUse guard. — ✅ DONE 2026-06-20
    (`.claude/hooks/guard.mjs`, matcher Bash): DENY irreversible (rm -rf of / ~
    $HOME /*, dd of=/dev/*, mkfs, shred, forkbomb, chmod -R 777 /, force-push to
