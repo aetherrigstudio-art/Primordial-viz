@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 213 files across 17 categories.
+> 214 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
-- [Specs & Long-form Docs](#specs--long-form-docs) (13)
+- [Specs & Long-form Docs](#specs--long-form-docs) (14)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -56,6 +56,7 @@
 | [`docs/superpowers/plans/2026-06-19-full-repo-comparison.md`](docs/superpowers/plans/2026-06-19-full-repo-comparison.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-19-learn-from-corrections.md`](docs/superpowers/plans/2026-06-19-learn-from-corrections.md) | Self-improvement loop #1. |
 | [`docs/superpowers/plans/2026-06-19-visual-workshop.md`](docs/superpowers/plans/2026-06-19-visual-workshop.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
+| [`docs/superpowers/plans/2026-06-20-eval-harness.md`](docs/superpowers/plans/2026-06-20-eval-harness.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-fmhy-link-harvester.md`](docs/superpowers/plans/2026-06-20-fmhy-link-harvester.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md`](docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-agent-onboarding-design.md`](docs/superpowers/specs/2026-06-19-agent-onboarding-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
