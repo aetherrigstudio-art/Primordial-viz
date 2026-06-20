@@ -22,7 +22,11 @@ jobs:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
-        run: node tools/portfolio/pull-drive.mjs "${{ github.event.inputs.folder_id || secrets.DRIVE_FOLDER_ID }}" work/raw > work/files.json
+          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+          INPUT_FOLDER_ID: ${{ github.event.inputs.folder_id }}
+        run: |
+          FOLDER="${INPUT_FOLDER_ID:-$DRIVE_FOLDER_ID}"
+          node tools/portfolio/pull-drive.mjs "$FOLDER" work/raw > work/files.json
       - name: Vision sort
         env: { GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} }
         run: node tools/portfolio/sort-vision.mjs work/files.json work/manifest.json
