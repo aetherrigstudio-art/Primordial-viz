@@ -270,6 +270,97 @@ export async function routerSim({ skills, fixtures, samples = 3, callModel = def
 }
 
 // ---------------------------------------------------------------------------
+// SCORE_SCHEMA / parseScore / completion / judge / outcomeAB  (Tier 3)
+// ---------------------------------------------------------------------------
+
+/** JSON Schema used as output_config.format so judge scores parse deterministically. */
+const SCORE_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  properties: { score: { type: 'number' } },
+  required: ['score'],
+};
+
+/**
+ * Parse a model JSON response and return a score in [0,1], or null if invalid.
+ *
+ * @param {string} text - raw model output
+ * @returns {number|null}
+ */
+export function parseScore(text) {
+  try {
+    const n = JSON.parse(text).score;
+    return typeof n === 'number' && n >= 0 && n <= 1 ? n : null;
+  } catch { return null; }
+}
+
+/**
+ * Request a task completion from the model, optionally including the skill body.
+ *
+ * @param {Function} callModel
+ * @param {string} task
+ * @param {string|null} skillBody
+ * @returns {Promise<string>}
+ */
+async function completion(callModel, task, skillBody) {
+  const ctx = skillBody ? `SKILL CONTENT (apply if relevant):\n${skillBody}\n\n` : '';
+  return callModel([{ role: 'user', content: `${ctx}Task: ${task}` }], { effort: 'medium' });
+}
+
+/**
+ * Ask the model to judge an answer against a rubric; returns a score in [0,1] or null.
+ *
+ * @param {Function} callModel
+ * @param {string} task
+ * @param {string} rubric
+ * @param {string} answer
+ * @param {string} tag - variant label included in the judge prompt
+ * @returns {Promise<number|null>}
+ */
+async function judge(callModel, task, rubric, answer, tag) {
+  const text = await callModel(
+    [{
+      role: 'user',
+      content:
+        `You are grading an answer (variant ${tag}) against a rubric. Score 0..1.\n\n` +
+        `Task: ${task}\nRubric: ${rubric}\n\nAnswer:\n${answer}\n\n` +
+        `Reply ONLY with JSON {"score":<number 0..1>}.`,
+    }],
+    { effort: 'medium', format: { type: 'json_schema', schema: SCORE_SCHEMA } },
+  );
+  return parseScore(text);
+}
+
+/**
+ * Run an outcome A/B proxy: for each fixture, generate a with-skill and without-skill
+ * completion, then judge both against the rubric. Returns per-fixture scores and avgLift.
+ *
+ * @param {{ fixtures: Array, skills: Array, samples?: number, callModel?: Function }} opts
+ * @returns {Promise<{ perFixture: Array, avgLift: number }>}
+ */
+export async function outcomeAB({ fixtures, skills, samples = 1, callModel = defaultCallModel }) {
+  const byId = new Map(skills.map((s) => [s.id, s]));
+  const perFixture = [];
+  for (const fx of fixtures) {
+    const skill = byId.get(fx.skill);
+    if (!skill) throw new Error(`outcomes fixture references unknown skill "${fx.skill}"`);
+    const body = readFileSync(join(root, skill.dir, 'SKILL.md'), 'utf8');
+    let withSum = 0, withoutSum = 0;
+    for (let i = 0; i < samples; i++) {
+      const a1 = await completion(callModel, fx.task, body);
+      const a0 = await completion(callModel, fx.task, null);
+      withSum += (await judge(callModel, fx.task, fx.rubric, a1, 'WITH-SKILL')) ?? 0;
+      withoutSum += (await judge(callModel, fx.task, fx.rubric, a0, 'NO-SKILL')) ?? 0;
+    }
+    const withScore = withSum / samples;
+    const withoutScore = withoutSum / samples;
+    perFixture.push({ skill: fx.skill, task: fx.task, withScore, withoutScore, lift: withScore - withoutScore });
+  }
+  const avgLift = perFixture.reduce((a, f) => a + f.lift, 0) / (perFixture.length || 1);
+  return { perFixture, avgLift };
+}
+
+// ---------------------------------------------------------------------------
 // Tier-1 CLI
 // ---------------------------------------------------------------------------
 

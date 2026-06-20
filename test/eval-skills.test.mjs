@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseFrontmatter, staticChecks, loadFixtures, parsePick, routerSim } from '../tools/eval-skills.mjs';
+import { parseFrontmatter, staticChecks, loadFixtures, parsePick, routerSim, outcomeAB } from '../tools/eval-skills.mjs';
 
 test('parseFrontmatter reads name/area/description and strips quotes', () => {
   const fm = parseFrontmatter(
@@ -75,4 +75,22 @@ test('routerSim scores hit-rate against expectations', async () => {
   assert.equal(r.perFixture[0].hits, 3);
   assert.equal(r.perFixture[0].rate, 1);
   assert.equal(r.hitRate, 1);
+});
+
+test('outcomeAB reports positive lift when skill body helps', async () => {
+  const skills = [{ id: 'new-preset', name: 'new-preset', area: 'looks',
+    description: 'Use when adding a look.',
+    dir: '.claude/skills/new-preset' }];
+  const fixtures = [{ skill: 'new-preset', task: 'add ember look', rubric: 'mentions JSON preset' }];
+  // Fake: tag the answer by whether the skill body was in context, judge scores accordingly.
+  const fakeModel = async (messages) => {
+    const prompt = messages.map((m) => m.content).join('\n');
+    if (prompt.includes('You are grading')) {
+      return prompt.includes('WITH-SKILL') ? '{"score":1}' : '{"score":0.2}';
+    }
+    return prompt.includes('SKILL CONTENT') ? 'WITH-SKILL answer' : 'baseline answer';
+  };
+  const r = await outcomeAB({ fixtures, skills, samples: 1, callModel: fakeModel });
+  assert.ok(r.perFixture[0].lift > 0);
+  assert.ok(r.avgLift > 0);
 });
