@@ -14,3 +14,6 @@ test/artifacts/
 workshop/artifacts/
 # os
 .DS_Store
+
+# SDD working scratch (briefs, reports, review diffs, ledger)
+.superpowers/
