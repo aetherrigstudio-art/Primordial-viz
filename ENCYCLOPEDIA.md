@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 230 files across 17 categories.
+> 232 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
 - [CI / Build Config](#ci--build-config) (7)
-- [Other](#other) (6)
+- [Other](#other) (8)
 
 ## Overview & Planning
 
@@ -336,6 +336,8 @@
 
 | File | Description |
 | --- | --- |
+| [`portfolio/Gather-PortfolioMedia.ps1`](portfolio/Gather-PortfolioMedia.ps1) | PS1 file. |
+| [`portfolio/README.md`](portfolio/README.md) | This is not part of the web app and never ships to the site. |
 | [`skills-lock.json`](skills-lock.json) | Configuration / data file. |
 | [`workshop/sandbox.html`](workshop/sandbox.html) | Primordial - Sketch Sandbox |
 | [`workshop/sketch-runner.mjs`](workshop/sketch-runner.mjs) | Boots the workshop sandbox: loads one sketch (?sketch=<name>) using the real renderer plumbing, drives it with synthetic audio, and exposes the… |
