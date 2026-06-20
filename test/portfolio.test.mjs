@@ -115,3 +115,18 @@ test('renderSheet emits a cell per item and a keeper deep-link', () => {
   assert.ok(/issues\/new/.test(html));
   assert.ok(html.includes('portfolio-keepers'));
 });
+
+import { parseKeepers, selectFinals } from '../tools/portfolio/stage-finals.mjs';
+
+test('parseKeepers extracts comma list from a body', () => {
+  assert.deepEqual(parseKeepers('thanks\nkeepers: a, b ,c\n--'), ['a', 'b', 'c']);
+  assert.deepEqual(parseKeepers('no list here'), []);
+});
+
+test('selectFinals returns matching items in manifest order', () => {
+  const manifest = { items: [
+    { id: 'a', path: 'a.jpg' }, { id: 'b', path: 'b.jpg' }, { id: 'c', path: 'c.jpg' },
+  ] };
+  const out = selectFinals(manifest, ['c', 'a']);
+  assert.deepEqual(out.map(i => i.id), ['a', 'c']); // manifest order, not keeper order
+});
