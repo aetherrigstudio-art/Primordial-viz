@@ -35,6 +35,19 @@ function listFiles() {
   return [...new Set(out.split('\n').map((s) => s.trim()).filter(Boolean))].sort();
 }
 
+// True if a path is gitignored (a deliberately-ignored generated artifact, e.g.
+// test/artifacts/render.png). Such paths legitimately don't exist at rest, so the
+// drift gate must not flag a doc that references them. `git check-ignore -q` exits
+// 0 when ignored, 1 when not (and throws on non-zero → caught as "not ignored").
+function isIgnored(relPath) {
+  try {
+    execFileSync('git', ['check-ignore', '-q', '--', relPath], { cwd: root, stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Categories — first match wins; order defines section order in the output.
 // ---------------------------------------------------------------------------
@@ -414,7 +427,7 @@ function checkRefs() {
       if (!topLevel.has(tok.split('/')[0])) continue; // only paths rooted at a real repo entry
       if (seen.has(tok)) continue;
       seen.add(tok);
-      if (!existsSync(join(root, tok))) missing.push(`${doc} → \`${tok}\``);
+      if (!existsSync(join(root, tok)) && !isIgnored(tok)) missing.push(`${doc} → \`${tok}\``);
     }
   }
   return missing;

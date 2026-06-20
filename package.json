@@ -15,7 +15,11 @@
     "mcp": "node tools/mcp/server.mjs",
     "mcp:selftest": "node tools/mcp/selftest.mjs",
     "mcp:inspect": "npx @modelcontextprotocol/inspector node tools/mcp/server.mjs",
-    "eval": "node tools/eval-skills.mjs"
+    "eval": "node tools/eval-skills.mjs",
+    "portfolio:test": "node --test test/portfolio.test.mjs",
+    "portfolio:normalize": "node tools/portfolio/normalize-takeout.mjs",
+    "portfolio:sort": "node tools/portfolio/sort-vision.mjs",
+    "portfolio:sheet": "node tools/portfolio/build-sheet.mjs"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.105.0",

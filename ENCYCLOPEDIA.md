@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 230 files across 17 categories.
+> 250 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
-- [Specs & Long-form Docs](#specs--long-form-docs) (17)
+- [Specs & Long-form Docs](#specs--long-form-docs) (24)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -19,14 +19,14 @@
 - [App — Looks / Presets](#app--looks--presets) (3)
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
-- [Tests & Verification](#tests--verification) (8)
+- [Tests & Verification](#tests--verification) (9)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (22)
-- [Claude Environment](#claude-environment) (88)
+- [Tooling / Scripts](#tooling--scripts) (28)
+- [Claude Environment](#claude-environment) (89)
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
-- [CI / Build Config](#ci--build-config) (7)
-- [Other](#other) (6)
+- [CI / Build Config](#ci--build-config) (8)
+- [Other](#other) (10)
 
 ## Overview & Planning
 
@@ -42,16 +42,20 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Operator pushed back on the "don't edit adopted skills" convention — correctly: those skills are plain markdown, nothing technically locked them. |
+| [`progress.md`](progress.md) | Branch claude/init-r8ukva → PR #4 (CI verify GREEN) → merged to main. |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
 
 | File | Description |
 | --- | --- |
+| [`docs/ANTHROPIC/OPUS8-SETUP-PLAN.md`](docs/ANTHROPIC/OPUS8-SETUP-PLAN.md) | This document describes what I committed so far and the remaining steps to finish the end-to-end setup so Claude Opus 8 can consult the Opus doc via… |
 | [`docs/BUILD-SPEC.md`](docs/BUILD-SPEC.md) | BUILT DIFFERENTLY (as-shipped correction): this is the original planning doc. |
 | [`docs/STANDALONE.md`](docs/STANDALONE.md) | Wrap the Primordial visual app into a native desktop application with [Tauri v2](https://tauri.app). |
+| [`docs/decisions/001-backend-rule-scope.md`](docs/decisions/001-backend-rule-scope.md) | Accepted |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
+| [`docs/prompts/claude-opus-4-8-system-prompt.md`](docs/prompts/claude-opus-4-8-system-prompt.md) | This is your pasted Claude system prompt, re-pointed from Claude Fable 5 to the model actually running, Claude Opus 4.8. |
+| [`docs/prompts/system-prompt-ingest.md`](docs/prompts/system-prompt-ingest.md) | A thorough, auditable pass over the full consumer assistant system prompt (the "Fable 5" prompt the operator supplied), recording the disposition of… |
 | [`docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md`](docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md`](docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md) | For agentic workers: implement task-by-task; steps use - [ ] checkboxes. |
 | [`docs/superpowers/plans/2026-06-19-full-repo-comparison.md`](docs/superpowers/plans/2026-06-19-full-repo-comparison.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
@@ -59,13 +63,16 @@
 | [`docs/superpowers/plans/2026-06-19-visual-workshop.md`](docs/superpowers/plans/2026-06-19-visual-workshop.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-eval-harness.md`](docs/superpowers/plans/2026-06-20-eval-harness.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-fmhy-link-harvester.md`](docs/superpowers/plans/2026-06-20-fmhy-link-harvester.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
+| [`docs/superpowers/plans/2026-06-20-portfolio-media-gathering.md`](docs/superpowers/plans/2026-06-20-portfolio-media-gathering.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-rag-semantic-recall.md`](docs/superpowers/plans/2026-06-20-rag-semantic-recall.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md`](docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-agent-onboarding-design.md`](docs/superpowers/specs/2026-06-19-agent-onboarding-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 | [`docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md`](docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-visual-workshop-design.md`](docs/superpowers/specs/2026-06-19-visual-workshop-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 | [`docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md`](docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md) | Date: 2026-06-20 · Status: approved, ready for plan. |
+| [`docs/superpowers/specs/2026-06-20-portfolio-media-gathering-design.md`](docs/superpowers/specs/2026-06-20-portfolio-media-gathering-design.md) | Date: 2026-06-20 · Branch: claude/init-r8ukva · Status: design (awaiting user review) · Method: brainstorming → (next) writing-plans. |
 | [`docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md`](docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md) | Date: 2026-06-20 Status: approved design, ready for writing-plans Brief: research/rag-system/BRIEF.md (the full non-local RAG vision) Parked thread:… |
+| [`docs/superpowers/specs/2026-06-20-secrets-management-design.md`](docs/superpowers/specs/2026-06-20-secrets-management-design.md) | Date: 2026-06-20 · Branch: claude/init-r8ukva · Status: design (for review) · Method: brainstorming (done, parked) → this spec → writing-plans → SDD. |
 
 ## App — Entry & Bootstrap
 
@@ -130,6 +137,7 @@
 | [`test/eval/triggers.json`](test/eval/triggers.json) | Configuration / data file. |
 | [`test/guard.test.mjs`](test/guard.test.mjs) | MJS file. |
 | [`test/harvest-links.test.mjs`](test/harvest-links.test.mjs) | MJS file. |
+| [`test/portfolio.test.mjs`](test/portfolio.test.mjs) | MJS file. |
 | [`test/rag.test.mjs`](test/rag.test.mjs) | MJS file. |
 | [`test/render-check.mjs`](test/render-check.mjs) | test/render-check.mjs — headless-Chromium render check (laptop-free). |
 | [`test/smoke.mjs`](test/smoke.mjs) | test/smoke.mjs — laptop-free logic checks (no browser, no deps). |
@@ -182,6 +190,12 @@
 | [`tools/mcp/lib/validate.mjs`](tools/mcp/lib/validate.mjs) | Headless GLSL ES 3.00 validation: compile + link the project's shaders in a real WebGL2 context (ANGLE/SwiftShader via Playwright) — the exact… |
 | [`tools/mcp/selftest.mjs`](tools/mcp/selftest.mjs) | Self-test for the primordial MCP server: spawns server.mjs over stdio using the MCP SDK client, lists tools/resources/prompts, and exits non-zero if… |
 | [`tools/mcp/server.mjs`](tools/mcp/server.mjs) | Primordial-viz MCP server — local stdio dev tools for AI assistants working on this project. |
+| [`tools/portfolio/build-sheet.mjs`](tools/portfolio/build-sheet.mjs) | Render a phone-friendly ranked contact sheet from a manifest. |
+| [`tools/portfolio/normalize-takeout.mjs`](tools/portfolio/normalize-takeout.mjs) | Flatten an unzipped Google Takeout tree to media files, re-merging the per-file JSON sidecars (renamed to *.supplemental-metadata.json in late 2024). |
+| [`tools/portfolio/pull-drive.mjs`](tools/portfolio/pull-drive.mjs) | Pull media from one Google Drive folder. |
+| [`tools/portfolio/schema.mjs`](tools/portfolio/schema.mjs) | tools/portfolio/schema.mjs Shared manifest contract for the portfolio gathering pipeline. |
+| [`tools/portfolio/sort-vision.mjs`](tools/portfolio/sort-vision.mjs) | tools/portfolio/sort-vision.mjs Score each candidate with a vision model and produce a ranked manifest. |
+| [`tools/portfolio/stage-finals.mjs`](tools/portfolio/stage-finals.mjs) | Parse the keeper ids from the GitHub issue body and stage the chosen finals. |
 | [`tools/rag/README.md`](tools/rag/README.md) | Dev-tooling. |
 | [`tools/rag/build-index.mjs`](tools/rag/build-index.mjs) | tools/rag/build-index.mjs Build the committed semantic index: chunk -> embed -> write index.json. |
 | [`tools/rag/chunk.mjs`](tools/rag/chunk.mjs) | Splits the repo's markdown corpus into heading-section chunks for embedding. |
@@ -210,6 +224,7 @@
 | [`.claude/hooks/precompact-handoff.sh`](.claude/hooks/precompact-handoff.sh) | PreCompact hook: before the session compacts, remind to capture continuity in progress.md so mid-session state isn't lost. |
 | [`.claude/hooks/suggest-workflow.sh`](.claude/hooks/suggest-workflow.sh) | UserPromptSubmit hook: when the prompt looks like a substantial build/feature or a new visual-look task, inject a NON-BLOCKING nudge toward the… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
+| [`.claude/rules/conduct.md`](.claude/rules/conduct.md) | The transferable, behaviour-shaping parts of a complete consumer assistant system prompt, adapted to this repo (a dev tool, driven from a phone). |
 | [`.claude/rules/deploy.md`](.claude/rules/deploy.md) | Facts about the host. |
 | [`.claude/rules/gotchas.md`](.claude/rules/gotchas.md) | Distilled tribal knowledge so the same loops don't recur (anti-footgun manual, trailofbits pattern). |
 | [`.claude/rules/mobile-ergonomics.md`](.claude/rules/mobile-ergonomics.md) | The operator runs this project from an Android phone, not a laptop. |
@@ -326,6 +341,7 @@
 | --- | --- |
 | [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) | CI / workflow configuration. |
 | [`.github/workflows/eval-skills.yml`](.github/workflows/eval-skills.yml) | CI / workflow configuration. |
+| [`.github/workflows/portfolio.yml`](.github/workflows/portfolio.yml) | .github/workflows/portfolio.yml |
 | [`.github/workflows/verify.yml`](.github/workflows/verify.yml) | CI: syntax-check, smoke test, and headless render check on every push. |
 | [`.gitignore`](.gitignore) | deps / build |
 | [`.mcp.json`](.mcp.json) | Project-scoped MCP server configuration for Claude Code. |
@@ -336,6 +352,10 @@
 
 | File | Description |
 | --- | --- |
+| [`.env.example`](.env.example) | Example environment variables |
+| [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
+| [`portfolio/README.md`](portfolio/README.md) | Gather raw shots from Google Drive and Google Photos, have Gemini score and tag them, get a contact sheet to tap through on your phone, pick… |
+| [`server/README.md`](server/README.md) | This folder will contain the retrieval/indexing service that your Android app calls. |
 | [`skills-lock.json`](skills-lock.json) | Configuration / data file. |
 | [`workshop/sandbox.html`](workshop/sandbox.html) | Primordial - Sketch Sandbox |
 | [`workshop/sketch-runner.mjs`](workshop/sketch-runner.mjs) | Boots the workshop sandbox: loads one sketch (?sketch=<name>) using the real renderer plumbing, drives it with synthetic audio, and exposes the… |

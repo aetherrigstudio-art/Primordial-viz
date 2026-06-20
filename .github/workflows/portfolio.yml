@@ -1,0 +1,58 @@
+# .github/workflows/portfolio.yml
+name: portfolio-gather
+on:
+  workflow_dispatch:
+    inputs:
+      folder_id:
+        description: Drive folder id (overrides DRIVE_FOLDER_ID secret)
+        required: false
+  issues:
+    types: [opened]
+
+jobs:
+  gather:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Pull Drive folder
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+          INPUT_FOLDER_ID: ${{ github.event.inputs.folder_id }}
+        run: |
+          FOLDER="${INPUT_FOLDER_ID:-$DRIVE_FOLDER_ID}"
+          node tools/portfolio/pull-drive.mjs "$FOLDER" work/raw > work/files.json
+      - name: Vision sort
+        env: { GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} }
+        run: node tools/portfolio/sort-vision.mjs work/files.json work/manifest.json
+      - name: Build contact sheet
+        run: |
+          node tools/portfolio/build-sheet.mjs work/manifest.json work/sheet
+          mkdir -p work/sheet/media && cp work/raw/* work/sheet/media/ || true
+      - name: Upload sheet artifact
+        uses: actions/upload-artifact@v4
+        with: { name: contact-sheet, path: work/sheet }
+      # Deploy to a Basic-Auth-protected path is documented in portfolio/README.md
+      # (reuse the existing FTPS deploy action; server-dir = Test/picks).
+
+  stage:
+    if: github.event_name == 'issues' && github.event.issue.title == 'portfolio-keepers'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      # NOTE: the manifest from the gather run must be available. v1: gather job
+      # also commits work/manifest.json as an artifact the operator attaches, OR
+      # store it in the repo under work/. See README "Keeper hand-back".
+      - name: Stage finals
+        env: { KEEPERS_BODY: ${{ github.event.issue.body }} }
+        run: node tools/portfolio/stage-finals.mjs work/manifest.json out/finals
+      - name: Upload finals
+        uses: actions/upload-artifact@v4
+        with: { name: portfolio-finals, path: out/finals }

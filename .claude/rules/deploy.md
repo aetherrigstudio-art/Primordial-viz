@@ -66,8 +66,15 @@ Rule of thumb: **lock down what's served; relax for everything local.**
   label. Don't commit/upload `node_modules` or the full research corpus; keep
   the deployed tree lean.
 
-## Backend — PHP 8 only
+## Backend — PHP 8 only (scope: the Namecheap host + web path)
 
 - If a contact/upload endpoint is ever needed, write a single **PHP 8.x** file
   (native LSAPI). **Never** Node/Python — they run only via Phusion Passenger
   and fight the EP=30 / 2 GB RAM cap.
+- **Scope (ADR-001):** this rule governs the **Namecheap-hosted web path + static
+  deploy** — what runs on Stellar Plus and what ships to `primordial.video`. A
+  **separate service** (e.g. an AI/RAG backend the Android client calls) may use
+  its own stack on its **own infra** (Render/Fly/Cloudflare/VPS — *not* Namecheap,
+  which would hit exactly the Passenger limits above), but it must **never** be
+  coupled into the gig web path or the static deploy, and must not add runtime
+  deps to `index.html`/`src/`. See `docs/decisions/001-backend-rule-scope.md`.

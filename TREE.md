@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 230 files in 79 directories.
+> 250 files in 85 directories.
 
 ```
 Primordial-viz/
@@ -25,6 +25,7 @@ Primordial-viz/
 │   │   └── suggest-workflow.sh
 │   ├── rules/
 │   │   ├── audio.md
+│   │   ├── conduct.md
 │   │   ├── deploy.md
 │   │   ├── gotchas.md
 │   │   ├── mobile-ergonomics.md
@@ -142,13 +143,22 @@ Primordial-viz/
 │   └── workflows/
 │       ├── deploy.yml
 │       ├── eval-skills.yml
+│       ├── portfolio.yml
 │       └── verify.yml
+├── android/
+│   └── README.md
 ├── deploy/
 │   ├── .htaccess
 │   └── DEPLOY.md
 ├── docs/
+│   ├── ANTHROPIC/
+│   │   └── OPUS8-SETUP-PLAN.md
 │   ├── decisions/
+│   │   ├── 001-backend-rule-scope.md
 │   │   └── README.md
+│   ├── prompts/
+│   │   ├── claude-opus-4-8-system-prompt.md
+│   │   └── system-prompt-ingest.md
 │   ├── superpowers/
 │   │   ├── plans/
 │   │   │   ├── 2026-06-19-adopt-ideas-phase1.md
@@ -158,6 +168,7 @@ Primordial-viz/
 │   │   │   ├── 2026-06-19-visual-workshop.md
 │   │   │   ├── 2026-06-20-eval-harness.md
 │   │   │   ├── 2026-06-20-fmhy-link-harvester.md
+│   │   │   ├── 2026-06-20-portfolio-media-gathering.md
 │   │   │   └── 2026-06-20-rag-semantic-recall.md
 │   │   └── specs/
 │   │       ├── 2026-06-19-adopt-ideas-roadmap-design.md
@@ -165,9 +176,13 @@ Primordial-viz/
 │   │       ├── 2026-06-19-full-repo-comparison-design.md
 │   │       ├── 2026-06-19-visual-workshop-design.md
 │   │       ├── 2026-06-20-fmhy-link-harvester-design.md
-│   │       └── 2026-06-20-rag-semantic-recall-design.md
+│   │       ├── 2026-06-20-portfolio-media-gathering-design.md
+│   │       ├── 2026-06-20-rag-semantic-recall-design.md
+│   │       └── 2026-06-20-secrets-management-design.md
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
+├── portfolio/
+│   └── README.md
 ├── research/
 │   ├── claude-repo-comparison/
 │   │   ├── BRIEF.md
@@ -200,6 +215,8 @@ Primordial-viz/
 │   │   └── scrape-blog.py
 │   ├── README.md
 │   └── TODO.md
+├── server/
+│   └── README.md
 ├── src/
 │   ├── audio/
 │   │   ├── analyser.js
@@ -260,6 +277,7 @@ Primordial-viz/
 │   ├── eval-skills.test.mjs
 │   ├── guard.test.mjs
 │   ├── harvest-links.test.mjs
+│   ├── portfolio.test.mjs
 │   ├── rag.test.mjs
 │   ├── render-check.mjs
 │   └── smoke.mjs
@@ -274,6 +292,13 @@ Primordial-viz/
 │   │   │   └── validate.mjs
 │   │   ├── selftest.mjs
 │   │   └── server.mjs
+│   ├── portfolio/
+│   │   ├── build-sheet.mjs
+│   │   ├── normalize-takeout.mjs
+│   │   ├── pull-drive.mjs
+│   │   ├── schema.mjs
+│   │   ├── sort-vision.mjs
+│   │   └── stage-finals.mjs
 │   ├── rag/
 │   │   ├── build-index.mjs
 │   │   ├── chunk.mjs
@@ -299,6 +324,7 @@ Primordial-viz/
 │   ├── sketch-runner.mjs
 │   └── synth-audio.mjs
 ├── .cpanel.yml
+├── .env.example
 ├── .gitignore
 ├── .mcp.json
 ├── AGENTS.md
