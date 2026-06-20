@@ -12,6 +12,18 @@ candlelit, ivory-draped **pagoda hallway** that slowly dissolves from fabric int
 living flower garden — breathing to soft cinematic music, with the planner's words
 drifting on the air the whole way.
 
+## Scope (2026-06-20): this is the LANDING PAGE, not the whole site
+
+This whole document — the two-act drape→garden experience, `TECH.md`, `WORKFLOW.md`,
+the Act-1 plan — is **the wedding landing page** only: the immersive entry/wow. It
+is **one piece of a larger wedding-planner site** (the real functional pages —
+services, gallery/portfolio, about, inquiry/booking, etc. — TBD). The landing page's
+job is to captivate and **funnel into that full site** (the end-of-journey CTA /
+garden hand-off is the doorway into it). The **full-site structure is a separate,
+larger workstream** to scope later (likely conventional pages under the same client,
+sharing the boho design tokens + type/palette so the brand is continuous). Nothing
+here changes for the landing page; this just sets its frame.
+
 ## The aesthetic (locked by reference)
 
 Reference image the operator supplied: an Instagram post "pagoda wedding drapery"
