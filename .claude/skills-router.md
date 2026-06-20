@@ -12,6 +12,7 @@ hook) — don't edit between the markers; add/route a skill via the `skill-route
 - **deploy** — `deploy-check`, `deploy-cpanel`
 - **design** — `thought-based-reasoning`, `visual-workshop`
 - **docs** — `documentation-and-adrs`
+- **general** — `astro-framework`, `legacy-modernizer`, `planning-with-files`, `r3f-shaders`
 - **looks** — `new-preset`
 - **meta** — `health`, `lesson`, `park`, `reorient`, `send-report`, `skill-router`, `workflow`, `writing-skills`
 - **perf** — `performance`

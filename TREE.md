@@ -5,10 +5,53 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 268 files in 91 directories.
+> 337 files in 109 directories.
 
 ```
 Primordial-viz/
+├── .agents/
+│   └── skills/
+│       ├── astro-framework/
+│       │   ├── references/
+│       │   │   ├── actions.md
+│       │   │   ├── client-directives.md
+│       │   │   ├── components.md
+│       │   │   ├── configuration.md
+│       │   │   ├── content-collections.md
+│       │   │   ├── environment-variables.md
+│       │   │   ├── i18n-routing.md
+│       │   │   ├── images.md
+│       │   │   ├── middleware.md
+│       │   │   ├── routing.md
+│       │   │   ├── server-islands.md
+│       │   │   ├── sessions.md
+│       │   │   ├── ssr-adapters.md
+│       │   │   ├── styling.md
+│       │   │   └── view-transitions.md
+│       │   ├── rules/
+│       │   │   ├── astro-components.rule.md
+│       │   │   ├── astro-images.rule.md
+│       │   │   ├── astro-routing.rule.md
+│       │   │   ├── astro-ssr.rule.md
+│       │   │   ├── astro-typescript.rule.md
+│       │   │   ├── client-hydration.rule.md
+│       │   │   ├── content-collections.rule.md
+│       │   │   ├── server-islands.rule.md
+│       │   │   └── sessions.rule.md
+│       │   ├── AGENTS.md
+│       │   └── SKILL.md
+│       ├── legacy-modernizer/
+│       │   ├── references/
+│       │   │   ├── legacy-testing.md
+│       │   │   ├── migration-strategies.md
+│       │   │   ├── refactoring-patterns.md
+│       │   │   ├── strangler-fig-pattern.md
+│       │   │   └── system-assessment.md
+│       │   └── SKILL.md
+│       ├── planning-with-files/
+│       │   └── SKILL.md
+│       └── r3f-shaders/
+│           └── SKILL.md
 ├── .claude/
 │   ├── agents/
 │   │   ├── audio-dsp.md
@@ -35,6 +78,35 @@ Primordial-viz/
 │   │   │   ├── references/
 │   │   │   │   ├── A11Y-PATTERNS.md
 │   │   │   │   └── WCAG.md
+│   │   │   └── SKILL.md
+│   │   ├── astro-framework/
+│   │   │   ├── references/
+│   │   │   │   ├── actions.md
+│   │   │   │   ├── client-directives.md
+│   │   │   │   ├── components.md
+│   │   │   │   ├── configuration.md
+│   │   │   │   ├── content-collections.md
+│   │   │   │   ├── environment-variables.md
+│   │   │   │   ├── i18n-routing.md
+│   │   │   │   ├── images.md
+│   │   │   │   ├── middleware.md
+│   │   │   │   ├── routing.md
+│   │   │   │   ├── server-islands.md
+│   │   │   │   ├── sessions.md
+│   │   │   │   ├── ssr-adapters.md
+│   │   │   │   ├── styling.md
+│   │   │   │   └── view-transitions.md
+│   │   │   ├── rules/
+│   │   │   │   ├── astro-components.rule.md
+│   │   │   │   ├── astro-images.rule.md
+│   │   │   │   ├── astro-routing.rule.md
+│   │   │   │   ├── astro-ssr.rule.md
+│   │   │   │   ├── astro-typescript.rule.md
+│   │   │   │   ├── client-hydration.rule.md
+│   │   │   │   ├── content-collections.rule.md
+│   │   │   │   ├── server-islands.rule.md
+│   │   │   │   └── sessions.rule.md
+│   │   │   ├── AGENTS.md
 │   │   │   └── SKILL.md
 │   │   ├── brainstorming/
 │   │   │   ├── scripts/
@@ -67,6 +139,14 @@ Primordial-viz/
 │   │   │   └── SKILL.md
 │   │   ├── health/
 │   │   │   └── SKILL.md
+│   │   ├── legacy-modernizer/
+│   │   │   ├── references/
+│   │   │   │   ├── legacy-testing.md
+│   │   │   │   ├── migration-strategies.md
+│   │   │   │   ├── refactoring-patterns.md
+│   │   │   │   ├── strangler-fig-pattern.md
+│   │   │   │   └── system-assessment.md
+│   │   │   └── SKILL.md
 │   │   ├── lesson/
 │   │   │   └── SKILL.md
 │   │   ├── new-preset/
@@ -76,6 +156,10 @@ Primordial-viz/
 │   │   ├── perf-budget/
 │   │   │   └── SKILL.md
 │   │   ├── performance/
+│   │   │   └── SKILL.md
+│   │   ├── planning-with-files/
+│   │   │   └── SKILL.md
+│   │   ├── r3f-shaders/
 │   │   │   └── SKILL.md
 │   │   ├── receiving-code-review/
 │   │   │   └── SKILL.md
@@ -164,6 +248,9 @@ Primordial-viz/
 │   │   ├── 001-backend-rule-scope.md
 │   │   ├── 005-public-repo-and-license-posture.md
 │   │   └── README.md
+│   ├── plans/
+│   │   └── studio-refactor/
+│   │       └── task_plan.md
 │   ├── prompts/
 │   │   ├── claude-opus-4-8-system-prompt.md
 │   │   └── system-prompt-ingest.md

@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 268 files across 17 categories.
+> 337 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (13)
-- [Specs & Long-form Docs](#specs--long-form-docs) (31)
+- [Specs & Long-form Docs](#specs--long-form-docs) (32)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -22,11 +22,11 @@
 - [Tests & Verification](#tests--verification) (10)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (32)
-- [Claude Environment](#claude-environment) (91)
+- [Claude Environment](#claude-environment) (125)
 - [Deployment](#deployment) (3)
 - [Research](#research) (24)
 - [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (12)
+- [Other](#other) (46)
 
 ## Overview & Planning
 
@@ -58,6 +58,7 @@
 | [`docs/decisions/001-backend-rule-scope.md`](docs/decisions/001-backend-rule-scope.md) | Accepted |
 | [`docs/decisions/005-public-repo-and-license-posture.md`](docs/decisions/005-public-repo-and-license-posture.md) | Proposed — needs an operator decision. |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
+| [`docs/plans/studio-refactor/task_plan.md`](docs/plans/studio-refactor/task_plan.md) | Rewritten under the rule "do not assume anything." The earlier draft baked in a stack (Astro/R3F), a "first deliverable," and a phase order that the… |
 | [`docs/prompts/claude-opus-4-8-system-prompt.md`](docs/prompts/claude-opus-4-8-system-prompt.md) | This is your pasted Claude system prompt, re-pointed from Claude Fable 5 to the model actually running, Claude Opus 4.8. |
 | [`docs/prompts/system-prompt-ingest.md`](docs/prompts/system-prompt-ingest.md) | A thorough, auditable pass over the full consumer assistant system prompt (the "Fable 5" prompt the operator supplied), recording the disposition of… |
 | [`docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md`](docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
@@ -247,6 +248,32 @@
 | [`.claude/skills/accessibility/SKILL.md`](.claude/skills/accessibility/SKILL.md) | Audit and improve web accessibility following WCAG 2.2 guidelines. Use when asked to "improve accessibility", "a11y audit", "WCAG compliance",… |
 | [`.claude/skills/accessibility/references/A11Y-PATTERNS.md`](.claude/skills/accessibility/references/A11Y-PATTERNS.md) | Practical, copy-paste-ready patterns for common accessibility requirements. |
 | [`.claude/skills/accessibility/references/WCAG.md`](.claude/skills/accessibility/references/WCAG.md) | html <button>Label</button> <!-- or --> <button aria-label="Close dialog">×</button> |
+| [`.claude/skills/astro-framework/AGENTS.md`](.claude/skills/astro-framework/AGENTS.md) | Version: 2.0.0 \| Astro 5.x \| Updated: 2026-03-22 \| Author: [webreactiva.com](https://webreactiva.com/ia) |
+| [`.claude/skills/astro-framework/SKILL.md`](.claude/skills/astro-framework/SKILL.md) | Astro framework specialist for building fast, content-driven websites with islands architecture. Use when creating Astro components, configuring… |
+| [`.claude/skills/astro-framework/references/actions.md`](.claude/skills/astro-framework/references/actions.md) | Actions provide type-safe form handling and server functions in Astro. |
+| [`.claude/skills/astro-framework/references/client-directives.md`](.claude/skills/astro-framework/references/client-directives.md) | Client directives control how UI framework components (React, Vue, Svelte, etc.) are hydrated on the client. |
+| [`.claude/skills/astro-framework/references/components.md`](.claude/skills/astro-framework/references/components.md) | astro --- // Component Script (Frontmatter) // Runs on the server at build time (or request time for SSR) import SomeComponent from… |
+| [`.claude/skills/astro-framework/references/configuration.md`](.claude/skills/astro-framework/references/configuration.md) | Astro configuration lives in astro.config.mjs at the project root. |
+| [`.claude/skills/astro-framework/references/content-collections.md`](.claude/skills/astro-framework/references/content-collections.md) | Content collections provide type-safe content management with schema validation using Zod. |
+| [`.claude/skills/astro-framework/references/environment-variables.md`](.claude/skills/astro-framework/references/environment-variables.md) | Added in: Astro 5.0+ |
+| [`.claude/skills/astro-framework/references/i18n-routing.md`](.claude/skills/astro-framework/references/i18n-routing.md) | Astro's built-in i18n routing helps you build multilingual sites with URL-based locale management, fallback content, and helper functions. |
+| [`.claude/skills/astro-framework/references/images.md`](.claude/skills/astro-framework/references/images.md) | Astro provides built-in image optimization through the astro:assets module. |
+| [`.claude/skills/astro-framework/references/middleware.md`](.claude/skills/astro-framework/references/middleware.md) | Middleware intercepts requests and responses, allowing you to add logic before pages render. |
+| [`.claude/skills/astro-framework/references/routing.md`](.claude/skills/astro-framework/references/routing.md) | Astro uses file-based routing in the src/pages/ directory. |
+| [`.claude/skills/astro-framework/references/server-islands.md`](.claude/skills/astro-framework/references/server-islands.md) | Server islands allow you to defer rendering of specific Astro components to the server, loading them independently from the rest of the page. |
+| [`.claude/skills/astro-framework/references/sessions.md`](.claude/skills/astro-framework/references/sessions.md) | Sessions store data on the server between requests for on-demand rendered pages. |
+| [`.claude/skills/astro-framework/references/ssr-adapters.md`](.claude/skills/astro-framework/references/ssr-adapters.md) | Astro supports on-demand server rendering with various deployment adapters. |
+| [`.claude/skills/astro-framework/references/styling.md`](.claude/skills/astro-framework/references/styling.md) | Astro supports various styling approaches with scoped styles as the default. |
+| [`.claude/skills/astro-framework/references/view-transitions.md`](.claude/skills/astro-framework/references/view-transitions.md) | Astro's View Transitions provide smooth navigation between pages without full page reloads. |
+| [`.claude/skills/astro-framework/rules/astro-components.rule.md`](.claude/skills/astro-framework/rules/astro-components.rule.md) | Rules for writing Astro components |
+| [`.claude/skills/astro-framework/rules/astro-images.rule.md`](.claude/skills/astro-framework/rules/astro-images.rule.md) | Rules for image optimization in Astro |
+| [`.claude/skills/astro-framework/rules/astro-routing.rule.md`](.claude/skills/astro-framework/rules/astro-routing.rule.md) | Rules for Astro routing and pages |
+| [`.claude/skills/astro-framework/rules/astro-ssr.rule.md`](.claude/skills/astro-framework/rules/astro-ssr.rule.md) | Rules for SSR and hybrid rendering |
+| [`.claude/skills/astro-framework/rules/astro-typescript.rule.md`](.claude/skills/astro-framework/rules/astro-typescript.rule.md) | Rules for TypeScript configuration in Astro projects |
+| [`.claude/skills/astro-framework/rules/client-hydration.rule.md`](.claude/skills/astro-framework/rules/client-hydration.rule.md) | Rules for client-side hydration and islands architecture |
+| [`.claude/skills/astro-framework/rules/content-collections.rule.md`](.claude/skills/astro-framework/rules/content-collections.rule.md) | Rules for content collections and type-safe content |
+| [`.claude/skills/astro-framework/rules/server-islands.rule.md`](.claude/skills/astro-framework/rules/server-islands.rule.md) | Rules for server islands with deferred rendering |
+| [`.claude/skills/astro-framework/rules/sessions.rule.md`](.claude/skills/astro-framework/rules/sessions.rule.md) | Rules for server-side sessions |
 | [`.claude/skills/brainstorming/SKILL.md`](.claude/skills/brainstorming/SKILL.md) | You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user… |
 | [`.claude/skills/brainstorming/scripts/frame-template.html`](.claude/skills/brainstorming/scripts/frame-template.html) | Superpowers Brainstorming |
 | [`.claude/skills/brainstorming/scripts/helper.js`](.claude/skills/brainstorming/scripts/helper.js) | JS file. |
@@ -266,11 +293,19 @@
 | [`.claude/skills/frontend-design/LICENSE.txt`](.claude/skills/frontend-design/LICENSE.txt) | Plain-text notes. |
 | [`.claude/skills/frontend-design/SKILL.md`](.claude/skills/frontend-design/SKILL.md) | Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography,… |
 | [`.claude/skills/health/SKILL.md`](.claude/skills/health/SKILL.md) | One-pass repo + deploy health check, then route any failure to its fix. Runs the local gates (npm run health - JS syntax, smoke, site audit,… |
+| [`.claude/skills/legacy-modernizer/SKILL.md`](.claude/skills/legacy-modernizer/SKILL.md) | Designs incremental migration strategies, identifies service boundaries, produces dependency maps and migration roadmaps, and generates API facade… |
+| [`.claude/skills/legacy-modernizer/references/legacy-testing.md`](.claude/skills/legacy-modernizer/references/legacy-testing.md) | Tests that document current behavior (even if buggy) before refactoring. |
+| [`.claude/skills/legacy-modernizer/references/migration-strategies.md`](.claude/skills/legacy-modernizer/references/migration-strategies.md) | python |
+| [`.claude/skills/legacy-modernizer/references/refactoring-patterns.md`](.claude/skills/legacy-modernizer/references/refactoring-patterns.md) | Enables large refactorings to happen incrementally without breaking existing code. |
+| [`.claude/skills/legacy-modernizer/references/strangler-fig-pattern.md`](.claude/skills/legacy-modernizer/references/strangler-fig-pattern.md) | The strangler fig pattern gradually replaces legacy systems by incrementally building new functionality around the old system, eventually… |
+| [`.claude/skills/legacy-modernizer/references/system-assessment.md`](.claude/skills/legacy-modernizer/references/system-assessment.md) | python |
 | [`.claude/skills/lesson/SKILL.md`](.claude/skills/lesson/SKILL.md) | Capture a correction or lesson durably so the same mistake doesn't recur. Use right after the user corrects a wrong assumption, an over-applied… |
 | [`.claude/skills/new-preset/SKILL.md`](.claude/skills/new-preset/SKILL.md) | Scaffold a new visual "look" for primordial — a params-only JSON preset in src/looks/, wired into the look registry (all looks share the slime… |
 | [`.claude/skills/park/SKILL.md`](.claude/skills/park/SKILL.md) | Park the current in-progress thread (a design, task, or decision we're partway through) into the "Open threads" list in progress.md with enough… |
 | [`.claude/skills/perf-budget/SKILL.md`](.claude/skills/perf-budget/SKILL.md) | Run the in-app FPS stress-test readout for primordial and read its SMOOTH / OK / TOO-MUCH verdict to set the mobile performance budget (FBO… |
 | [`.claude/skills/performance/SKILL.md`](.claude/skills/performance/SKILL.md) | Optimize web performance for faster loading and better user experience. Use when asked to "speed up my site", "optimize performance", "reduce load… |
+| [`.claude/skills/planning-with-files/SKILL.md`](.claude/skills/planning-with-files/SKILL.md) | This skill should be used when starting complex multi-step tasks, research projects, or any task requiring >5 tool calls. Implements Manus-style… |
+| [`.claude/skills/r3f-shaders/SKILL.md`](.claude/skills/r3f-shaders/SKILL.md) | React Three Fiber shaders - GLSL, shaderMaterial, uniforms, custom effects. Use when creating custom visual effects, modifying vertices, writing… |
 | [`.claude/skills/receiving-code-review/SKILL.md`](.claude/skills/receiving-code-review/SKILL.md) | Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable -… |
 | [`.claude/skills/reel-ingest/SKILL.md`](.claude/skills/reel-ingest/SKILL.md) | Download a video reference (Instagram reel / YouTube short / any URL) or an uploaded mp4, then extract a frame montage + metadata so it can actually… |
 | [`.claude/skills/reorient/SKILL.md`](.claude/skills/reorient/SKILL.md) | Use when starting in a fresh container, after /clear, or after a context compaction — when you've lost the repo's state and need to reload the… |
@@ -368,6 +403,40 @@
 
 | File | Description |
 | --- | --- |
+| [`.agents/skills/astro-framework/AGENTS.md`](.agents/skills/astro-framework/AGENTS.md) | Version: 2.0.0 \| Astro 5.x \| Updated: 2026-03-22 \| Author: [webreactiva.com](https://webreactiva.com/ia) |
+| [`.agents/skills/astro-framework/SKILL.md`](.agents/skills/astro-framework/SKILL.md) | Astro framework specialist for building fast, content-driven websites with islands architecture. Use when creating Astro components, configuring… |
+| [`.agents/skills/astro-framework/references/actions.md`](.agents/skills/astro-framework/references/actions.md) | Actions provide type-safe form handling and server functions in Astro. |
+| [`.agents/skills/astro-framework/references/client-directives.md`](.agents/skills/astro-framework/references/client-directives.md) | Client directives control how UI framework components (React, Vue, Svelte, etc.) are hydrated on the client. |
+| [`.agents/skills/astro-framework/references/components.md`](.agents/skills/astro-framework/references/components.md) | astro --- // Component Script (Frontmatter) // Runs on the server at build time (or request time for SSR) import SomeComponent from… |
+| [`.agents/skills/astro-framework/references/configuration.md`](.agents/skills/astro-framework/references/configuration.md) | Astro configuration lives in astro.config.mjs at the project root. |
+| [`.agents/skills/astro-framework/references/content-collections.md`](.agents/skills/astro-framework/references/content-collections.md) | Content collections provide type-safe content management with schema validation using Zod. |
+| [`.agents/skills/astro-framework/references/environment-variables.md`](.agents/skills/astro-framework/references/environment-variables.md) | Added in: Astro 5.0+ |
+| [`.agents/skills/astro-framework/references/i18n-routing.md`](.agents/skills/astro-framework/references/i18n-routing.md) | Astro's built-in i18n routing helps you build multilingual sites with URL-based locale management, fallback content, and helper functions. |
+| [`.agents/skills/astro-framework/references/images.md`](.agents/skills/astro-framework/references/images.md) | Astro provides built-in image optimization through the astro:assets module. |
+| [`.agents/skills/astro-framework/references/middleware.md`](.agents/skills/astro-framework/references/middleware.md) | Middleware intercepts requests and responses, allowing you to add logic before pages render. |
+| [`.agents/skills/astro-framework/references/routing.md`](.agents/skills/astro-framework/references/routing.md) | Astro uses file-based routing in the src/pages/ directory. |
+| [`.agents/skills/astro-framework/references/server-islands.md`](.agents/skills/astro-framework/references/server-islands.md) | Server islands allow you to defer rendering of specific Astro components to the server, loading them independently from the rest of the page. |
+| [`.agents/skills/astro-framework/references/sessions.md`](.agents/skills/astro-framework/references/sessions.md) | Sessions store data on the server between requests for on-demand rendered pages. |
+| [`.agents/skills/astro-framework/references/ssr-adapters.md`](.agents/skills/astro-framework/references/ssr-adapters.md) | Astro supports on-demand server rendering with various deployment adapters. |
+| [`.agents/skills/astro-framework/references/styling.md`](.agents/skills/astro-framework/references/styling.md) | Astro supports various styling approaches with scoped styles as the default. |
+| [`.agents/skills/astro-framework/references/view-transitions.md`](.agents/skills/astro-framework/references/view-transitions.md) | Astro's View Transitions provide smooth navigation between pages without full page reloads. |
+| [`.agents/skills/astro-framework/rules/astro-components.rule.md`](.agents/skills/astro-framework/rules/astro-components.rule.md) | Rules for writing Astro components |
+| [`.agents/skills/astro-framework/rules/astro-images.rule.md`](.agents/skills/astro-framework/rules/astro-images.rule.md) | Rules for image optimization in Astro |
+| [`.agents/skills/astro-framework/rules/astro-routing.rule.md`](.agents/skills/astro-framework/rules/astro-routing.rule.md) | Rules for Astro routing and pages |
+| [`.agents/skills/astro-framework/rules/astro-ssr.rule.md`](.agents/skills/astro-framework/rules/astro-ssr.rule.md) | Rules for SSR and hybrid rendering |
+| [`.agents/skills/astro-framework/rules/astro-typescript.rule.md`](.agents/skills/astro-framework/rules/astro-typescript.rule.md) | Rules for TypeScript configuration in Astro projects |
+| [`.agents/skills/astro-framework/rules/client-hydration.rule.md`](.agents/skills/astro-framework/rules/client-hydration.rule.md) | Rules for client-side hydration and islands architecture |
+| [`.agents/skills/astro-framework/rules/content-collections.rule.md`](.agents/skills/astro-framework/rules/content-collections.rule.md) | Rules for content collections and type-safe content |
+| [`.agents/skills/astro-framework/rules/server-islands.rule.md`](.agents/skills/astro-framework/rules/server-islands.rule.md) | Rules for server islands with deferred rendering |
+| [`.agents/skills/astro-framework/rules/sessions.rule.md`](.agents/skills/astro-framework/rules/sessions.rule.md) | Rules for server-side sessions |
+| [`.agents/skills/legacy-modernizer/SKILL.md`](.agents/skills/legacy-modernizer/SKILL.md) | Designs incremental migration strategies, identifies service boundaries, produces dependency maps and migration roadmaps, and generates API facade… |
+| [`.agents/skills/legacy-modernizer/references/legacy-testing.md`](.agents/skills/legacy-modernizer/references/legacy-testing.md) | Tests that document current behavior (even if buggy) before refactoring. |
+| [`.agents/skills/legacy-modernizer/references/migration-strategies.md`](.agents/skills/legacy-modernizer/references/migration-strategies.md) | python |
+| [`.agents/skills/legacy-modernizer/references/refactoring-patterns.md`](.agents/skills/legacy-modernizer/references/refactoring-patterns.md) | Enables large refactorings to happen incrementally without breaking existing code. |
+| [`.agents/skills/legacy-modernizer/references/strangler-fig-pattern.md`](.agents/skills/legacy-modernizer/references/strangler-fig-pattern.md) | The strangler fig pattern gradually replaces legacy systems by incrementally building new functionality around the old system, eventually… |
+| [`.agents/skills/legacy-modernizer/references/system-assessment.md`](.agents/skills/legacy-modernizer/references/system-assessment.md) | python |
+| [`.agents/skills/planning-with-files/SKILL.md`](.agents/skills/planning-with-files/SKILL.md) | This skill should be used when starting complex multi-step tasks, research projects, or any task requiring >5 tool calls. Implements Manus-style… |
+| [`.agents/skills/r3f-shaders/SKILL.md`](.agents/skills/r3f-shaders/SKILL.md) | React Three Fiber shaders - GLSL, shaderMaterial, uniforms, custom effects. Use when creating custom visual effects, modifying vertices, writing… |
 | [`.env.example`](.env.example) | Example environment variables |
 | [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
 | [`portfolio/Gather-PortfolioMedia.ps1`](portfolio/Gather-PortfolioMedia.ps1) | PS1 file. |

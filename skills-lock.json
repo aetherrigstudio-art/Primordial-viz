@@ -1,11 +1,35 @@
 {
   "version": 1,
   "skills": {
+    "astro-framework": {
+      "source": "delineas/astro-framework-agents",
+      "sourceType": "github",
+      "skillPath": "skills/astro-framework/SKILL.md",
+      "computedHash": "7d8940b3fb7dab50f8303afdb3210cc9385da3a8d243fe99efdc08ce53aed90c"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336"
+    },
+    "legacy-modernizer": {
+      "source": "jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/legacy-modernizer/SKILL.md",
+      "computedHash": "703bc6b068b60f1ca32c2892f3aa3875c986fa17b65676f612810eb52c21b5eb"
+    },
+    "planning-with-files": {
+      "source": "eyadsibai/ltk",
+      "sourceType": "github",
+      "skillPath": "plugins/ltk-core/skills/planning-with-files/SKILL.md",
+      "computedHash": "6949f228f2e3be37d10c076f91a72743274edb9c918c419b47a24d89dd2dcdfe"
+    },
+    "r3f-shaders": {
+      "source": "enzed/r3f-skills",
+      "sourceType": "github",
+      "skillPath": "skills/r3f-shaders/SKILL.md",
+      "computedHash": "50a272a45dd6874657125c06a14a2e333c616966b4d09234f6c9c8081a4dc4fe"
     },
     "task-management": {
       "source": "anthropics/knowledge-work-plugins",
