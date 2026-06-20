@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 232 files across 17 categories.
+> 234 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -21,7 +21,7 @@
 - [App — UI](#app--ui) (2)
 - [Tests & Verification](#tests--verification) (8)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (22)
+- [Tooling / Scripts](#tooling--scripts) (24)
 - [Claude Environment](#claude-environment) (88)
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
@@ -42,7 +42,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Operator pushed back on the "don't edit adopted skills" convention — correctly: those skills are plain markdown, nothing technically locked them. |
+| [`progress.md`](progress.md) | Resolved the parked "RAG retrieval-quality follow-ups (slice 1 polish)" thread via brainstorm → writing-plans → inline execution. |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -185,11 +185,13 @@
 | [`tools/mcp/selftest.mjs`](tools/mcp/selftest.mjs) | Self-test for the primordial MCP server: spawns server.mjs over stdio using the MCP SDK client, lists tools/resources/prompts, and exits non-zero if… |
 | [`tools/mcp/server.mjs`](tools/mcp/server.mjs) | Primordial-viz MCP server — local stdio dev tools for AI assistants working on this project. |
 | [`tools/rag/README.md`](tools/rag/README.md) | Dev-tooling. |
+| [`tools/rag/ab-model.mjs`](tools/rag/ab-model.mjs) | tools/rag/ab-model.mjs One-off A/B: compare embedding models on the probe set. |
 | [`tools/rag/build-index.mjs`](tools/rag/build-index.mjs) | tools/rag/build-index.mjs Build the committed semantic index: chunk -> embed -> write index.json. |
 | [`tools/rag/chunk.mjs`](tools/rag/chunk.mjs) | Splits the repo's markdown corpus into heading-section chunks for embedding. |
 | [`tools/rag/embed.mjs`](tools/rag/embed.mjs) | tools/rag/embed.mjs Local text embeddings via a small transformer (no doc text leaves the machine, no API key). |
 | [`tools/rag/index.json`](tools/rag/index.json) | Configuration / data file. |
 | [`tools/rag/model.mjs`](tools/rag/model.mjs) | tools/rag/model.mjs Dep-free model constants. |
+| [`tools/rag/quantize.mjs`](tools/rag/quantize.mjs) | tools/rag/quantize.mjs Dep-free int8 vector compaction for the committed RAG index. |
 | [`tools/rag/retrieve.mjs`](tools/rag/retrieve.mjs) | tools/rag/retrieve.mjs Hybrid semantic + lexical retrieval over the committed index. |
 | [`tools/workshop/clip.mjs`](tools/workshop/clip.mjs) | Record a workshop sketch to a webm clip (and optional stills) for phone review. |
 

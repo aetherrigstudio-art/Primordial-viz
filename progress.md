@@ -1,5 +1,49 @@
 # Progress Log — primordial
 
+## Session — 2026-06-20 (RAG retrieval polish — BUILT & VERIFIED)
+
+Resolved the parked "RAG retrieval-quality follow-ups (slice 1 polish)" thread via
+brainstorm → writing-plans → inline execution. Spec
+`docs/superpowers/specs/2026-06-20-rag-retrieval-polish-design.md`; plan
+`docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md`. On branch
+`claude/whats-next-brainstorming-tdzom3`.
+
+**Embedding-model A/B (operator asked to measure, not guess):** built retrieval with
+MiniLM vs `Xenova/bge-small-en-v1.5` (same 384 dims) and ran a 6-probe set
+(`tools/rag/ab-model.mjs`). Raw-cosine result was a **wash (2/6 canonical-#1 each)** —
+they traded wins; both got swamped by **catch-all docs** (CLAUDE/AGENTS/TODO/ROADMAP/
+research REPORTs) that mention everything. **Conclusion: the model isn't the lever;
+ranking is.** Kept MiniLM (bge adds a query-prefix + 130MB download + catch-all
+sensitivity for no clear win). API/768-d/multilingual models rejected (privacy egress
++ against the compaction goal).
+
+**The fix (the real bottleneck):** broadened the planned down-weight from "−0.05 on
+`docs/superpowers/` only" to **−0.08 on the whole aggregator/meta class** (always-
+loaded root/state docs + generated docs + `research/**` + `docs/superpowers/**` +
+`docs/BUILD-SPEC.md`), in `retrieve.mjs` (`DOWNWEIGHT`, `DOWNWEIGHT_FILES/PREFIXES`).
+Gentle + additive, so a doc that genuinely *is* the best answer still wins. **Probe
+set: 2/6 → 6/6 canonical** through the real pipeline (deploy: TODO→`deploy/DEPLOY.md`;
+shader licensing→`rules/shaders.md`; perf budget: research-REPORT→`perf-budget`;
+looks→`new-preset`; audio→`rules/audio.md`; cloud-session→`.claude/ROADMAP.md`
+persistence section). **This diverges from the approved spec** (broader/stronger,
+evidence-driven by the operator's "fix bottlenecks" directive) — noted here as the
+record.
+
+**Index compaction (b) + title fallback (c) — also shipped:** new dep-free
+`quantize.mjs` (int8/base64, per-vector max-abs scale); `build-index.mjs` VERSION 1→2,
+stores `snippet` (not full text) + `q`/`scale` + `title`, **one chunk per line**
+(chunk-scoped git diffs), dropped `builtAt`. `retrieve.mjs` decodes int8, version-
+guards, falls back to lexical if the embedder is missing (fixes a latent crash), and
+headingless chunks fall back to the doc title. `index.json`: **6.0 MB → 1.3 MB**, 1436
+lines. int8 didn't degrade retrieval (probes identical to float).
+
+**Verified:** `node --test test/rag.test.mjs` **13/13** (added quantize round-trip,
+title fallback, down-weight ordering); `rag:index --check` up-to-date; `npm run health`
+green **except** the known/expected `render.png` drift (gitignored — gotchas.md).
+**Parked follow-ups unchanged:** global/cross-project RAG layer (slice 2). New optional
+notes: the down-weight list is curated (a chunk-count heuristic could self-maintain it);
+`ab-model.mjs` kept as a reusable probe/eval harness.
+
 ## Session — 2026-06-20 (policy: adopted skills are freely editable)
 
 Operator pushed back on the "don't edit adopted skills" convention — correctly: those
@@ -33,8 +77,6 @@ fixtures; gate Tier-2 hit-rate once stable; a rule-eval variant.
 ## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
 
 - [ ] **non-local RAG system — GLOBAL/cross-project layer (slice 2+)** | SLICE 1 (in-repo semantic recall) is now BUILT & MERGE-READY on `claude/rag-recall` — see the session entry below + `tools/rag/`. What remains parked: the **hosted, cross-project + global** layer (serve THIS project's knowledge AND a shared layer across the user's other projects). The seam is already in place — every chunk in `tools/rag/index.json` carries `{scope:"project", project:"primordial-viz"}`, so the global layer is a **merge + filter** (load multiple projects' index.json, filter by scope/project; access gate = filter predicate, later auth). When resumed, BRAINSTORM: where the merged index lives (hosted vs git-synced), the gate/permission model, how other repos feed in, MCP surface. Brief: `research/rag-system/BRIEF.md` | parked 2026-06-19, slice-1 built 2026-06-20
-- [ ] **RAG retrieval-quality follow-ups (slice 1 polish)** | (a) self-referential pollution: `docs/superpowers/**` plan/spec docs contain example query phrasings, so they rank #1 for those exact queries — consider excluding/​down-ranking meta-dev docs (operator chose to KEEP planning docs in the corpus for now). (b) `index.json` is ~6MB single-line, fully rewritten on any doc edit (churn) — consider int8/base64 vector compaction. (c) optional: top-level vs best-chunk heading for snippets. None block use | noted 2026-06-20
-
 ## Session — 2026-06-20 (RAG slice 1: in-repo semantic recall — BUILT, MERGE-READY)
 
 Brainstorm → writing-plans → subagent-driven-development (fresh implementer +

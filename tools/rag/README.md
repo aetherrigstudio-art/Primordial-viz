@@ -4,14 +4,22 @@ Dev-tooling. Adds semantic (vector) search over the project's markdown docs,
 blended with the existing lexical search. Web path stays zero-dependency.
 
 ## Pieces
-- `chunk.mjs` — corpus → heading-section chunks (reuses docs.mjs `docFiles()`).
+- `chunk.mjs` — corpus → heading-section chunks (reuses docs.mjs `docFiles()`);
+  also attaches each doc's `title` (first `# H1`, else basename).
 - `embed.mjs` — local MiniLM embeddings (`@huggingface/transformers`, no egress).
-- `build-index.mjs` — `npm run rag:index` builds the committed `index.json`;
-  `--check` is the drift gate (in `npm run health` + CI).
-- `retrieve.mjs` — hybrid retrieval: ranks by semantic cosine among the top
-  candidates, then a small in-set lexical boost (exact-keyword matches re-order
-  within the relevant set, but can't inject big catch-all docs); `semanticSearch()`
-  + a CLI; falls back to lexical if the index is missing.
+- `quantize.mjs` — dep-free int8/base64 vector codec (per-vector scale); shared by
+  build + retrieve so the committed index stays compact and the `--check` gate
+  stays model-free.
+- `build-index.mjs` — `npm run rag:index` builds the committed `index.json`
+  (compact: snippet + int8 vectors, one chunk per line); `--check` is the drift
+  gate (in `npm run health` + CI).
+- `retrieve.mjs` — hybrid retrieval: decodes int8 vectors, ranks by semantic
+  cosine, adds a small in-set lexical boost (exact-keyword matches re-order within
+  the relevant set) and a gentle down-weight on aggregator/meta docs (always-loaded
+  root/state docs, generated docs, research reports, specs/plans) so the canonical
+  rule/skill/answer doc wins instead of a catch-all; headingless chunks fall back to
+  the doc title; `semanticSearch()` + a CLI; falls back to lexical if the
+  index/embedder is missing. Tuning probes live in `ab-model.mjs`.
 
 ## Surfaces
 - MCP tool `semantic_search` (in `tools/mcp/server.mjs`).

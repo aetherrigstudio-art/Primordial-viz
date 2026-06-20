@@ -66,3 +66,63 @@ test('semanticSearch surfaces the right doc for a conceptual query', async () =>
 test('semanticSearch returns [] for an empty query', async () => {
   assert.deepEqual(await semanticSearch('   '), []);
 });
+
+import { encode, decode } from '../tools/rag/quantize.mjs';
+
+test('quantize round-trip preserves direction (cosine > 0.999)', () => {
+  const v = Float32Array.from({ length: 384 }, (_, i) => Math.sin(i * 0.37) * 0.1);
+  const norm = Math.sqrt(v.reduce((s, x) => s + x * x, 0));
+  for (let i = 0; i < v.length; i++) v[i] /= norm; // unit-norm, like a real embedding
+  const { q, scale } = encode(v);
+  assert.equal(typeof q, 'string');
+  const d = decode(q, scale);
+  assert.equal(d.length, v.length);
+  const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
+  const nd = Math.sqrt(d.reduce((s, x) => s + x * x, 0));
+  const cos = dot(v, d) / nd; // v is already unit-norm
+  assert.ok(cos > 0.999, `expected cosine > 0.999, got ${cos}`);
+});
+
+test('quantize handles an all-zero vector without dividing by zero', () => {
+  const { q, scale } = encode(new Float32Array(384));
+  const d = decode(q, scale);
+  assert.equal(d.length, 384);
+  assert.ok(d.every((x) => x === 0));
+});
+
+import { docTitle } from '../tools/rag/chunk.mjs';
+
+test('chunkDoc attaches the doc title and exposes it as a heading fallback', () => {
+  const text = 'intro before any heading\n# Real Title\n\n## Section\nbody text';
+  const chunks = chunkDoc('docs/example.md', text);
+  assert.ok(chunks.every((c) => c.title === 'Real Title'), 'all chunks share the doc title');
+  const intro = chunks.find((c) => c.heading === '');
+  assert.ok(intro, 'expected an intro chunk with no section heading');
+  assert.equal(intro.heading || intro.title, 'Real Title'); // the fallback consumers use
+});
+
+test('docTitle falls back to the basename when there is no H1', () => {
+  assert.equal(docTitle('docs/no-title.md', '## Only\nsubheading content'), 'no-title.md');
+});
+
+import { rankBySim } from '../tools/rag/retrieve.mjs';
+
+test('rankBySim down-weights aggregator/meta docs on a tie', () => {
+  const sem = [
+    { path: 'CLAUDE.md', heading: '', snippet: '', sim: 0.50 },
+    { path: '.claude/rules/deploy.md', heading: 'Host', snippet: '', sim: 0.50 },
+  ];
+  const ranked = rankBySim(sem, [], 5); // no lexical input
+  assert.equal(ranked[0].path, '.claude/rules/deploy.md', 'canonical doc wins the tie');
+  assert.equal(ranked[1].path, 'CLAUDE.md');
+  assert.ok(ranked[0].score > ranked[1].score);
+});
+
+test('rankBySim leaves non-meta ordering by sim intact', () => {
+  const sem = [
+    { path: 'a.md', heading: '', snippet: '', sim: 0.30 },
+    { path: 'b.md', heading: '', snippet: '', sim: 0.60 },
+  ];
+  const ranked = rankBySim(sem, [], 5);
+  assert.equal(ranked[0].path, 'b.md');
+});

@@ -22,6 +22,21 @@
 
 ---
 
+## Task 0: Embedding-model A/B (decides `MODEL` before the rebuild)
+
+**Decision gate (operator-requested):** before locking the model, build retrieval with both `Xenova/all-MiniLM-L6-v2` (current) and `Xenova/bge-small-en-v1.5` (same 384 dims → no format change) and compare on the probe set. API models and 768/1024-d / multilingual models are rejected (privacy egress + against the compaction goal). The winner becomes `MODEL` in `tools/rag/model.mjs` for Task 5's rebuild; if bge-small fails to load or doesn't beat MiniLM, keep MiniLM and proceed unchanged.
+
+**Files:**
+- Create (eval, may be kept): `tools/rag/ab-model.mjs`
+
+- [ ] **Step 1:** `npm ci` (shared prereq).
+- [ ] **Step 2:** Confirm `Xenova/bge-small-en-v1.5` loads via `@huggingface/transformers` with a single embedding; if it errors, record the failure, keep MiniLM, skip to the File Structure tasks.
+- [ ] **Step 3:** For each model, embed the full `chunkCorpus()` once, then for each probe query (bge gets the instruction prefix `Represent this sentence for searching relevant passages: `) cosine-rank and print top-3 doc paths.
+- [ ] **Step 4:** Score each model = how often the canonical doc is `#1` across the probe set (`how is the app deployed`→deploy-cpanel; `how do looks and presets work`→new-preset; `shader licensing write our own`→shaders.md; `audio bands texture`→audio.md; `mobile performance budget step cap`→shaders.md; `what survives a cloud session`→gotchas/continuity).
+- [ ] **Step 5:** Report the table to the operator; set `MODEL` to the winner. (Note: swapping `MODEL` already invalidates the index via `inputHash`, composing with the VERSION-2 rebuild.)
+
+---
+
 ## File Structure
 
 - **Create** `tools/rag/quantize.mjs` — pure int8/base64 `encode`/`decode`. One responsibility: vector compaction. Dep-free.

@@ -25,7 +25,13 @@ function splitLong(body) {
   return out;
 }
 
+export function docTitle(path, text) {
+  const h1 = String(text).split('\n').find((l) => /^#\s+/.test(l));
+  return h1 ? h1.replace(/^#\s+/, '').trim() : path.split('/').pop();
+}
+
 export function chunkDoc(path, text) {
+  const title = docTitle(path, text);
   const lines = String(text).split('\n');
   const sections = [];
   let heading = '';
@@ -43,7 +49,7 @@ export function chunkDoc(path, text) {
   const chunks = [];
   for (const { heading: h, body } of sections) {
     for (const piece of splitLong(body)) {
-      chunks.push({ scope: 'project', project: PROJECT, path, heading: h, text: piece });
+      chunks.push({ scope: 'project', project: PROJECT, path, title, heading: h, text: piece });
     }
   }
   return chunks;
