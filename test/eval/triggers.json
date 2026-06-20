@@ -1,0 +1,5 @@
+[
+  { "prompt": "Add a new neon-pink look to the visualizer", "expect": ["new-preset"], "note": "explicit look-creation intent" },
+  { "prompt": "The frame rate tanks on my phone, what render scale should I use?", "expect": ["perf-budget"], "note": "mobile perf budget" },
+  { "prompt": "I want to build a preset cross-fade feature — help me think it through first", "expect": ["brainstorming"], "note": "design-before-implement" }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "skill": "new-preset",
+    "task": "Add a new look called 'ember' to primordial with a warm orange palette.",
+    "rubric": "A correct answer creates a params-only JSON preset in src/looks/, registers it in the look registry, and does NOT author a new shader (all looks share the slime shader). It should mention { id, name, description, params }.",
+    "note": "tests that the skill body steers toward data-not-code"
+  }
+]

@@ -135,10 +135,62 @@ export function staticChecks(skills, official = new Set()) {
 }
 
 // ---------------------------------------------------------------------------
-// Tier-1 CLI
+// Root directory (available to all functions)
 // ---------------------------------------------------------------------------
 
 const root = process.cwd();
+
+// ---------------------------------------------------------------------------
+// validateFixtures
+// ---------------------------------------------------------------------------
+
+/**
+ * Validate fixture array shape and content.
+ * Throws with a clear message if any item is malformed.
+ *
+ * @param {Array} items
+ * @param {'triggers'|'outcomes'} kind
+ * @returns {Array} items (if valid)
+ */
+function validateFixtures(items, kind) {
+  if (!Array.isArray(items)) throw new Error(`${kind}: fixture root must be an array`);
+  items.forEach((it, i) => {
+    if (kind === 'triggers') {
+      if (typeof it.prompt !== 'string' || !it.prompt.trim())
+        throw new Error(`triggers[${i}]: missing non-empty "prompt"`);
+      if (!Array.isArray(it.expect) || it.expect.length < 1 || it.expect.some((e) => typeof e !== 'string'))
+        throw new Error(`triggers[${i}]: "expect" must be a non-empty string[]`);
+    } else if (kind === 'outcomes') {
+      for (const f of ['skill', 'task', 'rubric']) {
+        if (typeof it[f] !== 'string' || !it[f].trim())
+          throw new Error(`outcomes[${i}]: missing non-empty "${f}"`);
+      }
+    } else {
+      throw new Error(`unknown fixture kind: ${kind}`);
+    }
+  });
+  return items;
+}
+
+// ---------------------------------------------------------------------------
+// loadFixtures
+// ---------------------------------------------------------------------------
+
+/**
+ * Load and validate a fixture file (triggers or outcomes).
+ *
+ * @param {string} path - relative path from repo root
+ * @param {'triggers'|'outcomes'} kind
+ * @returns {Array}
+ */
+export function loadFixtures(path, kind) {
+  return validateFixtures(JSON.parse(readFileSync(join(root, path), 'utf8')), kind);
+}
+loadFixtures.fromString = (str, kind) => validateFixtures(JSON.parse(str), kind);
+
+// ---------------------------------------------------------------------------
+// Tier-1 CLI
+// ---------------------------------------------------------------------------
 
 function runTier1() {
   const skills = loadSkills(root);

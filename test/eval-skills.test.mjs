@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseFrontmatter, staticChecks } from '../tools/eval-skills.mjs';
+import { parseFrontmatter, staticChecks, loadFixtures } from '../tools/eval-skills.mjs';
 
 test('parseFrontmatter reads name/area/description and strips quotes', () => {
   const fm = parseFrontmatter(
@@ -45,4 +45,18 @@ test('staticChecks downgrades violations on official (locked) skills to warn', (
   );
   assert.ok(violations.every((v) => v.level === 'warn'));
   assert.ok(!violations.some((v) => v.level === 'error'));
+});
+
+test('loadFixtures parses valid triggers', () => {
+  const items = loadFixtures('test/eval/triggers.json', 'triggers');
+  assert.ok(items.length >= 1);
+  assert.equal(typeof items[0].prompt, 'string');
+  assert.ok(Array.isArray(items[0].expect) && items[0].expect.length >= 1);
+});
+
+test('loadFixtures throws on a malformed trigger', () => {
+  assert.throws(
+    () => loadFixtures.fromString('[{"prompt":"hi"}]', 'triggers'),
+    /expect/,
+  );
 });
