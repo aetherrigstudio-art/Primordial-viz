@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 337 files in 109 directories.
+> 338 files in 109 directories.
 
 ```
 Primordial-viz/
@@ -250,6 +250,7 @@ Primordial-viz/
 │   │   └── README.md
 │   ├── plans/
 │   │   └── studio-refactor/
+│   │       ├── NEXT-AGENT-PROMPT.md
 │   │       └── task_plan.md
 │   ├── prompts/
 │   │   ├── claude-opus-4-8-system-prompt.md
