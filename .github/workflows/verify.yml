@@ -32,6 +32,9 @@ jobs:
       - name: Docs (encyclopedia + tree) up to date
         run: node tools/gen-docs.mjs --check
 
+      - name: RAG index up to date
+        run: node tools/rag/build-index.mjs --check
+
       - name: Install Playwright Chromium
         run: |
           npm ci || npm install
@@ -45,6 +48,9 @@ jobs:
 
       - name: MCP server self-test
         run: node tools/mcp/selftest.mjs
+
+      - name: RAG tests (chunker / embedder / retriever)
+        run: node --test test/rag.test.mjs
 
       - name: Upload render screenshot
         if: always()

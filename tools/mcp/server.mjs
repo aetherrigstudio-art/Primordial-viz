@@ -19,6 +19,7 @@ import { runRenderCheck } from './lib/render.mjs';
 import { listLooks, getLook, saveLook } from './lib/looks.mjs';
 import { searchDocs, getDoc } from './lib/docs.mjs';
 import { siteHealth } from './lib/site.mjs';
+import { semanticSearch } from '../rag/retrieve.mjs';
 
 const server = new McpServer({ name: 'primordial', version: '0.1.0' });
 
@@ -225,6 +226,28 @@ server.registerTool(
   },
   async ({ query, limit }) => {
     const results = searchDocs(query, { limit: limit || 8 });
+    const text = results.length
+      ? results.map((r) => `${r.path}${r.heading ? ` › ${r.heading}` : ''}\n  ${r.snippet}`).join('\n\n')
+      : 'No matches.';
+    return { content: [{ type: 'text', text }], structuredContent: { results } };
+  },
+);
+
+server.registerTool(
+  'semantic_search',
+  {
+    description:
+      "Semantic + keyword hybrid search over the project's own markdown docs. Better " +
+      'than search_docs for conceptual/fuzzy questions (paraphrases, synonyms); blends ' +
+      'vector similarity with keyword ranking. Returns ranked path + heading + snippet — ' +
+      'use get_doc to read a full file.',
+    inputSchema: {
+      query: z.string().describe('Natural-language or keyword query'),
+      limit: z.number().int().min(1).max(25).default(8).optional(),
+    },
+  },
+  async ({ query, limit }) => {
+    const results = await semanticSearch(query, { limit: limit || 8 });
     const text = results.length
       ? results.map((r) => `${r.path}${r.heading ? ` › ${r.heading}` : ''}\n  ${r.snippet}`).join('\n\n')
       : 'No matches.';
