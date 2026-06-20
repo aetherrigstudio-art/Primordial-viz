@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 273 files in 90 directories.
+> 276 files in 90 directories.
 
 ```
 Primordial-viz/
@@ -175,7 +175,8 @@ Primordial-viz/
 │   │   │   ├── 2026-06-20-portfolio-media-gathering.md
 │   │   │   ├── 2026-06-20-rag-downweight-structural.md
 │   │   │   ├── 2026-06-20-rag-retrieval-polish.md
-│   │   │   └── 2026-06-20-rag-semantic-recall.md
+│   │   │   ├── 2026-06-20-rag-semantic-recall.md
+│   │   │   └── 2026-06-20-reference-gather-method.md
 │   │   └── specs/
 │   │       ├── 2026-06-19-adopt-ideas-roadmap-design.md
 │   │       ├── 2026-06-19-agent-onboarding-design.md
@@ -186,6 +187,7 @@ Primordial-viz/
 │   │       ├── 2026-06-20-rag-downweight-structural-design.md
 │   │       ├── 2026-06-20-rag-retrieval-polish-design.md
 │   │       ├── 2026-06-20-rag-semantic-recall-design.md
+│   │       ├── 2026-06-20-reference-gather-method-design.md
 │   │       └── 2026-06-20-secrets-management-design.md
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
@@ -218,6 +220,7 @@ Primordial-viz/
 │   ├── landing-page-rag/
 │   │   ├── BRIEF.md
 │   │   ├── copy-and-voice.md
+│   │   ├── dynamic-canvas-deep-research.md
 │   │   ├── motion-and-feel.md
 │   │   ├── README.md
 │   │   ├── reference-study-method.md

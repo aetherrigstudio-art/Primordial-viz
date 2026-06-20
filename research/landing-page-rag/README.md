@@ -29,6 +29,12 @@ audience, an electronic-music visual artist's voice).
 - `reference-study-method.md` — how to gather references (`reel-ingest` + web
   search) under the reference-only / write-our-own rule, and how to record
   takeaways as notes rather than assets.
+- `dynamic-canvas-deep-research.md` — cited multi-source research for a dynamic
+  full-page WebGL canvas (point clouds, Gaussian splats, depth maps): architecture,
+  acquiring splats without training them, mobile cost, reverse-engineering method,
+  and gather-tooling — with licenses flagged and shaky claims dropped. The design +
+  plan for the gathering *method* live in `docs/superpowers/{specs,plans}/2026-06-20-
+  reference-gather-method*`.
 
 ## How to use when building the frontpage
 

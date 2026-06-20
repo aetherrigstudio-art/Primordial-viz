@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 273 files across 17 categories.
+> 276 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
-- [Specs & Long-form Docs](#specs--long-form-docs) (28)
+- [Specs & Long-form Docs](#specs--long-form-docs) (30)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -24,7 +24,7 @@
 - [Tooling / Scripts](#tooling--scripts) (32)
 - [Claude Environment](#claude-environment) (91)
 - [Deployment](#deployment) (3)
-- [Research](#research) (30)
+- [Research](#research) (31)
 - [CI / Build Config](#ci--build-config) (8)
 - [Other](#other) (15)
 
@@ -67,6 +67,7 @@
 | [`docs/superpowers/plans/2026-06-20-rag-downweight-structural.md`](docs/superpowers/plans/2026-06-20-rag-downweight-structural.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md`](docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-rag-semantic-recall.md`](docs/superpowers/plans/2026-06-20-rag-semantic-recall.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
+| [`docs/superpowers/plans/2026-06-20-reference-gather-method.md`](docs/superpowers/plans/2026-06-20-reference-gather-method.md) | writing-plans output (chain: deep-research → brainstorming → writing-plans). |
 | [`docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md`](docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-agent-onboarding-design.md`](docs/superpowers/specs/2026-06-19-agent-onboarding-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 | [`docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md`](docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
@@ -76,6 +77,7 @@
 | [`docs/superpowers/specs/2026-06-20-rag-downweight-structural-design.md`](docs/superpowers/specs/2026-06-20-rag-downweight-structural-design.md) | Date: 2026-06-20 · Status: approved (brainstorm) · Area: dev-tooling (tools/rag/) Follows: 2026-06-20-rag-retrieval-polish-design.md (which… |
 | [`docs/superpowers/specs/2026-06-20-rag-retrieval-polish-design.md`](docs/superpowers/specs/2026-06-20-rag-retrieval-polish-design.md) | Date: 2026-06-20 · Status: approved (brainstorm) · Area: dev-tooling (tools/rag/) Source thread: progress.md → "RAG retrieval-quality follow-ups… |
 | [`docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md`](docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md) | Date: 2026-06-20 Status: approved design, ready for writing-plans Brief: research/rag-system/BRIEF.md (the full non-local RAG vision) Parked thread:… |
+| [`docs/superpowers/specs/2026-06-20-reference-gather-method-design.md`](docs/superpowers/specs/2026-06-20-reference-gather-method-design.md) | Brainstorming/design output (the chain: deep-research → brainstorming → writing-plans). |
 | [`docs/superpowers/specs/2026-06-20-secrets-management-design.md`](docs/superpowers/specs/2026-06-20-secrets-management-design.md) | Date: 2026-06-20 · Branch: claude/init-r8ukva · Status: design (for review) · Method: brainstorming (done, parked) → this spec → writing-plans → SDD. |
 
 ## App — Entry & Bootstrap
@@ -344,6 +346,7 @@
 | [`research/landing-page-rag/BRIEF.md`](research/landing-page-rag/BRIEF.md) | Self-contained task for a fresh agent. |
 | [`research/landing-page-rag/README.md`](research/landing-page-rag/README.md) | Curated, our-own-words reference knowledge for building a top-tier landing page for primordial / the artist. |
 | [`research/landing-page-rag/copy-and-voice.md`](research/landing-page-rag/copy-and-voice.md) | How to write the words on primordial's landing page so they're concise, confident, and unmistakably the voice of an electronic-music visual artist —… |
+| [`research/landing-page-rag/dynamic-canvas-deep-research.md`](research/landing-page-rag/dynamic-canvas-deep-research.md) | A multi-source, license-flagged research synthesis (5 parallel search angles, adversarially verified) for building primordial's frontpage as a… |
 | [`research/landing-page-rag/motion-and-feel.md`](research/landing-page-rag/motion-and-feel.md) | How to make a landing page feel alive and intentional without it feeling busy, janky, or slow — and how to do that on primordial's phone-first,… |
 | [`research/landing-page-rag/reference-study-method.md`](research/landing-page-rag/reference-study-method.md) | How to gather landing-page references the right way for primordial — to learn from award-quality work without copying it, and to turn what you see… |
 | [`research/landing-page-rag/structure-and-conversion.md`](research/landing-page-rag/structure-and-conversion.md) | How to lay out a landing page so a first-time visitor understands it, believes it, and acts — in that order. |
