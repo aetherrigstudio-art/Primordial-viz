@@ -12,12 +12,29 @@ const md = `# Developer Tools
 
 ## Misc
 - [CrackedApp](https://example.com/warez) - cracked software keygen downloads
+
+## Motion
+- [A](https://a.example.com), [B](https://b.example.com) or [C](https://c.example.com) - shared desc
 `;
 
 const data = parseIndex(md, { sourceUrl: 'https://fmhy.net/developer-tools', fetchedAt: '2026-06-20' });
 
-// dedup by url
-assert.equal(data.entries.length, 3, 'dedups the repeated Netlify line');
+// multi-link: all three links on one list-item line are extracted
+const entryA = data.entries.find(e => e.name === 'A');
+const entryB = data.entries.find(e => e.name === 'B');
+const entryC = data.entries.find(e => e.name === 'C');
+assert.ok(entryA, 'A parsed from multi-link line');
+assert.ok(entryB, 'B parsed from multi-link line');
+assert.ok(entryC, 'C parsed from multi-link line');
+assert.equal(entryA.category, 'Motion', 'A has correct category');
+assert.equal(entryB.category, 'Motion', 'B has correct category');
+assert.equal(entryC.category, 'Motion', 'C has correct category');
+assert.ok(entryA.blurb.includes('shared desc'), 'A blurb contains shared desc');
+assert.ok(entryB.blurb.includes('shared desc'), 'B blurb contains shared desc');
+assert.ok(entryC.blurb.includes('shared desc'), 'C blurb contains shared desc');
+
+// dedup by url — now 6 entries: Netlify(deduped to 1) + SomeShaderLib + CrackedApp + A + B + C
+assert.equal(data.entries.length, 6, 'dedups the repeated Netlify line; 6 total entries');
 // category from heading
 const netlify = data.entries.find(e => e.name === 'Netlify');
 assert.equal(netlify.category, 'Hosting');

@@ -10,8 +10,21 @@ const DENY = /\b(piracy|pirated?|warez|crack(ed|s)?|keygen|nulled|torrent|nsfw|p
 // Entries relevant to Primordial (raw-WebGL2 audio-visual instrument + its hosting/CI).
 const RELEVANT = /\b(host(ing)?|cdn|static\s*site|deploy|netlify|vercel|pages|cloudflare|webgl|web\s*gpu|glsl|shader|graphics?|canvas|render(ing|er)?|audio|sound|dsp|music|asset|texture|font|icon|sprite|image|video|ffmpeg|ci\b|continuous\s*integration|perf(ormance)?|benchmark)\b/i;
 
-const LIST_ITEM = /^\s*[-*]\s+\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)\s*(.*)$/;
+// Matches a single [text](url) link anywhere on a line.
+const LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g;
+// Detects whether a line is a list item (bullet).
+const LIST_ITEM_LINE = /^\s*[-*]\s+/;
 const HEADING = /^(#{1,4})\s+(.*?)\s*#*$/;
+
+/** Extract trailing blurb: text after the last link's closing paren, strip leading separators. */
+function extractBlurb(line) {
+  let lastEnd = -1;
+  let m;
+  const re = /\]\((https?:\/\/[^)\s]+)\)/g;
+  while ((m = re.exec(line)) !== null) lastEnd = m.index + m[0].length;
+  if (lastEnd < 0) return '';
+  return line.slice(lastEnd).replace(/^[\s\-—:|/,]+/, '').replace(/[`*]/g, '').trim();
+}
 
 export function parseIndex(markdown, { sourceUrl, fetchedAt }) {
   const lines = markdown.split('\n');
@@ -20,21 +33,25 @@ export function parseIndex(markdown, { sourceUrl, fetchedAt }) {
   for (const line of lines) {
     const h = line.match(HEADING);
     if (h) { category = h[2].replace(/[`*]/g, '').trim() || category; continue; }
-    const m = line.match(LIST_ITEM);
-    if (!m) continue;
-    const name = m[1].replace(/[`*]/g, '').trim();
-    const url = m[2].trim();
-    const blurb = m[3].replace(/^[\s\-—:|]+/, '').replace(/[`*]/g, '').trim();
-    if (byUrl.has(url)) continue; // dedup by url
-    const hay = `${name} ${url} ${blurb} ${category}`;
-    const denyHit = hay.match(DENY);
-    byUrl.set(url, {
-      name, url, category, blurb,
-      tags: [],
-      relevant_to_primordial: RELEVANT.test(`${name} ${blurb} ${category}`),
-      excluded: Boolean(denyHit),
-      exclude_reason: denyHit ? `matched safety denylist: ${denyHit[0]}` : null,
-    });
+    if (!LIST_ITEM_LINE.test(line)) continue; // only harvest from list items
+    // Extract ALL [text](url) links on this line
+    const blurb = extractBlurb(line);
+    LINK_RE.lastIndex = 0;
+    let lm;
+    while ((lm = LINK_RE.exec(line)) !== null) {
+      const name = lm[1].replace(/[`*]/g, '').trim();
+      const url = lm[2].trim();
+      if (byUrl.has(url)) continue; // dedup by url
+      const hay = `${name} ${url} ${blurb} ${category}`;
+      const denyHit = hay.match(DENY);
+      byUrl.set(url, {
+        name, url, category, blurb,
+        tags: [],
+        relevant_to_primordial: RELEVANT.test(`${name} ${blurb} ${category}`),
+        excluded: Boolean(denyHit),
+        exclude_reason: denyHit ? `matched safety denylist: ${denyHit[0]}` : null,
+      });
+    }
   }
   return { source: 'fmhy-dev-tools', source_url: sourceUrl, fetched_at: fetchedAt, entries: [...byUrl.values()] };
 }

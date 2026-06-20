@@ -291,7 +291,7 @@
 | [`research/findings/fmhy-tooling.md`](research/findings/fmhy-tooling.md) | Deep-research synthesis (4 parallel passes, adversarially verified). |
 | [`research/findings/mcp-adoption.md`](research/findings/mcp-adoption.md) | Deep-research synthesis (5 parallel search angles, adversarially verified). |
 | [`research/findings/mcp-build-our-own.md`](research/findings/mcp-build-our-own.md) | Deep-research synthesis (5 parallel search angles, adversarially verified). |
-| [`research/fmhy-dev-tools/CATALOG.md`](research/fmhy-dev-tools/CATALOG.md) | Source: https://fmhy.net/developer-tools · fetched 2026-06-20 · 737 entries (2 excluded by safety gate). |
+| [`research/fmhy-dev-tools/CATALOG.md`](research/fmhy-dev-tools/CATALOG.md) | Source: https://fmhy.net/developer-tools · fetched 2026-06-20 · 1570 entries (6 excluded by safety gate). |
 | [`research/fmhy-dev-tools/SHORTLIST.md`](research/fmhy-dev-tools/SHORTLIST.md) | Filtered from the FMHY dev-tools catalog (124 candidates, safety-gated per task-3 CATALOG.md). |
 | [`research/fmhy-dev-tools/links.json`](research/fmhy-dev-tools/links.json) | Configuration / data file. |
 | [`research/fmhy-dev-tools/source.md`](research/fmhy-dev-tools/source.md) | [◄◄ Back to Wiki Index](https://www.reddit.com/r/FREEMEDIAHECKYEAH/wiki/tools-index) |
