@@ -14,17 +14,24 @@ as `src/shaders/*.js` (no `.glsl` files). Looks are params-only JSON.
 1. **Read** the orient block (auto-printed at session start) and this file.
 2. **Confirm** the branch and working tree: `git status`. Only git-committed
    files survive a container wipe.
-3. **Restate** the current next step (from the orient block / the tail of
-   `progress.md`) back to the user in one line before you start - so you don't
-   re-do finished work or build the wrong thing.
-4. **Route**: find your task in the table below and read that rule first.
-5. **Verify**: `npm run health` is green before you start and before you claim
+3. **Handoff, then PROMPT the operator - do NOT assume.** Give a short handoff
+   (branch, what's done, verified-open issues, open decisions), then **ask the
+   operator what they want to do and wait.** Do not auto-pick a parked thread, a
+   stack, or an approach - those are context, not orders. The destination is the
+   operator's call; surface it with something they can **see**, then let them
+   decide. (Lesson 2026-06-20: assuming the task and barrelling in = wasted work.)
+4. **Tools FIRST.** A fresh container has no `node_modules`/Chromium, so you can
+   show the operator nothing until you fix it: `npm install` +
+   `npx playwright install chromium`, verify `node tools/mcp/selftest.mjs`. Never
+   route around a broken env with docs.
+5. **Route**: find your task in the table below and read that rule first.
+6. **Verify**: `npm run health` is green before you start and before you claim
    "done" (see the `verification-before-completion` skill). Render check:
    `node test/render-check.mjs`.
-6. **Branch LAST**: only now create/switch a working branch if you need one.
+7. **Branch LAST**: only now create/switch a working branch if you need one.
    **Never branch as your first action** - the orient `guard` hook *blocks*
    branch creation (`git checkout -b`, `git switch -c`, `git branch <name>`)
-   until you've engaged this gate by running `npm run health` (step 5). Switching
+   until you've engaged this gate by running `npm run health` (step 6). Switching
    to an *existing* branch (e.g. the active branch the orient warning names) is
    always allowed.
 
