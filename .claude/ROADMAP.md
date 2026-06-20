@@ -151,4 +151,5 @@ Source: `research/claude-repo-comparison/REPORT.md` +
      each declare `tools: Read, Grep, Glob, Bash` (no Write/Edit/WebFetch/MCP).
    - **Fewer phone prompts:** added command-scoped `allowed-tools` to our **12 own
      skills** (never `Bash(*)`; only the exact commands each runs). Adopted skills
-     left untouched (vendored/hash-locked in `skills-lock.json`).
+     are freely adaptable like our own (see the policy update 2026-06-20);
+     `skills-lock.json` now tracks **only official Anthropic** skills as pristine.

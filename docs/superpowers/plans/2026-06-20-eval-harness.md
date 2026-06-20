@@ -15,6 +15,8 @@
 - **Structured parsing:** use `output_config: { format: { type: "json_schema", schema: ... } }` so the pick/score parse deterministically. Never raw-string-match model output.
 - **Determinism boundary:** only `callModel` touches the network. Every pure function is unit-tested with a fake `callModel`; no test spends a token.
 - **Self-skip:** if `process.env.ANTHROPIC_API_KEY` is unset/empty, Tiers 2–3 print `skipped (no ANTHROPIC_API_KEY)` and the process exits 0. Only Tier-1 violations (or a `--require-llm` flag in CI) cause a non-zero exit.
+- **Frontmatter parser handles YAML block scalars.** At least one skill (`find-docs`) writes `description: >-` with the text on following indented lines (folded scalar). The parser must fold `>`/`>-`/`|`/`|-` continuations into the value, or it mis-reads the description as empty (false error in Tier 1, empty catalog entry in Tier 2). Verified 2026-06-20.
+- **Official-skill exemption.** `skills-lock.json` now tracks **only official Anthropic skills** (`frontend-design`, `task-management`) as pristine/un-editable. Tier-1 ERROR checks apply to every other skill (ours + freely-adapted adopted ones); skills listed in `skills-lock.json` are downgraded to warn-only since we don't edit them. Derive the exempt set from `skills-lock.json` (DRY: same file the drift gate uses).
 - **Zero web-path impact:** nothing here ships to the deployed site. `tools/`, `test/`, devDeps are all out of the client-side-privacy scope (per `.claude/rules/deploy.md`).
 - **Repo conventions:** 2-space indent, single quotes, `#!/usr/bin/env node` shebang on the CLI, pure-core + CLI-dispatch shape (mirror `tools/harvest-links.mjs`).
 
@@ -39,7 +41,7 @@
 - Test: `test/eval-skills.test.mjs`
 
 **Interfaces:**
-- Produces: `parseFrontmatter(text) -> { name?, area?, description?, 'allowed-tools'? }`; `loadSkills(rootDir) -> [{ id, dir, name, area, description }]` (id = directory name); `staticChecks(skills) -> [{ skill, level: 'error'|'warn', msg }]`.
+- Produces: `parseFrontmatter(text) -> { name?, area?, description?, 'allowed-tools'? }`; `loadSkills(rootDir) -> [{ id, dir, name, area, description }]` (id = directory name); `loadOfficial(rootDir) -> Set<string>` (skill ids in `skills-lock.json` = official Anthropic, exempt from errors); `staticChecks(skills, official) -> [{ skill, level: 'error'|'warn', msg }]` (violations on a skill in `official` are emitted as `warn`, never `error`).
 
 - [ ] **Step 1: Write the failing test for `parseFrontmatter`**
 
@@ -60,6 +62,13 @@ test('parseFrontmatter reads name/area/description and strips quotes', () => {
 test('parseFrontmatter returns {} when no frontmatter', () => {
   assert.deepEqual(parseFrontmatter('# just a body'), {});
 });
+
+test('parseFrontmatter folds a >- block-scalar description', () => {
+  const fm = parseFrontmatter(
+    '---\nname: find-docs\narea: research\ndescription: >-\n  Retrieves up-to-date docs.\n  Use when the user asks about a library.\n---\n# body',
+  );
+  assert.equal(fm.description, 'Retrieves up-to-date docs. Use when the user asks about a library.');
+});
 ```
 
 - [ ] **Step 2: Run it to confirm failure**
@@ -78,9 +87,25 @@ export function parseFrontmatter(text) {
   if (!text.startsWith('---')) return fm;
   const end = text.indexOf('\n---', 3);
   if (end < 0) return fm;
-  for (const line of text.slice(3, end).split('\n')) {
-    const m = line.match(/^([A-Za-z][\w-]*):\s*(.*)$/);
-    if (m) fm[m[1].toLowerCase()] = m[2].trim().replace(/^["']|["']$/g, '');
+  const lines = text.slice(3, end).split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^([A-Za-z][\w-]*):\s*(.*)$/);
+    if (!m) continue;
+    const key = m[1].toLowerCase();
+    let val = m[2].trim();
+    if (/^[|>][+-]?$/.test(val)) {
+      // YAML block scalar (>- folds to spaces, |- keeps newlines): gather
+      // following blank or more-indented lines as the value.
+      const fold = val[0] === '>';
+      const body = [];
+      while (i + 1 < lines.length && (lines[i + 1].trim() === '' || /^\s/.test(lines[i + 1]))) {
+        body.push(lines[++i].replace(/^\s+/, ''));
+      }
+      val = fold ? body.join(' ').replace(/\s+/g, ' ').trim() : body.join('\n').trim();
+    } else {
+      val = val.replace(/^["']|["']$/g, '');
+    }
+    fm[key] = val;
   }
   return fm;
 }
@@ -120,12 +145,21 @@ test('staticChecks flags missing area, missing/short description, name≠dir', (
     { id: 'short', name: 'short', area: 'meta', description: 'too short' },
     { id: 'mismatch', name: 'other', area: 'meta',
       description: 'A clear, sufficiently long description here. Use when the user asks for the mismatch case.' },
-  ]);
+  ], new Set());
   const byId = (id, level) => violations.some((v) => v.skill === id && v.level === level);
   assert.ok(byId('noarea', 'error'));   // missing area
   assert.ok(byId('short', 'error'));    // description below min length
   assert.ok(byId('mismatch', 'error')); // name ≠ dir id
   assert.ok(!violations.some((v) => v.skill === 'good')); // clean skill: no violations
+});
+
+test('staticChecks downgrades violations on official (locked) skills to warn', () => {
+  const violations = staticChecks(
+    [{ id: 'short', name: 'short', area: 'meta', description: 'too short' }],
+    new Set(['short']), // listed in skills-lock.json → official, exempt from errors
+  );
+  assert.ok(violations.every((v) => v.level === 'warn'));
+  assert.ok(!violations.some((v) => v.level === 'error'));
 });
 ```
 
@@ -141,17 +175,26 @@ const DESC_MIN = 40;   // chars — below this a description can't carry a trigg
 const DESC_MAX = 1024; // chars — above this it bloats the always-injected context
 const TRIGGER_RE = /\buse (when|this|after|at|before|for|right)\b|\byou must\b/i;
 
-export function staticChecks(skills) {
+export function loadOfficial(rootDir) {
+  try {
+    const lock = JSON.parse(readFileSync(join(rootDir, 'skills-lock.json'), 'utf8'));
+    return new Set(Object.keys(lock.skills || {}));
+  } catch { return new Set(); }
+}
+
+export function staticChecks(skills, official = new Set()) {
   const out = [];
   for (const s of skills) {
-    if (!s.area) out.push({ skill: s.id, level: 'error', msg: 'missing frontmatter `area:`' });
+    // Official (locked) skills are not ours to edit → never error on them.
+    const lvl = official.has(s.id) ? 'warn' : 'error';
+    if (!s.area) out.push({ skill: s.id, level: lvl, msg: 'missing frontmatter `area:`' });
     if (s.name !== s.id)
-      out.push({ skill: s.id, level: 'error', msg: `frontmatter name "${s.name}" ≠ directory "${s.id}"` });
+      out.push({ skill: s.id, level: lvl, msg: `frontmatter name "${s.name}" ≠ directory "${s.id}"` });
     const d = s.description || '';
     if (d.length < DESC_MIN)
-      out.push({ skill: s.id, level: 'error', msg: `description too short (${d.length} < ${DESC_MIN})` });
+      out.push({ skill: s.id, level: lvl, msg: `description too short (${d.length} < ${DESC_MIN})` });
     if (d.length > DESC_MAX)
-      out.push({ skill: s.id, level: 'error', msg: `description too long (${d.length} > ${DESC_MAX})` });
+      out.push({ skill: s.id, level: lvl, msg: `description too long (${d.length} > ${DESC_MAX})` });
     if (d.length >= DESC_MIN && !TRIGGER_RE.test(d))
       out.push({ skill: s.id, level: 'warn', msg: 'description has no trigger phrasing ("Use when …")' });
   }
@@ -175,7 +218,7 @@ const root = process.cwd();
 
 function runTier1() {
   const skills = loadSkills(root);
-  const violations = staticChecks(skills);
+  const violations = staticChecks(skills, loadOfficial(root));
   const errors = violations.filter((v) => v.level === 'error');
   const warns = violations.filter((v) => v.level === 'warn');
   for (const v of violations) console.log(`  [${v.level}] ${v.skill}: ${v.msg}`);

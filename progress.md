@@ -1,5 +1,19 @@
 # Progress Log — primordial
 
+## Session — 2026-06-20 (policy: adopted skills are freely editable)
+
+Operator pushed back on the "don't edit adopted skills" convention — correctly: those
+skills are plain markdown, nothing technically locked them. **New durable policy:** we
+freely edit/adapt adopted skills and `.md` files like our own; only **official Anthropic**
+skills are kept pristine + provenance-tracked. `skills-lock.json` slimmed from 20 → **2
+entries** (`frontend-design`, `task-management`); the 18 obra/superpowers/addyosmani/
+upstash/warp skills are now ours to adapt. The lock + the gen-docs drift-gate exclusion now
+mean "official, leave pristine," not "untouchable." Created `docs/decisions/README.md` to
+resolve the one drift this surfaced (`documentation-and-adrs` → `docs/decisions/`). Verified
+`gen-docs --check` green (only the expected render.png container drift). The eval-harness
+plan was updated to match: Tier-1 error-gates all skills except the official set (from
+skills-lock.json, warn-only), and the frontmatter parser now folds YAML block scalars (`>-`).
+
 ## Open threads (parked - resume these; the `orient` hook surfaces them; `/park` adds them)
 
 - [ ] **NEXT (prep) — skill/rule eval harness (Phase 2, last item)** | what: an eval that measures whether a skill/rule actually TRIGGERS + HELPS (we gate correctness, never efficacy) — the #1 adopt-idea from the comparison runs | how: it's design-heavy + ambiguous, so BRAINSTORM first. **FULL onboarding brief → `research/eval-harness/BRIEF.md`** (context, prior art [superpowers/anthropics/wshobson], candidate approaches [start tier-1 static, deterministic], constraints, success test). Run /brainstorming with it → writing-plans → subagent-driven build. | order: operator wants ALL preparations done before the real `/Test/` visual (which comes LAST) | set up 2026-06-20
