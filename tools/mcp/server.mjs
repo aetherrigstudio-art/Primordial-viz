@@ -20,12 +20,16 @@ import { listLooks, getLook, saveLook } from './lib/looks.mjs';
 import { searchDocs, getDoc } from './lib/docs.mjs';
 import { siteHealth } from './lib/site.mjs';
 import { semanticSearch } from '../rag/retrieve.mjs';
+import { projectStatus, openThreads, recentLessons, latestHandoff } from './lib/state.mjs';
+import { listSkills, getSkill, listAgents, listRules } from './lib/catalog.mjs';
 
 const server = new McpServer({ name: 'primordial', version: '0.1.0' });
 
-// Skeleton tool — confirms the server is wired and discoverable. Real tool groups
-// (validate_shaders, render_check, looks CRUD, search_docs, site_health) are
-// registered in later phases.
+// Identity tool — confirms the server is wired and discoverable. The real tool
+// groups follow: validate_shaders, render_check, looks CRUD, docs Q&A
+// (search_docs / semantic_search / get_doc / repo_map), project state
+// (project_status / open_threads / recent_lessons), capability catalog
+// (list_skills / get_skill / list_agents / list_rules), and site_health.
 server.registerTool(
   'about',
   {
@@ -273,10 +277,36 @@ server.registerTool(
   },
 );
 
-// Expose the two headline docs as resources for @-mention in clients.
+server.registerTool(
+  'repo_map',
+  {
+    description:
+      'Return the categorized file map of the repo (the generated ENCYCLOPEDIA.md: ' +
+      'every file with a one-line description, grouped by category). Use to find where ' +
+      'something lives. Pass a category heading to return just that section.',
+    inputSchema: {
+      section: z.string().optional().describe('Category heading, e.g. "App — Audio" or "Tooling / Scripts"'),
+    },
+  },
+  async ({ section }) => {
+    try {
+      return { content: [{ type: 'text', text: getDoc('ENCYCLOPEDIA.md', { section: section || null }) }] };
+    } catch (err) {
+      return { content: [{ type: 'text', text: err.message }], isError: true };
+    }
+  },
+);
+
+// Expose the headline + state docs as resources for @-mention in clients.
 for (const [name, path, title] of [
   ['readme', 'README.md', 'README'],
   ['roadmap', 'ROADMAP.md', 'Roadmap'],
+  ['claude', 'CLAUDE.md', 'CLAUDE (agent notes)'],
+  ['onboarding', 'ONBOARDING.md', 'Onboarding'],
+  ['progress', 'progress.md', 'Progress / handoff log'],
+  ['task-plan', 'task_plan.md', 'Task plan'],
+  ['encyclopedia', 'ENCYCLOPEDIA.md', 'Encyclopedia (file map)'],
+  ['tree', 'TREE.md', 'File tree'],
 ]) {
   server.registerResource(
     name,
@@ -285,6 +315,140 @@ for (const [name, path, title] of [
     async (uri) => ({ contents: [{ uri: uri.href, mimeType: 'text/markdown', text: getDoc(path) }] }),
   );
 }
+
+// --- Project state / continuity --------------------------------------------
+// Structured access to the committed handoff log (progress.md) — the same data
+// the SessionStart orient hook parses, but queryable on demand. lib/state.mjs is
+// the single source of truth (the hook calls it too), so they can't drift.
+server.registerTool(
+  'project_status',
+  {
+    description:
+      'Where the project stands right now: current git branch + working-tree state, ' +
+      'the latest handoff entry title, open-thread count, and recent lessons — parsed ' +
+      'from progress.md (the committed continuity log). Use to orient on a fresh session.',
+    inputSchema: {},
+  },
+  async () => {
+    const s = projectStatus();
+    const text =
+      `Branch: ${s.branch ?? '?'} (${s.clean ? 'clean' : s.dirtyCount + ' uncommitted'})\n` +
+      `Latest handoff: ${s.latestHandoff ?? '(none)'}\n` +
+      `Open threads: ${s.openThreadCount}\n` +
+      (s.recentLessons.length ? `Recent lessons:\n  - ${s.recentLessons.join('\n  - ')}` : '');
+    return { content: [{ type: 'text', text }], structuredContent: s };
+  },
+);
+
+server.registerTool(
+  'open_threads',
+  {
+    description:
+      'List the parked "Open threads" from progress.md — unfinished work to resume, ' +
+      'each with its context and next step. The same list the orient hook surfaces.',
+    inputSchema: {},
+  },
+  async () => {
+    const threads = openThreads();
+    const text = threads.length ? threads.map((t) => `- ${t.text}`).join('\n\n') : 'No open threads.';
+    return { content: [{ type: 'text', text }], structuredContent: { threads } };
+  },
+);
+
+server.registerTool(
+  'recent_lessons',
+  {
+    description:
+      'The most recent LESSON entries from progress.md — past corrections worth not ' +
+      'repeating. Returns the entry titles (read the full section with get_doc progress.md).',
+    inputSchema: {
+      limit: z.number().int().min(1).max(10).default(3).optional(),
+    },
+  },
+  async ({ limit }) => {
+    const lessons = recentLessons(limit || 3);
+    const text = lessons.length ? lessons.map((l) => `- ${l.title}`).join('\n') : 'No lessons recorded.';
+    return { content: [{ type: 'text', text }], structuredContent: { lessons } };
+  },
+);
+
+// Latest handoff as a resource for @-mention.
+server.registerResource(
+  'handoff',
+  'state://handoff',
+  { title: 'Latest handoff', description: 'Newest progress.md session entry', mimeType: 'text/markdown' },
+  async (uri) => {
+    const h = latestHandoff();
+    const text = h ? `## ${h.title}\n\n${h.body}` : '(no handoff found)';
+    return { contents: [{ uri: uri.href, mimeType: 'text/markdown', text }] };
+  },
+);
+
+// --- Capability catalog (skills / agents / rules) --------------------------
+server.registerTool(
+  'list_skills',
+  {
+    description:
+      "List the project's skills (.claude/skills) with area + description — the in-repo " +
+      'workflow toolkit. Use to discover which skill fits a task; read one with get_skill.',
+    inputSchema: {
+      area: z.string().optional().describe('Filter to one area, e.g. "shaders", "deploy", "planning"'),
+    },
+  },
+  async ({ area }) => {
+    let skills = listSkills();
+    if (area) skills = skills.filter((s) => s.area === area);
+    const text = skills.length
+      ? skills.map((s) => `${s.id} [${s.area || '-'}] — ${s.description}`).join('\n')
+      : 'No matching skills.';
+    return { content: [{ type: 'text', text }], structuredContent: { skills } };
+  },
+);
+
+server.registerTool(
+  'get_skill',
+  {
+    description: 'Return one skill\'s full SKILL.md by id (e.g. "perf-budget", "new-preset").',
+    inputSchema: { id: z.string().describe('Skill id (its directory name)') },
+  },
+  async ({ id }) => {
+    try {
+      return { content: [{ type: 'text', text: getSkill(id) }] };
+    } catch {
+      return { content: [{ type: 'text', text: `Skill '${id}' not found.` }], isError: true };
+    }
+  },
+);
+
+server.registerTool(
+  'list_agents',
+  {
+    description:
+      "List the project's subagents (.claude/agents) with their allowed tools and when " +
+      'to use each (e.g. audio-dsp, visual-qa).',
+    inputSchema: {},
+  },
+  async () => {
+    const agents = listAgents();
+    const text = agents.map((a) => `${a.id} [${a.tools.join(', ')}] — ${a.description}`).join('\n');
+    return { content: [{ type: 'text', text }], structuredContent: { agents } };
+  },
+);
+
+server.registerTool(
+  'list_rules',
+  {
+    description:
+      "List the scoped rule files (.claude/rules) — the load-bearing constraints, with the " +
+      'paths each governs. Read a full rule with get_doc (e.g. ".claude/rules/shaders.md").',
+    inputSchema: {},
+  },
+  async () => {
+    const rules = listRules();
+    const text = rules.map((r) => `${r.id}${r.paths ? ` (${r.paths})` : ''} — ${r.title}`).join('\n');
+    return { content: [{ type: 'text', text }], structuredContent: { rules } };
+  },
+);
 
 // --- Live-site health (primordial.video) -----------------------------------
 server.registerTool(

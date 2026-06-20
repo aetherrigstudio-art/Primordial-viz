@@ -24,8 +24,18 @@ try {
   await client.connect(transport);
 
   const { tools } = await client.listTools();
-  console.log('tools:', tools.map((t) => t.name).join(', ') || '(none)');
+  const names = tools.map((t) => t.name);
+  console.log('tools:', names.join(', ') || '(none)');
   if (!tools.length) { console.error('FAIL: server exposed no tools'); failed = true; }
+
+  // Guard against a silent registration regression in the headline tool groups.
+  const required = [
+    'validate_shaders', 'render_check', 'list_looks', 'search_docs', 'semantic_search',
+    'get_doc', 'repo_map', 'project_status', 'open_threads', 'recent_lessons',
+    'list_skills', 'get_skill', 'list_agents', 'list_rules', 'site_health',
+  ];
+  const missing = required.filter((n) => !names.includes(n));
+  if (missing.length) { console.error('FAIL: missing tools:', missing.join(', ')); failed = true; }
 
   // Resources / prompts are optional in early phases — list them if supported.
   const caps = client.getServerCapabilities() || {};

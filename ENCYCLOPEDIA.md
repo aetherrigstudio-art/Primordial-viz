@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 264 files across 17 categories.
+> 268 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -19,9 +19,9 @@
 - [App — Looks / Presets](#app--looks--presets) (3)
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
-- [Tests & Verification](#tests--verification) (10)
+- [Tests & Verification](#tests--verification) (12)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (32)
+- [Tooling / Scripts](#tooling--scripts) (34)
 - [Claude Environment](#claude-environment) (91)
 - [Deployment](#deployment) (3)
 - [Research](#research) (24)
@@ -42,7 +42,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Checked all remote branches; 7 were fully merged, 2 had unmerged work — both rescued into main: - Portfolio (sub-project #1) from… |
+| [`progress.md`](progress.md) | Branch claude/check-main-branch-yx2q8v. |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -136,6 +136,7 @@
 
 | File | Description |
 | --- | --- |
+| [`test/catalog.test.mjs`](test/catalog.test.mjs) | MJS file. |
 | [`test/eval-skills.test.mjs`](test/eval-skills.test.mjs) | MJS file. |
 | [`test/eval/outcomes.json`](test/eval/outcomes.json) | Configuration / data file. |
 | [`test/eval/triggers.json`](test/eval/triggers.json) | Configuration / data file. |
@@ -146,6 +147,7 @@
 | [`test/reel-ingest.test.mjs`](test/reel-ingest.test.mjs) | MJS file. |
 | [`test/render-check.mjs`](test/render-check.mjs) | test/render-check.mjs — headless-Chromium render check (laptop-free). |
 | [`test/smoke.mjs`](test/smoke.mjs) | test/smoke.mjs — laptop-free logic checks (no browser, no deps). |
+| [`test/state.test.mjs`](test/state.test.mjs) | MJS file. |
 
 ## Desktop / Standalone (Tauri)
 
@@ -188,10 +190,12 @@
 | [`tools/harvest-links.mjs`](tools/harvest-links.mjs) | Harvest a markdown "index of links" (e.g. |
 | [`tools/health.mjs`](tools/health.mjs) | Consolidated repo health check - runs the local gates in one pass and prints a PASS/FAIL dashboard. |
 | [`tools/mcp/lib/browser.mjs`](tools/mcp/lib/browser.mjs) | Shared headless-Chromium launch for the WebGL2 dev tools (shader validation, render checks). |
+| [`tools/mcp/lib/catalog.mjs`](tools/mcp/lib/catalog.mjs) | Capability catalog: enumerate the project's agent-workshop knowledge units — skills (.claude/skills/*/SKILL.md), subagents (.claude/agents/*.md),… |
 | [`tools/mcp/lib/docs.mjs`](tools/mcp/lib/docs.mjs) | Project Q&A: keyword search + retrieval over the repo's own markdown docs, so an assistant can answer questions about the project. |
 | [`tools/mcp/lib/looks.mjs`](tools/mcp/lib/looks.mjs) | Looks/preset management: list, validate, and create/update the params-only JSON "looks" in src/looks/, keeping src/looks/registry.js's generated… |
 | [`tools/mcp/lib/render.mjs`](tools/mcp/lib/render.mjs) | Reusable headless render check: load the app in headless Chromium (WebGL2 via SwiftShader), confirm it boots and renders, and capture a screenshot +… |
 | [`tools/mcp/lib/site.mjs`](tools/mcp/lib/site.mjs) | Live-site health for primordial.video (read-only — no credentials). |
+| [`tools/mcp/lib/state.mjs`](tools/mcp/lib/state.mjs) | Project continuity/state: parse the committed handoff log (progress.md) into structured data so an assistant can query "what's the current state /… |
 | [`tools/mcp/lib/validate.mjs`](tools/mcp/lib/validate.mjs) | Headless GLSL ES 3.00 validation: compile + link the project's shaders in a real WebGL2 context (ANGLE/SwiftShader via Playwright) — the exact… |
 | [`tools/mcp/selftest.mjs`](tools/mcp/selftest.mjs) | Self-test for the primordial MCP server: spawns server.mjs over stdio using the MCP SDK client, lists tools/resources/prompts, and exits non-zero if… |
 | [`tools/mcp/server.mjs`](tools/mcp/server.mjs) | Primordial-viz MCP server — local stdio dev tools for AI assistants working on this project. |

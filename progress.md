@@ -1,5 +1,34 @@
 # Progress Log — primordial
 
+## Session — 2026-06-20 (migrate project knowledge into the MCP server)
+
+Branch `claude/check-main-branch-yx2q8v`. Planned via `thought-based-reasoning`
+(operator picked all three info types, tool-agnostic) after thoroughly reading
+the server, docs layer, RAG, ENCYCLOPEDIA, TREE, and `orient.sh`.
+
+**Built — knowledge that was trapped in files/the bash hook is now queryable via
+MCP + CLI, following the repo pattern (thin tool over a CLI-capable `lib/`):**
+- **Continuity/state → `tools/mcp/lib/state.mjs`** (+ CLI `status|threads|lessons|handoff`,
+  `--stdin`/`--title`). Parses `progress.md` into `latestHandoff` / `openThreads` /
+  `recentLessons` / `projectStatus`. MCP tools `project_status` / `open_threads` /
+  `recent_lessons` + `state://handoff` resource.
+- **Capability catalog → `tools/mcp/lib/catalog.mjs`** (reuses `eval-skills.mjs`
+  `parseFrontmatter`/`loadSkills` — no second parser). MCP tools `list_skills`
+  (area filter) / `get_skill` / `list_agents` / `list_rules`.
+- **Broaden corpus:** `repo_map` tool (ENCYCLOPEDIA by category) + `doc://` resources
+  for CLAUDE/ONBOARDING/progress/task_plan/ENCYCLOPEDIA/TREE.
+- **De-dup (the real "migration"):** `orient.sh` now calls `state.mjs` via `--stdin`
+  (so it parses the **cross-branch** `progress.md` it already fetches — branch-scoped
+  continuity LESSON preserved), with the original awk/grep kept as a node-absent
+  fallback. Hook and MCP tools share ONE parser → can't drift.
+
+**Verified:** `node --test test/state.test.mjs test/catalog.test.mjs` 9/9; MCP
+selftest lists all 18 tools + 11 resources and now ASSERTS the headline set; orient
+hook runs clean via the node path (confirmed it surfaced the active-branch threads);
+`npm run health` green; gen-docs + RAG index regenerated. CI gains a "MCP lib tests"
+step. Closed the deferred ROADMAP `list_skills`/`get_skill` item (expanded to the
+full catalog + state tools).
+
 ## Session — 2026-06-20 (branch rescues: portfolio + whats-next → main)
 
 Checked all remote branches; 7 were fully merged, 2 had unmerged work — both

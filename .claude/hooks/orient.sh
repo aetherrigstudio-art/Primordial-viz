@@ -10,6 +10,15 @@ set -u
 root="$(cd "$(dirname "$0")/../.." 2>/dev/null && pwd)" || exit 0
 cd "$root" 2>/dev/null || exit 0
 
+# Continuity parsing is owned by tools/mcp/lib/state.mjs (single source of truth,
+# also exposed as MCP tools). Prefer it via --stdin so the hook and the MCP tools
+# can't drift; fall back to inline awk/grep if node is unavailable (robustness).
+have_node=0; command -v node >/dev/null 2>&1 && have_node=1
+state() {  # state <cmd...>  — parse $pcontent through state.mjs; empty on failure
+  [ "$have_node" = 1 ] || return 1
+  printf '%s' "$pcontent" | node "$root/tools/mcp/lib/state.mjs" "$@" --stdin 2>/dev/null
+}
+
 echo "PRIMORDIAL — session orientation"
 echo "Canonical repo: Primordial-viz (dash). Full state + active plan: task_plan.md + progress.md (imported by CLAUDE.md)."
 echo "New here? START HERE -> ONBOARDING.md (start gate + role routes). Before editing: confirm the branch + the next step below, read your task's rule, and get 'npm run health' green; restate the next step to the user first."
@@ -55,9 +64,11 @@ fi
 if [ -n "$pcontent" ]; then
   # Newest session entry = first '## ' heading after the Open threads section
   # (newest entries are kept at the top, just under Open threads).
-  last="$(printf '%s\n' "$pcontent" | grep '^## ' | grep -v 'Open threads' | head -1)"
-  [ -n "$last" ] && echo "Latest progress entry: ${last#\#\# }  → newest entries are at the TOP of progress.md; read there for the handoff / next step."
-  open="$(printf '%s\n' "$pcontent" | awk '/^## Open threads/{f=1;next} f&&/^## /{f=0} f&&/^- \[ \]/{print}')"
+  last="$(state handoff --title)"
+  [ -z "$last" ] && last="$(printf '%s\n' "$pcontent" | grep '^## ' | grep -v 'Open threads' | head -1 | sed 's/^##[[:space:]]*//')"
+  [ -n "$last" ] && echo "Latest progress entry: ${last}  → newest entries are at the TOP of progress.md; read there for the handoff / next step."
+  open="$(state threads)"
+  [ -z "$open" ] && open="$(printf '%s\n' "$pcontent" | awk '/^## Open threads/{f=1;next} f&&/^## /{f=0} f&&/^- \[ \]/{print}')"
   if [ -n "$open" ]; then
     n="$(printf '%s\n' "$open" | grep -c .)"
     echo "Open threads ($n) — parked work to resume (run /park to add; remove the line when done):"
@@ -74,10 +85,16 @@ echo "Conduct: general agent behavior — verify unfamiliar libs/APIs before ans
 
 # Surface the most recent LESSON entries so past corrections resurface on launch.
 if [ -n "${pcontent:-}" ]; then
-  lessons="$(printf '%s\n' "$pcontent" | grep -iE '^## .*LESSON' | head -2)"
+  lessons="$(state lessons 2)"
   if [ -n "$lessons" ]; then
     echo "Recent lessons (don't repeat these — see progress.md for the fix):"
-    printf '%s\n' "$lessons" | sed 's/^## /  - /'
+    printf '%s\n' "$lessons" | sed 's/^- /  - /'
+  else
+    lessons="$(printf '%s\n' "$pcontent" | grep -iE '^## .*LESSON' | head -2)"
+    if [ -n "$lessons" ]; then
+      echo "Recent lessons (don't repeat these — see progress.md for the fix):"
+      printf '%s\n' "$lessons" | sed 's/^## /  - /'
+    fi
   fi
 fi
 

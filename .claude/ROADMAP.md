@@ -111,10 +111,15 @@ keep one source of truth per topic.
   skill for X?" discovery. The **server needs nothing** — every `SKILL.md` is
   already in the MCP `search_docs` index and `ENCYCLOPEDIA.md`. ✅ DONE.
 - **`list_skills` / `get_skill` MCP tool** — structured skill discovery on the
-  server. Deferred: the harness already injects skill descriptions and MCP
-  doc-search already covers skills, so it adds little until the skill count grows
-  (~20+). Per-session cost is only each skill's description (~80–110 tokens), so
-  the set scales cheaply regardless. — TODO (later).
+  server. ✅ DONE 2026-06-20. `tools/mcp/lib/catalog.mjs` (reuses the
+  `eval-skills.mjs` frontmatter parser) backs `list_skills` (area filter) +
+  `get_skill`, plus `list_agents` and `list_rules` — the whole capability
+  catalog, not just skills. Shipped alongside the project-state tools
+  (`project_status` / `open_threads` / `recent_lessons`, backed by
+  `tools/mcp/lib/state.mjs`, which the orient hook now also calls so the
+  SessionStart parse and the MCP tools share one parser) and `repo_map`. All are
+  thin wrappers over CLI-capable `lib/` modules (the repo pattern), so they work
+  under any MCP client and in CI; the selftest asserts the headline set.
 
 ## Sources
 - Claude Code cloud / memory / hooks / permission-modes / routines — `code.claude.com/docs`

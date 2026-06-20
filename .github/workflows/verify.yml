@@ -58,6 +58,9 @@ jobs:
       - name: RAG tests (chunker / embedder / retriever)
         run: node --test test/rag.test.mjs
 
+      - name: MCP lib tests (state / catalog)
+        run: node --test test/state.test.mjs test/catalog.test.mjs
+
       - name: Upload render screenshot
         if: always()
         uses: actions/upload-artifact@v4
