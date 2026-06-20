@@ -97,6 +97,22 @@ Licenses below are flagged; **"unverified" = study-only until confirmed**.
   devDep) (FMHY). https://playwright.dev/
 - **dequelabs/axe-core** — MPL-2.0 — DOM accessibility checks. https://github.com/dequelabs/axe-core
 
+## Boho assets & palette (CC0 / license-checked — art direction)
+
+For the boho art (pampas, dried florals, wildflowers, woven/linen texture). **Use
+CC0 / our own only** — verify per-asset; "free" sites mix CC0 with premium.
+
+- **rawpixel — public-domain / CC0 collections** — botanical, pampas, wildflowers,
+  pressed/vintage florals (incl. Library of Congress); **CC0 in the public-domain
+  collections — verify per-image** (site also sells premium). https://www.rawpixel.com/search/flowers%20public%20domain
+- **realtimecolors.com** + **color.review** + **colorhexa.com** — build/preview the
+  boho earth palette and check AA contrast (FMHY). https://realtimecolors.com/
+- **heropatterns.com** (CC BY 4.0 — attribution) / **pattern.monster** — subtle
+  organic SVG patterns for woven/macramé motifs (license-check each). https://heropatterns.com/
+- **Best path stays write-our-own/own-photography**: shoot or commission boho
+  botanicals and cut alpha PNGs we own — sidesteps all asset-license risk (the
+  drape/foliage *engine* is unchanged; only the textures are boho).
+
 ## Note on the FMHY catalog
 
 `research/fmhy-dev-tools/links.json` (1576 entries) is an external scrape, kept

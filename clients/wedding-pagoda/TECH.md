@@ -151,3 +151,20 @@ Drive off one `progress` 0..1; combine (NOT a single opacity lerp):
 Sheer back-light blend (#1), drape octave count/amplitudes, audio attack/release vs
 track BPM, exact CI `maxDiffPixelRatio` on software-GL, bloom taps/downsample,
 god-rays (deferred). All "get it on a phone and tune," not closed-form.
+
+## Boho refinement (2026-06-20) — art direction only (engine recipe unchanged)
+
+- **Palette**: keep the ivory/candlelight base; extend accents **earthier** — add
+  `--terracotta #B06A4F`, `--clay-rose #C9A18A`, `--oat #DCCBB3`; warm the greenery
+  to `--olive-sage #6E7355`. Earth tones layered + sun-warmed; espresso stays the
+  text anchor; gold still accent-only. Tune to the real photography.
+- **Type**: resolve the open display-face call → **Fraunces** (softer, wonky,
+  warmer — better boho fit than sharp Cormorant); **EB Garamond** body stays. Both
+  SIL OFL.
+- **Foliage / Act-2 art**: pampas grass, dried florals, eucalyptus/ferns,
+  wildflowers (not formal roses) — **same instanced alpha-cutout card engine**;
+  **textures must be CC0 / our own** (boho asset sources in `references.md`).
+- **Drapes**: gauzy/linen-textured ivory (more organic weave) — **same sheer
+  shader**, just art/tint.
+- **Feel**: organic, handcrafted, relaxed; avoid rigid symmetry (boho = eclectic
+  layering, not formal balance).

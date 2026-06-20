@@ -33,6 +33,9 @@
     { "id": "svgo", "url": "https://github.com/svg/svgo", "title": "svg/svgo + SVGOMG", "type": "repo", "tags": ["assets", "svg", "fmhy"], "license": "MIT", "note": "SVG optimization for vector assets." },
     { "id": "lighthouse", "url": "https://github.com/GoogleChrome/lighthouse", "title": "GoogleChrome/lighthouse", "type": "repo", "tags": ["qa", "perf", "fmhy"], "license": "Apache-2.0", "note": "Load CWV gating (distinct from frame-time)." },
     { "id": "playwright", "url": "https://playwright.dev/", "title": "Playwright", "type": "tool", "tags": ["qa", "verify", "fmhy"], "license": "Apache-2.0", "note": "Headless verify + visual tripwire; already a devDep." },
-    { "id": "axe-core", "url": "https://github.com/dequelabs/axe-core", "title": "dequelabs/axe-core", "type": "repo", "tags": ["qa", "a11y"], "license": "MPL-2.0", "note": "DOM accessibility checks." }
+    { "id": "axe-core", "url": "https://github.com/dequelabs/axe-core", "title": "dequelabs/axe-core", "type": "repo", "tags": ["qa", "a11y"], "license": "MPL-2.0", "note": "DOM accessibility checks." },
+    { "id": "rawpixel-pd", "url": "https://www.rawpixel.com/search/flowers%20public%20domain", "title": "rawpixel — public-domain botanicals", "type": "tool", "tags": ["boho", "assets", "botanical", "cc0"], "license": "CC0 (public-domain collections only; verify per-image)", "note": "Pampas/dried/wildflower/vintage florals; CC0 in PD collections, site mixes premium." },
+    { "id": "realtimecolors", "url": "https://realtimecolors.com/", "title": "Realtime Colors", "type": "tool", "tags": ["boho", "palette", "fmhy"], "license": "tool", "note": "Preview the boho earth palette live + contrast." },
+    { "id": "heropatterns", "url": "https://heropatterns.com/", "title": "Hero Patterns", "type": "tool", "tags": ["boho", "pattern", "svg"], "license": "CC-BY-4.0 (attribution)", "note": "Subtle organic SVG patterns (woven/macrame motifs); attribution required." }
   ]
 }

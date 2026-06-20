@@ -86,6 +86,17 @@ they walk through it. No template vendor can hand a planner this.
 - **reference-gather method** (`docs/superpowers/specs+plans/2026-06-20-reference-
   gather-method*`) to collect drapery/cloth/garden references when we resume.
 
+## Direction update (2026-06-20): boho (supersedes a briefly-floated "book feel" — dropped)
+
+Operator set the art direction to **boho**. The candlelit ivory-drapes-greenery
+world holds (a 2nd `curated_byhritika` reel — "soft ivory drapes… warm candlelight…
+delicate greens" — confirms it), pulled **warmer, earthier, handcrafted**: pampas
+grass + dried florals + wildflower greenery (not manicured roses), woven/macramé/
+rattan + gauzy linen texture, warm earth tones layered over the ivory base, relaxed
+and free-spirited. NOT luxe-formal, NOT grunge, NOT a "book". Token refinements
+(palette/type/foliage) are in `TECH.md §Boho refinement`; boho CC0 asset sources in
+`references.md`.
+
 ## Status
 
 Discussion paused here. Next session: pick up an Open thread above (likely Act 2 or
