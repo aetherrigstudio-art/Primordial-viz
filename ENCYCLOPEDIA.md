@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 242 files across 17 categories.
+> 248 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
-- [Specs & Long-form Docs](#specs--long-form-docs) (20)
+- [Specs & Long-form Docs](#specs--long-form-docs) (23)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
 - [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (7)
+- [Other](#other) (10)
 
 ## Overview & Planning
 
@@ -49,10 +49,13 @@
 
 | File | Description |
 | --- | --- |
+| [`docs/ANTHROPIC/CLAUDE-OPUS-8.claude`](docs/ANTHROPIC/CLAUDE-OPUS-8.claude) | Claude Opus 8 — System Prompt |
+| [`docs/ANTHROPIC/OPUS8-SETUP-PLAN.md`](docs/ANTHROPIC/OPUS8-SETUP-PLAN.md) | This document describes what I committed so far and the remaining steps to finish the end-to-end setup so Claude Opus 8 can consult the Opus doc via… |
 | [`docs/BUILD-SPEC.md`](docs/BUILD-SPEC.md) | BUILT DIFFERENTLY (as-shipped correction): this is the original planning doc. |
 | [`docs/STANDALONE.md`](docs/STANDALONE.md) | Wrap the Primordial visual app into a native desktop application with [Tauri v2](https://tauri.app). |
 | [`docs/decisions/001-backend-rule-scope.md`](docs/decisions/001-backend-rule-scope.md) | Accepted |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
+| [`docs/prompts/claude-opus-4-8-system-prompt.md`](docs/prompts/claude-opus-4-8-system-prompt.md) | This is your pasted Claude system prompt, re-pointed from Claude Fable 5 to the model actually running, Claude Opus 4.8. |
 | [`docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md`](docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md`](docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md) | For agentic workers: implement task-by-task; steps use - [ ] checkboxes. |
 | [`docs/superpowers/plans/2026-06-19-full-repo-comparison.md`](docs/superpowers/plans/2026-06-19-full-repo-comparison.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
@@ -347,7 +350,10 @@
 
 | File | Description |
 | --- | --- |
+| [`.env.example`](.env.example) | Example environment variables |
+| [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
 | [`portfolio/README.md`](portfolio/README.md) | Gather raw shots from Google Drive and Google Photos, have Gemini score and tag them, get a contact sheet to tap through on your phone, pick… |
+| [`server/README.md`](server/README.md) | This folder will contain the retrieval/indexing service that your Android app calls. |
 | [`skills-lock.json`](skills-lock.json) | Configuration / data file. |
 | [`workshop/sandbox.html`](workshop/sandbox.html) | Primordial - Sketch Sandbox |
 | [`workshop/sketch-runner.mjs`](workshop/sketch-runner.mjs) | Boots the workshop sandbox: loads one sketch (?sketch=<name>) using the real renderer plumbing, drives it with synthetic audio, and exposes the… |

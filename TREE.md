@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 242 files in 81 directories.
+> 248 files in 85 directories.
 
 ```
 Primordial-viz/
@@ -144,13 +144,20 @@ Primordial-viz/
 │       ├── eval-skills.yml
 │       ├── portfolio.yml
 │       └── verify.yml
+├── android/
+│   └── README.md
 ├── deploy/
 │   ├── .htaccess
 │   └── DEPLOY.md
 ├── docs/
+│   ├── ANTHROPIC/
+│   │   ├── CLAUDE-OPUS-8.claude
+│   │   └── OPUS8-SETUP-PLAN.md
 │   ├── decisions/
 │   │   ├── 001-backend-rule-scope.md
 │   │   └── README.md
+│   ├── prompts/
+│   │   └── claude-opus-4-8-system-prompt.md
 │   ├── superpowers/
 │   │   ├── plans/
 │   │   │   ├── 2026-06-19-adopt-ideas-phase1.md
@@ -206,6 +213,8 @@ Primordial-viz/
 │   │   └── scrape-blog.py
 │   ├── README.md
 │   └── TODO.md
+├── server/
+│   └── README.md
 ├── src/
 │   ├── audio/
 │   │   ├── analyser.js
@@ -313,6 +322,7 @@ Primordial-viz/
 │   ├── sketch-runner.mjs
 │   └── synth-audio.mjs
 ├── .cpanel.yml
+├── .env.example
 ├── .gitignore
 ├── .mcp.json
 ├── AGENTS.md
