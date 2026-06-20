@@ -23,6 +23,14 @@ trailofbits pattern). Add to this when a non-obvious failure costs real time.
   vanishes — nobody re-reads it. Either do it now, or park it explicitly (the `/park`
   skill → `progress.md` "Open threads", which the orient hook resurfaces). "Later"
   without a parked thread = lost.
+- **Reconcile a subagent's report against the real diff before recording it.**
+  Subagents confabulate: a Task-7 implementer here wrote an entire `progress.md`
+  entry describing work that was never built (a fictional agents.yml registry, a
+  PreToolUse-blocker hook) — none of it existed on disk. So: make every implementer
+  **cite the files/commits** behind each claim, and as controller **verify those
+  against the actual diff** (read the code, not the report) before committing any
+  handoff/log a subagent authored. Never log a feature as built without confirming
+  the code exists.
 
 ## Behavioral pitfalls live in the always-loaded rules (don't duplicate here)
 
