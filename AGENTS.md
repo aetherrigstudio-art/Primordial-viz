@@ -72,24 +72,11 @@ Data flows **audio → gl → ui**:
 - **ui** is the performer control surface that sets look + params and drives
   the start gate / device picker.
 
-`src/` map:
-
-```
-src/
-├── main.js          # bootstrap: start-gate, rAF loop, wires audio→gl→ui
-├── audio/
-│   ├── input.js     # getUserMedia (raw: AGC/NS/echo off) + device picker
-│   ├── analyser.js  # AnalyserNode → bands + 512×2 audio texture
-│   └── bpm.js        # realtime-bpm-analyzer + tap-tempo fallback
-├── gl/
-│   ├── renderer.js  # WebGL2 fullscreen triangle, FBOs, ping-pong
-│   ├── passes.js    # post chain (bloom/feedback/grade), half-res FBOs
-│   └── uniforms.js  # audio features + params → shader uniforms
-├── shaders/         # *.frag.js / *.glsl.js: ES modules exporting GLSL strings
-├── looks/           # "looks" as JSON data + registry.js
-├── params/          # schema.js + store.js (versioned localStorage)
-└── ui/              # controls.js + styles.css
-```
+`src/` map (full per-file detail in `ENCYCLOPEDIA.md` / `TREE.md`): main.js
+bootstraps the start-gate + rAF loop and wires audio→gl→ui; audio/ (input,
+analyser → bands + 512×2 texture, bpm) · gl/ (renderer, passes, uniforms) ·
+shaders/ (GLSL inside .js modules) · looks/ (params-only JSON + registry) ·
+params/ (schema + versioned store) · ui/ (controls + styles).
 
 ## Knowledge router — read these BEFORE touching each area
 
@@ -168,34 +155,22 @@ full state. See `.claude/rules/gotchas.md` for known foot-guns.
 
 See `task_plan.md`.
 See `progress.md`.
-**Verify (laptop-free, runs in-container or CI):**
-- `node test/smoke.mjs` — param/look/store integrity (zero-dep)
-- `node test/render-check.mjs` — headless Chromium: WebGL2, shaders compile,
-  render loop, a11y DOM, saves `test/artifacts/render.png`
-  (needs Playwright Chromium; CI installs it)
-- `.github/workflows/verify.yml` runs both + `node --check` on every push.
+**Verify (laptop-free):** `npm run health` (syntax + smoke + audit + drift/config)
+then `node test/render-check.mjs` (headless Chromium; saves `test/artifacts/render.png`).
+CI (`.github/workflows/verify.yml`) runs both + `node --check` on every push.
 
-**Container limits (fresh cloud/phone session).** Outbound network is **HTTPS
-(443) only** — **FTP/21 and cPanel/2083 are blocked**, so you cannot deploy or
-drive cPanel from the container. Web deploy runs on **GitHub Actions** (push to
-the working branch, or trigger `deploy.yml` via the GitHub MCP); verify the live
-site by `curl`-ing `https://primordial.video/Test/`. The `FTP_PASSWORD` secret
-lives in GitHub and survives container wipes. Re-run/inspect CI via the GitHub
-MCP, not local FTP.
+**Container limits.** Outbound network is **HTTPS-443 only** (FTP/21 + cPanel/2083
+blocked) — never deploy/FTP from the container. Push → GitHub Actions FTPS deploys
+(or trigger `deploy.yml` via the GitHub MCP); verify by `curl`-ing the live URL.
+`FTP_PASSWORD` lives in GitHub and survives wipes. More foot-guns: `.claude/rules/gotchas.md`.
 
 Canonical repo: **`Primordial-viz`** (dash). The current active branch and PR
 live in `progress.md` (newest handoff entry at the top) — that file is the source
 of truth, not this line.
 
-**Continuity is branch-scoped.** Committed files survive only on the branch they
-were committed to. New tasks can fork a fresh branch off the default branch
-(`main`), which may lag the active working branch — so the `orient` hook now
-fetches the most-recently-updated branch, surfaces its handoff + open threads,
-and WARNS (with the `git checkout`) when you are elsewhere. **Heed it.** And keep
-durable state + `.claude/` reaching `main` (merge regularly) or new sessions
-start blind. See `ONBOARDING.md` ("Continuity is BRANCH-SCOPED").
-
-Claude-environment docs: `.claude/ROADMAP.md` (roadmap + AI-handoff method &
-template), `.claude/TODO.md` (checklist), `.claude/cloud-setup.sh` (paste into the
-cloud Environment → Setup script). Latest **handoff** = the last entry in
-`progress.md`.
+**Continuity is branch-scoped.** Committed files survive only on their branch; new
+tasks may fork off `main` (which lags the working branch). The `orient` hook
+fetches the newest branch, surfaces its handoff + open threads, and WARNS (with the
+`git checkout`) when you're elsewhere — heed it, and merge to `main` regularly or
+new sessions start blind. See `ONBOARDING.md`. Claude-env docs: `.claude/ROADMAP.md`,
+`.claude/TODO.md`, `.claude/cloud-setup.sh`; latest handoff = top of `progress.md`.
