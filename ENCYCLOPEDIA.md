@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 279 files across 17 categories.
+> 280 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
-- [Specs & Long-form Docs](#specs--long-form-docs) (30)
+- [Specs & Long-form Docs](#specs--long-form-docs) (31)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -68,6 +68,7 @@
 | [`docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md`](docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-rag-semantic-recall.md`](docs/superpowers/plans/2026-06-20-rag-semantic-recall.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-reference-gather-method.md`](docs/superpowers/plans/2026-06-20-reference-gather-method.md) | writing-plans output (chain: deep-research → brainstorming → writing-plans). |
+| [`docs/superpowers/plans/2026-06-20-wedding-pagoda-act1.md`](docs/superpowers/plans/2026-06-20-wedding-pagoda-act1.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md`](docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-agent-onboarding-design.md`](docs/superpowers/specs/2026-06-19-agent-onboarding-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 | [`docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md`](docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
