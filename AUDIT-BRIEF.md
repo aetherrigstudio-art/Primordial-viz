@@ -19,6 +19,12 @@ real artifact (code/output/diff), because reports — including the prior sessio
 
 ### Phase 0 — Extensive context gathering (FIRST, before any judgment)
 
+**Traverse to the end of every branch of the repo tree.** Fan out **many parallel
+batched searches** (multiple `Glob`/`Grep`/`Read` calls per message, and parallel
+`Explore` agents where useful) that walk **every directory down to every leaf
+file** — nothing skipped, no folder sampled-and-assumed. Map the whole tree first,
+then read the contents. Breadth (reach every file) before depth (judge any of them).
+
 Read from source. Do **not** trust this brief, prior `progress.md` entries, or any
 session summary as fact — verify each against the actual file/output.
 
