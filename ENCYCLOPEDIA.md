@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 215 files across 17 categories.
+> 217 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -19,9 +19,9 @@
 - [App — Looks / Presets](#app--looks--presets) (3)
 - [App — Params / State](#app--params--state) (2)
 - [App — UI](#app--ui) (2)
-- [Tests & Verification](#tests--verification) (4)
+- [Tests & Verification](#tests--verification) (5)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (14)
+- [Tooling / Scripts](#tooling--scripts) (15)
 - [Claude Environment](#claude-environment) (88)
 - [Deployment](#deployment) (3)
 - [Research](#research) (23)
@@ -123,6 +123,7 @@
 
 | File | Description |
 | --- | --- |
+| [`test/eval-skills.test.mjs`](test/eval-skills.test.mjs) | MJS file. |
 | [`test/guard.test.mjs`](test/guard.test.mjs) | MJS file. |
 | [`test/harvest-links.test.mjs`](test/harvest-links.test.mjs) | MJS file. |
 | [`test/render-check.mjs`](test/render-check.mjs) | test/render-check.mjs — headless-Chromium render check (laptop-free). |
@@ -164,6 +165,7 @@
 | --- | --- |
 | [`tools/audit-site.mjs`](tools/audit-site.mjs) | Audit the DEPLOYED surface (index.html + src/) for AI "tells" a visitor could see via View-Source. |
 | [`tools/check-config.mjs`](tools/check-config.mjs) | Self-auditing config gate: assert the always-on config invariants that have silently drifted before (CLAUDE.md size, the generated router markers,… |
+| [`tools/eval-skills.mjs`](tools/eval-skills.mjs) | Eval harness for primordial skills — Tier 1: static frontmatter gate. |
 | [`tools/gen-docs.mjs`](tools/gen-docs.mjs) | Generates two always-current repo maps from a single source of truth: ENCYCLOPEDIA.md — a categorized index of every file, each with a one-line… |
 | [`tools/harvest-links.mjs`](tools/harvest-links.mjs) | Harvest a markdown "index of links" (e.g. |
 | [`tools/health.mjs`](tools/health.mjs) | Consolidated repo health check - runs the local gates in one pass and prints a PASS/FAIL dashboard. |
