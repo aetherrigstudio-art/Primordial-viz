@@ -49,7 +49,6 @@
 
 | File | Description |
 | --- | --- |
-| [`docs/ANTHROPIC/CLAUDE-OPUS-8.claude`](docs/ANTHROPIC/CLAUDE-OPUS-8.claude) | Claude Opus 8 — System Prompt |
 | [`docs/ANTHROPIC/OPUS8-SETUP-PLAN.md`](docs/ANTHROPIC/OPUS8-SETUP-PLAN.md) | This document describes what I committed so far and the remaining steps to finish the end-to-end setup so Claude Opus 8 can consult the Opus doc via… |
 | [`docs/BUILD-SPEC.md`](docs/BUILD-SPEC.md) | BUILT DIFFERENTLY (as-shipped correction): this is the original planning doc. |
 | [`docs/STANDALONE.md`](docs/STANDALONE.md) | Wrap the Primordial visual app into a native desktop application with [Tauri v2](https://tauri.app). |
@@ -72,6 +71,7 @@
 | [`docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md`](docs/superpowers/specs/2026-06-20-fmhy-link-harvester-design.md) | Date: 2026-06-20 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-20-portfolio-media-gathering-design.md`](docs/superpowers/specs/2026-06-20-portfolio-media-gathering-design.md) | Date: 2026-06-20 · Branch: claude/init-r8ukva · Status: design (awaiting user review) · Method: brainstorming → (next) writing-plans. |
 | [`docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md`](docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md) | Date: 2026-06-20 Status: approved design, ready for writing-plans Brief: research/rag-system/BRIEF.md (the full non-local RAG vision) Parked thread:… |
+| [`docs/superpowers/specs/2026-06-20-secrets-management-design.md`](docs/superpowers/specs/2026-06-20-secrets-management-design.md) | Date: 2026-06-20 · Branch: claude/init-r8ukva · Status: design (for review) · Method: brainstorming (done, parked) → this spec → writing-plans → SDD. |
 
 ## App — Entry & Bootstrap
 

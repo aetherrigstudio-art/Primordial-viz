@@ -151,7 +151,6 @@ Primordial-viz/
 │   └── DEPLOY.md
 ├── docs/
 │   ├── ANTHROPIC/
-│   │   ├── CLAUDE-OPUS-8.claude
 │   │   └── OPUS8-SETUP-PLAN.md
 │   ├── decisions/
 │   │   ├── 001-backend-rule-scope.md
@@ -176,7 +175,8 @@ Primordial-viz/
 │   │       ├── 2026-06-19-visual-workshop-design.md
 │   │       ├── 2026-06-20-fmhy-link-harvester-design.md
 │   │       ├── 2026-06-20-portfolio-media-gathering-design.md
-│   │       └── 2026-06-20-rag-semantic-recall-design.md
+│   │       ├── 2026-06-20-rag-semantic-recall-design.md
+│   │       └── 2026-06-20-secrets-management-design.md
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
 ├── portfolio/
