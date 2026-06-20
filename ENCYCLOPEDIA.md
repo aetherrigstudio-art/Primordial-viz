@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 220 files across 17 categories.
+> 221 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -21,7 +21,7 @@
 - [App — UI](#app--ui) (2)
 - [Tests & Verification](#tests--verification) (5)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
-- [Tooling / Scripts](#tooling--scripts) (19)
+- [Tooling / Scripts](#tooling--scripts) (20)
 - [Claude Environment](#claude-environment) (88)
 - [Deployment](#deployment) (3)
 - [Research](#research) (22)
@@ -181,6 +181,7 @@
 | [`tools/rag/embed.mjs`](tools/rag/embed.mjs) | tools/rag/embed.mjs Local text embeddings via a small transformer (no doc text leaves the machine, no API key). |
 | [`tools/rag/index.json`](tools/rag/index.json) | Configuration / data file. |
 | [`tools/rag/model.mjs`](tools/rag/model.mjs) | tools/rag/model.mjs Dep-free model constants. |
+| [`tools/rag/retrieve.mjs`](tools/rag/retrieve.mjs) | tools/rag/retrieve.mjs Hybrid semantic + lexical retrieval over the committed index. |
 | [`tools/workshop/clip.mjs`](tools/workshop/clip.mjs) | Record a workshop sketch to a webm clip (and optional stills) for phone review. |
 
 ## Claude Environment
