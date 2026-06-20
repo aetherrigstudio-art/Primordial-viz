@@ -21,6 +21,12 @@ as `src/shaders/*.js` (no `.glsl` files). Looks are params-only JSON.
 5. **Verify**: `npm run health` is green before you start and before you claim
    "done" (see the `verification-before-completion` skill). Render check:
    `node test/render-check.mjs`.
+6. **Branch LAST**: only now create/switch a working branch if you need one.
+   **Never branch as your first action** - the orient `guard` hook *blocks*
+   branch creation (`git checkout -b`, `git switch -c`, `git branch <name>`)
+   until you've engaged this gate by running `npm run health` (step 5). Switching
+   to an *existing* branch (e.g. the active branch the orient warning names) is
+   always allowed.
 
 ## Role routes - read these first, by task
 

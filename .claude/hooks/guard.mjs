@@ -6,7 +6,8 @@
 // commit message containing "rm -rf /" — is NOT matched. Native JSON parse of the
 // PreToolUse stdin payload (no jq). Never throws → never blocks the session by error.
 // Limitation: unwraps leading sudo/nohup/time/env wrappers, NOT ssh/docker-exec inner cmds.
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 
 const B = '(?:^|[;&|(]|&&|\\|\\||\\n)\\s*'; // command-boundary prefix
 
@@ -62,6 +63,44 @@ export function decide(cmd) {
   return null;
 }
 
+// ── Onboarding / branch-ordering gate ────────────────────────────────────────
+// A fresh agent should complete the orientation + onboarding cycle BEFORE
+// creating a working branch — branching is the last start-gate step, not the
+// first action. We enforce ordering: branch CREATION is blocked until the gate
+// has been engaged, proxied by running the gate's verify command (`npm run
+// health`). The orient hook re-arms this each session (removes the marker).
+// Both functions are pure; the entrypoint owns the marker file I/O.
+
+// Does this command CREATE a branch? (creation/switch-create only — plain
+// `git checkout <branch>` / `git switch <branch>` are NOT blocked, so the
+// orient hook's "switch to the active branch" step still works.)
+export function isBranchCreate(cmd) {
+  const s = stripData(cmd);
+  return new RegExp(`${B}git\\s+(?:checkout|switch)\\s+-[A-Za-z]*[bBcC]\\b`, 'i').test(s)
+      || new RegExp(`${B}git\\s+branch\\s+(?!-)\\S`, 'i').test(s); // `git branch <newname>`
+}
+
+// Is this the start-gate verify command (engaging onboarding)?
+export function isGateCommand(cmd) {
+  const s = stripData(cmd);
+  return /(?:^|\s)npm\s+run\s+health\b/i.test(s) || /health\.mjs\b/i.test(s);
+}
+
+// Pure decision: block branch creation until the gate is satisfied.
+export function branchOrderDecision(cmd, gateSatisfied) {
+  if (isBranchCreate(cmd) && !gateSatisfied)
+    return ['deny', 'Branch creation before onboarding is finished. Branching is the LAST start-gate step — first complete the ONBOARDING.md gate: read the orient block + state, confirm the branch, restate the NEXT TASK to the user, then run `npm run health`. After that the branch command is allowed.'];
+  return null;
+}
+
+// Per-session marker that onboarding has been engaged. Lives in .git/ (never
+// committed; wiped with the container) or tmp as a fallback.
+function gateMarkerPath() {
+  const root = process.cwd();
+  return existsSync(`${root}/.git`) ? `${root}/.git/.primordial-onboarding-done`
+                                    : `${tmpdir()}/primordial-onboarding-done`;
+}
+
 // hook entrypoint
 if (import.meta.url === `file://${process.argv[1]}`) {
   let payload;
@@ -69,7 +108,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (!payload || payload.tool_name !== 'Bash') process.exit(0);
   const cmd = payload.tool_input && payload.tool_input.command;
   if (typeof cmd !== 'string' || !cmd.trim()) process.exit(0);
-  const d = decide(cmd);
+  let d = decide(cmd); // destructive guard takes precedence
+  if (!d) {
+    try {
+      const mp = gateMarkerPath();
+      if (isGateCommand(cmd) && !existsSync(mp)) writeFileSync(mp, String(Date.now()));
+      d = branchOrderDecision(cmd, existsSync(mp));
+    } catch { /* never block the session on a state-file error */ }
+  }
   if (!d) process.exit(0);
   process.stdout.write(JSON.stringify({
     hookSpecificOutput: { hookEventName: 'PreToolUse', permissionDecision: d[0], permissionDecisionReason: d[1] },

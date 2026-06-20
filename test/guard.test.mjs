@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { decide } from '../.claude/hooks/guard.mjs';
+import { decide, isBranchCreate, isGateCommand, branchOrderDecision } from '../.claude/hooks/guard.mjs';
 
 const d = (c) => { const r = decide(c); return r ? r[0] : 'allow'; };
 
@@ -28,5 +28,31 @@ for (const c of [
   // apostrophe inside a double-quoted string must not desync quote-stripping
   'echo "it didn\'t run rm -rf / thankfully" && npm test',
 ]) assert.equal(d(c), 'allow', `should ALLOW: ${c}`);
+
+// ── Onboarding / branch-ordering gate ────────────────────────────────────────
+// Branch CREATION is detected...
+for (const c of [
+  'git checkout -b claude/foo', 'git switch -c claude/foo', 'git checkout -B main',
+  'git branch claude/foo', 'cd repo && git checkout -b x',
+]) assert.equal(isBranchCreate(c), true, `should be branch-create: ${c}`);
+// ...but switching/listing existing branches is NOT creation (must stay allowed).
+for (const c of [
+  'git checkout main', 'git switch claude/foo', 'git branch', 'git branch -a',
+  'git branch -d old', 'git branch --show-current', 'git commit -m "git checkout -b x"',
+]) assert.equal(isBranchCreate(c), false, `should NOT be branch-create: ${c}`);
+
+// The gate-engaging command is the health verify step.
+for (const c of ['npm run health', 'node tools/health.mjs', 'cd x && npm run health'])
+  assert.equal(isGateCommand(c), true, `should engage gate: ${c}`);
+for (const c of ['npm run smoke', 'node test/render-check.mjs'])
+  assert.equal(isGateCommand(c), false, `should NOT engage gate: ${c}`);
+
+// Branch creation is DENIED before the gate, ALLOWED after.
+assert.equal(branchOrderDecision('git checkout -b claude/x', false)?.[0], 'deny',
+  'branch-create before gate must DENY');
+assert.equal(branchOrderDecision('git checkout -b claude/x', true), null,
+  'branch-create after gate must ALLOW');
+assert.equal(branchOrderDecision('git checkout main', false), null,
+  'switching an existing branch is never gated');
 
 console.log('guard: all assertions passed');

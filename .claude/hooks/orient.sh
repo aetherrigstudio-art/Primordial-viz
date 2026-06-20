@@ -10,9 +10,15 @@ set -u
 root="$(cd "$(dirname "$0")/../.." 2>/dev/null && pwd)" || exit 0
 cd "$root" 2>/dev/null || exit 0
 
+# Re-arm the onboarding/branch-ordering gate (guard.mjs blocks branch CREATION
+# until the start gate is engaged via `npm run health`). Removed each session so
+# a fresh agent must finish onboarding before branching.
+rm -f "$root/.git/.primordial-onboarding-done" 2>/dev/null || true
+
 echo "PRIMORDIAL — session orientation"
 echo "Canonical repo: Primordial-viz (dash). Full state + active plan: task_plan.md + progress.md (imported by CLAUDE.md)."
 echo "New here? START HERE -> ONBOARDING.md (start gate + role routes). Before editing: confirm the branch + the next step below, read your task's rule, and get 'npm run health' green; restate the next step to the user first."
+echo "ORDER: do NOT create a working branch as your first action — branching is the LAST onboarding step. Finish the start gate (read state, confirm branch, restate the NEXT TASK, run 'npm run health') first; the guard blocks branch CREATION until then."
 
 cur=""
 active=""
