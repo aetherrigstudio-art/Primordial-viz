@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 264 files across 17 categories.
+> 266 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (12)
@@ -22,9 +22,9 @@
 - [Tests & Verification](#tests--verification) (10)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (32)
-- [Claude Environment](#claude-environment) (91)
+- [Claude Environment](#claude-environment) (92)
 - [Deployment](#deployment) (3)
-- [Research](#research) (24)
+- [Research](#research) (25)
 - [CI / Build Config](#ci--build-config) (8)
 - [Other](#other) (12)
 
@@ -231,6 +231,7 @@
 | [`.claude/hooks/inject-rules.sh`](.claude/hooks/inject-rules.sh) | PreToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/orient.sh`](.claude/hooks/orient.sh) | SessionStart hook: orient a fresh agent (especially cloud/phone sessions) with zero typing — repo state, branch + recent commits, the latest handoff… |
 | [`.claude/hooks/precompact-handoff.sh`](.claude/hooks/precompact-handoff.sh) | PreCompact hook: before the session compacts, remind to capture continuity in progress.md so mid-session state isn't lost. |
+| [`.claude/hooks/session-start.sh`](.claude/hooks/session-start.sh) | SessionStart hook: install the dev/test toolchain so 'npm run health', smoke, render-check and the linters work in Claude Code on the web. |
 | [`.claude/hooks/suggest-workflow.sh`](.claude/hooks/suggest-workflow.sh) | UserPromptSubmit hook: when the prompt looks like a substantial build/feature or a new visual-look task, inject a NON-BLOCKING nudge toward the… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
 | [`.claude/rules/conduct.md`](.claude/rules/conduct.md) | The transferable, behaviour-shaping parts of a complete consumer assistant system prompt, adapted to this repo (a dev tool, driven from a phone). |
@@ -342,6 +343,7 @@
 | [`research/fmhy-dev-tools/links.json`](research/fmhy-dev-tools/links.json) | Configuration / data file. |
 | [`research/fmhy-dev-tools/source.md`](research/fmhy-dev-tools/source.md) | [◄◄ Back to Wiki Index](https://www.reddit.com/r/FREEMEDIAHECKYEAH/wiki/tools-index) |
 | [`research/landing-page-rag/BRIEF.md`](research/landing-page-rag/BRIEF.md) | Self-contained task for a fresh agent. |
+| [`research/mcp-vs-docs-audit.md`](research/mcp-vs-docs-audit.md) | Deep comparison of the MCP layer (configured servers + the in-repo primordial server) against the knowledge/docs layer (CLAUDE.md, generated docs,… |
 | [`research/product-domain-comparison/REPORT.md`](research/product-domain-comparison/REPORT.md) | Date: 2026-06-19 · Axis: the product — raw-WebGL2 / GLSL-shader / audio-reactive visual web apps — regardless of whether the peer uses Claude. |
 | [`research/rag-system/BRIEF.md`](research/rag-system/BRIEF.md) | Status: prep for a brainstorm. |
 | [`research/scripts/crawl-site.py`](research/scripts/crawl-site.py) | Python script. |
