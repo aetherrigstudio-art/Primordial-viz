@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 385 files across 17 categories.
+> 386 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (13)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (10)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (32)
-- [Claude Environment](#claude-environment) (141)
+- [Claude Environment](#claude-environment) (142)
 - [Deployment](#deployment) (3)
 - [Research](#research) (24)
 - [CI / Build Config](#ci--build-config) (8)
@@ -254,6 +254,7 @@
 | [`.claude/hooks/mcp-http.sh`](.claude/hooks/mcp-http.sh) | SessionStart (web/cloud ONLY): start the primordial MCP server over Streamable HTTP on localhost, so cloud Claude Code sessions can reach it. |
 | [`.claude/hooks/orient.sh`](.claude/hooks/orient.sh) | SessionStart hook: orient a fresh agent (especially cloud/phone sessions) with zero typing — repo state, branch + recent commits, the latest handoff… |
 | [`.claude/hooks/precompact-handoff.sh`](.claude/hooks/precompact-handoff.sh) | PreCompact hook: before the session compacts, remind to capture continuity in progress.md so mid-session state isn't lost. |
+| [`.claude/hooks/session-start.sh`](.claude/hooks/session-start.sh) | SessionStart deps hook — installs the dev/test toolchain so `npm run health`, `npm run smoke`, and `node test/render-check.mjs` work in a fresh… |
 | [`.claude/hooks/suggest-workflow.sh`](.claude/hooks/suggest-workflow.sh) | UserPromptSubmit hook: when the prompt looks like a substantial build/feature or a new visual-look task, inject a NON-BLOCKING nudge toward the… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
 | [`.claude/rules/conduct.md`](.claude/rules/conduct.md) | The transferable, behaviour-shaping parts of a complete consumer assistant system prompt, adapted to this repo (a dev tool, driven from a phone). |
