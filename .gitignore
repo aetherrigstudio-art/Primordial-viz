@@ -17,3 +17,6 @@ workshop/artifacts/
 
 # SDD working scratch (briefs, reports, review diffs, ledger)
 .superpowers/
+
+# throwaway spikes (Astro embed proof, etc.)
+spike/
