@@ -26,6 +26,28 @@ mapping directly onto our existing **"looks = params-only JSON"** DNA.
 Realism approach for the scene = **3D Gaussian splat** (see the pending splat-research
 findings doc), superseding the earlier "MeshPhysicalMaterial cloth" sketch in §3.
 
+## Hero sequence — the cinematic arc (authoritative, 2026-06-21)
+The bookend: **feathers DOWN to enclose ↔ birds UP to release.**
+1. **Open on dark.** A near-black page — empty Appalachian woods, night / pre-dawn; just
+   trees, depth, quiet. (Entry state; minimal initial load.)
+2. **Drapes fall like feathers.** Sheer ivory drapes drift down from above and settle,
+   until they **enclose** the space into a room within the woods.
+3. **Enter → sunrise.** As the camera moves into the now-enclosed space, **the sun comes
+   up** — morning breaks, backlight floods the drapes (translucency/sheen).
+4. **Deeper → later in the day.** Travelling further through, the light advances from
+   morning toward midday.
+5. **Drapes form a hallway.** The swags resolve into the **corridor** the camera travels down.
+6. **Release → birds up.** At the end the drapes **disappear, fluttering upward like birds**
+   lifting into the sky — releasing the space open.
+
+**Build implication (the load-bearing one):** a Gaussian splat is a **static** capture, so
+the **environment** (woods, settled drapes, path, flowers) is the splat, but the **animated
+drapes** (feather-fall, bird-lift) and the **time-of-day change** (night→sunrise→later day)
+are NOT bakeable into one frozen splat. → **Hybrid:** splat = still photoreal world +
+**animated 3D drape elements** (cloth/morph/particles) composited over it; time-of-day via
+cross-fading 2–3 splats captured/generated at different light, OR an approximate post-grade.
+The splat plan must account for this.
+
 ## Why this exists
 `/design-sync` needs a *real, buildable React component library* (not abstract tokens) so
 your Claude Design agent designs with your **actual on-brand parts**, and every mock maps
