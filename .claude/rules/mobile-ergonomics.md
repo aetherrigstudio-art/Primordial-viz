@@ -1,39 +1,43 @@
-# Mobile-ergonomics rule — the operator drives this from a phone
+# Mobile-ergonomics rule — the operator drives mostly from a phone
 
-The operator runs this project from an **Android phone**, not a laptop. Most of
-the friction in this repo's history came from handing back steps that assume a
-desktop. This rule is the durable fix. (Scope: how I hand work *to the operator*
-— not the mobile-GPU *perf* budget, which lives in `.claude/rules/shaders.md`.)
+The operator runs this project largely from an **Android phone**, now with a
+**server / CI to help with the heavy lifting** (builds, bundlers, headless tooling).
+So this rule is **softened** (ADR-006): the hard *"a phone can't do X"* constraints
+relax — anything needing a build or heavy tooling just runs on the server/CI — but
+**hand-offs *to* the operator stay phone-friendly**, because the operator is still on a
+phone. (Scope: how I hand work *to the operator* — not the mobile-GPU *playback* budget,
+which lives in `.claude/rules/shaders.md`.)
 
-Device is detectable: `CLAUDE_CODE_ENTRYPOINT` contains `mobile` for a phone
-session (the `orient` and `inject-rules` hooks already branch on it).
+Device is detectable: `CLAUDE_CODE_ENTRYPOINT` contains `mobile` for a phone session.
 
-## What breaks on a phone — design around it
+## Keep operator-facing handoffs phone-friendly (still true)
 
-- **No large copy-paste.** Copying long blocks fails on Android. When the operator
-  must paste somewhere (a GitHub secret, a cPanel field), give **one value per
-  fenced code block**, each short and self-contained — never one big blob to
-  split by hand. Label which field each block is for (host / user / password).
-- **No desktop / GitHub-web UI steps assumed.** The GitHub web UI and "do X on
-  your desktop" are unreliable here. Prefer actions *I* can take from the
-  container (GitHub MCP tools, commits/pushes) over steps the operator must click
-  through. If a step truly needs the operator, make it the smallest possible tap.
-- **`file://` links are unreachable.** Reports/artifacts under `/root/...` or
-  `file:///...` don't open on the phone. Deliver the file itself with
-  `SendUserFile` (see the `send-report` skill), not a path.
-- **Deploy is driven by GitHub state, never local FTP.** The container is
-  HTTPS-443-only (FTP/21 + cPanel/2083 blocked), and the operator can't FTP from
-  the phone either. Push → GitHub Actions FTPS does the upload; verify by
-  `curl`-ing the live HTTPS URL. See `.claude/rules/deploy.md` + the `deploy-check`
-  skill. Don't propose headless-paste, "keep it on the desktop," or manual FTP.
+- **Prefer small copy-paste.** Long blocks are awkward on Android. When the operator
+  must paste a value (a GitHub secret, a form field), give **one value per fenced code
+  block**, short and labelled — not one big blob to split by hand.
+- **Prefer actions I can take from the container** (GitHub MCP, commits/pushes) over
+  "do X in the desktop / GitHub web UI" steps. If a step needs the operator, make it the
+  smallest possible tap.
+- **Deliver files with `SendUserFile`**, not `file://` paths (those don't open on a
+  phone). See the `send-report` skill.
+- **Deploy via GitHub state**, not local FTP — the container is HTTPS-443-only and the
+  phone can't FTP; push → GitHub Actions FTPS uploads; verify by `curl`-ing the live URL.
+
+## What the server/CI now unlocks (the softening)
+
+- **Builds & bundlers are fine** — a build step (e.g. Vite/Astro for the re-platform)
+  runs on CI/the server; the operator never builds on the phone. Don't avoid a build
+  just because "the phone can't."
+- **Heavy/local tooling** (headless Chromium, the MCP server, embedders) runs in the
+  container/CI, not on the phone.
 
 ## Communication on a phone
 
-- **Concise, scannable, plain language.** Lead with the result; offer depth rather
-  than dumping it (long replies also hit the output-token cap — a real failure
-  mode here). Short paragraphs and tight lists read far better on a small screen.
-- **Minimal jargon.** The operator is the artist/performer, not always deep in the
-  stack — explain infra plainly or link the doc, don't assume.
+- **Concise, scannable, plain language.** Lead with the result; offer depth rather than
+  dumping it (long replies also hit the output-token cap). Short paragraphs read better
+  on a small screen.
+- **Minimal jargon.** Explain infra plainly or link the doc.
 
-Rule of thumb: **if a step needs a laptop, it's the wrong step.** Find the path
-that works from a phone — or do it myself from the container.
+Rule of thumb (softened): **builds & heavy tooling → the server; operator-facing
+handoffs → phone-friendly.** Don't gate *capabilities* on the phone — but do keep what
+you hand the operator easy to act on from one.

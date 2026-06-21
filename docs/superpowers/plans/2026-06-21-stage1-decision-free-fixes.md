@@ -36,7 +36,7 @@ Expected: 2 hits — `research/claude-repo-comparison/BRIEF.md:4`, `tools/rag/in
 
 In `research/claude-repo-comparison/BRIEF.md` line 4, replace the parenthetical email with a role label:
 `**Owner:** operator, drives from a phone.`  →  `**Owner:** operator (events.bricem@gmail.com), drives from a phone.` becomes `**Owner:** operator (contact redacted).`
-(Remove the live email; drop the now-stale "drives from a phone" per ADR-006 while here.)
+(Remove the live email; the "drives from a phone" note is still accurate (operator is still on a phone) — leave it.)
 
 - [ ] **Step 3: Rebuild the RAG index so the chunk text loses the email**
 
@@ -272,13 +272,13 @@ git commit -m "chore(ci): bound orient fetch; add check-config gate to CI"
 ---
 
 ## Self-Review
-- **Spec coverage:** implements the decision-free items from `phase-06` (PII, deploy trigger, .htaccess), `phase-07` (`$`-replace), `phase-04` (render-scale doc), `phase-03` (orient fetch, CI/health convergence). ADR-005-gated edits (license/privacy posture, Tauri license), disputed-verify items (eval-skills params, skills-lock hashes, missing-area router), and the phone-dev cleanup (ADR-006, multi-file) are **deliberately deferred** to follow-on plans.
+- **Spec coverage:** implements the decision-free items from `phase-06` (PII, deploy trigger, .htaccess), `phase-07` (`$`-replace), `phase-04` (render-scale doc), `phase-03` (orient fetch, CI/health convergence). ADR-005-gated edits (license/privacy posture, Tauri license), disputed-verify items (eval-skills params, skills-lock hashes, missing-area router), and the phone-dev softening (ADR-006, multi-file) are **deliberately deferred** to follow-on plans.
 - **Placeholder scan:** none — every step has the exact command/edit.
 - **Type consistency:** `replaceRegion(text, name, body)` signature identical across both call sites and the test.
 
 ## Follow-on plans (not in this batch)
 - **Plan B — ADR-005-gated:** redact-vs-history-scrub scope, repo visibility/license, `Cargo.toml` license, `tauri.conf.json` CSP (ADR-009). Blocked on operator ratifying ADR-005.
-- **Plan C — phone-dev cleanup (ADR-006):** delete `mobile-ergonomics.md`, scrub ~15 files, re-scope the playback budget, strip hook mobile branches.
+- **Plan C — phone-dev softening (ADR-006):** soften `mobile-ergonomics.md` in place (DONE) + reword absolute phone phrasings; KEEP the rules, hooks, and playback budget (operator still on a phone).
 - **Plan D — disputed-verify:** check eval-skills API params vs `claude-api`, the skills-lock hash method, the missing-area router default — then fix only what's confirmed.
 - **Plan E — tests/dead-weight (phase-09):** wire the 4 unrun tests, add audio/gl unit tests, decide `server/`+`android/`+`.agents/` fate (ADR-010/011).
 - **Stage 2 — Astro re-platform** (ADR-012): its own spec→plan when Stage 1 is green.

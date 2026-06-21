@@ -3,7 +3,7 @@
 **Status:** design, for operator review · **Date:** 2026-06-21
 **Backing research:** `docs/research/best-path-forward/findings.md` (2 deep rounds, 6 agents,
 ~45 cross-checked sources). **Stage-1 detail:** `docs/plans/refactor/` (10 phase plans).
-**Decisions:** this spec + ADR-005 (visibility/license), ADR-006 (phone-dev retired),
+**Decisions:** this spec + ADR-005 (visibility/license), ADR-006 (phone-dev softened),
 ADR-012 (re-platform stack).
 
 ## Context / goal
@@ -29,7 +29,7 @@ behavior / tests / module boundaries / dead-code / doc-CI hygiene, **0% build sc
 (research confirmed early build work is throwaway). Priority order (phase-10 synthesis):
 - **Critical (decision-free):** rebuild RAG index (done), redact operator email PII, fix dead
   `deploy.yml` trigger.
-- **Important:** execute ADR-006 phone-dev cleanup; converge CI↔local gates; wire unrun tests.
+- **Important:** apply ADR-006 softening (mostly done — soften phrasings, keep the rules); converge CI↔local gates; wire unrun tests.
 - **Nits:** shader/audio polish, `$`-replace hardening, Tauri CSP, `.htaccess` vestigial.
 - **Gated on ADR-005:** license/privacy edits.
 - **Verify-before-fix (disputed):** eval-skills API params, skills-lock hashes, missing-area router.

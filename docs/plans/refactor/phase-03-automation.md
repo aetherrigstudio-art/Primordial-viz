@@ -5,7 +5,7 @@ read-only this session (agent-gathered, controller spot-checked).
 
 ## Problem
 - **Device-aware phone branches** still live: `orient.sh:103-110` and
-  `inject-rules.sh:37-44` branch on `CLAUDE_CODE_ENTRYPOINT` `*mobile*`. ADR-006 retires
+  `inject-rules.sh:37-44` branch on `CLAUDE_CODE_ENTRYPOINT` `*mobile*`. ADR-006 softens
   the mobile arm; the `inject-rules.sh:33-34` playback-budget note **stays**. FACT.
 - **CI ↔ local health asymmetry**: `tools/health.mjs:22` runs `check-config.mjs` but
   `verify.yml` does **not**; conversely `verify.yml` runs unit-tests, render-check,

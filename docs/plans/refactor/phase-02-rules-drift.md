@@ -1,14 +1,14 @@
 # Refactor Phase 2 — Rules / drift
 
 Concern: `.claude/rules/*` + the rules section of `CLAUDE.md`. This phase **owns the
-rule-file execution of ADR-006** (phone-dev retirement). Evidence read-only this
+rule-file execution of ADR-006** (phone-dev softening). Evidence read-only this
 session; re-verified where load-bearing (cited).
 
 ## Problem
 - **Phone-operator premise in the rules** — the dedicated rule
   `.claude/rules/mobile-ergonomics.md` (39 lines, `wc -l` confirmed) plus
   `.claude/rules/conduct.md:4,60-61` (§4 phone ergonomics) and `.claude/rules/gotchas.md:49`
-  (cross-ref). Retired by **ADR-006**, not yet executed. FACT.
+  (cross-ref). Softened by **ADR-006**, not yet executed. FACT.
 - **The playback budget must NOT be caught in the scrub.** `.claude/rules/shaders.md:6,44-71`
   is the mobile-GPU **playback** budget (FBO scale, step cap ≤64, dynamic res,
   pause-on-hidden) — a *different device* than the operator. ADR-006 keeps it; it must be
@@ -23,7 +23,7 @@ session; re-verified where load-bearing (cited).
 
 ## Solution
 Execute ADR-006 at the rule layer, keep the playback budget, reconcile drift.
-1. **Delete `.claude/rules/mobile-ergonomics.md`**; drop the §4 phone-ergonomics bits in
+1. **Soften `.claude/rules/mobile-ergonomics.md` in place (keep it — operator still on a phone)**; drop the §4 phone-ergonomics bits in
    `conduct.md` and the `gotchas.md:49` cross-ref; keep "concise, plain language" (good
    anywhere).
 2. **Re-scope `shaders.md`** budget section with an explicit "PLAYBACK DEVICE (gig phone
@@ -35,7 +35,7 @@ Execute ADR-006 at the rule layer, keep the playback budget, reconcile drift.
 
 ## Commits (tiny, each green)
 1. Re-scope `shaders.md` budget header (do FIRST so the budget is unmistakable). 
-2. Delete `mobile-ergonomics.md` + remove `gotchas.md:49` ref.
+2. Soften `mobile-ergonomics.md` (keep it) + keep the `gotchas.md:49` ref.
 3. Trim `conduct.md` §4 phone bits; update `CLAUDE.md` Communication bullet.
 4. (After ADR-005) reconcile `deploy.md` public/private wording.
 

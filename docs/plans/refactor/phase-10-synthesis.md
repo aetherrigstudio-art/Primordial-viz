@@ -17,7 +17,7 @@ Do these; they make any future re-platform start from a healthy base.
 3. **Fix the dead deploy trigger** `deploy.yml:15` (phase 6).
 
 ### Important — real problems / accepted decisions to execute
-4. **Execute ADR-006 phone-dev cleanup** across docs/rules/hooks (phases 1, 2, 3 — keep
+4. **Apply ADR-006 softening** — soften absolute phone phrasings; KEEP the rules (operator still on a phone), phases 1, 2 — keep
    the *playback* GPU budget).
 5. **Ratify ADR-005** (public/private + license) → then phases 2/6/7 license+privacy edits.
 6. **Converge CI ↔ local `health` gates** (phase 3; add `check-config` to CI).

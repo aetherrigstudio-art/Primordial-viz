@@ -16,7 +16,7 @@ Evidence gathered read-only this session; load-bearing claims re-verified (cited
   `*.glsl` fetched at runtime. FACT.
 - **Phone-operator framing throughout** (`ONBOARDING.md:58` lists "Phone-driven
   operator" as a *non-negotiable*; `ROADMAP.md:4,8`, `TODO.md:6`, `CLAUDE.md:115,150`,
-  `task_plan.md:75-78`) — contradicts **ADR-006** (phone-dev retired). FACT.
+  `task_plan.md:75-78`) — per **ADR-006** should *soften* (operator still on a phone — the framing is fine, just not absolute). FACT.
 - **Public/private contradiction** in narrative docs (`progress.md` says "repo is
   private") while the repo is public — tracked by **ADR-005**; the email PII in
   `research/claude-repo-comparison/BRIEF.md:4` is the unconditional fix. FACT.
@@ -31,7 +31,7 @@ Make the docs small, current, and consistent with reality + ADR-005/006.
    is explicit.
 3. **Resolve `BUILD-SPEC.md`**: convert it to a clearly-labelled *historical* doc (move
    to `docs/history/`) OR rewrite the body to as-shipped — pick one, no half-state.
-4. **Scrub phone framing** from these narrative docs per ADR-006 (coordinate wording
+4. **Soften absolute phone phrasings** from these narrative docs per ADR-006 (coordinate wording
    with phase 2 so it's consistent).
 5. **Reconcile public/private** wording once ADR-005 is ratified; redact the email now
    regardless (the redaction itself lives in phase 6/security, referenced here).

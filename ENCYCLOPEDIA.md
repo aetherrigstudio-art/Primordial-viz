@@ -57,7 +57,7 @@
 | [`docs/audits/2026-06-20-audit.md`](docs/audits/2026-06-20-audit.md) | Self-directed ~20-pass audit per AUDIT-BRIEF.md. |
 | [`docs/decisions/001-backend-rule-scope.md`](docs/decisions/001-backend-rule-scope.md) | Accepted |
 | [`docs/decisions/005-public-repo-and-license-posture.md`](docs/decisions/005-public-repo-and-license-posture.md) | Proposed — needs an operator decision. |
-| [`docs/decisions/006-retire-phone-based-development.md`](docs/decisions/006-retire-phone-based-development.md) | Accepted — operator-directed 2026-06-20 ("we no longer will be using rules that are to allow for phone based development"). |
+| [`docs/decisions/006-soften-phone-based-development.md`](docs/decisions/006-soften-phone-based-development.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/012-replatform-target-astro.md`](docs/decisions/012-replatform-target-astro.md) | Accepted — operator-directed 2026-06-21, research-backed (docs/research/best-path-forward/findings.md). |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
 | [`docs/plans/refactor/README.md`](docs/plans/refactor/README.md) | Per-phase refactor plans for the codebase, one per concern-area (the 10-phase decomposition). |
@@ -259,7 +259,7 @@
 | [`.claude/rules/conduct.md`](.claude/rules/conduct.md) | The transferable, behaviour-shaping parts of a complete consumer assistant system prompt, adapted to this repo (a dev tool, driven from a phone). |
 | [`.claude/rules/deploy.md`](.claude/rules/deploy.md) | Facts about the host. |
 | [`.claude/rules/gotchas.md`](.claude/rules/gotchas.md) | Distilled tribal knowledge so the same loops don't recur (anti-footgun manual, trailofbits pattern). |
-| [`.claude/rules/mobile-ergonomics.md`](.claude/rules/mobile-ergonomics.md) | The operator runs this project from an Android phone, not a laptop. |
+| [`.claude/rules/mobile-ergonomics.md`](.claude/rules/mobile-ergonomics.md) | The operator runs this project largely from an Android phone, now with a server / CI to help with the heavy lifting (builds, bundlers, headless… |
 | [`.claude/rules/shaders.md`](.claude/rules/shaders.md) | Scoped to the shader/renderer code. |
 | [`.claude/settings.json`](.claude/settings.json) | Claude Code hooks + permissions for this repo. |
 | [`.claude/skills-router.md`](.claude/skills-router.md) | The routing map of skills by area. |

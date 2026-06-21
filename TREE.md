@@ -288,7 +288,7 @@ Primordial-viz/
 │   ├── decisions/
 │   │   ├── 001-backend-rule-scope.md
 │   │   ├── 005-public-repo-and-license-posture.md
-│   │   ├── 006-retire-phone-based-development.md
+│   │   ├── 006-soften-phone-based-development.md
 │   │   ├── 012-replatform-target-astro.md
 │   │   └── README.md
 │   ├── plans/

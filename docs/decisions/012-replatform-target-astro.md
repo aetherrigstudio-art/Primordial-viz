@@ -48,5 +48,5 @@ stress-tested adversarially.
 ## Related
 - `docs/research/best-path-forward/findings.md`,
   `docs/superpowers/specs/2026-06-21-best-path-forward-design.md`,
-  `docs/plans/refactor/` (Stage 1), ADR-006 (phone-dev), ADR-005 (visibility/license),
+  `docs/plans/refactor/` (Stage 1), ADR-006 (phone-dev softened), ADR-005 (visibility/license),
   ADR-001 (backend on separate infra).

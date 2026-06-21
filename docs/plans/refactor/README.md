@@ -12,15 +12,15 @@ refactor** (fix the real problems, remove cruft, modernize) that holds regardles
 the target, and **flags re-platform-dependent calls as decisions** for the operator
 rather than assuming a stack.
 
-Cross-cutting decision already made: **ADR-006** retires the phone-based-development
+Cross-cutting decision already made: **ADR-006** softens the phone-based-development
 constraints (the *operator-on-a-phone* ergonomics — NOT the mobile-GPU *playback* perf
 budget, which stays).
 
 | # | Phase (concern) | Plan file | Status |
 |---|-----------------|-----------|--------|
-| 0 | Retire phone-dev rules | `docs/decisions/006-retire-phone-based-development.md` | ✅ ADR written; cleanup tracked in phase 2 |
+| 0 | Soften phone-dev rules | `docs/decisions/006-soften-phone-based-development.md` | ✅ ADR + mobile-ergonomics softened |
 | 1 | Docs / context | `phase-01-docs-context.md` | ✅ drafted |
-| 2 | Rules / drift (incl. phone-dev cleanup) | `phase-02-rules-drift.md` | ✅ drafted |
+| 2 | Rules / drift (incl. phone-dev softening) | `phase-02-rules-drift.md` | ✅ drafted |
 | 3 | Automation / hooks | `phase-03-automation.md` | ✅ drafted |
 | 4 | Shaders / renderer | `phase-04-shaders.md` | ✅ drafted |
 | 5 | Audio path | `phase-05-audio.md` | ✅ drafted |
