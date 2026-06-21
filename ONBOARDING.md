@@ -5,9 +5,10 @@ The single entry point for an AI agent starting work on **Primordial-viz**. The
 orient hook and lives in `progress.md`; this file is the durable how-to-start.
 For full project facts and rules, see `CLAUDE.md` (always loaded).
 
-**What this is:** an audio-reactive, raw-WebGL2 visual instrument for live gigs.
-One hand-built app - `index.html` -> `src/main.js` (NOT three.js). Shaders ship
-as `src/shaders/*.js` (no `.glsl` files). Looks are params-only JSON.
+**What this is:** an audio-reactive visual instrument for live gigs. The current
+app runs `index.html` -> `src/main.js` (WebGL2 + Web Audio); shaders ship as
+`src/shaders/*.js` (no `.glsl` files), looks are params-only JSON. Stack
+direction follows the re-platform ADRs (`docs/decisions/`).
 
 ## Start gate - run this before touching code
 

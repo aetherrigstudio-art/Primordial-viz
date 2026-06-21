@@ -8,11 +8,11 @@ turns room audio (mic or line-in → FFT) into generative
 instrument — driving the knobs, switching looks, and tuning reactivity — while
 the musician plays.
 
-It is **static-first and no-build**: plain HTML + vanilla ES modules + raw
-WebGL2 + the Web Audio `AnalyserNode`. Nothing to compile, no server, no
-runtime dependencies to install. The whole app is a folder of files you upload
-to a host. Built to live on **Namecheap Stellar Plus** (cPanel / LiteSpeed),
-served over HTTPS so `getUserMedia` (the mic) is allowed.
+The current app is **static-first**: HTML + ES modules + WebGL2 + the Web Audio
+`AnalyserNode`, deployed as a folder of files to a host. Stack direction is
+moving per the re-platform ADRs (`docs/decisions/`). Built to live on
+**Namecheap Stellar Plus** (cPanel / LiteSpeed), served over HTTPS so
+`getUserMedia` (the mic) is allowed.
 
 ## What it is
 
@@ -50,8 +50,7 @@ node test/render-check.mjs  # headless Chromium: shaders compile, app renders, a
 
 CI (`.github/workflows/verify.yml`) runs both plus `node --check` on every push.
 The render check needs Playwright Chromium (`npx playwright install chromium`);
-note Playwright is a **dev/test-only** dependency — the app's runtime stays
-zero-dependency.
+note Playwright is a **dev/test-only** dependency.
 
 ## Deploy (Namecheap Stellar Plus / cPanel)
 
