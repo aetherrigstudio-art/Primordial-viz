@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 380 files in 120 directories.
+> 383 files in 122 directories.
 
 ```
 Primordial-viz/
@@ -288,6 +288,7 @@ Primordial-viz/
 │   │   ├── 001-backend-rule-scope.md
 │   │   ├── 005-public-repo-and-license-posture.md
 │   │   ├── 006-retire-phone-based-development.md
+│   │   ├── 012-replatform-target-astro.md
 │   │   └── README.md
 │   ├── plans/
 │   │   ├── refactor/
@@ -308,6 +309,9 @@ Primordial-viz/
 │   ├── prompts/
 │   │   ├── claude-opus-4-8-system-prompt.md
 │   │   └── system-prompt-ingest.md
+│   ├── research/
+│   │   └── best-path-forward/
+│   │       └── findings.md
 │   ├── superpowers/
 │   │   ├── plans/
 │   │   │   ├── 2026-06-19-adopt-ideas-phase1.md
@@ -331,7 +335,8 @@ Primordial-viz/
 │   │       ├── 2026-06-20-rag-downweight-structural-design.md
 │   │       ├── 2026-06-20-rag-retrieval-polish-design.md
 │   │       ├── 2026-06-20-rag-semantic-recall-design.md
-│   │       └── 2026-06-20-secrets-management-design.md
+│   │       ├── 2026-06-20-secrets-management-design.md
+│   │       └── 2026-06-21-best-path-forward-design.md
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
 ├── portfolio/

@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 380 files across 17 categories.
+> 383 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (13)
-- [Specs & Long-form Docs](#specs--long-form-docs) (45)
+- [Specs & Long-form Docs](#specs--long-form-docs) (48)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -58,6 +58,7 @@
 | [`docs/decisions/001-backend-rule-scope.md`](docs/decisions/001-backend-rule-scope.md) | Accepted |
 | [`docs/decisions/005-public-repo-and-license-posture.md`](docs/decisions/005-public-repo-and-license-posture.md) | Proposed — needs an operator decision. |
 | [`docs/decisions/006-retire-phone-based-development.md`](docs/decisions/006-retire-phone-based-development.md) | Accepted — operator-directed 2026-06-20 ("we no longer will be using rules that are to allow for phone based development"). |
+| [`docs/decisions/012-replatform-target-astro.md`](docs/decisions/012-replatform-target-astro.md) | Accepted — operator-directed 2026-06-21, research-backed (docs/research/best-path-forward/findings.md). |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
 | [`docs/plans/refactor/README.md`](docs/plans/refactor/README.md) | Per-phase refactor plans for the codebase, one per concern-area (the 10-phase decomposition). |
 | [`docs/plans/refactor/phase-01-docs-context.md`](docs/plans/refactor/phase-01-docs-context.md) | Concern: the narrative/handoff docs (not the rules or hooks — those are phases 2/3). |
@@ -74,6 +75,7 @@
 | [`docs/plans/studio-refactor/task_plan.md`](docs/plans/studio-refactor/task_plan.md) | Rewritten under the rule "do not assume anything." The earlier draft baked in a stack (Astro/R3F), a "first deliverable," and a phase order that the… |
 | [`docs/prompts/claude-opus-4-8-system-prompt.md`](docs/prompts/claude-opus-4-8-system-prompt.md) | This is your pasted Claude system prompt, re-pointed from Claude Fable 5 to the model actually running, Claude Opus 4.8. |
 | [`docs/prompts/system-prompt-ingest.md`](docs/prompts/system-prompt-ingest.md) | A thorough, auditable pass over the full consumer assistant system prompt (the "Fable 5" prompt the operator supplied), recording the disposition of… |
+| [`docs/research/best-path-forward/findings.md`](docs/research/best-path-forward/findings.md) | Accumulating findings across compounding rounds (target: up to 15). |
 | [`docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md`](docs/superpowers/plans/2026-06-19-adopt-ideas-phase1.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md`](docs/superpowers/plans/2026-06-19-automatic-skill-workflows.md) | For agentic workers: implement task-by-task; steps use - [ ] checkboxes. |
 | [`docs/superpowers/plans/2026-06-19-full-repo-comparison.md`](docs/superpowers/plans/2026-06-19-full-repo-comparison.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
@@ -95,6 +97,7 @@
 | [`docs/superpowers/specs/2026-06-20-rag-retrieval-polish-design.md`](docs/superpowers/specs/2026-06-20-rag-retrieval-polish-design.md) | Date: 2026-06-20 · Status: approved (brainstorm) · Area: dev-tooling (tools/rag/) Source thread: progress.md → "RAG retrieval-quality follow-ups… |
 | [`docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md`](docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md) | Date: 2026-06-20 Status: approved design, ready for writing-plans Brief: research/rag-system/BRIEF.md (the full non-local RAG vision) Parked thread:… |
 | [`docs/superpowers/specs/2026-06-20-secrets-management-design.md`](docs/superpowers/specs/2026-06-20-secrets-management-design.md) | Date: 2026-06-20 · Branch: claude/init-r8ukva · Status: design (for review) · Method: brainstorming (done, parked) → this spec → writing-plans → SDD. |
+| [`docs/superpowers/specs/2026-06-21-best-path-forward-design.md`](docs/superpowers/specs/2026-06-21-best-path-forward-design.md) | Status: design, for operator review · Date: 2026-06-21 Backing research: docs/research/best-path-forward/findings.md (2 deep rounds, 6 agents, ~45… |
 
 ## App — Entry & Bootstrap
 
