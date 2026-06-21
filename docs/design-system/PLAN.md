@@ -40,13 +40,15 @@ The bookend: **feathers DOWN to enclose ↔ birds UP to release.**
 6. **Release → birds up.** At the end the drapes **disappear, fluttering upward like birds**
    lifting into the sky — releasing the space open.
 
-**Build implication (the load-bearing one):** a Gaussian splat is a **static** capture, so
-the **environment** (woods, settled drapes, path, flowers) is the splat, but the **animated
-drapes** (feather-fall, bird-lift) and the **time-of-day change** (night→sunrise→later day)
-are NOT bakeable into one frozen splat. → **Hybrid:** splat = still photoreal world +
-**animated 3D drape elements** (cloth/morph/particles) composited over it; time-of-day via
-cross-fading 2–3 splats captured/generated at different light, OR an approximate post-grade.
-The splat plan must account for this.
+**Build implication (CORRECTED 2026-06-21 — splats are highly manipulable, not frozen):**
+each splat carries its own position/rotation/scale/color/opacity, so a labelled **subset
+(the drape splats) can be animated at runtime** — drift down + settle (feather-fall), then
+translate up + fade opacity (bird-lift / dissolve). So the drapes can stay **photoreal
+splats AND move**, no separate fake meshes required. The **time-of-day change** is the
+harder axis (true splat relighting is research-stage); the realistic web/mobile path is
+likely **cross-fading 2–3 splats authored at different light** or a **post-grade**.
+Difficulty/mobile-cost of the heavier moves (cloth-like deformation, 4D dynamic splats,
+relighting) is being verified by a dedicated manipulation-research pass → findings doc.
 
 ## Why this exists
 `/design-sync` needs a *real, buildable React component library* (not abstract tokens) so
