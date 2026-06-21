@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 386 files across 17 categories.
+> 387 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (13)
-- [Specs & Long-form Docs](#specs--long-form-docs) (49)
+- [Specs & Long-form Docs](#specs--long-form-docs) (50)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -60,6 +60,7 @@
 | [`docs/decisions/006-soften-phone-based-development.md`](docs/decisions/006-soften-phone-based-development.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/012-replatform-target.md`](docs/decisions/012-replatform-target.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
+| [`docs/design-system/PLAN.md`](docs/design-system/PLAN.md) | Status: plan for operator review · Date: 2026-06-21 · No code built yet. |
 | [`docs/plans/refactor/README.md`](docs/plans/refactor/README.md) | Per-phase refactor plans for the codebase, one per concern-area (the 10-phase decomposition). |
 | [`docs/plans/refactor/phase-01-docs-context.md`](docs/plans/refactor/phase-01-docs-context.md) | Concern: the narrative/handoff docs (not the rules or hooks — those are phases 2/3). |
 | [`docs/plans/refactor/phase-02-rules-drift.md`](docs/plans/refactor/phase-02-rules-drift.md) | Concern: .claude/rules/ + the rules section of CLAUDE.md. |
