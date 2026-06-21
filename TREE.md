@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 368 files in 119 directories.
+> 380 files in 120 directories.
 
 ```
 Primordial-viz/
@@ -287,8 +287,21 @@ Primordial-viz/
 │   ├── decisions/
 │   │   ├── 001-backend-rule-scope.md
 │   │   ├── 005-public-repo-and-license-posture.md
+│   │   ├── 006-retire-phone-based-development.md
 │   │   └── README.md
 │   ├── plans/
+│   │   ├── refactor/
+│   │   │   ├── phase-01-docs-context.md
+│   │   │   ├── phase-02-rules-drift.md
+│   │   │   ├── phase-03-automation.md
+│   │   │   ├── phase-04-shaders.md
+│   │   │   ├── phase-05-audio.md
+│   │   │   ├── phase-06-security-deploy.md
+│   │   │   ├── phase-07-deps-build.md
+│   │   │   ├── phase-08-rag-skills.md
+│   │   │   ├── phase-09-tests-deadweight.md
+│   │   │   ├── phase-10-synthesis.md
+│   │   │   └── README.md
 │   │   └── studio-refactor/
 │   │       ├── NEXT-AGENT-PROMPT.md
 │   │       └── task_plan.md

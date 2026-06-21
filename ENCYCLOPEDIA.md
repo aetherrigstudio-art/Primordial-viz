@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 368 files across 17 categories.
+> 380 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (13)
-- [Specs & Long-form Docs](#specs--long-form-docs) (33)
+- [Specs & Long-form Docs](#specs--long-form-docs) (45)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -57,7 +57,19 @@
 | [`docs/audits/2026-06-20-audit.md`](docs/audits/2026-06-20-audit.md) | Self-directed ~20-pass audit per AUDIT-BRIEF.md. |
 | [`docs/decisions/001-backend-rule-scope.md`](docs/decisions/001-backend-rule-scope.md) | Accepted |
 | [`docs/decisions/005-public-repo-and-license-posture.md`](docs/decisions/005-public-repo-and-license-posture.md) | Proposed — needs an operator decision. |
+| [`docs/decisions/006-retire-phone-based-development.md`](docs/decisions/006-retire-phone-based-development.md) | Accepted — operator-directed 2026-06-20 ("we no longer will be using rules that are to allow for phone based development"). |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
+| [`docs/plans/refactor/README.md`](docs/plans/refactor/README.md) | Per-phase refactor plans for the codebase, one per concern-area (the 10-phase decomposition). |
+| [`docs/plans/refactor/phase-01-docs-context.md`](docs/plans/refactor/phase-01-docs-context.md) | Concern: the narrative/handoff docs (not the rules or hooks — those are phases 2/3). |
+| [`docs/plans/refactor/phase-02-rules-drift.md`](docs/plans/refactor/phase-02-rules-drift.md) | Concern: .claude/rules/ + the rules section of CLAUDE.md. |
+| [`docs/plans/refactor/phase-03-automation.md`](docs/plans/refactor/phase-03-automation.md) | Concern: .claude/hooks/, .claude/settings.json, .github/workflows/. |
+| [`docs/plans/refactor/phase-04-shaders.md`](docs/plans/refactor/phase-04-shaders.md) | Concern: src/shaders/, src/gl/ vs the playback budget + write-our-own licensing. |
+| [`docs/plans/refactor/phase-05-audio.md`](docs/plans/refactor/phase-05-audio.md) | Concern: src/audio/ (input.js, analyser.js, bpm.js) vs .claude/rules/audio.md. |
+| [`docs/plans/refactor/phase-06-security-deploy.md`](docs/plans/refactor/phase-06-security-deploy.md) | Concern: secrets/PII, the deployed-site privacy surface, the deploy pipeline. |
+| [`docs/plans/refactor/phase-07-deps-build.md`](docs/plans/refactor/phase-07-deps-build.md) | Concern: package.json, lockfile, vite.config.js, src-tauri/, tools/ build/gen tooling. |
+| [`docs/plans/refactor/phase-08-rag-skills.md`](docs/plans/refactor/phase-08-rag-skills.md) | Concern: tools/rag/, tools/eval-skills.mjs, .claude/skills/ frontmatter, skills-lock.json, .claude/skills-router.md. |
+| [`docs/plans/refactor/phase-09-tests-deadweight.md`](docs/plans/refactor/phase-09-tests-deadweight.md) | Concern: test/, perf-budget evidence, vestigial files, the Drive handoff, git hygiene. |
+| [`docs/plans/refactor/phase-10-synthesis.md`](docs/plans/refactor/phase-10-synthesis.md) | Pulls phases 1–9 into one prioritized, dependency-ordered picture. |
 | [`docs/plans/studio-refactor/NEXT-AGENT-PROMPT.md`](docs/plans/studio-refactor/NEXT-AGENT-PROMPT.md) | Paste this to the next agent at the start of its session. |
 | [`docs/plans/studio-refactor/task_plan.md`](docs/plans/studio-refactor/task_plan.md) | Rewritten under the rule "do not assume anything." The earlier draft baked in a stack (Astro/R3F), a "first deliverable," and a phase order that the… |
 | [`docs/prompts/claude-opus-4-8-system-prompt.md`](docs/prompts/claude-opus-4-8-system-prompt.md) | This is your pasted Claude system prompt, re-pointed from Claude Fable 5 to the model actually running, Claude Opus 4.8. |
