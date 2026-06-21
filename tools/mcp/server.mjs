@@ -309,6 +309,38 @@ server.registerTool(
   },
 );
 
-const transport = new StdioServerTransport();
-await server.connect(transport);
-console.error('[primordial-mcp] ready on stdio');
+// Transport selection. Default = stdio (how desktop Claude Code spawns us via
+// .mcp.json, and how selftest/inspector connect). Set MCP_HTTP_PORT to instead
+// serve over Streamable HTTP on localhost — the transport cloud/web Claude Code
+// sessions CAN reach (they cannot spawn a local stdio process; see issue #54441).
+const httpPort = process.env.MCP_HTTP_PORT;
+if (httpPort) {
+  const { StreamableHTTPServerTransport } = await import(
+    '@modelcontextprotocol/sdk/server/streamableHttp.js'
+  );
+  const { createServer } = await import('node:http');
+  // Stateless: no session id, each POST handled independently — simplest for a
+  // single-client localhost dev server.
+  const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
+  await server.connect(transport);
+  const host = process.env.MCP_HTTP_HOST || '127.0.0.1';
+  const httpServer = createServer((req, res) => {
+    if (req.url && req.url.startsWith('/mcp')) {
+      transport.handleRequest(req, res).catch((err) => {
+        console.error('[primordial-mcp] handleRequest error:', err);
+        if (!res.headersSent) { res.statusCode = 500; res.end(); }
+      });
+    } else if (req.url === '/health') {
+      res.statusCode = 200; res.end('ok');
+    } else {
+      res.statusCode = 404; res.end();
+    }
+  });
+  httpServer.listen(Number(httpPort), host, () => {
+    console.error(`[primordial-mcp] ready on http://${host}:${httpPort}/mcp`);
+  });
+} else {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  console.error('[primordial-mcp] ready on stdio');
+}

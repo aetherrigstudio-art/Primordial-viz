@@ -13,6 +13,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": ".claude/hooks/mcp-http.sh"
+          },
+          {
+            "type": "command",
             "command": ".claude/hooks/orient.sh"
           }
         ]

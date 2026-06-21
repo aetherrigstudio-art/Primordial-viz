@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 383 files across 17 categories.
+> 385 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (13)
-- [Specs & Long-form Docs](#specs--long-form-docs) (48)
+- [Specs & Long-form Docs](#specs--long-form-docs) (49)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (10)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (32)
-- [Claude Environment](#claude-environment) (140)
+- [Claude Environment](#claude-environment) (141)
 - [Deployment](#deployment) (3)
 - [Research](#research) (24)
 - [CI / Build Config](#ci--build-config) (8)
@@ -87,6 +87,7 @@
 | [`docs/superpowers/plans/2026-06-20-rag-downweight-structural.md`](docs/superpowers/plans/2026-06-20-rag-downweight-structural.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md`](docs/superpowers/plans/2026-06-20-rag-retrieval-polish.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/plans/2026-06-20-rag-semantic-recall.md`](docs/superpowers/plans/2026-06-20-rag-semantic-recall.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
+| [`docs/superpowers/plans/2026-06-21-stage1-decision-free-fixes.md`](docs/superpowers/plans/2026-06-21-stage1-decision-free-fixes.md) | For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this… |
 | [`docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md`](docs/superpowers/specs/2026-06-19-adopt-ideas-roadmap-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
 | [`docs/superpowers/specs/2026-06-19-agent-onboarding-design.md`](docs/superpowers/specs/2026-06-19-agent-onboarding-design.md) | Date: 2026-06-19 Status: approved (design); pending implementation plan Branch: claude/review-claude-md-di5jvm |
 | [`docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md`](docs/superpowers/specs/2026-06-19-full-repo-comparison-design.md) | Date: 2026-06-19 · Status: approved, ready for plan. |
@@ -250,6 +251,7 @@
 | [`.claude/hooks/gen-docs.sh`](.claude/hooks/gen-docs.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/guard.mjs`](.claude/hooks/guard.mjs) | PreToolUse hook (matcher: Bash) — destructive-command guard. |
 | [`.claude/hooks/inject-rules.sh`](.claude/hooks/inject-rules.sh) | PreToolUse hook (matcher: Edit\|Write). |
+| [`.claude/hooks/mcp-http.sh`](.claude/hooks/mcp-http.sh) | SessionStart (web/cloud ONLY): start the primordial MCP server over Streamable HTTP on localhost, so cloud Claude Code sessions can reach it. |
 | [`.claude/hooks/orient.sh`](.claude/hooks/orient.sh) | SessionStart hook: orient a fresh agent (especially cloud/phone sessions) with zero typing — repo state, branch + recent commits, the latest handoff… |
 | [`.claude/hooks/precompact-handoff.sh`](.claude/hooks/precompact-handoff.sh) | PreCompact hook: before the session compacts, remind to capture continuity in progress.md so mid-session state isn't lost. |
 | [`.claude/hooks/suggest-workflow.sh`](.claude/hooks/suggest-workflow.sh) | UserPromptSubmit hook: when the prompt looks like a substantial build/feature or a new visual-look task, inject a NON-BLOCKING nudge toward the… |
