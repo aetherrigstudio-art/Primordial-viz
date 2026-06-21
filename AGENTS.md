@@ -13,11 +13,11 @@ electronic-music gigs. A musician opens one HTTPS link, grants mic/line-in, and
 room audio drives generative "grungy-future-geometric-slimy" visuals; the artist
 operates the controls.
 
-- **One hand-built app, no rendering library.** `index.html` → `src/main.js` is
-  plain **raw WebGL2** + Web Audio `AnalyserNode` — **not three.js**. GLSL ships
-  **inside `.js` modules** as exported `/* glsl */` template strings, imported
-  directly — no `fetch()`, no `.glsl` files on disk. (A three.js variant existed
-  briefly and was removed — the hand-built renderer is the keeper.)
+- **Web renderer.** `index.html` → `src/main.js` currently renders with WebGL2 +
+  Web Audio `AnalyserNode`; GLSL ships **inside `.js` modules** as exported
+  `/* glsl */` template strings, imported directly — no `.glsl` files on disk.
+  Stack direction follows the re-platform ADRs (`docs/decisions/` +
+  `docs/superpowers/`), not a fixed renderer mandate.
 - **The gig/web path has no build step.** Plain HTML + ES modules served
   statically (`python3 -m http.server`, or the live link). Mic needs HTTPS.
 - **Vite + Tauri are additive, not the web path.** `npm run build` (`vite build`)
@@ -124,11 +124,10 @@ See `.claude/skills-router.md`.
   a **0.5–0.75 FBO** and upscale; **cap raymarch steps ≤ 64**; use **dynamic
   resolution** (auto-drop scale/steps as frame-time climbs); pause on
   `visibilitychange`. Details in `.claude/rules/shaders.md`.
-- **Zero runtime dependencies on the web path.** `index.html` + `src/` use only
-  raw WebGL2 / Web Audio — no rendering library. `package.json` carries **devDeps
-  only** (vite, @tauri-apps/cli, playwright, zod) for the build / desktop / MCP
-  tooling. Anything ever added to the gig path must be tiny, MIT/permissive, and
-  vendored via an import map.
+- **Dependencies follow the re-platform ADRs.** `package.json` carries dev tooling
+  (vite, @tauri-apps/cli, playwright, zod) for build / desktop / MCP; any runtime
+  deps are governed by `docs/decisions/`, kept MIT/permissive and as lean as the
+  mobile budget allows.
 - **Backend = PHP 8 only**, and only if truly needed.
 - **WRITE-OUR-OWN shaders.** This is commercial work. Learn techniques from any
   source, but author every shader from a blank file. **Never copy CC BY-NC-SA
