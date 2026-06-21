@@ -128,3 +128,15 @@ operator decision, not a research gap.**
 | 2 | Risks + Astro recipe + stage-coupling | ✅ done — held; recipe + plan-validation captured |
 | 3–15 | (not run) | **stopped early — conclusively answered; the remaining fork is the operator's, not researchable** |
 
+
+---
+
+## Operator decision (post-research) — Next.js, not Astro
+The research *recommended* Astro for a static-content + one-island shape. On clarification the
+"content-heavy" question had been answered on a crossed wire ("content" read as graphics-rich,
+not many text/media pages); the site is **graphics/video/picture-heavy** and the operator chose
+**full React (Next.js)**. A throwaway **`spike/next-embed`** (Next 16 + React 19, `output:'export'`)
+**validated** it: the raw-WebGL2 instrument renders inside the static export — `glOk:true`, frames
+advancing, **0 console errors** (cleaner than the parallel Astro spike). So Next.js is a proven,
+deliberate override of the research lean. Tradeoff: Next is heavier than Astro — watch bundle/media
+perf. Canonical decision: **ADR-012**.

@@ -25,7 +25,7 @@ Device is detectable: `CLAUDE_CODE_ENTRYPOINT` contains `mobile` for a phone ses
 
 ## What the server/CI now unlocks (the softening)
 
-- **Builds & bundlers are fine** — a build step (e.g. Vite/Astro for the re-platform)
+- **Builds & bundlers are fine** — a build step (e.g. Vite/Next for the re-platform)
   runs on CI/the server; the operator never builds on the phone. Don't avoid a build
   just because "the phone can't."
 - **Heavy/local tooling** (headless Chromium, the MCP server, embedders) runs in the

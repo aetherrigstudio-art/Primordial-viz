@@ -58,7 +58,7 @@
 | [`docs/decisions/001-backend-rule-scope.md`](docs/decisions/001-backend-rule-scope.md) | Accepted |
 | [`docs/decisions/005-public-repo-and-license-posture.md`](docs/decisions/005-public-repo-and-license-posture.md) | Proposed — needs an operator decision. |
 | [`docs/decisions/006-soften-phone-based-development.md`](docs/decisions/006-soften-phone-based-development.md) | Accepted — operator-directed 2026-06-21. |
-| [`docs/decisions/012-replatform-target-astro.md`](docs/decisions/012-replatform-target-astro.md) | Accepted — operator-directed 2026-06-21, research-backed (docs/research/best-path-forward/findings.md). |
+| [`docs/decisions/012-replatform-target.md`](docs/decisions/012-replatform-target.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
 | [`docs/plans/refactor/README.md`](docs/plans/refactor/README.md) | Per-phase refactor plans for the codebase, one per concern-area (the 10-phase decomposition). |
 | [`docs/plans/refactor/phase-01-docs-context.md`](docs/plans/refactor/phase-01-docs-context.md) | Concern: the narrative/handoff docs (not the rules or hooks — those are phases 2/3). |

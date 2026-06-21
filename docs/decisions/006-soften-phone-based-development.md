@@ -29,7 +29,7 @@ Two different "mobile" concerns — keep them separate:
   handoffs stay phone-friendly (one value per code block, `SendUserFile` over `file://`,
   deploy via GitHub state, concise/low-jargon replies) — because the operator is still on
   a phone.
-- **Relax the hard "a phone can't do X" constraint**: builds and heavy tooling (Vite/Astro
+- **Relax the hard "a phone can't do X" constraint**: builds and heavy tooling (Vite/Next
   build, headless Chromium, the MCP server, embedders) run on the **server/CI**, not the
   phone — so don't avoid a build step just because the phone can't run it.
 - **Keep** the `shaders.md` mobile-GPU **playback** budget, scoped to the playback device.
@@ -41,19 +41,19 @@ Two different "mobile" concerns — keep them separate:
   still develops on a phone, so deleting the ergonomics would re-introduce the exact
   desktop-assuming friction the rule fixed.
 - **Status quo (hard phone-only constraints)** — rejected: outdated now that a server/CI
-  assists, and it would block the Astro build the re-platform needs.
+  assists, and it would block the build the re-platform needs.
 
 ## Consequences
 - `mobile-ergonomics.md` is softened in place (done) — NOT deleted. Any plan step that said
   "delete `mobile-ergonomics.md` / scrub the phone rules" is **superseded**: reword to "the
   phone rules are softened, not removed."
-- The Astro re-platform's build step is unblocked (builds run on CI/server) — consistent
+- The re-platform's build step is unblocked (builds run on CI/server) — consistent
   with ADR-012 and the no-build-Stage-1 research.
 - No mass file-scrub needed; the hooks/conduct/CLAUDE phone guidance stays valid.
 
 ## Related
 - `.claude/rules/mobile-ergonomics.md` (softened, kept), `.claude/rules/shaders.md`
   (playback budget — unchanged), `.claude/hooks/inject-rules.sh` (operator-vs-playback
-  split), `docs/decisions/012-replatform-target-astro.md`,
+  split), `docs/decisions/012-replatform-target.md`,
   `docs/decisions/005-public-repo-and-license-posture.md`.
 </content>

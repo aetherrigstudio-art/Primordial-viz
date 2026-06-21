@@ -10,8 +10,8 @@
 
 ## Global Constraints
 - **Web path stays zero-runtime-dep**; `package.json` is devDeps-only. (CLAUDE.md)
-- **No build tooling introduced** in Stage 1 — Astro/Vite comes only at Stage 2 (ADR-012, research-validated).
-- **Keep `new URL(asset, import.meta.url)` literals static**; no CDN import maps (bridge gotchas for the later Astro migration).
+- **No build tooling introduced** in Stage 1 — Next.js/Vite comes only at Stage 2 (ADR-012, research-validated).
+- **Keep `new URL(asset, import.meta.url)` literals static**; no CDN import maps (bridge gotchas for the later Next.js migration).
 - **Rebuild the RAG index only AFTER staging changed/added `.md`** (`gotchas.md`): stage → `npm run rag:index` → stage `index.json` → commit.
 - **Audit, don't refactor beyond scope.** These are the decision-free items only.
 - Commit-message trailers per repo convention; develop on branch `claude/audit-brief-execution-xur28z`.
@@ -281,4 +281,4 @@ git commit -m "chore(ci): bound orient fetch; add check-config gate to CI"
 - **Plan C — phone-dev softening (ADR-006):** soften `mobile-ergonomics.md` in place (DONE) + reword absolute phone phrasings; KEEP the rules, hooks, and playback budget (operator still on a phone).
 - **Plan D — disputed-verify:** check eval-skills API params vs `claude-api`, the skills-lock hash method, the missing-area router default — then fix only what's confirmed.
 - **Plan E — tests/dead-weight (phase-09):** wire the 4 unrun tests, add audio/gl unit tests, decide `server/`+`android/`+`.agents/` fate (ADR-010/011).
-- **Stage 2 — Astro re-platform** (ADR-012): its own spec→plan when Stage 1 is green.
+- **Stage 2 — Next.js re-platform** (ADR-012): its own spec→plan when Stage 1 is green.
