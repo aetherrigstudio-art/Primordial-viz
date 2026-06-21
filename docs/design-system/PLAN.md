@@ -5,6 +5,27 @@ Backed by 4 deep-research agents (cited at the bottom). This defines a small, re
 React component library — consumable by **Claude Design via `/design-sync`** — whose
 signature is the **gyro + camera "quad-reprojection" botanical hero**.
 
+## Project identity — what this actually is (corrected 2026-06-21)
+This is a **visual-effects artist's PORTFOLIO PIECE** — NOT a wedding-services / decor
+studio site, and **not picture-heavy** (no photo galleries). The operator is a VFX artist
+who builds **enchanting, sensor-driven environments at real weddings** (drapery + flowers
+= the current trend) using **TouchDesigner + LiDAR + depth models**. **Clients never see
+the tech**; they are sold *"a beautiful, enchanting, magic experience with photo
+opportunities, tailored to your palette / theme / setting."* Site copy/voice is therefore
+**poetic + benefit-led, never technical**.
+
+The **website itself demonstrates the capability**: the visitor moves their **head
+(webcam), mouse XY (desktop), tilts the phone (gyro), or scrolls** → the **CAMERA moves**,
+travelling forward through a draped-and-flowered 3D scene. The site's own UI — buttons,
+containers, text, whatever the components become — **lives INSIDE that scene as spatial
+objects the camera reveals** (diegetic UI), not a flat overlay. Forward motion **continues
+scene → scene** (drapery+flowers = scene 1; **more scenes added later**). Each scene is
+**tailorable to a client's palette / theme / setting**, so it is **parameter-driven** —
+mapping directly onto our existing **"looks = params-only JSON"** DNA.
+
+Realism approach for the scene = **3D Gaussian splat** (see the pending splat-research
+findings doc), superseding the earlier "MeshPhysicalMaterial cloth" sketch in §3.
+
 ## Why this exists
 `/design-sync` needs a *real, buildable React component library* (not abstract tokens) so
 your Claude Design agent designs with your **actual on-brand parts**, and every mock maps
@@ -13,9 +34,10 @@ Storybook + the botanical Hero**, built as a Vite library, pushed to Claude Desi
 
 ## 1. Design POV (frontend-design — a deliberate, anti-template direction)
 **Signature (the one bold thing):** *"a pressed-flower archive that breathes"* — a
-**dark, immersive dusk hero** (the gyro-parallax botanical scene) opening onto **light,
-airy editorial pages**, everything under a constant fine film-grain haze, headlines that
-slowly drift and *bloom* into view like specimens waking in a glasshouse at dusk.
+**dark, immersive dusk scene** (the head/mouse/gyro-driven camera travelling forward
+through the draped-and-flowered space) **with the site's own UI embedded inside it as
+spatial objects the camera reveals**, everything under a constant fine film-grain haze,
+text that slowly drifts and *blooms* into view like specimens waking in a glasshouse at dusk.
 
 Spend the boldness in the hero; keep the rest quiet. Two coordinated themes:
 
@@ -56,8 +78,15 @@ tutorial — i.e. **off-axis projection**: the screen becomes a **window into a 
 doable in three.js via a custom **off-axis / asymmetric-frustum projection** (the "fish-tank
 VR" / head-coupled technique — `PerspectiveCamera.setViewOffset` or a custom projection
 matrix), driven by the gyro.
-- **The space:** a real 3D recessed chamber/box with **drapery hanging INSIDE it** (real cloth
-  — `MeshPhysicalMaterial` sheen) + botanical elements; the phone is a window peering in.
+- **The space:** a photoreal **Gaussian-splat** draped-and-flowered volume (supersedes the
+  earlier `MeshPhysicalMaterial` cloth idea); the screen is a window peering in.
+- **Diegetic UI + multi-scene.** The site's buttons / containers / text live **inside** the
+  scene as spatial objects the moving camera reveals (NOT a flat overlay). **DECIDED
+  (2026-06-21): diegetic 3D + a11y layer** — components are built as true 3D objects
+  (troika-three-text for crisp type, mesh panels for buttons/containers) that occlude and
+  move WITH the splat, **plus a slim hidden 2D HTML layer** for accessibility / clicks / SEO.
+  Forward motion continues **scene → scene** (drapery+flowers = scene 1; more later), each
+  **tailorable to a client palette/theme/setting** → parameter-driven (looks = params).
 - **The illusion:** gyro → virtual eye position → the off-axis frustum updates each frame, so
   the draped space reads as true depth behind the screen and shifts anamorphically as you tilt.
 - **Lighter fallback tier** (low-end phones): degrade to layered-quad parallax + the Codrops
@@ -81,6 +110,11 @@ matrix), driven by the gyro.
   under a client-router that would kill the GL context).
 
 ## 4. Packaging for `/design-sync`
+> Per the **diegetic-3D decision** (§3): the primitives are **R3F/three components** (mesh +
+> troika text), each paired with a **2D DOM a11y mirror** — so this is a **3D component kit**,
+> not a plain 2D React lib. The Vite-library + Storybook packaging below still applies (R3F
+> renders in Storybook via a canvas decorator); each primitive exports its 3D component + the
+> accessible DOM fallback.
 - **Vite library-mode** React lib → ESM `dist/`, **per-component** output (`preserveModules`),
   externalized React, **`vite-plugin-dts`** for `.d.ts`. `exports` map; `"sideEffects":["**/*.css"]`.
 - **Storybook 9** (`@storybook/react-vite`) — stories are the **preview source** the design
