@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 266 files across 17 categories.
+> 267 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (13)
@@ -24,7 +24,7 @@
 - [Tooling / Scripts](#tooling--scripts) (32)
 - [Claude Environment](#claude-environment) (92)
 - [Deployment](#deployment) (3)
-- [Research](#research) (24)
+- [Research](#research) (25)
 - [CI / Build Config](#ci--build-config) (8)
 - [Other](#other) (12)
 
@@ -348,6 +348,7 @@
 | [`research/rag-system/BRIEF.md`](research/rag-system/BRIEF.md) | Status: prep for a brainstorm. |
 | [`research/scripts/crawl-site.py`](research/scripts/crawl-site.py) | Python script. |
 | [`research/scripts/scrape-blog.py`](research/scripts/scrape-blog.py) | Python script. |
+| [`research/visual-references/webgl-creative-technique-notes.md`](research/visual-references/webgl-creative-technique-notes.md) | Curated, our-own-words technique notes distilled from a set of standout creative WebGL/WebGPU sites and libraries. |
 
 ## CI / Build Config
 
