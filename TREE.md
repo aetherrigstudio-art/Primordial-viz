@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 387 files in 123 directories.
+> 388 files in 124 directories.
 
 ```
 Primordial-viz/
@@ -379,6 +379,8 @@ Primordial-viz/
 │   ├── scripts/
 │   │   ├── crawl-site.py
 │   │   └── scrape-blog.py
+│   ├── visual-references/
+│   │   └── webgl-creative-technique-notes.md
 │   ├── README.md
 │   └── TODO.md
 ├── server/

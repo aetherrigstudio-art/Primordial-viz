@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 387 files across 17 categories.
+> 388 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (13)
@@ -24,7 +24,7 @@
 - [Tooling / Scripts](#tooling--scripts) (32)
 - [Claude Environment](#claude-environment) (142)
 - [Deployment](#deployment) (3)
-- [Research](#research) (24)
+- [Research](#research) (25)
 - [CI / Build Config](#ci--build-config) (8)
 - [Other](#other) (61)
 
@@ -43,7 +43,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Established the two-agent collaboration channel for the Primordial Studio wedding landing page, with Google Drive as the shared layer: - DESIGN… |
+| [`progress.md`](progress.md) | A parallel session ran on claude/brief-bzwlzk (forked before the audit-execution work) and produced two things: a SessionStart deps hook (a… |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -420,6 +420,7 @@
 | [`research/rag-system/BRIEF.md`](research/rag-system/BRIEF.md) | Status: prep for a brainstorm. |
 | [`research/scripts/crawl-site.py`](research/scripts/crawl-site.py) | Python script. |
 | [`research/scripts/scrape-blog.py`](research/scripts/scrape-blog.py) | Python script. |
+| [`research/visual-references/webgl-creative-technique-notes.md`](research/visual-references/webgl-creative-technique-notes.md) | Curated, our-own-words technique notes distilled from a set of standout creative WebGL/WebGPU sites and libraries. |
 
 ## CI / Build Config
 

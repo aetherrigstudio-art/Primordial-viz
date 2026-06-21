@@ -1,5 +1,30 @@
 # Progress Log — primordial
 
+## Session — 2026-06-21 (merged RAG visual-reference notes from a parallel branch)
+
+A parallel session ran on `claude/brief-bzwlzk` (forked before the audit-execution
+work) and produced two things: a SessionStart deps hook (a **duplicate** of this
+branch's `cf9a873` — dropped, this branch's version is the truth) and curated
+**WebGL/WebGPU creative technique notes** for the RAG corpus. Per operator direction
+("their version is the truth, merge to it carefully"), this branch
+(`claude/audit-brief-execution-xur28z`) is canonical; only the net-new artifact was
+folded in:
+
+- **`research/visual-references/webgl-creative-technique-notes.md`** — our-own-words
+  technique notes from 13 verified creative WebGL/WebGPU projects (Aurelia,
+  curtains.js/gpu-curtains, Igloo Inc, DRIFT, Troika, Motion GPU, Gemini, Pixel
+  Vault, Find Your Way to Oz, Mapillary, Shader.se, Patina) + 2 flagged UNVERIFIED
+  (Drage, Banati). Each: what it is, core technique, transfer to our stack, relevance,
+  verified source + license. Reference-study only (write-our-own rule); reusable MIT
+  ones noted (curtains.js, gpu-curtains, Troika, mapillary-js).
+- Derived files regenerated on THIS branch's base: `ENCYCLOPEDIA.md`, `TREE.md`, and
+  the RAG index (`tools/rag/index.json`, rebuilt → my doc surfaces #1 for visual-
+  technique probes). The duplicate session-start hook + settings/index churn from the
+  other branch were NOT brought over.
+
+**Verified:** `npm run health` all gates green; probe "audio reactive particle field"
+→ the new doc at 0.77. `claude/brief-bzwlzk` is now superseded by this merge.
+
 ## MILESTONE — 2026-06-20 (cross-agent Drive handoff channel — LIVE)
 
 Established the **two-agent collaboration channel** for the Primordial Studio
