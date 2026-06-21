@@ -12,15 +12,15 @@ real technique, not generic advice.
 - **Reference study only.** Per `.claude/rules/shaders.md` (commercial work):
   learn the *technique*, author every shader/asset from a blank file. **Never
   copy** closed-site source. Only *reuse* code that is MIT/CC0/CC-BY, with
-  attribution — and even then, the gig web path stays zero-runtime-dependency
-  (`index.html` + `src/`), so a third-party lib is acceptable only on the landing
-  page, tiny + vendored, or replicated ourselves.
-- **Our stack is raw WebGL2 + GLSL ES 3.00 + Web Audio AnalyserNode** — NOT
-  three.js, NOT WebGPU, NOT TSL. Most projects below use those; each note
-  extracts the transferable *concept*, and is honest where it needs WebGPU
-  compute we can't match. The **mobile budget** (0.5–0.75 FBO + upscale,
-  raymarch steps ≤64, dynamic resolution, pause on hidden) constrains every
-  transfer.
+  attribution. Runtime-dependency decisions follow the re-platform ADRs
+  (`docs/decisions/`) — kept lean for the mobile budget, and on the current
+  static web path preferably replicated ourselves rather than pulled in as a lib.
+- **The current renderer is WebGL2 + GLSL ES 3.00 + Web Audio AnalyserNode**
+  (stack direction follows the re-platform ADRs, `docs/decisions/`). Most
+  projects below use three.js / WebGPU / TSL; each note extracts the transferable
+  *concept*, and is honest where it needs WebGPU compute the current renderer
+  can't match. The **mobile budget** (0.5–0.75 FBO + upscale, raymarch steps ≤64,
+  dynamic resolution, pause on hidden) constrains every transfer.
 - **Provenance:** project list handed to us via the webgpu.com community
   showcase; each entry was verified against an independent authoritative source
   (author site / GitHub / Awwwards / Codrops). Two could not be confirmed and are
@@ -277,6 +277,27 @@ material identity.
 
 **Source / license:** webgpu.com/showcase/patina-preview… ; threejs.org TSL docs.
 Closed playground — study only.
+
+## Ameen Abdullah — DOM-synced WebGL portfolio
+
+**What it is:** Creative-developer portfolio (ameen-abdullah.dev) where a WebGPU
+sakura scene takes over the screen, petals drifting with physically-honest
+slowness; Vue + GSAP, with small interactive beats per section.
+
+**Core technique:** A second WebGL layer renders mini-scenes into textures and
+pastes them onto planes aligned to DOM elements, so the canvas and the page share
+one coordinate system; GSAP ties motion to scroll; subtitles arrive via VTT.
+
+**Transfer to our stack:** The DOM-aligned render-to-texture-plane pattern is the
+same idea as curtains.js and directly useful for the **landing page** — WebGL
+accents that ride real, accessible HTML layout, replicable in WebGL2 via the
+bbox→clip-space mapping. The sakura drift is cheap instanced quads / a particle
+field, optionally audio-reactive. Vue/WebGPU don't port; the technique does.
+
+**Relevance:** low (instrument); high (landing — DOM-synced WebGL accents +
+tasteful scroll motion).
+
+**Source / license:** ameen-abdullah.dev ; webgpu.com showcase. Closed — study only.
 
 ## Drage Studio — UNVERIFIED
 

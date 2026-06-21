@@ -13,8 +13,8 @@ folded in:
 - **`research/visual-references/webgl-creative-technique-notes.md`** — our-own-words
   technique notes from 13 verified creative WebGL/WebGPU projects (Aurelia,
   curtains.js/gpu-curtains, Igloo Inc, DRIFT, Troika, Motion GPU, Gemini, Pixel
-  Vault, Find Your Way to Oz, Mapillary, Shader.se, Patina) + 2 flagged UNVERIFIED
-  (Drage, Banati). Each: what it is, core technique, transfer to our stack, relevance,
+  Vault, Find Your Way to Oz, Mapillary, Shader.se, Patina, Ameen Abdullah) + 2
+  flagged UNVERIFIED (Drage, Banati). Each: what it is, core technique, transfer to our stack, relevance,
   verified source + license. Reference-study only (write-our-own rule); reusable MIT
   ones noted (curtains.js, gpu-curtains, Troika, mapillary-js).
 - Derived files regenerated on THIS branch's base: `ENCYCLOPEDIA.md`, `TREE.md`, and
