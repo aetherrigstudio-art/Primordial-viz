@@ -85,12 +85,16 @@ principle is **sparse, well-composed, unobtrusive**.
 
 - **Quality bar:** the drapery effects should read as **premium and magical** —
   the visual-effects craft is the whole point of the page.
-- **Rendering approach — point-cloud / Gaussian-splat driven.** The scene is
+- **Rendering approach — multiple point-cloud / Gaussian splats.** The scene is
   built from **photoreal point-cloud / 3D Gaussian-splat captures**, not modelled
   geometry — so the drapery and the Appalachian rainforest read as real, with
-  true volumetric depth. Because each splat carries its own position/scale/
-  opacity, the drapes can genuinely **move, billow, and flutter away** at runtime
-  (and the camera can travel *through* the captured volume).
+  true volumetric depth. It uses **several splats together (not one)** —
+  separate, layered/composited captures (e.g. drapery vs. rainforest, and
+  variants authored for different light) **cross-faded and combined** to achieve
+  each effect correctly: the dawn lighting, the drapery forming the tent, and the
+  reveal. Because each splat carries its own position/scale/opacity, a labelled
+  set (the drapes) can genuinely **move, billow, and flutter away** at runtime
+  while the camera travels *through* the volume.
 - **Palette / type (placeholder):** wedding-luxe and warm — soft, elegant, never
   brassy or clinical. Specific colours and typefaces are not final; only the
   high-end, romantic *intent* is the takeaway.
