@@ -130,10 +130,16 @@ Gold stays champagne/old-gold (never brass); blush stays dusk (never candy-pink)
    capture) — R3F splat render + forward dolly + off-axis frustum + gyro/scroll, mobile
    budget + fallback tier.
 2. **Create the first real splat** (drapery) through the full pipeline; swap it in.
+   *(2026-06-22: swap-in + graceful fallback WIRED in `immersive/` — `src/splat/loadDrapery.js`;
+   asset generation still pending operator via the drapery runbook.)*
 3. **Camera-movement + scene modules + tokens** → **first `/design-sync`** (the synced kit).
 4. **Diegetic UI primitives** (3D + a11y mirror) → add to lib + Storybook → sync.
 5. **Rainforest splat + the dawn→tent→flutter→visualizer arc** → integrate on a standalone
    route (ADR-012); hand off into the existing audio-reactive instrument.
+   *(2026-06-22: rainforest splat WIRED app-side — `immersive/` now composites drapery +
+   rainforest via a shared `useSplatLayer` hook with placeholder + fallback; capture runbook
+   `colab/forest-video-splat.md` hardened. Still pending: asset generation (operator), the
+   flutter/reveal choreography, and the instrument handoff.)*
 
 ## 8. Open decisions for you
 - **D-COMPUTE (RESOLVED 2026-06-22):** **rented cloud GPU** runs splat training —

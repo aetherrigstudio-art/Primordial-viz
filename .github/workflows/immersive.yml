@@ -1,0 +1,35 @@
+name: immersive
+
+# Off-device build server for the immersive point-cloud landing page (BUILD-WORKFLOW Phase 4).
+# Builds the R3F + Spark proving-ground app on GitHub's runners — root-Claude can't run the
+# heavy build reliably on the hot Android device, and this is where the library build +
+# /design-sync render-grading will hang once the pipeline graduates (PLAN §6).
+
+on:
+  push:
+    paths:
+      - 'immersive/**'
+      - '.github/workflows/immersive.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: immersive
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install
+        run: npm install --no-audit --no-fund
+      - name: Build
+        run: npm run build
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: immersive-dist
+          path: immersive/dist
+          if-no-files-found: error

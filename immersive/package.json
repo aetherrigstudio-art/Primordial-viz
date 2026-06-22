@@ -1,0 +1,23 @@
+{
+  "name": "primordial-immersive",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Proving ground for the immersive point-cloud landing page (R3F + Spark Gaussian splats). Graduates into the R3F component library consumed by the Next.js studio site (ADR-012).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^9.0.0",
+    "@sparkjsdev/spark": "^0.1.8",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.171.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.0"
+  }
+}

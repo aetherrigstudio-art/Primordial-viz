@@ -1,43 +1,95 @@
-# Colab runbook — Drapery splat via TRELLIS 2 (image → 3D Gaussian)
+# Runbook — Drapery splat via TRELLIS (image → 3D Gaussian)
 
-Generate a photoreal 3DGS of sheer drapery from a **single image** — no capture, no
-COLMAP. Runs on a free Colab T4. Copy each cell into a fresh Colab.
+Generate a photoreal 3D Gaussian of sheer drapery from **one image** — no capture, no
+COLMAP. TRELLIS is **MIT (commercial-safe)**; model `microsoft/TRELLIS-image-large` is MIT
+and **not gated**. API verified against the repo 2026-06-22 (`example.py`, README).
 
-> **Exact install/inference is version-specific — confirm against the official repo:**
-> https://github.com/microsoft/TRELLIS (the `image-to-3d` example). License: **MIT
-> (commercial-safe).** This runbook is the scaffold; the repo pins the CUDA wheels.
+There are two paths. **On a phone, use Path A** — it needs zero setup.
+
+---
+
+## Path A — Hugging Face Space (one-tap, phone-friendly) ✅ recommended first
+
+Official Space (browser, free GPU queue, no install):
+
+```
+https://huggingface.co/spaces/Microsoft/TRELLIS
+```
+
+Steps: open it → upload your drapery image → **Generate** → use **Extract Gaussian** →
+download the `.ply`. (The "Extract GLB" button is a mesh; we want the **Gaussian**.) If the
+Space is busy/sleeping, either wait for the queue or use Path B.
+
+## Path B — Colab (more control / batch). Paste each cell into a fresh T4 Colab
+
+> The fragile part is the install, not the inference — TRELLIS pins CUDA wheels and the repo
+> moves. If a cell fails, re-check the current README: https://github.com/microsoft/TRELLIS
 
 ```python
-# 1. GPU check
+# 1 — confirm a GPU (free tier = Tesla T4)
 !nvidia-smi
 ```
 
 ```python
-# 2. Get TRELLIS (follow the repo's setup — it installs CUDA-specific deps)
+# 2 — get TRELLIS + install (Gaussian-only, so we skip the mesh/GLB extensions).
+#     T4 does NOT support flash-attn → we use the xformers backend at runtime (cell 3).
 !git clone https://github.com/microsoft/TRELLIS
 %cd TRELLIS
-!. ./setup.sh --new-env --basic   # or `pip install -e .` per the current README
+!. ./setup.sh --new-env --basic --xformers --spconv --mipgaussian
 ```
 
 ```python
-# 3. Your drapery image — generate one (Midjourney/SD/Flux/Pollinations) then upload.
-#    Prompt idea: "sheer ivory wedding drapery, soft folds, backlit, studio, plain bg"
+# 3 — backend env vars MUST be set before importing trellis
+import os
+os.environ['ATTN_BACKEND'] = 'xformers'   # T4-compatible (flash-attn needs newer GPUs)
+os.environ['SPCONV_ALGO']  = 'native'     # avoids per-run benchmarking
+```
+
+```python
+# 4 — upload your drapery image (see the prompt below to generate one first)
 from google.colab import files
-up = files.upload()   # -> drapery.png
+up = files.upload()                        # → e.g. drapery.png
+img_path = next(iter(up))
 ```
 
 ```python
-# 4. Image -> 3D Gaussian (.ply). Use the repo's image-to-3D example pipeline:
-#    see TRELLIS/example_image_to_3d.py for the exact call (pipeline.run(image)).
-#    Outputs a Gaussian .ply (+ optional .glb mesh) in seconds.
+# 5 — image → 3D Gaussian. formats=['gaussian'] skips the mesh so the light install is enough.
+from PIL import Image
+from trellis.pipelines import TrellisImageTo3DPipeline
+
+pipeline = TrellisImageTo3DPipeline.from_pretrained("microsoft/TRELLIS-image-large")
+pipeline.cuda()
+
+image = Image.open(img_path)
+outputs = pipeline.run(image, seed=1, formats=['gaussian'])
+outputs['gaussian'][0].save_ply("drapery.ply")
+print("saved drapery.ply")
 ```
 
 ```python
-# 5. Download the splat
+# 6 — download the splat
 from google.colab import files
-files.download('outputs/drapery.ply')
+files.download('drapery.ply')
 ```
 
-**Next:** compress `.ply` → `.SPZ`/`.SOG` (PlayCanvas SuperSplat, web — free), then drop
-into the app's assets. TRELLIS is object-centric — perfect for the drapes; use the
-forest runbook for the scene.
+---
+
+## The drapery image (Path A or B need one)
+
+Generate with a **commercially-usable** generator (self-hosted SD/Flux, or Pollinations —
+avoid sources whose license forbids commercial use; this is paid work). Prompt idea:
+
+```
+sheer ivory wedding drapery, soft vertical folds, backlit, studio, plain background
+```
+
+## After you have `drapery.ply` — compress, then drop into the app
+
+1. **Compress** `.ply` → `.spz`/`.sog` in the browser with PlayCanvas **SuperSplat**
+   (free, web): https://supersplat.playcanvas.com — open the `.ply`, export compressed.
+2. **Place it** at `immersive/public/assets/drapery.spz` (Vite serves `public/` at the web root).
+3. **Swap the placeholder:** in `immersive/src/splat/SparkScene.jsx`, replace the procedural
+   `makePlaceholderSplats()` mesh with `new SplatMesh({ url: '/assets/drapery.spz' })`.
+
+**Next:** the rainforest scene uses the other runbook (`forest-video-splat.md`) — AI video →
+frames → COLMAP → Splatfacto (TRELLIS is object-centric, perfect for the drapes, not the scene).

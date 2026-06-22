@@ -20,3 +20,10 @@ workshop/artifacts/
 
 # throwaway spikes (Astro embed proof, etc.)
 spike/
+
+# web-ready splat assets — large binaries delivered via host/CDN, never committed
+# (repo-lean / inode-cap rule). See immersive/public/assets/README.md.
+immersive/public/assets/*.spz
+immersive/public/assets/*.sog
+immersive/public/assets/*.ply
+immersive/public/assets/*.ksplat

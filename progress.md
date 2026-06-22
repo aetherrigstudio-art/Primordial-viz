@@ -20,6 +20,93 @@ Started the **immersive point-cloud landing-page** effort + a multi-tool build p
 - **Open gates:** generate first asset (drapery/TRELLIS), Gemini API key, start web build
   vs a placeholder splat, push.
 
+## Session — 2026-06-22 (immersive — Appalachian rainforest splat wired, multi-splat composite)
+
+PLAN §7 step 5 (app side). **Reconciled a research error against the source:** an Explore pass
+concluded "no rainforest splat is needed — it's just the instrument." The authoritative experience
+doc (`WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md` 47–56, 161–164) is explicit: the page composites
+**captured drapery AND a captured rainforest** splat, with the audio-reactive instrument as the
+visualizer *at the very end*. So the rainforest splat is real + distinct from the instrument.
+
+**App wiring (mirrors drapery, refactored to multi-splat):**
+- `SparkScene.jsx` → multi-splat holder: one `SparkRenderer` composites layers via global-buffer
+  merge (Spark supports multiple `SplatMesh` under one renderer — verified via its multiple-splats
+  example). Rainforest = enclosing env (z≈-8, scale 3); drapery = foreground (z≈-3).
+- New `useSplatLayer.js` — shared placeholder→real swap + dispose + fallback hook; both drapery and
+  rainforest now use it (factored the step-2 logic out of SparkScene). New `transform.js` applies
+  each layer's `*_TRANSFORM`.
+- New `loadRainforest.js` (+ `RAINFOREST_TRANSFORM` knob) and `placeholderRainforest.js` (procedural
+  hollow-corridor mossy volume). `loadDrapery.js` refactored to expose `makeDraperyPlaceholder`.
+- `rainforest.spz` gitignored already (`*.spz`); documented in `public/assets/README.md`.
+
+**Runbook hardened** (`colab/forest-video-splat.md`): two paths — official Nerfstudio Colab
+(recommended; handles the fragile CUDA install) + verified manual cells (torch 2.1.2+cu118 →
+tiny-cuda-nn → nerfstudio → COLMAP; ns-process-data/ns-train splatfacto/ns-export, confirmed via
+docs.nerf.studio). Flagged: **no one-tap Space for scene capture** (vs drapery's TRELLIS) → rented
+GPU (D-COMPUTE) or the official Colab; ~15k iters can exceed a free T4 session.
+
+**Verified on-device** (no assets → both layers fall back to placeholders): `node --check` the 5
+splat modules; esbuild full bundle 0 errors. Real-render/composite QA → Antigravity once assets
+land. Plan: `melodic-hatching-penguin`. Still LOCAL/unpushed. **Deferred:** flutter/reveal
+choreography (Theatre.js/GSAP) + the instrument handoff at journey's end.
+
+## Session — 2026-06-22 (immersive Step 2 — real drapery swap-in wired)
+
+PLAN §7 step 2: wired loading the real drapery splat with **graceful placeholder fallback**. New
+`immersive/src/splat/loadDrapery.js` — `new SplatLoader().loadAsync('/assets/drapery.spz')` →
+`SplatMesh` (export verified via context7) + a `DRAPERY_TRANSFORM` calibration knob (real TRELLIS
+splats arrive at arbitrary scale/orientation). `SparkScene.jsx` now renders the placeholder on the
+first frame, swaps in the real splat on load (disposing buffers), and falls back to the placeholder
+when the asset is absent (fresh clone / CI / pre-generation). The asset is **not committed** —
+`immersive/public/assets/*.{spz,sog,ply,ksplat}` gitignored; `public/assets/README.md` documents the
+source (drapery runbook), host upload, and the transform knob.
+
+**Verified on-device** (no asset → fallback path): `node --check loadDrapery.js`; esbuild full
+bundle 0 errors (confirms `SplatLoader` export + the graph resolves). Real-render QA + transform
+tuning go to Antigravity once the operator generates `drapery.spz`. Plan:
+`melodic-hatching-penguin`. The cloud arrow-camera PR (step-1 refinement) is independent — it
+doesn't touch `splat/*`, so the two compose. All this session's work is still LOCAL/unpushed.
+
+## Session — 2026-06-22 (immersive render pipeline — proving-ground scaffolded)
+
+Started BUILD-WORKFLOW Phase 2 / PLAN §7 step 1: prove the point-cloud render + camera
+pipeline against a **placeholder splat**, in parallel with (not blocked on) GPU asset capture.
+
+**Stack verified via context7** (not memory, per PLAN): **`@sparkjsdev/spark`**
+(`/sparkjsdev/spark`) — three.js-native Gaussian-splat renderer; `SparkRenderer` shares
+R3F's `gl`, `SplatMesh` is an `Object3D` (→ `<primitive>`), loads `.spz`/`.ply` + builds
+procedural `PackedSplats` (placeholder needs no binary asset). **`@react-three/fiber`** v9 +
+three r0.171.
+
+**Built `immersive/`** (standalone Vite + R3F app, separate from the no-build root `src/` so
+its React/three deps never tangle; graduates into the Vite library-mode build for `/design-sync`
+per PLAN §6, ADR-012):
+- `src/splat/{placeholderSplats.js,SparkScene.jsx}` — procedural drapery cloud + SparkRenderer.
+- `src/camera/{offAxisFrustum.js,CameraRig.jsx}` — off-axis "window into depth" + forward dolly.
+- `src/viewpoint/useViewpoint.js` — gyro + scroll + pointer → smoothed ref (no webcam; iOS gyro via tap).
+- `src/perf/mobileBudget.js` — DPR cap, frame-time regression, pause-on-hidden, reduced-motion.
+- `src/App.jsx` — Canvas + mandatory start gate + reduced-motion tier. `README.md` documents it.
+
+**Off-device build server:** `.github/workflows/immersive.yml` (GitHub Actions, ubuntu) installs
++ builds the app on push — the real off-device compute for the heavy build (and later the library
+build + `/design-sync` grading). Root-Termux **cannot** run the Vite/Rollup bundle: Rollup's native
+`rollup-android-arm64.node` can't `dlopen` here (ERR_DLOPEN_FAILED) — a known Termux/PRoot limit,
+which is exactly why builds belong on CI.
+
+**Verified on-device:** deps install clean (81 pkgs, pure JS); all 4 framework-agnostic modules
+pass `node --check`; **esbuild bundles the whole module graph (3.4 MB, zero errors)** — JSX compiles
++ every import (react/three/R3F/Spark) resolves. NOT verifiable here: GPU render (→ Antigravity
+browser, BUILD-WORKFLOW Phase 4) and the production Rollup bundle (→ CI).
+
+**Decisions:** D-SPLAT-MOTION v1 scope locked (cross-fade + camera + drape-subset anim; defer true
+relighting). **Still open:** D1 palette + D2 type (deferred — not needed until the diegetic UI/token
+layer). **D-COMPUTE provider/budget** still open — GPU splat-training server can't be started from
+this container (no GPU, HTTPS-443-only, costs money); free-Colab runbooks exist (`colab/*.md`).
+
+**Next:** Theatre.js/GSAP journey choreography · fallback tier · diegetic UI + a11y mirror ·
+graduate to the library build. Commits LOCAL (unpushed). Also uncommitted from earlier this session:
+`tools/mcp/server.mjs` (HTTP handshake fix) + `.claude/hooks/mcp-http.sh` (auto-start local).
+
 ## Session — 2026-06-21 (merged RAG visual-reference notes from a parallel branch)
 
 A parallel session ran on `claude/brief-bzwlzk` (forked before the audit-execution
