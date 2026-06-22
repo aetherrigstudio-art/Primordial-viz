@@ -24,9 +24,9 @@
 - [Tooling / Scripts](#tooling--scripts) (32)
 - [Claude Environment](#claude-environment) (156)
 - [Deployment](#deployment) (3)
-- [Research](#research) (25)
+- [Research](#research) (26)
 - [CI / Build Config](#ci--build-config) (10)
-- [Other](#other) (100)
+- [Other](#other) (99)
 
 ## Overview & Planning
 
@@ -443,6 +443,7 @@
 | [`research/landing-page-rag/BRIEF.md`](research/landing-page-rag/BRIEF.md) | Self-contained task for a fresh agent. |
 | [`research/product-domain-comparison/REPORT.md`](research/product-domain-comparison/REPORT.md) | Date: 2026-06-19 · Axis: the product — raw-WebGL2 / GLSL-shader / audio-reactive visual web apps — regardless of whether the peer uses Claude. |
 | [`research/rag-system/BRIEF.md`](research/rag-system/BRIEF.md) | Status: prep for a brainstorm. |
+| [`research/reuse-libraries/REUSE-CATALOG.md`](research/reuse-libraries/REUSE-CATALOG.md) | Open-source libraries/repos we can genuinely pull from (code or technique) for Primordial-viz, mapped to the roadmap gaps. |
 | [`research/scripts/crawl-site.py`](research/scripts/crawl-site.py) | Python script. |
 | [`research/scripts/scrape-blog.py`](research/scripts/scrape-blog.py) | Python script. |
 | [`research/visual-references/webgl-creative-technique-notes.md`](research/visual-references/webgl-creative-technique-notes.md) | Curated, our-own-words technique notes distilled from a set of standout creative WebGL/WebGPU sites and libraries. |
@@ -517,7 +518,6 @@
 | [`.agents/skills/setup-matt-pocock-skills/triage-labels.md`](.agents/skills/setup-matt-pocock-skills/triage-labels.md) | The skills speak in terms of five canonical triage roles. |
 | [`.env.example`](.env.example) | Example environment variables |
 | [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
-| [`hooks.json`](hooks.json) | Configuration / data file. |
 | [`immersive/README.md`](immersive/README.md) | Standalone Vite + React-Three-Fiber app that proves the point-cloud landing-page rendering + camera pipeline against a procedural placeholder splat,… |
 | [`immersive/index.html`](immersive/index.html) | Primordial — immersive (proving ground) |
 | [`immersive/package-lock.json`](immersive/package-lock.json) | Configuration / data file. |
