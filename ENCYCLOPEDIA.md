@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 391 files across 17 categories.
+> 393 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
-- [Specs & Long-form Docs](#specs--long-form-docs) (52)
+- [Specs & Long-form Docs](#specs--long-form-docs) (54)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -64,6 +64,8 @@
 | [`docs/design-system/BUILD-WORKFLOW.md`](docs/design-system/BUILD-WORKFLOW.md) | How we build and ship the point-cloud "journey" landing page (dawn → drapery gathers into a tent → flutters away → Appalachian rainforest music… |
 | [`docs/design-system/PLAN.md`](docs/design-system/PLAN.md) | Status: plan for operator review · Originated: 2026-06-21 · Refined: 2026-06-22 · No code built yet. |
 | [`docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md`](docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md) | What this file is: the single source for the wedding-page (Botanical Hero) client-side experience plus all image and video references gathered for it. |
+| [`docs/design-system/colab/drapery-trellis.md`](docs/design-system/colab/drapery-trellis.md) | Generate a photoreal 3DGS of sheer drapery from a single image — no capture, no COLMAP. |
+| [`docs/design-system/colab/forest-video-splat.md`](docs/design-system/colab/forest-video-splat.md) | Turn an AI-generated 360° pan video into a 3DGS scene. |
 | [`docs/plans/refactor/README.md`](docs/plans/refactor/README.md) | Per-phase refactor plans for the codebase, one per concern-area (the 10-phase decomposition). |
 | [`docs/plans/refactor/phase-01-docs-context.md`](docs/plans/refactor/phase-01-docs-context.md) | Concern: the narrative/handoff docs (not the rules or hooks — those are phases 2/3). |
 | [`docs/plans/refactor/phase-02-rules-drift.md`](docs/plans/refactor/phase-02-rules-drift.md) | Concern: .claude/rules/ + the rules section of CLAUDE.md. |

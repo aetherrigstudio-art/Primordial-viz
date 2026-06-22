@@ -25,9 +25,11 @@ login Google account) + notebook `688cc151` ("Elite WebGL Landing Pages").
 - Stitch → prototype the 2D editorial pages + mood/palette/type; export as the visual target.
 - Claude Code → resolve open PLAN calls (D-COMPUTE, palette, type); update `PLAN.md`.
 
-### Phase 1 — Splat assets (off-device, GPU — gating dependency)
-- Capture drapery + Appalachian scene (dawn + day variants) via phone app (Luma/Polycam) or footage → cloud-GPU train (COLMAP → 3DGS) → compress to `.SPZ`/`.SOG`.
-- Build against a **placeholder splat in parallel** so this never blocks code.
+### Phase 1 — Splat assets (GENERATE, don't capture; free Colab GPU)
+- **Drapery (object):** generate a fabric image (Midjourney/SD/Flux/Pollinations) → **TRELLIS 2** (MIT, commercial-safe) → 3DGS `.PLY`, no COLMAP. Runbook: `colab/drapery-trellis.md`.
+- **Rainforest (scene):** AI video (Sora/Kling/Veo) of a slow 360° pan → extract frames → COLMAP → Nerfstudio **Splatfacto** (free Colab T4). Runbook: `colab/forest-video-splat.md`.
+- Compress both to `.SPZ`/`.SOG`; build against a **placeholder splat in parallel** so code isn't blocked.
+- (Real on-site capture remains the max-fidelity upgrade. Avoid SfM-free/DUSt3R routes — they need A100/80GB, not free Colab.)
 
 ### Phase 2 — Web build (Opus 4.8 primary; right-sized help)
 - Stack: **R3F/three + Spark 2.0 or PlayCanvas** (splat render) + **Theatre.js** (cinematic camera) + **GSAP ScrollTrigger** (the journey).

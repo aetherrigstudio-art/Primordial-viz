@@ -56,9 +56,11 @@ split hard:
   + camera system (built against a placeholder until then) swaps them in.
 
 ## 3. The full splat pipeline (per-stage: where it runs)
-1. **Capture** *(phone / camera on-site)* — overlapping video or photo sets of a real
-   draped installation and an Appalachian-rainforest location, ideally in **dawn +
-   day** light variants so they can be cross-faded for the time-of-day shift.
+1. **Generate (don't capture)** *(AI, free-tier — no footage needed)* — **Drapery**
+   (object): text/image → **TRELLIS 2** (MIT, instant image→3DGS, handles sheer cloth),
+   skips COLMAP. **Rainforest** (scene): AI video (Sora/Kling/Veo) of a slow 360° pan →
+   extract frames → COLMAP. Real on-site capture stays the max-fidelity upgrade.
+   Runbooks: `colab/drapery-trellis.md`, `colab/forest-video-splat.md`.
 2. **Poses** *(GPU server)* — COLMAP structure-from-motion → camera intrinsics/extrinsics.
 3. **Train** *(GPU server)* — 3D Gaussian-splat training (e.g. the gsplat / Nerfstudio
    `splatfacto` family — exact tool + version confirmed at build time, not assumed here).
@@ -134,10 +136,10 @@ Gold stays champagne/old-gold (never brass); blush stays dusk (never candy-pink)
    route (ADR-012); hand off into the existing audio-reactive instrument.
 
 ## 8. Open decisions for you
-- **D-COMPUTE (new, gating):** which GPU runs training? A cloud GPU you provision
-  (Colab / RunPod / Lambda / Vast — pay-per-use, you control it) vs a managed capture
-  app's cloud (Luma/Polycam — simplest, less control). You chose the **full pipeline**;
-  it still needs a GPU host — confirm which, and a rough budget (spend-discipline rule).
+- **D-COMPUTE (RESOLVED 2026-06-22):** **rented cloud GPU** runs splat training —
+  COLMAP → 3DGS (gsplat/Nerfstudio) on a pay-per-hour instance (RunPod/Lambda/Vast/
+  Colab), driven from the phone, output compressed to `.SPZ`/`.SOG`. Provider pick +
+  per-job budget still TBD; capture footage is the upstream prerequisite.
 - **D1 — dusk direction:** confirm dark immersive scenes + light editorial body.
 - **D2 — type:** confirm Fraunces + Hanken Grotesk + DM Mono (or an alternate pairing).
 - **D3 — camera tier:** RESOLVED — webcam dropped (no interface devices).
