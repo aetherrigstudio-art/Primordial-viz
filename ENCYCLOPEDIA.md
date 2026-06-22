@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 428 files across 17 categories.
+> 429 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (10)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (32)
-- [Claude Environment](#claude-environment) (153)
+- [Claude Environment](#claude-environment) (154)
 - [Deployment](#deployment) (3)
 - [Research](#research) (25)
 - [CI / Build Config](#ci--build-config) (10)
@@ -274,6 +274,7 @@
 | [`.claude/hooks/session-start.sh`](.claude/hooks/session-start.sh) | SessionStart deps hook — installs the dev/test toolchain so `npm run health`, `npm run smoke`, and `node test/render-check.mjs` work in a fresh… |
 | [`.claude/hooks/subagent-context.sh`](.claude/hooks/subagent-context.sh) | SubagentStart hook: give every spawned subagent the page-build orientation the main session gets from orient.sh — so a dispatched implementer /… |
 | [`.claude/hooks/subagent-route.mjs`](.claude/hooks/subagent-route.mjs) | SubagentStart hook — apply the SAME request triage to a spawned subagent's TASK, so it starts routed to the right persona/skills/tools/docs… |
+| [`.claude/hooks/subagent-verify.sh`](.claude/hooks/subagent-verify.sh) | SubagentStop hook: a subagent just finished. |
 | [`.claude/hooks/suggest-workflow.sh`](.claude/hooks/suggest-workflow.sh) | UserPromptSubmit hook: when the prompt looks like a substantial build/feature or a new visual-look task, inject a NON-BLOCKING nudge toward the… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
 | [`.claude/rules/conduct.md`](.claude/rules/conduct.md) | The transferable, behaviour-shaping parts of a complete consumer assistant system prompt, adapted to this repo (a dev tool, driven from a phone). |
