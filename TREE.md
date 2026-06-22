@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 449 files in 138 directories.
+> 452 files in 139 directories.
 
 ```
 Primordial-viz/
@@ -306,6 +306,7 @@ Primordial-viz/
 │   │   ├── 005-public-repo-and-license-posture.md
 │   │   ├── 006-soften-phone-based-development.md
 │   │   ├── 012-replatform-target.md
+│   │   ├── 013-instrument-in-r3f.md
 │   │   └── README.md
 │   ├── design-system/
 │   │   ├── colab/
@@ -314,6 +315,7 @@ Primordial-viz/
 │   │   ├── BUILD-WORKFLOW.md
 │   │   ├── HANDOFF.md
 │   │   ├── IMPLEMENTATION.md
+│   │   ├── INSTRUMENT-HANDOFF.md
 │   │   ├── PLAN.md
 │   │   ├── rainforest-asset-spec.md
 │   │   └── WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md
@@ -365,6 +367,8 @@ Primordial-viz/
 │   │       ├── 2026-06-20-rag-semantic-recall-design.md
 │   │       ├── 2026-06-20-secrets-management-design.md
 │   │       └── 2026-06-21-best-path-forward-design.md
+│   ├── tooling/
+│   │   └── antigravity-qa.md
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
 ├── immersive/

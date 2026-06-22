@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 449 files across 17 categories.
+> 452 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
-- [Specs & Long-form Docs](#specs--long-form-docs) (57)
+- [Specs & Long-form Docs](#specs--long-form-docs) (60)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -60,10 +60,12 @@
 | [`docs/decisions/005-public-repo-and-license-posture.md`](docs/decisions/005-public-repo-and-license-posture.md) | Proposed — needs an operator decision. |
 | [`docs/decisions/006-soften-phone-based-development.md`](docs/decisions/006-soften-phone-based-development.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/012-replatform-target.md`](docs/decisions/012-replatform-target.md) | Accepted — operator-directed 2026-06-21. |
+| [`docs/decisions/013-instrument-in-r3f.md`](docs/decisions/013-instrument-in-r3f.md) | Accepted — operator-directed 2026-06-22. |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
 | [`docs/design-system/BUILD-WORKFLOW.md`](docs/design-system/BUILD-WORKFLOW.md) | How we build and ship the point-cloud "journey" landing page (dawn → drapery gathers into a tent → flutters away → Appalachian rainforest music… |
 | [`docs/design-system/HANDOFF.md`](docs/design-system/HANDOFF.md) | Next-agent onboarding. |
 | [`docs/design-system/IMPLEMENTATION.md`](docs/design-system/IMPLEMENTATION.md) | Load-bearing facts for building the point-cloud wedding landing page (the immersive/ app), in our own words so they're retrievable via the RAG. |
+| [`docs/design-system/INSTRUMENT-HANDOFF.md`](docs/design-system/INSTRUMENT-HANDOFF.md) | How the immersive/ page's rainforest splat scene becomes the live audio-reactive instrument (ADR-013). |
 | [`docs/design-system/PLAN.md`](docs/design-system/PLAN.md) | Status: plan for operator review · Originated: 2026-06-21 · Refined: 2026-06-22 · No code built yet. |
 | [`docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md`](docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md) | What this file is: the single source for the wedding-page (Botanical Hero) client-side experience plus all image and video references gathered for it. |
 | [`docs/design-system/colab/drapery-trellis.md`](docs/design-system/colab/drapery-trellis.md) | Generate a photoreal 3D Gaussian of sheer drapery from one image — no capture, no COLMAP. |
@@ -108,6 +110,7 @@
 | [`docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md`](docs/superpowers/specs/2026-06-20-rag-semantic-recall-design.md) | Date: 2026-06-20 Status: approved design, ready for writing-plans Brief: research/rag-system/BRIEF.md (the full non-local RAG vision) Parked thread:… |
 | [`docs/superpowers/specs/2026-06-20-secrets-management-design.md`](docs/superpowers/specs/2026-06-20-secrets-management-design.md) | Date: 2026-06-20 · Branch: claude/init-r8ukva · Status: design (for review) · Method: brainstorming (done, parked) → this spec → writing-plans → SDD. |
 | [`docs/superpowers/specs/2026-06-21-best-path-forward-design.md`](docs/superpowers/specs/2026-06-21-best-path-forward-design.md) | Status: design, for operator review · Date: 2026-06-21 Backing research: docs/research/best-path-forward/findings.md (2 deep rounds, 6 agents, ~45… |
+| [`docs/tooling/antigravity-qa.md`](docs/tooling/antigravity-qa.md) | This repo's dev device (Termux/Android) has no GPU and can't run heavy builds or Chromium, so all render/visual QA happens off-device. |
 
 ## App — Entry & Bootstrap
 

@@ -15,6 +15,19 @@ the design plan: `docs/design-system/PLAN.md`.
 - **Journey:** a Theatre.js sequence scrubbed by `travel` (`sheet.sequence.position = progress *
   length`), state authored in Theatre studio → `state.json`. No GSAP ScrollTrigger (travel-driven).
 
+## Instrument reactivity (ADR-013 — the rainforest splats ARE the instrument)
+At `travel === 1` the rainforest `SplatMesh` becomes the live audio-reactive instrument **inside
+R3F** — NOT a handoff to the `src/` raw-WebGL2 app. Full reference: `docs/design-system/INSTRUMENT-HANDOFF.md`.
+Load-bearing facts:
+- **Per-splat reactivity** = `splatMesh.worldModifier = dyno.dynoBlock(...)` wrapping a `dyno.Dyno`
+  (GLSL on the `Gsplat` struct: center/scales/rgba), uniforms `dyno.dynoFloat`/`dynoVec3`;
+  **`updateGenerator()` ONCE** on attach/mesh-swap, **`updateVersion()` per frame** after writing
+  uniform `.value`. Import is `import { dyno } from '@sparkjsdev/spark'` (namespace).
+- Audio/control/mode stacks live under `immersive/src/{audio,control,mode}` — **re-authored, NO
+  cross-app import** from `src/`. Reactivity stays **inert until `travel===1`** (deterministic scrub).
+- **`dyno` GLSL is authored blind (no on-device GPU) → all visual/GPU QA is OFF-DEVICE** in
+  Antigravity (`agy`); on-device verification is `node --check` + the esbuild bundle smoke only.
+
 ## Build + verify (this dev container)
 - **Heavy builds run OFF-DEVICE** (GitHub Actions / `immersive.yml`) — Termux can't dlopen native
   Rollup/onnxruntime. On-device verify = `node --check` + `node_modules/.bin/esbuild

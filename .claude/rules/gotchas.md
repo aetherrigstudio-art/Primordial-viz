@@ -38,6 +38,16 @@ trailofbits pattern). Add to this when a non-obvious failure costs real time.
   handoff/log a subagent authored. Never log a feature as built without confirming
   the code exists.
 
+- **For blind-authored R3F / import-graph code, the esbuild bundle smoke is the on-device
+  coherence gate.** The immersive app (`immersive/`) has no on-device GPU, so subagents author
+  its R3F + `dyno`-GLSL splat code blind. `node --check` only catches syntax; the **full bundle
+  smoke** (`immersive/node_modules/.bin/esbuild immersive/src/main.jsx --bundle --format=esm
+  --jsx=automatic --outfile=/dev/null`) is what proves imports, wiring, and the
+  `@sparkjsdev/spark` `dyno` exports actually resolve across the whole graph. It does **not**
+  verify GLSL/visual correctness — that QA is **off-device** in Antigravity (`agy`; see
+  `docs/tooling/antigravity-qa.md`). So reconcile a splat/audio subagent's claims with
+  `node --check` + the bundle smoke + reading the real files; defer "it looks right" to agy.
+
 ## Behavioral pitfalls live in the always-loaded rules (don't duplicate here)
 
 The recurring *agent-behaviour* mistakes are already captured where they load every
