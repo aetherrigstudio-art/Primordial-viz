@@ -1,9 +1,12 @@
 name: immersive
 
-# Off-device build server for the immersive point-cloud landing page (BUILD-WORKFLOW Phase 4).
-# Builds the R3F + Spark proving-ground app on GitHub's runners — root-Claude can't run the
-# heavy build reliably on the hot Android device, and this is where the library build +
-# /design-sync render-grading will hang once the pipeline graduates (PLAN §6).
+# Off-device build + preview + render-check for the immersive point-cloud landing page.
+# The Android dev box can't run the Vite/Rollup build or Chromium, so this runner does it:
+#   1. builds the R3F + Spark app (base = /Test/immersive/ so asset paths resolve under the preview URL)
+#   2. boots it in headless WebGL2 (SwiftShader) → screenshot artifact (phone-viewable QA)
+#   3. deploys the build to https://primordial.video/Test/immersive/ so the operator can open it
+#      on their PHONE'S browser (real mobile GPU = the true QA; the agy CLI has no browser).
+# Reuses the existing Test@primordial.video FTP account + the FTP_PASSWORD secret.
 
 on:
   push:
@@ -11,6 +14,10 @@ on:
       - 'immersive/**'
       - '.github/workflows/immersive.yml'
   workflow_dispatch:
+
+concurrency:
+  group: immersive-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -25,11 +32,53 @@ jobs:
           node-version: '22'
       - name: Install
         run: npm install --no-audit --no-fund
-      - name: Build
-        run: npm run build
+      - name: Build (preview base)
+        run: npm run build -- --base=/Test/immersive/
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Render check + screenshot
+        continue-on-error: true
+        run: |
+          npm run preview -- --port 4173 --host 127.0.0.1 &
+          SERVER=$!
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:4173/Test/immersive/ >/dev/null && break; sleep 1; done
+          npm run render-check -- http://127.0.0.1:4173/Test/immersive/
+          CODE=$?
+          kill $SERVER 2>/dev/null || true
+          exit $CODE
       - name: Upload build
         uses: actions/upload-artifact@v4
         with:
           name: immersive-dist
           path: immersive/dist
           if-no-files-found: error
+      - name: Upload render screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: immersive-render
+          path: immersive/test/artifacts/immersive.png
+          if-no-files-found: warn
+
+  deploy-preview:
+    needs: build
+    runs-on: ubuntu-latest
+    # Deploy the phone-openable preview on the working branches / main / manual run (not every branch).
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/claude/')
+    concurrency:
+      group: immersive-preview-deploy
+      cancel-in-progress: true
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: immersive-dist
+          path: dist
+      - name: Deploy preview via FTPS (→ primordial.video/Test/immersive/)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: premium252.web-hosting.com
+          username: Test@primordial.video
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ./immersive/

@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 454 files across 17 categories.
+> 455 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (26)
 - [CI / Build Config](#ci--build-config) (10)
-- [Other](#other) (99)
+- [Other](#other) (100)
 
 ## Overview & Planning
 
@@ -555,6 +555,7 @@
 | [`immersive/src/splat/useReactiveSplat.js`](immersive/src/splat/useReactiveSplat.js) | JS file. |
 | [`immersive/src/splat/useSplatLayer.js`](immersive/src/splat/useSplatLayer.js) | JS file. |
 | [`immersive/src/viewpoint/useViewpoint.js`](immersive/src/viewpoint/useViewpoint.js) | JS file. |
+| [`immersive/test/render-check.mjs`](immersive/test/render-check.mjs) | immersive/test/render-check.mjs — headless WebGL2 render check for the immersive app. |
 | [`immersive/vite.config.js`](immersive/vite.config.js) | JS file. |
 | [`portfolio/Gather-PortfolioMedia.ps1`](portfolio/Gather-PortfolioMedia.ps1) | PS1 file. |
 | [`portfolio/README.md`](portfolio/README.md) | Two ways to pull image/video candidates into one place so you can pick the best for the portfolio. |
