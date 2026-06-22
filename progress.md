@@ -1,5 +1,34 @@
 # Progress Log — primordial
 
+## HANDOFF — 2026-06-22 (immersive build + subagent-orchestration) — RESUME HERE
+Branch `main`, everything pushed. Big session — current state + the next moves:
+
+**Live now (committed/pushed):**
+- **`immersive/`** — standalone Vite + R3F + Spark proving ground: multi-splat composite (drapery +
+  rainforest) via `useSplatLayer` (placeholder→real swap + fallback), off-axis camera, no-sensor
+  arrow-nav stub, mobile-budget guards. Heavy builds run OFF-DEVICE (CI `immersive.yml`); on-device
+  verify = `node --check` + the esbuild bundle smoke; render QA = Antigravity. Reference: `docs/design-system/IMPLEMENTATION.md`.
+- **Asset recipes** — drapery via TRELLIS (one-tap HF Space); rainforest via **Veo 3.1** → COLMAP →
+  `splatfacto-big` → SuperSplat. Specs: `docs/design-system/{rainforest-asset-spec.md,colab/*}`.
+  Real `.spz` are operator-generated OFF-DEVICE → drop in `immersive/public/assets/` (gitignored).
+- **Subagent-orchestration system** — `.claude/rules/immersive.md` (routed + auto-injected on
+  `immersive/**`); 6 specialist agents (splat-graphics/motion-choreography/interface-design/splat-asset
+  + design-reviewer/perf-a11y-reviewer); hooks: SubagentStart context (`subagent-context.sh`) + a
+  triage router (`route-request.mjs`/`subagent-route.mjs`/`lib/triage.mjs`) + SubagentStop verify
+  reminder (`subagent-verify.sh`); `immersive-page` workflow; 13 `permissions.allow` rules.
+- **RAG** — `IMPLEMENTATION.md` in the corpus; off-device reindex CI (`rag-index.yml`) keeps
+  `index.json` fresh (embedder/onnxruntime can't run on Termux); drift gate is warn-only.
+- **MCP** — primordial-http handshake fixed + auto-starts locally.
+
+**Next — the page build, in order:**
+1. **Merge the cloud arrow-camera PR** (no-sensor arrow nav) — it rewrites CameraRig/App; the journey builds on it.
+2. **Journey choreography** (Theatre.js scrubbed by `travel`; no GSAP ScrollTrigger) — implement after the arrow PR.
+3. **Generate the real splats** (operator, off-device via the runbooks) → swap into `immersive/public/assets/`.
+4. **Instrument handoff** at journey's end (the live audio-reactive visualizer) — separate increment.
+
+**Env:** root Termux, no GPU, HTTPS-443 only; heavy builds / RAG embedder / Chromium are OFF-DEVICE
+(CI / Antigravity); only committed files survive. `npm run health` green (RAG warn-only).
+
 ## HANDOFF — 2026-06-22 (design-system / point-cloud landing page) → read `docs/design-system/HANDOFF.md`
 
 Started the **immersive point-cloud landing-page** effort + a multi-tool build pipeline.
