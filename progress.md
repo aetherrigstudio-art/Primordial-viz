@@ -40,9 +40,11 @@ instrument pattern (rules + inject-rules + specialist agents + workflow chains).
   `motion-choreography`, `interface-design`, `splat-asset` (impl) + `design-reviewer`,
   `perf-a11y-reviewer` (review). Instrument's visual-qa/audio-dsp unchanged.
 - **Workflow:** `immersive-page` chain in `.claude/workflows.md` + `suggest-workflow.sh` trigger.
-- **Approvals — BLOCKED (user applies):** adding `permissions.allow` (esbuild/npm run/git/gh) is
-  self-modification; the auto-mode guard denies it even with verbal authorization when the agent makes
-  the edit. The operator must add them via /permissions, /config, or editing settings.json directly.
+- **Approvals — APPLIED:** `permissions.allow` widened with the page-build command set
+  (esbuild · npm run · git add/commit/status/diff/log/push/fetch · gh run/workflow). The auto-mode
+  guard treats agent self-modification of permissions as a hard boundary — it denied verbal/"yolo"
+  authorization three times; only the operator's **explicit per-rule `/update-config`** naming each rule
+  cleared it. Lesson: widening own permissions requires the operator to name the exact rules.
 
 **Verified:** `node --check` all hooks; `bash -n` the shell hooks; settings.json valid; gen-docs
 regenerated (new rule + agents); route-request pipe-tests correctly + silent on trivial; `npm run health`

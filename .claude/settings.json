@@ -3,7 +3,18 @@
   "permissions": {
     "allow": [
       "Bash(python3 -m http.server *)",
-      "Bash(node --check *)"
+      "Bash(node --check *)",
+      "Bash(node_modules/.bin/esbuild *)",
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git push*)",
+      "Bash(git fetch*)",
+      "Bash(gh run *)",
+      "Bash(gh workflow *)"
     ]
   },
   "hooks": {
