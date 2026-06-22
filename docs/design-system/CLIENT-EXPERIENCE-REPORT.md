@@ -1,150 +1,122 @@
 # Primordial Studio — Wedding Page: Client-Side Experience Report
 
 **Scope:** *only* what a visitor experiences — the felt, sensory, and interactive
-journey, the words they read, and how it behaves on their device. No build,
-architecture, or tooling detail.
+journey, and how it behaves on their device. No build, architecture, or tooling
+detail.
 
-**Source of truth:** the newest delivered design, **"Botanical Hero v2 — Step
-Inside"** (Drive handoff, 2026-06-21), which supersedes the v1 weddings page per
-the "newest design wins" handoff rule. v2 is a working, self-contained prototype
-of the hero; it demonstrates the real experience even though the final build will
-swap in richer 3D (see *Prototype vs. planned* at the end).
+**Status:** describes the **intended initial experience** as directed by the
+operator (2026-06-22). This supersedes the literal v1/v2 Drive prototypes where
+they differ — the prototypes demonstrate techniques, but the arc below is the
+target.
 
-> **Placeholder note:** the **exact wording and the fonts** in v2 are
-> placeholder — do **not** treat any specific line of copy or the typeface
-> pairing as final. The real, durable content of this report is the
-> **experience structure**: the chapter arc, the diegetic (in-space) text
-> moments, the controls, and the entry-gate → single-CTA flow. Quoted lines
-> below are shown only to illustrate *where* and *how* copy appears, not *what*
-> it must say.
+> **Placeholder note:** all **wording, fonts, and the exact placement of text**
+> are placeholder — do **not** treat any specific line of copy or typeface as
+> final. The durable content of this report is the **experience structure**: the
+> dawn open, the drapery forming a tent, looking around, the forward exit where
+> drapery and placeholders flutter away, and the reveal of the interactive music
+> visualizer. Quoted lines (if any) only illustrate *where* copy appears, not
+> *what* it says.
 
 ---
 
 ## 1. The one-sentence experience
 
-A visitor arrives in dark, pre-dawn Appalachian woods and travels *forward*
-through a corridor of sheer ivory wedding drapes as morning breaks around them —
-the studio's own words drifting past in the space — ending in a bright bloom
-clearing as the drapes lift away like birds. The page **is** the demo: it does to
-the visitor exactly what the studio does at a real wedding.
+A visitor opens at **dawn**, and as they move forward, sheer drapery sweeps in
+with high-end, almost cinematic (Harry-Potter-grade) visual effects and forms a
+**tent around them**; they look around that enclosed space, then move further
+forward to leave — the drapery and everything in it flutter away — revealing an
+**interactive music visualizer of an Appalachian rainforest**.
 
 ## 2. First moment — the entry gate
 
-Before anything moves, a calm dark overlay presents an invitation:
+Before the journey begins, a calm invitation offers the visitor a way in:
 
-- **Eyebrow:** "Primordial Studio"
-- **Headline:** "Step inside a room that *moves with you*."
-- **Body:** "Let your camera see you, and the space will answer — lean in, look
-  around, and travel forward through the drapery and bloom."
-- **Two choices:**
-  - **"Allow camera & enter"** (solid champagne-gold button)
-  - **"Continue without — I'll scroll"** (quiet outline button)
-- **Gesture hints:** *Tilt to look · Pinch to move · Open hand to release*
-- **Privacy reassurance (fine print):** "Your camera never leaves your device.
-  Prefer not to? Scrolling, mouse, and tilt work just as well."
+- A welcoming headline and short line of intent (copy placeholder).
+- **Two choices:** enter *with the camera* (offered as the most magical way in),
+  or *continue without* — scroll/tilt works just as well.
+- A clear **privacy reassurance** that the camera never leaves their device.
 
-The promise is set immediately: this is interactive and personal, and opting out
-costs nothing. Granting the camera is framed as a welcome, never a demand.
+Entering is framed as a welcome, never a demand; opting out costs nothing.
 
-## 3. The journey — six chapters, one continuous forward travel
+## 3. The journey
 
-Once inside, the visitor's **scroll (or tilt) becomes forward motion** down a
-draped corridor. Progress is shown as a slim vertical **chapter rail** on the
-right that they can also click to jump. The arc:
+The visitor's forward movement (scroll, or tilt/camera) drives the whole
+sequence. The arc, in order:
 
-1. **Into the dark.** Near-black woods at night — just trees, depth, and quiet.
-2. **The drapes descend.** Sheer ivory drapes drift down from above and settle
-   in turn, *like feathers*, enclosing the woods into a room.
-3. **Morning breaks.** As they move in, a warm golden backlight rises and floods
-   through the translucent fabric — the sun coming up inside the space.
-4. **Deeper into day.** Travelling further, the light advances toward bright
-   midday; god-rays rake through the corridor.
-5. **The corridor.** The drapes resolve into a hallway the visitor moves down.
-6. **Released.** At the end the drapes lift away upward — *like birds* — opening
-   onto a soft, blooming clearing.
+1. **Open at dawn.** The scene begins in soft early-morning light — an
+   Appalachian setting, calm and atmospheric. Minimal at first.
+2. **Move forward → the drapery arrives.** As the visitor travels forward, sheer
+   drapery animates in with **extremely high-quality, magical visual effects** —
+   fabric sweeping, billowing, and assembling around them until it encloses the
+   space into **almost a tent**.
+3. **Look around the tent.** Inside the draped enclosure, the visitor can look
+   around freely (mouse, tilt, or camera). **Placeholder content sits only in
+   spots that make visual sense** — composed into the space, never clogging the
+   screen or covering the view.
+4. **Move further forward → leave.** Continuing forward to exit, the **drapery
+   flutters away — along with any placeholders** — dissolving the tent and
+   opening the space back up.
+5. **Arrive in the music visualizer.** What remains is an **interactive music
+   visualizer of an Appalachian rainforest** — the audio-reactive instrument
+   itself. (Many adjustments and richer scenes come later; this initial reveal is
+   the focus for now.)
 
-The bookend is deliberate and emotional: **feathers down to enclose ↔ birds up to
-release.**
+The emotional shape: **dawn → drapery gathers you in → a moment inside → drapery
+releases → you land in the living, sound-reactive world.**
 
-## 4. Words that live *in* the space (diegetic copy)
+## 4. Text and content inside the space
 
-The site's text isn't an overlay — it floats at different depths in the corridor
-and the camera reveals each line as it approaches and passes. *(The lines below
-are placeholder wording — what matters is the pattern: short, poetic lines
-spaced through the journey.)*
-
-- A wordmark: **"Primordial Studio" / PRIMORDIAL**
-- **"The drapes fall *like feathers*."**
-- **"Morning breaks inside the *woods*."**
-- A closing call: **"A room that feels like *your day*."** with the **"Begin your
-  scene"** button.
-
-Voice throughout is poetic and benefit-led — about feeling and beauty, never the
-technology behind it.
+Any words or UI moments live **in** the scene, placed where they read naturally
+against the drapery — positioned for visual balance, not as a flat overlay and
+not crowding the view. The specific wording and placement are placeholder; the
+principle is **sparse, well-composed, unobtrusive**.
 
 ## 5. How the visitor drives it (by device)
 
-The same experience, met wherever they are:
-
-- **Any device — scroll.** The primary control; scrolling = travelling forward.
-  A "Scroll to move" cue appears on entry.
-- **Desktop — mouse.** Moving the pointer gently parallaxes the scene (look
-  around as you travel).
-- **Phone — tilt (gyro).** Tilting the phone shifts the viewpoint, so the draped
-  space reads as real depth that responds to the hand.
-- **Optional — camera.** If allowed, the camera is invited as the most magical
-  way in (the visitor "being seen" by the space). It is requested only from a tap
-  and is treated as opt-in; declining loses nothing.
-
-Persistent niceties: a **"Replay the scene"** control in the top bar, the
-visitor's scroll position is remembered if they reload, and small gesture-hint
-chips fade in on entry then politely disappear.
+- **Any device — forward movement** (scroll) carries them through the dawn →
+  tent → release → visualizer sequence.
+- **Desktop — mouse** to look around inside the tented space.
+- **Phone — tilt (gyro)** to look around, so the draped space reads as real depth
+  that answers the hand.
+- **Optional — camera** as the most immersive way to "be seen" by the space;
+  opt-in only, requested from a tap, and never leaving the device.
 
 ## 6. The look and feel (brand atmosphere)
 
-- **Type (placeholder):** v2 uses an elegant organic serif for the large display
-  lines and a warm, clean sans for everything functional. The specific typefaces
-  are **not final** — only the *intent* (high-end serif + humanist sans) is the
-  takeaway.
-- **Palette:** near-black woods and deep greens, warmed by **champagne-gold**,
-  soft **blush/mauve**, and **sage** — wedding-luxe, never brassy or candy-pink.
-- **Atmosphere:** a constant fine film-grain haze, soft vignette, volumetric
-  god-rays, and ivory fabric that glows as the light rises — "a glasshouse at
-  dusk" mood. Everything drifts slowly; nothing is abrupt.
+- **Quality bar:** the drapery effects should read as **premium and magical** —
+  the visual-effects craft is the whole point of the page.
+- **Palette / type (placeholder):** wedding-luxe and warm — soft, elegant, never
+  brassy or clinical. Specific colours and typefaces are not final; only the
+  high-end, romantic *intent* is the takeaway.
+- **Atmosphere:** dawn light, fine haze/grain, gentle motion throughout —
+  cinematic rather than brochure-like.
 
-The result reads as intentional and high-end within the first few seconds — the
-anti-template goal — and feels like a single cinematic breath rather than a
-scrollable brochure.
+## 7. The end state — the interactive music visualizer
 
-## 7. Accessibility & privacy, as the visitor experiences them
+The page resolves *into* Primordial's core: a live, **audio-reactive Appalachian
+rainforest** the visitor can interact with. This is the same instrument the rest
+of the project is built around — so the wedding hero isn't a separate brochure,
+it's the on-ramp that delivers the visitor into the living visualizer. Future
+work layers in adjustments and additional tailorable scenes; the initial build is
+just this first part: **dawn → drapery tent → release → rainforest visualizer.**
 
-- **Reduced motion:** a visitor who prefers reduced motion skips the gate and is
-  shown a single composed, golden-corridor *still* — the beauty without the
-  movement.
-- **Screen reader / no-JS / SEO:** a hidden text layer carries the real heading,
-  the studio's one-paragraph description, and a "Begin your scene" link, so the
-  page is fully meaningful without the 3D scene.
-- **Keyboard:** clear focus outlines (sage) on every control.
-- **Privacy felt up front:** the camera is opt-in, requested only on tap, and the
-  copy promises it never leaves the device (in v2 the camera grant is a welcome
-  gesture only — no video is shown, stored, or sent).
+## 8. Accessibility & privacy, as the visitor experiences them
 
-## 8. The single conversion moment
-
-There is **one** call to action, surfaced at the emotional peak (the bloom
-clearing): **"Begin your scene."** Pressing it acknowledges warmly — "Thank you —
-we'll be in touch" — standing in for the real inquiry form. The page sells an
-*experience and a feeling*, then asks once.
+- **Reduced motion:** a visitor who prefers reduced motion is shown a composed,
+  calm version rather than the full sweeping animation.
+- **Screen reader / no-JS / SEO:** a hidden text layer carries the real heading
+  and a one-line description, so the page is meaningful without the 3D scene.
+- **Keyboard:** clear focus outlines on every control.
+- **Camera privacy felt up front:** opt-in, tap-triggered, and promised to stay
+  on the device.
 
 ---
 
 ## Prototype vs. planned (one honest note)
 
-v2 is a **faithful prototype of the experience**, built to be felt now: the depth
-is created with layered, projected drape and text elements rather than true 3D,
-and the camera button is currently a permission/welcome gesture that doesn't yet
-move the scene. The planned production build keeps this exact journey and feeling
-but deepens the realism — photoreal drapery/flowers, a true head/tilt-coupled
-"window into the room" camera, and scenes tailorable to each couple's palette and
-setting. **What the visitor feels in v2 is the target; the upgrade is fidelity,
-not direction.**
+The Drive prototypes are faithful demonstrations of the *techniques* (projected
+drapery, dawn lighting, diegetic text, forward travel), built to be felt now. The
+production build keeps this exact journey and feeling but deepens the realism —
+high-fidelity drapery effects, a true look-around camera, and the real
+audio-reactive rainforest visualizer at the end. **What the visitor feels is the
+target; the upgrade is fidelity, not direction.**

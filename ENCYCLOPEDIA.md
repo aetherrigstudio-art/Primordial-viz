@@ -60,7 +60,7 @@
 | [`docs/decisions/006-soften-phone-based-development.md`](docs/decisions/006-soften-phone-based-development.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/012-replatform-target.md`](docs/decisions/012-replatform-target.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
-| [`docs/design-system/CLIENT-EXPERIENCE-REPORT.md`](docs/design-system/CLIENT-EXPERIENCE-REPORT.md) | Scope: only what a visitor experiences — the felt, sensory, and interactive journey, the words they read, and how it behaves on their device. |
+| [`docs/design-system/CLIENT-EXPERIENCE-REPORT.md`](docs/design-system/CLIENT-EXPERIENCE-REPORT.md) | Scope: only what a visitor experiences — the felt, sensory, and interactive journey, and how it behaves on their device. |
 | [`docs/design-system/PLAN.md`](docs/design-system/PLAN.md) | Status: plan for operator review · Date: 2026-06-21 · No code built yet. |
 | [`docs/plans/refactor/README.md`](docs/plans/refactor/README.md) | Per-phase refactor plans for the codebase, one per concern-area (the 10-phase decomposition). |
 | [`docs/plans/refactor/phase-01-docs-context.md`](docs/plans/refactor/phase-01-docs-context.md) | Concern: the narrative/handoff docs (not the rules or hooks — those are phases 2/3). |
