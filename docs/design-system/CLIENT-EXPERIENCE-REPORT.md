@@ -10,6 +10,14 @@ the "newest design wins" handoff rule. v2 is a working, self-contained prototype
 of the hero; it demonstrates the real experience even though the final build will
 swap in richer 3D (see *Prototype vs. planned* at the end).
 
+> **Placeholder note:** the **exact wording and the fonts** in v2 are
+> placeholder — do **not** treat any specific line of copy or the typeface
+> pairing as final. The real, durable content of this report is the
+> **experience structure**: the chapter arc, the diegetic (in-space) text
+> moments, the controls, and the entry-gate → single-CTA flow. Quoted lines
+> below are shown only to illustrate *where* and *how* copy appears, not *what*
+> it must say.
+
 ---
 
 ## 1. The one-sentence experience
@@ -61,7 +69,9 @@ release.**
 ## 4. Words that live *in* the space (diegetic copy)
 
 The site's text isn't an overlay — it floats at different depths in the corridor
-and the camera reveals each line as it approaches and passes:
+and the camera reveals each line as it approaches and passes. *(The lines below
+are placeholder wording — what matters is the pattern: short, poetic lines
+spaced through the journey.)*
 
 - A wordmark: **"Primordial Studio" / PRIMORDIAL**
 - **"The drapes fall *like feathers*."**
@@ -92,8 +102,10 @@ chips fade in on entry then politely disappear.
 
 ## 6. The look and feel (brand atmosphere)
 
-- **Type:** Cormorant Garamond (an elegant, organic serif) for the large display
-  lines; Mulish (a warm, clean sans) for everything functional.
+- **Type (placeholder):** v2 uses an elegant organic serif for the large display
+  lines and a warm, clean sans for everything functional. The specific typefaces
+  are **not final** — only the *intent* (high-end serif + humanist sans) is the
+  takeaway.
 - **Palette:** near-black woods and deep greens, warmed by **champagne-gold**,
   soft **blush/mauve**, and **sage** — wedding-luxe, never brassy or candy-pink.
 - **Atmosphere:** a constant fine film-grain haze, soft vignette, volumetric
