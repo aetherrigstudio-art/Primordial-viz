@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 452 files across 17 categories.
+> 454 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (10)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (32)
-- [Claude Environment](#claude-environment) (154)
+- [Claude Environment](#claude-environment) (156)
 - [Deployment](#deployment) (3)
 - [Research](#research) (25)
 - [CI / Build Config](#ci--build-config) (10)
@@ -262,6 +262,8 @@
 | [`.claude/agents/splat-asset.md`](.claude/agents/splat-asset.md) | Splat asset-pipeline specialist for the immersive page — generate-don't-capture (TRELLIS / Veo 3.1 / Splatfacto / COLMAP / SuperSplat), integration… |
 | [`.claude/agents/splat-graphics.md`](.claude/agents/splat-graphics.md) | R3F + Spark + three Gaussian-splat rendering specialist for the immersive page — the multi-splat composite, camera + off-axis frustum, and GLSL… |
 | [`.claude/agents/visual-qa.md`](.claude/agents/visual-qa.md) | Reviews a visual/shader/renderer change in primordial for both look quality and mobile performance budget compliance. Use after editing… |
+| [`.claude/agy-setup.sh`](.claude/agy-setup.sh) | Restore the Antigravity (agy) integration for this repo. |
+| [`.claude/agy/notebooklm-mcp-server.mjs`](.claude/agy/notebooklm-mcp-server.mjs) | NotebookLM MCP server — a tiny ZERO-DEPENDENCY stdio JSON-RPC 2.0 bridge that exposes the authed `notebooklm` CLI as MCP tools, so an MCP client… |
 | [`.claude/cloud-setup.sh`](.claude/cloud-setup.sh) | Primordial-viz — CLOUD ENVIRONMENT SETUP SCRIPT (reference copy). |
 | [`.claude/hooks/check-data.sh`](.claude/hooks/check-data.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/check-syntax.sh`](.claude/hooks/check-syntax.sh) | PostToolUse hook (matcher: Edit\|Write). |

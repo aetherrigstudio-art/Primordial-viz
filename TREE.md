@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 452 files in 139 directories.
+> 454 files in 140 directories.
 
 ```
 Primordial-viz/
@@ -82,6 +82,8 @@ Primordial-viz/
 │   │   ├── splat-asset.md
 │   │   ├── splat-graphics.md
 │   │   └── visual-qa.md
+│   ├── agy/
+│   │   └── notebooklm-mcp-server.mjs
 │   ├── hooks/
 │   │   ├── lib/
 │   │   │   └── triage.mjs
@@ -276,6 +278,7 @@ Primordial-viz/
 │   │       ├── render-graphs.js
 │   │       ├── SKILL.md
 │   │       └── testing-skills-with-subagents.md
+│   ├── agy-setup.sh
 │   ├── cloud-setup.sh
 │   ├── ROADMAP.md
 │   ├── settings.json
