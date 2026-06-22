@@ -88,6 +88,7 @@ don't skip them):
 | --- | --- | --- |
 | Shaders / renderer (`src/shaders`, `src/gl`) | `.claude/rules/shaders.md` — mobile budget + write-our-own licensing | agent `visual-qa`, skill `perf-budget` |
 | Audio (`src/audio`) | `.claude/rules/audio.md` — AnalyserNode, 512×2 texture, capture | agent `audio-dsp` |
+| Immersive page (`immersive/`) | `.claude/rules/immersive.md` — off-device build, mobile budget, write-our-own | agents `splat-graphics`/`motion-choreography`/`interface-design`/`splat-asset`; review `design-reviewer`/`perf-a11y-reviewer`; skill `r3f-shaders` |
 | A new look / preset (`src/looks`, `src/params`) | skill `new-preset` | `check-data` hook runs smoke on save |
 | Deploy / hosting | `.claude/rules/deploy.md` (source of truth) | `deploy/DEPLOY.md`; deploy auto-runs via `deploy.yml` |
 | Design / architecture / "reason through" a choice | skill `thought-based-reasoning` | this router + `progress.md` |

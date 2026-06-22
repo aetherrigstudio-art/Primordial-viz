@@ -22,6 +22,15 @@ guidance, not handcuffs.**
 3. `visual-qa` *(agent)* — review look quality + mobile-budget compliance
 4. `verification-before-completion` — `smoke` + `render-check` before "done"
 
+## immersive-page — build a part of the point-cloud landing page (`immersive/`)
+1. `brainstorming` — design before code (HARD-GATE; the arc + art direction live in `docs/design-system/`)
+2. `writing-plans` — turn the design into a step-by-step plan
+3. `subagent-driven-development` — dispatch the right specialist *(agent)*: `splat-graphics` (render) ·
+   `motion-choreography` (journey) · `interface-design` (UI/tokens) · `splat-asset` (assets)
+4. `verification-before-completion` — on-device `node --check` + the esbuild bundle smoke (heavy build is OFF-DEVICE/CI)
+5. `design-reviewer` + `perf-a11y-reviewer` *(agents)* — art-direction fidelity + phone-shippability
+6. `finishing-a-development-branch` — merge / PR / cleanup decision
+
 ---
 *Add a workflow:* append a `## <name> — <when>` section with a numbered chain,
 then it's available to the `workflow` skill. The suggest-workflow hook only nudges

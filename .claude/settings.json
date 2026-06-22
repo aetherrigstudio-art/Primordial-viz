@@ -26,9 +26,27 @@
         ]
       }
     ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/subagent-context.sh"
+          },
+          {
+            "type": "command",
+            "command": "node .claude/hooks/subagent-route.mjs"
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/route-request.mjs"
+          },
           {
             "type": "command",
             "command": ".claude/hooks/suggest-workflow.sh"

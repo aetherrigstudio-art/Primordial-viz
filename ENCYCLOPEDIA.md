@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 417 files across 17 categories.
+> 428 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
@@ -22,7 +22,7 @@
 - [Tests & Verification](#tests--verification) (10)
 - [Desktop / Standalone (Tauri)](#desktop--standalone-tauri) (25)
 - [Tooling / Scripts](#tooling--scripts) (32)
-- [Claude Environment](#claude-environment) (142)
+- [Claude Environment](#claude-environment) (153)
 - [Deployment](#deployment) (3)
 - [Research](#research) (25)
 - [CI / Build Config](#ci--build-config) (10)
@@ -252,6 +252,12 @@
 | [`.claude/ROADMAP.md`](.claude/ROADMAP.md) | Scope: the Claude setup only — how we make this repo + agent optimal so the app can be built phone-driven and laptop-free. |
 | [`.claude/TODO.md`](.claude/TODO.md) | Claude-environment checklist only (the app's task list is the repo-root TODO.md). |
 | [`.claude/agents/audio-dsp.md`](.claude/agents/audio-dsp.md) | Audio-analysis specialist for primordial. Reviews or implements the FFT/band-energy/beat/BPM path and the 512×2 audio texture for correctness. Use… |
+| [`.claude/agents/design-reviewer.md`](.claude/agents/design-reviewer.md) | Art-direction + experience-fidelity reviewer for the immersive page. Checks a change against WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md + the dusk… |
+| [`.claude/agents/interface-design.md`](.claude/agents/interface-design.md) | Diegetic 3D UI + design-system specialist for the immersive page — the dusk palette, Fraunces/Hanken/DM Mono typography, diegetic 3D primitives, and… |
+| [`.claude/agents/motion-choreography.md`](.claude/agents/motion-choreography.md) | Theatre.js + GSAP journey/animation specialist for the immersive page — the dawn→tent→flutter→arrive arc scrubbed by the arrow nav's travel value.… |
+| [`.claude/agents/perf-a11y-reviewer.md`](.claude/agents/perf-a11y-reviewer.md) | Phone-shippability reviewer for the immersive page — mobile performance budget (splat count / DPR / frame-time / thermal) AND accessibility (WCAG… |
+| [`.claude/agents/splat-asset.md`](.claude/agents/splat-asset.md) | Splat asset-pipeline specialist for the immersive page — generate-don't-capture (TRELLIS / Veo 3.1 / Splatfacto / COLMAP / SuperSplat), integration… |
+| [`.claude/agents/splat-graphics.md`](.claude/agents/splat-graphics.md) | R3F + Spark + three Gaussian-splat rendering specialist for the immersive page — the multi-splat composite, camera + off-axis frustum, and GLSL… |
 | [`.claude/agents/visual-qa.md`](.claude/agents/visual-qa.md) | Reviews a visual/shader/renderer change in primordial for both look quality and mobile performance budget compliance. Use after editing… |
 | [`.claude/cloud-setup.sh`](.claude/cloud-setup.sh) | Primordial-viz — CLOUD ENVIRONMENT SETUP SCRIPT (reference copy). |
 | [`.claude/hooks/check-data.sh`](.claude/hooks/check-data.sh) | PostToolUse hook (matcher: Edit\|Write). |
@@ -260,15 +266,20 @@
 | [`.claude/hooks/gen-docs.sh`](.claude/hooks/gen-docs.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/guard.mjs`](.claude/hooks/guard.mjs) | PreToolUse hook (matcher: Bash) — destructive-command guard. |
 | [`.claude/hooks/inject-rules.sh`](.claude/hooks/inject-rules.sh) | PreToolUse hook (matcher: Edit\|Write). |
+| [`.claude/hooks/lib/triage.mjs`](.claude/hooks/lib/triage.mjs) | Shared request-triage / router logic. |
 | [`.claude/hooks/mcp-http.sh`](.claude/hooks/mcp-http.sh) | SessionStart: start the primordial MCP server over Streamable HTTP on localhost so the `primordial-http` entry in .mcp.json connects. |
 | [`.claude/hooks/orient.sh`](.claude/hooks/orient.sh) | SessionStart hook: orient a fresh agent (especially cloud/phone sessions) with zero typing — repo state, branch + recent commits, the latest handoff… |
 | [`.claude/hooks/precompact-handoff.sh`](.claude/hooks/precompact-handoff.sh) | PreCompact hook: before the session compacts, remind to capture continuity in progress.md so mid-session state isn't lost. |
+| [`.claude/hooks/route-request.mjs`](.claude/hooks/route-request.mjs) | UserPromptSubmit hook — request triage / router (thin wrapper around lib/triage.mjs). |
 | [`.claude/hooks/session-start.sh`](.claude/hooks/session-start.sh) | SessionStart deps hook — installs the dev/test toolchain so `npm run health`, `npm run smoke`, and `node test/render-check.mjs` work in a fresh… |
+| [`.claude/hooks/subagent-context.sh`](.claude/hooks/subagent-context.sh) | SubagentStart hook: give every spawned subagent the page-build orientation the main session gets from orient.sh — so a dispatched implementer /… |
+| [`.claude/hooks/subagent-route.mjs`](.claude/hooks/subagent-route.mjs) | SubagentStart hook — apply the SAME request triage to a spawned subagent's TASK, so it starts routed to the right persona/skills/tools/docs… |
 | [`.claude/hooks/suggest-workflow.sh`](.claude/hooks/suggest-workflow.sh) | UserPromptSubmit hook: when the prompt looks like a substantial build/feature or a new visual-look task, inject a NON-BLOCKING nudge toward the… |
 | [`.claude/rules/audio.md`](.claude/rules/audio.md) | Scoped to the audio capture + analysis code. |
 | [`.claude/rules/conduct.md`](.claude/rules/conduct.md) | The transferable, behaviour-shaping parts of a complete consumer assistant system prompt, adapted to this repo (a dev tool, driven from a phone). |
 | [`.claude/rules/deploy.md`](.claude/rules/deploy.md) | Facts about the host. |
 | [`.claude/rules/gotchas.md`](.claude/rules/gotchas.md) | Distilled tribal knowledge so the same loops don't recur (anti-footgun manual, trailofbits pattern). |
+| [`.claude/rules/immersive.md`](.claude/rules/immersive.md) | Load-bearing constraints for building the immersive page. |
 | [`.claude/rules/mobile-ergonomics.md`](.claude/rules/mobile-ergonomics.md) | The operator runs this project largely from an Android phone, now with a server / CI to help with the heavy lifting (builds, bundlers, headless… |
 | [`.claude/rules/shaders.md`](.claude/rules/shaders.md) | Scoped to the shader/renderer code. |
 | [`.claude/settings.json`](.claude/settings.json) | Claude Code hooks + permissions for this repo. |

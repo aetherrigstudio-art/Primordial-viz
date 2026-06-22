@@ -15,10 +15,17 @@ low="$(printf '%s' "$prompt" | tr '[:upper:]' '[:lower:]')"
 
 # Look intent is more specific → checked first.
 wf=""
+# Immersive page intent is the most specific → checked first.
 case "$low" in
-  *preset*|*palette*|*"new look"*|*"a new look"*|*"another look"*|*"color scheme"*|*"visual look"*|*"new visual"*)
-    wf="new-look" ;;
+  *immersive*|*splat*|*drapery*|*rainforest*|*"point-cloud"*|*"point cloud"*|*journey*|*theatre*|*"landing page"*)
+    wf="immersive-page" ;;
 esac
+if [ -z "$wf" ]; then
+  case "$low" in
+    *preset*|*palette*|*"new look"*|*"a new look"*|*"another look"*|*"color scheme"*|*"visual look"*|*"new visual"*)
+      wf="new-look" ;;
+  esac
+fi
 if [ -z "$wf" ]; then
   case "$low" in
     *"build a"*|*implement*|*"add a feature"*|*"new feature"*|*"create a feature"*|*"add support"*|*refactor*|*scaffold*)

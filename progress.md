@@ -20,6 +20,35 @@ Started the **immersive point-cloud landing-page** effort + a multi-tool build p
 - **Open gates:** generate first asset (drapery/TRELLIS), Gemini API key, start web build
   vs a placeholder splat, push.
 
+## Session — 2026-06-22 (subagent-orchestration system + request-triage router hooks)
+
+Built the consistent subagent-orchestration scaffolding for the immersive page, extending the proven
+instrument pattern (rules + inject-rules + specialist agents + workflow chains). Plan:
+`melodic-hatching-penguin` (approved).
+
+- **Context hooks:** `subagent-context.sh` (SubagentStart) injects the page-build orientation into every
+  spawned subagent; `orient.sh` got an immersive-page pointer line. (SubagentStart confirmed to inject
+  context via the claude-code-guide agent.)
+- **Request-triage router (hybrid):** `lib/triage.mjs` (shared heuristic router → persona/skills/tools/
+  docs + context-gap + effort hint, escalates a self-triage directive on ambiguous/complex input) used by
+  `route-request.mjs` (UserPromptSubmit) AND `subagent-route.mjs` (SubagentStart, on the subagent's task).
+  Node hooks (no jq — the existing jq-gated hooks no-op on this Termux device). Honest limit: hooks
+  INJECT context, they can't set effort or bind tools — they recommend, the model acts.
+- **Area rule:** `.claude/rules/immersive.md` (architecture · off-device build · mobile budget ·
+  write-our-own licensing), routed in CLAUDE.md + injected by `inject-rules.sh` on `immersive/**` edits.
+- **Specialist agents** (`.claude/agents/`, mirror visual-qa/audio-dsp): `splat-graphics`,
+  `motion-choreography`, `interface-design`, `splat-asset` (impl) + `design-reviewer`,
+  `perf-a11y-reviewer` (review). Instrument's visual-qa/audio-dsp unchanged.
+- **Workflow:** `immersive-page` chain in `.claude/workflows.md` + `suggest-workflow.sh` trigger.
+- **Approvals — BLOCKED (user applies):** adding `permissions.allow` (esbuild/npm run/git/gh) is
+  self-modification; the auto-mode guard denies it even with verbal authorization when the agent makes
+  the edit. The operator must add them via /permissions, /config, or editing settings.json directly.
+
+**Verified:** `node --check` all hooks; `bash -n` the shell hooks; settings.json valid; gen-docs
+regenerated (new rule + agents); route-request pipe-tests correctly + silent on trivial; `npm run health`
+all-green (RAG warn). New hooks may need `/hooks` reload to activate in this session. UNCOMMITTED until
+this commit.
+
 ## Session — 2026-06-22 (RAG: implementation knowledge + off-device reindex; doc-drift fix)
 
 Added implementation knowledge to the RAG and fixed accumulated drift gates.

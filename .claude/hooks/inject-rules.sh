@@ -26,6 +26,9 @@ case "$file" in
   */src/audio/*|src/audio/*)
     area="audio"; rule=".claude/rules/audio.md"; agent="audio-dsp"
     what="AnalyserNode (NOT AudioWorklet) for the visual feed; fftSize 1024 -> 512 bins; smoothingTimeConstant 0.8; the 512x2 R8 audio texture (NEAREST, no mipmaps, re-uploaded per frame); raw-audio capture (echoCancellation/noiseSuppression/autoGainControl off); resume the AudioContext on a user gesture" ;;
+  */immersive/*|immersive/*)
+    area="immersive page"; rule=".claude/rules/immersive.md"; agent="design-reviewer + perf-a11y-reviewer"
+    what="OFF-DEVICE builds (Termux can't dlopen native Rollup/onnxruntime) -> verify on-device with 'node --check' + the esbuild bundle smoke, render QA in Antigravity; the MOBILE BUDGET (~200-500K splats, DPR<=1.5, dynamic res, pause on visibilitychange); the multi-splat composite via useSplatLayer (placeholder->real swap + fallback); WRITE-OUR-OWN / generated-asset licensing" ;;
   *) exit 0 ;;
 esac
 

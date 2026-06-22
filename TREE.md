@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 417 files in 133 directories.
+> 428 files in 134 directories.
 
 ```
 Primordial-viz/
@@ -75,8 +75,16 @@ Primordial-viz/
 ├── .claude/
 │   ├── agents/
 │   │   ├── audio-dsp.md
+│   │   ├── design-reviewer.md
+│   │   ├── interface-design.md
+│   │   ├── motion-choreography.md
+│   │   ├── perf-a11y-reviewer.md
+│   │   ├── splat-asset.md
+│   │   ├── splat-graphics.md
 │   │   └── visual-qa.md
 │   ├── hooks/
+│   │   ├── lib/
+│   │   │   └── triage.mjs
 │   │   ├── check-data.sh
 │   │   ├── check-syntax.sh
 │   │   ├── detect-correction.sh
@@ -86,13 +94,17 @@ Primordial-viz/
 │   │   ├── mcp-http.sh
 │   │   ├── orient.sh
 │   │   ├── precompact-handoff.sh
+│   │   ├── route-request.mjs
 │   │   ├── session-start.sh
+│   │   ├── subagent-context.sh
+│   │   ├── subagent-route.mjs
 │   │   └── suggest-workflow.sh
 │   ├── rules/
 │   │   ├── audio.md
 │   │   ├── conduct.md
 │   │   ├── deploy.md
 │   │   ├── gotchas.md
+│   │   ├── immersive.md
 │   │   ├── mobile-ergonomics.md
 │   │   └── shaders.md
 │   ├── skills/
