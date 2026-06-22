@@ -21,6 +21,11 @@ import { searchDocs, getDoc } from './lib/docs.mjs';
 import { siteHealth } from './lib/site.mjs';
 import { semanticSearch } from '../rag/retrieve.mjs';
 
+// Build a fully-configured server instance (all tools/resources/prompts). The
+// stdio path connects ONE of these; the HTTP path builds one per MCP session
+// (see the transport selection at the bottom). Body intentionally unindented —
+// it is the pre-existing module-level registration, now wrapped in a factory.
+function buildServer() {
 const server = new McpServer({ name: 'primordial', version: '0.1.0' });
 
 // Skeleton tool — confirms the server is wired and discoverable. Real tool groups
@@ -309,6 +314,9 @@ server.registerTool(
   },
 );
 
+  return server;
+}
+
 // Transport selection. Default = stdio (how desktop Claude Code spawns us via
 // .mcp.json, and how selftest/inspector connect). Set MCP_HTTP_PORT to instead
 // serve over Streamable HTTP on localhost — the transport cloud/web Claude Code
@@ -318,22 +326,65 @@ if (httpPort) {
   const { StreamableHTTPServerTransport } = await import(
     '@modelcontextprotocol/sdk/server/streamableHttp.js'
   );
+  const { isInitializeRequest } = await import('@modelcontextprotocol/sdk/types.js');
   const { createServer } = await import('node:http');
-  // Stateless: no session id, each POST handled independently — simplest for a
-  // single-client localhost dev server.
-  const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
-  await server.connect(transport);
+  const { randomUUID } = await import('node:crypto');
   const host = process.env.MCP_HTTP_HOST || '127.0.0.1';
-  const httpServer = createServer((req, res) => {
-    if (req.url && req.url.startsWith('/mcp')) {
-      transport.handleRequest(req, res).catch((err) => {
-        console.error('[primordial-mcp] handleRequest error:', err);
-        if (!res.headersSent) { res.statusCode = 500; res.end(); }
-      });
-    } else if (req.url === '/health') {
-      res.statusCode = 200; res.end('ok');
-    } else {
-      res.statusCode = 404; res.end();
+
+  // Stateful session management — the SDK's documented Streamable-HTTP pattern.
+  // An `initialize` POST (no session id) spins up a FRESH server+transport and
+  // assigns a session id; the client echoes it in `mcp-session-id` on later
+  // POST/GET/DELETE, routing back to that same live transport. This fixes the
+  // two failure modes of the old code: (a) one pre-connected transport reused
+  // across requests THROWS on the second request; (b) a stateless per-request
+  // server fails the SDK's "initialized first" gate on `tools/list`.
+  const transports = new Map(); // sessionId -> transport
+
+  // Raw node http has no body parser; read + JSON-parse POST bodies ourselves
+  // and hand the parsed value to handleRequest (the stream is already consumed).
+  const readBody = (req) => new Promise((resolve) => {
+    let data = '';
+    req.on('data', (c) => { data += c; });
+    req.on('end', () => { try { resolve(data ? JSON.parse(data) : undefined); } catch { resolve(undefined); } });
+    req.on('error', () => resolve(undefined));
+  });
+
+  const httpServer = createServer(async (req, res) => {
+    try {
+      if (req.url === '/health') { res.statusCode = 200; res.end('ok'); return; }
+      if (!req.url || !req.url.startsWith('/mcp')) { res.statusCode = 404; res.end(); return; }
+
+      const sid = req.headers['mcp-session-id'];
+      let transport = typeof sid === 'string' ? transports.get(sid) : undefined;
+
+      if (req.method === 'POST') {
+        const body = await readBody(req);
+        if (!transport && isInitializeRequest(body)) {
+          transport = new StreamableHTTPServerTransport({
+            sessionIdGenerator: () => randomUUID(),
+            onsessioninitialized: (id) => { transports.set(id, transport); },
+          });
+          transport.onclose = () => { if (transport.sessionId) transports.delete(transport.sessionId); };
+          await buildServer().connect(transport);
+        } else if (!transport) {
+          res.statusCode = 400;
+          res.setHeader('content-type', 'application/json');
+          res.end(JSON.stringify({
+            jsonrpc: '2.0', id: null,
+            error: { code: -32000, message: 'Bad Request: no valid session — send initialize first.' },
+          }));
+          return;
+        }
+        await transport.handleRequest(req, res, body);
+        return;
+      }
+
+      // GET (open SSE stream) / DELETE (terminate) require an existing session.
+      if (!transport) { res.statusCode = 400; res.end('Missing or unknown mcp-session-id'); return; }
+      await transport.handleRequest(req, res);
+    } catch (err) {
+      console.error('[primordial-mcp] handleRequest error:', err);
+      if (!res.headersSent) { res.statusCode = 500; res.end(); }
     }
   });
   httpServer.listen(Number(httpPort), host, () => {
@@ -341,6 +392,6 @@ if (httpPort) {
   });
 } else {
   const transport = new StdioServerTransport();
-  await server.connect(transport);
+  await buildServer().connect(transport);
   console.error('[primordial-mcp] ready on stdio');
 }
