@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 393 files across 17 categories.
+> 394 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
-- [Specs & Long-form Docs](#specs--long-form-docs) (54)
+- [Specs & Long-form Docs](#specs--long-form-docs) (55)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -44,7 +44,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | A parallel session ran on claude/brief-bzwlzk (forked before the audit-execution work) and produced two things: a SessionStart deps hook (a… |
+| [`progress.md`](progress.md) | Started the immersive point-cloud landing-page effort + a multi-tool build pipeline. |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -62,6 +62,7 @@
 | [`docs/decisions/012-replatform-target.md`](docs/decisions/012-replatform-target.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
 | [`docs/design-system/BUILD-WORKFLOW.md`](docs/design-system/BUILD-WORKFLOW.md) | How we build and ship the point-cloud "journey" landing page (dawn → drapery gathers into a tent → flutters away → Appalachian rainforest music… |
+| [`docs/design-system/HANDOFF.md`](docs/design-system/HANDOFF.md) | Next-agent onboarding. |
 | [`docs/design-system/PLAN.md`](docs/design-system/PLAN.md) | Status: plan for operator review · Originated: 2026-06-21 · Refined: 2026-06-22 · No code built yet. |
 | [`docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md`](docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md) | What this file is: the single source for the wedding-page (Botanical Hero) client-side experience plus all image and video references gathered for it. |
 | [`docs/design-system/colab/drapery-trellis.md`](docs/design-system/colab/drapery-trellis.md) | Generate a photoreal 3DGS of sheer drapery from a single image — no capture, no COLMAP. |

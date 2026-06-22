@@ -1,5 +1,25 @@
 # Progress Log — primordial
 
+## HANDOFF — 2026-06-22 (design-system / point-cloud landing page) → read `docs/design-system/HANDOFF.md`
+
+Started the **immersive point-cloud landing-page** effort + a multi-tool build pipeline.
+**Full next-agent onboarding: `docs/design-system/HANDOFF.md` (read first).** Highlights:
+- PLAN refined to point-cloud (`docs/design-system/PLAN.md`); build workflow + Colab
+  asset-gen runbooks (`BUILD-WORKFLOW.md`, `colab/{drapery-trellis,forest-video-splat}.md`).
+- Research via **NotebookLM CLI (now working on-device)**: notebook `688cc151` (239+
+  sources) + a "Build Spec" Doc — WebGL landing pages, splat composite/animate/relight/
+  motion, and generating assets without capture.
+- Decisions: **D-COMPUTE = free/rented cloud GPU (Colab)**; **generate-don't-capture**
+  (drapery→TRELLIS 2, rainforest→AI-video→Splatfacto); stack = Spark/PlayCanvas +
+  Theatre.js/GSAP, `.SPZ`/`.SOG`, global-buffer merge, LBS/semantic-mask, proxy-mesh+PCSS,
+  200–500K splat budget.
+- **Env foot-guns:** Claude Code is **root in Termux** (no `pkg`/proot as root); device
+  runs **hot (84 °C peak)** → one heavy tool at a time; `notebooklm`/`sysguard`/`mem`/
+  `temp` live in home dotfiles (NOT git-tracked).
+- Commits **LOCAL, not pushed:** this repo `c2d0807`; AI_Workspace `39e644c`.
+- **Open gates:** generate first asset (drapery/TRELLIS), Gemini API key, start web build
+  vs a placeholder splat, push.
+
 ## Session — 2026-06-21 (merged RAG visual-reference notes from a parallel branch)
 
 A parallel session ran on `claude/brief-bzwlzk` (forked before the audit-execution
