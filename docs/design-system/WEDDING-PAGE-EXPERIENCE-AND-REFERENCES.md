@@ -21,12 +21,9 @@ with high-end, almost cinematic (Harry-Potter-grade) visual effects and forms a
 forward to leave — the drapery and everything in it flutter away — revealing an
 **interactive music visualizer of an Appalachian rainforest**.
 
-## Entry gate
-- A welcoming headline + short line of intent (copy placeholder).
-- Two choices: enter *with the camera* (offered as the most magical way in), or
-  *continue without* — scroll/tilt works just as well.
-- Clear privacy reassurance that the camera never leaves the device.
-- Entering is a welcome, never a demand; opting out costs nothing.
+## Opening
+The experience opens on a held, quiet **dawn** and a soft invitation to step
+inside. It begins as a welcome, never a demand.
 
 ## The journey (in order)
 1. **Open at dawn.** Soft early-morning light, an Appalachian setting, calm and
@@ -35,8 +32,8 @@ forward to leave — the drapery and everything in it flutter away — revealing
    extremely high-quality, magical visual effects — sweeping, billowing, and
    assembling around the visitor until it encloses the space into **almost a tent**.
 3. **Look around the tent.** Inside the draped enclosure the visitor looks around
-   freely (mouse / tilt / camera). **Placeholder content sits only where it makes
-   visual sense** — composed into the space, never clogging the view.
+   freely. **Placeholder content sits only where it makes visual sense** —
+   composed into the space, never clogging the view.
 4. **Move further forward → leave.** Continuing forward to exit, the **drapery
    flutters away — along with any placeholders** — dissolving the tent.
 5. **Arrive in the music visualizer.** What remains is an **interactive music
@@ -58,25 +55,17 @@ splat carries its own position/scale/opacity, a labelled set (the drapes) can
 genuinely **move, billow, and flutter away** at runtime while the camera travels
 *through* the volume.
 
-## How the visitor drives it (by device)
-- **Any device — forward movement** (scroll) carries them through the sequence.
-- **Desktop — mouse** to look around inside the tent.
-- **Phone — tilt (gyro)** to look around (depth answers the hand).
-- **Optional — camera** as the most immersive way to be "seen" by the space;
-  opt-in only, tap-triggered, never leaving the device.
-
 ## The end state — the interactive music visualizer
 The page resolves *into* Primordial's core: a live, **audio-reactive Appalachian
 rainforest** the visitor interacts with — the same instrument the rest of the
 project is built around. The wedding hero is the on-ramp that delivers the visitor
 into the living visualizer.
 
-## Accessibility & privacy, as experienced
-- **Reduced motion:** a composed, calm version instead of the full sweep.
-- **Screen reader / no-JS / SEO:** a hidden text layer carries the real heading +
-  a one-line description, so the page is meaningful without the 3D scene.
-- **Keyboard:** clear focus outlines on every control.
-- **Camera privacy:** opt-in, tap-triggered, promised to stay on the device.
+## Accessibility, as experienced
+- **Reduced motion:** a composed, calm version of the scene instead of the full
+  sweeping animation.
+- **Meaningful without the scene:** the page still conveys who the studio is and
+  what it offers even when the immersive scene can't run.
 
 ---
 
@@ -128,12 +117,6 @@ lining a mossy stone path and framing the drapes:
   (humid, dewy). Light: dappled, backlit, golden-hour → midday. Air: faint
   volumetric haze / god-rays down the path.
 
-## Interaction reference (model only, not the look)
-- **Vertex3D by Yann Trevelot** — https://www.vertex3d.asia — hands-free, gestural
-  feel: head tilt pans the camera, pinch index+middle grabs/swipes between scenes,
-  hide the hand to release. Use the *interaction model* only, not its corporate
-  look.
-
 ## Drive source documents (design handoff)
 Folder: **Primordial Studio — Design Handoff**
 - STORYBOARD — Botanical Hero journey (2026-06-21) — the 17-still + clip mapping.
@@ -159,13 +142,10 @@ the authoritative dawn → tent → visualizer arc. Voice = poetic, benefit-led,
 never technical.
 
 **Keep almost as-is (voice already fits):**
-- *"Step inside a room that moves with you."* — gate headline; the tent moves with them.
-- *"Let your camera see you, and the space will answer."* — gate body / camera invite.
-- *"Your camera never leaves your device."* — privacy reassurance (verbatim).
+- *"Step inside a room that moves with you."* — opening line; the tent moves with them.
 - *"A beautiful, magic experience, tailored to your palette, theme, and setting."* — core pitch.
-- *"…drapery, greenery, and bloom that move as you do."* — meta / intro line.
+- *"…drapery, greenery, and bloom that move as you do."* — intro line.
 - *"Manifesting a wedding that feels exactly like this."* — north-star; emotional closing line.
-- Gesture hints: *"Tilt to look · Pinch to move · Open hand to release."*
 
 **Adapted to the new arc (dawn → tent → flutter away → rainforest visualizer):**
 - Arrival / tent-forming: *"The drapes gather like feathers."*
@@ -179,7 +159,7 @@ never technical.
 The Drive prototypes faithfully demonstrate the *techniques* (drapery, dawn light,
 in-scene text, forward travel). The production build keeps this exact journey and
 feeling but deepens the realism via **point-cloud / Gaussian-splat scenes** —
-captured drapery and a captured Appalachian rainforest, a true look-around camera
-travelling through the splat volume, and the real audio-reactive visualizer at the
-end. **What the visitor feels is the target; the upgrade is fidelity, not
-direction.**
+captured drapery and a captured Appalachian rainforest, a virtual camera
+travelling forward through the splat volume, and the real audio-reactive
+visualizer at the end. **What the visitor feels is the target; the upgrade is
+fidelity, not direction.**
