@@ -18,17 +18,23 @@ const checks = [
   ['Smoke (params / looks / store)', () => run('node', ['test/smoke.mjs'])],
   ['Site audit (no AI tells / fingerprints)', () => run('node', ['tools/audit-site.mjs'])],
   ['Docs + drift gate', () => run('node', ['tools/gen-docs.mjs', '--check'])],
-  ['RAG index drift gate', () => run('node', ['tools/rag/build-index.mjs', '--check'])],
+  // Soft (warn-only): the RAG embedder (onnxruntime) has no Android arm64 binary, so the index is
+  // rebuilt off-device by the `rag-index` GitHub Actions workflow. Stale here is a heads-up, not a fail.
+  ['RAG index drift gate', () => run('node', ['tools/rag/build-index.mjs', '--check']), { soft: true }],
   ['Config gate (CLAUDE.md cap / router / settings)', () => run('node', ['tools/check-config.mjs'])],
   ['Eval-skills (Tier-1 static gate)', () => run('node', ['tools/eval-skills.mjs'])],
 ];
 
 let failed = 0;
-for (const [name, fn] of checks) {
+for (const [name, fn, opts] of checks) {
   try {
     fn();
     console.log(`  PASS  ${name}`);
   } catch (e) {
+    if (opts && opts.soft) {
+      console.log(`  WARN  ${name} (rebuilt off-device by the rag-index CI workflow)`);
+      continue;
+    }
     failed++;
     console.log(`  FAIL  ${name}`);
     const out = ((e.stdout && e.stdout.toString()) || '') + ((e.stderr && e.stderr.toString()) || '');

@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 394 files in 125 directories.
+> 417 files in 133 directories.
 
 ```
 Primordial-viz/
@@ -273,7 +273,9 @@ Primordial-viz/
 │   └── workflows/
 │       ├── deploy.yml
 │       ├── eval-skills.yml
+│       ├── immersive.yml
 │       ├── portfolio.yml
+│       ├── rag-index.yml
 │       └── verify.yml
 ├── android/
 │   └── README.md
@@ -298,7 +300,9 @@ Primordial-viz/
 │   │   │   └── forest-video-splat.md
 │   │   ├── BUILD-WORKFLOW.md
 │   │   ├── HANDOFF.md
+│   │   ├── IMPLEMENTATION.md
 │   │   ├── PLAN.md
+│   │   ├── rainforest-asset-spec.md
 │   │   └── WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md
 │   ├── plans/
 │   │   ├── refactor/
@@ -350,6 +354,33 @@ Primordial-viz/
 │   │       └── 2026-06-21-best-path-forward-design.md
 │   ├── BUILD-SPEC.md
 │   └── STANDALONE.md
+├── immersive/
+│   ├── public/
+│   │   └── assets/
+│   │       └── README.md
+│   ├── src/
+│   │   ├── camera/
+│   │   │   ├── CameraRig.jsx
+│   │   │   └── offAxisFrustum.js
+│   │   ├── perf/
+│   │   │   └── mobileBudget.js
+│   │   ├── splat/
+│   │   │   ├── loadDrapery.js
+│   │   │   ├── loadRainforest.js
+│   │   │   ├── placeholderRainforest.js
+│   │   │   ├── placeholderSplats.js
+│   │   │   ├── SparkScene.jsx
+│   │   │   ├── transform.js
+│   │   │   └── useSplatLayer.js
+│   │   ├── viewpoint/
+│   │   │   └── useViewpoint.js
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── README.md
+│   └── vite.config.js
 ├── portfolio/
 │   ├── Gather-PortfolioMedia.ps1
 │   └── README.md

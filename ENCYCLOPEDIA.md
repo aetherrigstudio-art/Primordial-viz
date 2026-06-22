@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 394 files across 17 categories.
+> 417 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
-- [Specs & Long-form Docs](#specs--long-form-docs) (55)
+- [Specs & Long-form Docs](#specs--long-form-docs) (57)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -25,8 +25,8 @@
 - [Claude Environment](#claude-environment) (142)
 - [Deployment](#deployment) (3)
 - [Research](#research) (25)
-- [CI / Build Config](#ci--build-config) (8)
-- [Other](#other) (61)
+- [CI / Build Config](#ci--build-config) (10)
+- [Other](#other) (80)
 
 ## Overview & Planning
 
@@ -63,10 +63,12 @@
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
 | [`docs/design-system/BUILD-WORKFLOW.md`](docs/design-system/BUILD-WORKFLOW.md) | How we build and ship the point-cloud "journey" landing page (dawn → drapery gathers into a tent → flutters away → Appalachian rainforest music… |
 | [`docs/design-system/HANDOFF.md`](docs/design-system/HANDOFF.md) | Next-agent onboarding. |
+| [`docs/design-system/IMPLEMENTATION.md`](docs/design-system/IMPLEMENTATION.md) | Load-bearing facts for building the point-cloud wedding landing page (the immersive/ app), in our own words so they're retrievable via the RAG. |
 | [`docs/design-system/PLAN.md`](docs/design-system/PLAN.md) | Status: plan for operator review · Originated: 2026-06-21 · Refined: 2026-06-22 · No code built yet. |
 | [`docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md`](docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md) | What this file is: the single source for the wedding-page (Botanical Hero) client-side experience plus all image and video references gathered for it. |
-| [`docs/design-system/colab/drapery-trellis.md`](docs/design-system/colab/drapery-trellis.md) | Generate a photoreal 3DGS of sheer drapery from a single image — no capture, no COLMAP. |
-| [`docs/design-system/colab/forest-video-splat.md`](docs/design-system/colab/forest-video-splat.md) | Turn an AI-generated 360° pan video into a 3DGS scene. |
+| [`docs/design-system/colab/drapery-trellis.md`](docs/design-system/colab/drapery-trellis.md) | Generate a photoreal 3D Gaussian of sheer drapery from one image — no capture, no COLMAP. |
+| [`docs/design-system/colab/forest-video-splat.md`](docs/design-system/colab/forest-video-splat.md) | Turn an AI-generated slow 360° pan video into a 3D Gaussian-splat scene (the enclosing Appalachian rainforest). |
+| [`docs/design-system/rainforest-asset-spec.md`](docs/design-system/rainforest-asset-spec.md) | Art direction + video-generation prompt library + acceptance criteria for the enclosing rainforest Gaussian-splat scene. |
 | [`docs/plans/refactor/README.md`](docs/plans/refactor/README.md) | Per-phase refactor plans for the codebase, one per concern-area (the 10-phase decomposition). |
 | [`docs/plans/refactor/phase-01-docs-context.md`](docs/plans/refactor/phase-01-docs-context.md) | Concern: the narrative/handoff docs (not the rules or hooks — those are phases 2/3). |
 | [`docs/plans/refactor/phase-02-rules-drift.md`](docs/plans/refactor/phase-02-rules-drift.md) | Concern: .claude/rules/ + the rules section of CLAUDE.md. |
@@ -258,7 +260,7 @@
 | [`.claude/hooks/gen-docs.sh`](.claude/hooks/gen-docs.sh) | PostToolUse hook (matcher: Edit\|Write). |
 | [`.claude/hooks/guard.mjs`](.claude/hooks/guard.mjs) | PreToolUse hook (matcher: Bash) — destructive-command guard. |
 | [`.claude/hooks/inject-rules.sh`](.claude/hooks/inject-rules.sh) | PreToolUse hook (matcher: Edit\|Write). |
-| [`.claude/hooks/mcp-http.sh`](.claude/hooks/mcp-http.sh) | SessionStart (web/cloud ONLY): start the primordial MCP server over Streamable HTTP on localhost, so cloud Claude Code sessions can reach it. |
+| [`.claude/hooks/mcp-http.sh`](.claude/hooks/mcp-http.sh) | SessionStart: start the primordial MCP server over Streamable HTTP on localhost so the `primordial-http` entry in .mcp.json connects. |
 | [`.claude/hooks/orient.sh`](.claude/hooks/orient.sh) | SessionStart hook: orient a fresh agent (especially cloud/phone sessions) with zero typing — repo state, branch + recent commits, the latest handoff… |
 | [`.claude/hooks/precompact-handoff.sh`](.claude/hooks/precompact-handoff.sh) | PreCompact hook: before the session compacts, remind to capture continuity in progress.md so mid-session state isn't lost. |
 | [`.claude/hooks/session-start.sh`](.claude/hooks/session-start.sh) | SessionStart deps hook — installs the dev/test toolchain so `npm run health`, `npm run smoke`, and `node test/render-check.mjs` work in a fresh… |
@@ -434,7 +436,9 @@
 | --- | --- |
 | [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) | CI / workflow configuration. |
 | [`.github/workflows/eval-skills.yml`](.github/workflows/eval-skills.yml) | CI / workflow configuration. |
+| [`.github/workflows/immersive.yml`](.github/workflows/immersive.yml) | CI / workflow configuration. |
 | [`.github/workflows/portfolio.yml`](.github/workflows/portfolio.yml) | .github/workflows/portfolio.yml |
+| [`.github/workflows/rag-index.yml`](.github/workflows/rag-index.yml) | CI / workflow configuration. |
 | [`.github/workflows/verify.yml`](.github/workflows/verify.yml) | CI: syntax-check, smoke test, and headless render check on every push. |
 | [`.gitignore`](.gitignore) | deps / build |
 | [`.mcp.json`](.mcp.json) | Project-scoped MCP server configuration for Claude Code. |
@@ -496,6 +500,25 @@
 | [`.agents/skills/setup-matt-pocock-skills/triage-labels.md`](.agents/skills/setup-matt-pocock-skills/triage-labels.md) | The skills speak in terms of five canonical triage roles. |
 | [`.env.example`](.env.example) | Example environment variables |
 | [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
+| [`immersive/README.md`](immersive/README.md) | Standalone Vite + React-Three-Fiber app that proves the point-cloud landing-page rendering + camera pipeline against a procedural placeholder splat,… |
+| [`immersive/index.html`](immersive/index.html) | Primordial — immersive (proving ground) |
+| [`immersive/package-lock.json`](immersive/package-lock.json) | Configuration / data file. |
+| [`immersive/package.json`](immersive/package.json) | Proving ground for the immersive point-cloud landing page (R3F + Spark Gaussian splats). Graduates into the R3F component library consumed by the… |
+| [`immersive/public/assets/README.md`](immersive/public/assets/README.md) | Web-ready splat assets, served by Vite at the site root (/assets/...). |
+| [`immersive/src/App.jsx`](immersive/src/App.jsx) | JSX file. |
+| [`immersive/src/camera/CameraRig.jsx`](immersive/src/camera/CameraRig.jsx) | JSX file. |
+| [`immersive/src/camera/offAxisFrustum.js`](immersive/src/camera/offAxisFrustum.js) | Off-axis / anamorphic frustum — the "window into recessed depth" (PLAN §4). |
+| [`immersive/src/main.jsx`](immersive/src/main.jsx) | JSX file. |
+| [`immersive/src/perf/mobileBudget.js`](immersive/src/perf/mobileBudget.js) | Mobile perf budget — mirrors .claude/rules/shaders.md and PLAN §4. |
+| [`immersive/src/splat/SparkScene.jsx`](immersive/src/splat/SparkScene.jsx) | JSX file. |
+| [`immersive/src/splat/loadDrapery.js`](immersive/src/splat/loadDrapery.js) | JS file. |
+| [`immersive/src/splat/loadRainforest.js`](immersive/src/splat/loadRainforest.js) | JS file. |
+| [`immersive/src/splat/placeholderRainforest.js`](immersive/src/splat/placeholderRainforest.js) | JS file. |
+| [`immersive/src/splat/placeholderSplats.js`](immersive/src/splat/placeholderSplats.js) | JS file. |
+| [`immersive/src/splat/transform.js`](immersive/src/splat/transform.js) | Apply a { position, quaternion, scale } config to a SplatMesh — shared by every splat layer (real + placeholder) so the orientation/placement logic… |
+| [`immersive/src/splat/useSplatLayer.js`](immersive/src/splat/useSplatLayer.js) | JS file. |
+| [`immersive/src/viewpoint/useViewpoint.js`](immersive/src/viewpoint/useViewpoint.js) | JS file. |
+| [`immersive/vite.config.js`](immersive/vite.config.js) | JS file. |
 | [`portfolio/Gather-PortfolioMedia.ps1`](portfolio/Gather-PortfolioMedia.ps1) | PS1 file. |
 | [`portfolio/README.md`](portfolio/README.md) | Two ways to pull image/video candidates into one place so you can pick the best for the portfolio. |
 | [`server/README.md`](server/README.md) | This folder will contain the retrieval/indexing service that your Android app calls. |

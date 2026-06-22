@@ -1,0 +1,46 @@
+name: rag-index
+
+# Rebuild the RAG vector index OFF-DEVICE. The embedder (@huggingface/transformers → onnxruntime)
+# has no Android arm64 binary, so it can't run on the dev container. On every push to main that
+# touches docs, this rebuilds tools/rag/index.json on a linux runner and commits the refreshed
+# index back, keeping `semantic_search` current. (The verify + health RAG drift gates are warn-only
+# for the same reason — see verify.yml / tools/health.mjs.)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.md'
+      - '**/*.markdown'
+      - 'tools/rag/**'
+      - '!tools/rag/index.json'   # never fire on our own index commit
+      - '.github/workflows/rag-index.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reindex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install deps (onnxruntime native binary installs on linux)
+        run: npm ci || npm install
+      - name: Rebuild RAG index
+        run: node tools/rag/build-index.mjs
+      - name: Commit refreshed index if changed
+        run: |
+          if git diff --quiet -- tools/rag/index.json; then
+            echo "RAG index already current — nothing to commit."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add tools/rag/index.json
+            git commit -m "chore(rag): rebuild index [skip ci]"
+            git push
+          fi
