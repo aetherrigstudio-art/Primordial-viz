@@ -152,6 +152,30 @@ heavy → aggressive compression + LOD or phones jank. iOS gyro needs a tap + HT
 to cross-fade + subset animation. `/design-sync` previews of splat scenes are captures,
 not crisp component cards — set expectations.
 
+## Research-confirmed stack & techniques (2026-06-22, NotebookLM 239 sources)
+
+Grounded findings (full cited spec: NotebookLM Doc "Engineering Build Spec" +
+notebook `688cc151`; build steps in `BUILD-WORKFLOW.md`). **Production-ready** vs
+**research-stage** is called out — it sharpens this plan's bets.
+
+- **Web rendering:** Spark 2.0 or PlayCanvas (or mkkellogg/GaussianSplats3D); ship
+  compressed `.SPZ`/`.SOG`/`.ksplat`, never raw `.PLY`.
+- **Multiple splats in one scene:** global-buffer merge — aggregate all Gaussians
+  into one world-space buffer + single back-to-front sort (per-splat depth), so
+  drapery + rainforest composite without artifacts.
+- **Animating the drape subset:** *production* = Linear Blend Skinning (bind splat
+  subset to a skeleton) + semantic-mask (VLM labels object → mask its splats);
+  *research-stage* = 4DGS deformation fields / physics cloth (too heavy to stream).
+- **Light & shadow (relighting):** *production* = proxy-mesh relighting + PCSS soft
+  shadows (PlayCanvas splats can write the depth buffer); *research-stage* = full
+  PBR decomposition (SSD-GS) — not web-deployable yet. (Confirms this plan's
+  "relighting is the hard part" flag.)
+- **Camera & motion:** Theatre.js (cinematic keyframes, custom `rafDriver` synced
+  to three.js) + GSAP ScrollTrigger (scroll → camera fly-through).
+- **Mobile budget:** ~200–500K splats @30–45fps on a flagship; `.SPZ`/`.SOG` +
+  virtual-memory paging (swap 64K chunks by view frustum) or VRAM-thrash → thermal
+  throttle. Matches the existing mobile-budget rule.
+
 ## Sources
 Packaging: Vite library-mode, Storybook (`@storybook/react-vite`), W3C DTCG tokens,
 Next.js `use client`. Viewpoint: MDN DeviceOrientation, iOS `requestPermission`, Codrops
