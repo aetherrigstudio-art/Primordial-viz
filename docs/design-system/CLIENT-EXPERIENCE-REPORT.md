@@ -85,6 +85,12 @@ principle is **sparse, well-composed, unobtrusive**.
 
 - **Quality bar:** the drapery effects should read as **premium and magical** —
   the visual-effects craft is the whole point of the page.
+- **Rendering approach — point-cloud / Gaussian-splat driven.** The scene is
+  built from **photoreal point-cloud / 3D Gaussian-splat captures**, not modelled
+  geometry — so the drapery and the Appalachian rainforest read as real, with
+  true volumetric depth. Because each splat carries its own position/scale/
+  opacity, the drapes can genuinely **move, billow, and flutter away** at runtime
+  (and the camera can travel *through* the captured volume).
 - **Palette / type (placeholder):** wedding-luxe and warm — soft, elegant, never
   brassy or clinical. Specific colours and typefaces are not final; only the
   high-end, romantic *intent* is the takeaway.
@@ -117,6 +123,7 @@ just this first part: **dawn → drapery tent → release → rainforest visuali
 The Drive prototypes are faithful demonstrations of the *techniques* (projected
 drapery, dawn lighting, diegetic text, forward travel), built to be felt now. The
 production build keeps this exact journey and feeling but deepens the realism —
-high-fidelity drapery effects, a true look-around camera, and the real
-audio-reactive rainforest visualizer at the end. **What the visitor feels is the
-target; the upgrade is fidelity, not direction.**
+photoreal point-cloud / Gaussian-splat scenes (captured drapery and a captured
+Appalachian rainforest), a true look-around camera travelling through the splat
+volume, and the real audio-reactive visualizer at the end. **What the visitor
+feels is the target; the upgrade is fidelity, not direction.**
