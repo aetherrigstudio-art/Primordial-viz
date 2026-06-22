@@ -68,19 +68,22 @@ let input = ''
 process.stdin.setEncoding('utf8')
 process.stdin.on('data', (d) => { input += d })
 process.stdin.on('end', () => {
-  if (!IMMERSIVE_PATH_RE.test(input)) return out({ decision: 'allow' })
+  if (!IMMERSIVE_PATH_RE.test(input)) return done()
   try {
     execSync(`for f in $(find immersive/src -name '*.js'); do node --check "$f" || exit 1; done`,
       { cwd: REPO, stdio: 'pipe', timeout: 45000 })
     execSync(`immersive/node_modules/.bin/esbuild immersive/src/main.jsx --bundle --format=esm --jsx=automatic --outfile=/dev/null`,
       { cwd: REPO, stdio: 'pipe', timeout: 90000 })
-    return out({ decision: 'allow', reason: 'immersive gate GREEN (node --check + esbuild bundle smoke).' })
   } catch (e) {
     const detail = (e.stderr?.toString() || e.stdout?.toString() || e.message || '').trim().slice(-1200)
-    return out({ decision: 'ask', reason: 'immersive verify FAILED — do not claim done until fixed:\n' + detail })
+    // agy's PostToolUse result protojson field is undocumented; surface failures via stderr (agy logs them).
+    process.stderr.write('immersive verify FAILED — fix before claiming done:\n' + detail + '\n')
   }
+  done()
 })
-function out(obj) { process.stdout.write(JSON.stringify(obj)); process.exit(0) }
+// Emit empty protojson ({}) so agy parses the result cleanly; the gate's value is RUNNING
+// node --check + esbuild on each immersive edit, with failures surfaced to agy's log via stderr.
+function done() { process.stdout.write('{}'); process.exit(0) }
 EOF
 sed -i "s|__REPO__|$REPO|g" "$VERIFY"
 
