@@ -36,7 +36,16 @@ The video serves **two masters that pull apart**, and reconstructability wins ti
 A clean, dense splat from a slightly less cinematic video beats a gorgeous clip that won't
 reconstruct. Every prompt below encodes both.
 
-## Prompt library (paste into Sora / Veo / Kling)
+## Video model — use Veo 3.1 (verified June 2026)
+**Google Veo 3.1** is the pick: best photorealism + filmic camera/light (reads as *filmed*, which is
+exactly what clean 3DGS reconstruction needs), and the operator's **Google AI subscription unlocks
+it** (Plus = Veo 3.1 Fast for cheap iteration · Pro = Lite · Ultra = full quality for the final
+keeper). Access via the Gemini app / Google Flow / Google AI Studio. **Caveat:** Veo clips cap
+~8 s, so cover a slow orbit with **2–3 stitched clips**. **Kling 3.0** is the alternate when you
+want one longer continuous shot. **Do NOT use Sora** — OpenAI deprecated Sora 2 (April 2026; API
+ends 2026-09-24). Discard the generated audio (we don't use it).
+
+## Prompt library (paste into Veo 3.1, or Kling 3.0)
 
 ### Variant 1 — forward dolly through the corridor (primary; matches the master clip)
 > A slow, smooth, continuous forward dolly traveling down a mossy stone path through a dense

@@ -11,8 +11,10 @@ on a real CUDA GPU. Commands/install verified against docs.nerf.studio (2026-06-
 
 ## Step 0 — the video
 Generate the source clip from the **engineered prompt library + art direction in
-[`../rainforest-asset-spec.md`](../rainforest-asset-spec.md)** (paste a variant into Sora / Kling /
-Veo). Those prompts are tuned for BOTH a dense, blooming, photoreal Appalachian forest AND clean
+[`../rainforest-asset-spec.md`](../rainforest-asset-spec.md)** (paste a variant into **Veo 3.1** —
+best photoreal + reconstruction, unlocked by your Google AI subscription — or Kling 3.0 for one
+longer shot; **not Sora**, which is deprecated. Veo caps ~8 s → use 2–3 clips for a full orbit).
+Those prompts are tuned for BOTH a dense, blooming, photoreal Appalachian forest AND clean
 3DGS reconstruction (one continuous slow move, deep focus, no motion blur, steady light, strong
 parallax). Smooth, densely-sampled motion reconstructs well; **jittery/teleporting or
 motion-blurred video fails COLMAP**. Save as `forest.mp4`. Use a commercially-usable generator.
