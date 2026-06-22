@@ -52,7 +52,7 @@ layered/composited captures (e.g. drapery vs. rainforest, and variants authored
 for different light) **cross-faded and combined** to achieve each effect correctly
 — the dawn lighting, the drapery forming the tent, and the reveal. Because each
 splat carries its own position/scale/opacity, a labelled set (the drapes) can
-genuinely **move, billow, and flutter away** at runtime while the camera travels
+genuinely **move, billow, and flutter away** at runtime while the viewpoint moves
 *through* the volume.
 
 ## The end state — the interactive music visualizer
@@ -80,9 +80,9 @@ rainforest visualizer — so use these as **look/material references**, not as t
 literal beat order.
 
 ## Motion clip (master reference)
-- **Forward-dolly through the corridor** — camera travels forward through green,
-  ferny drape-arches over a mossy stone path in midday light. *The hero literally
-  moves the way this video moves.* (1 video.)
+- **Forward-dolly through the corridor** — the viewpoint travels forward through
+  green, ferny drape-arches over a mossy stone path in midday light. *The hero
+  literally moves the way this video moves.* (1 video.)
 
 ## Stills by beat (operator upload IDs)
 - **Beat 1 — drapes appear from the trees (dusk / entrance):** `d8ad3632`,
@@ -159,7 +159,7 @@ never technical.
 The Drive prototypes faithfully demonstrate the *techniques* (drapery, dawn light,
 in-scene text, forward travel). The production build keeps this exact journey and
 feeling but deepens the realism via **point-cloud / Gaussian-splat scenes** —
-captured drapery and a captured Appalachian rainforest, a virtual camera
-travelling forward through the splat volume, and the real audio-reactive
-visualizer at the end. **What the visitor feels is the target; the upgrade is
-fidelity, not direction.**
+captured drapery and a captured Appalachian rainforest, the viewpoint travelling
+forward through the splat volume, and the real audio-reactive visualizer at the
+end. **What the visitor feels is the target; the upgrade is fidelity, not
+direction.**
