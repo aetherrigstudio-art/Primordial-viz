@@ -7,11 +7,11 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 388 files across 17 categories.
+> 390 files across 17 categories.
 
 ## Contents
-- [Overview & Planning](#overview--planning) (13)
-- [Specs & Long-form Docs](#specs--long-form-docs) (50)
+- [Overview & Planning](#overview--planning) (14)
+- [Specs & Long-form Docs](#specs--long-form-docs) (51)
 - [App — Entry & Bootstrap](#app--entry--bootstrap) (2)
 - [App — Audio](#app--audio) (3)
 - [App — Graphics / WebGL](#app--graphics--webgl) (3)
@@ -36,6 +36,7 @@
 | [`AUDIT-BRIEF.md`](AUDIT-BRIEF.md) | Read this whole file, then ignore it as a source of facts. |
 | [`CLAUDE.md`](CLAUDE.md) | Working notes for agents in this repo. |
 | [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md) | Auto-generated — do not edit by hand. |
+| [`GEMINI.md`](GEMINI.md) | Working notes for agents in this repo. |
 | [`LICENSE`](LICENSE) | Software license for the project. |
 | [`ONBOARDING.md`](ONBOARDING.md) | The single entry point for an AI agent starting work on Primordial-viz. |
 | [`README.md`](README.md) | An audio-reactive WebGL2 visual instrument for live electronic-music gigs. |
@@ -60,7 +61,8 @@
 | [`docs/decisions/006-soften-phone-based-development.md`](docs/decisions/006-soften-phone-based-development.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/012-replatform-target.md`](docs/decisions/012-replatform-target.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/README.md`](docs/decisions/README.md) | Short, numbered records of significant decisions. |
-| [`docs/design-system/PLAN.md`](docs/design-system/PLAN.md) | Status: plan for operator review · Date: 2026-06-21 · No code built yet. |
+| [`docs/design-system/PLAN.md`](docs/design-system/PLAN.md) | Status: plan for operator review · Originated: 2026-06-21 · Refined: 2026-06-22 · No code built yet. |
+| [`docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md`](docs/design-system/WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md) | What this file is: the single source for the wedding-page (Botanical Hero) client-side experience plus all image and video references gathered for it. |
 | [`docs/plans/refactor/README.md`](docs/plans/refactor/README.md) | Per-phase refactor plans for the codebase, one per concern-area (the 10-phase decomposition). |
 | [`docs/plans/refactor/phase-01-docs-context.md`](docs/plans/refactor/phase-01-docs-context.md) | Concern: the narrative/handoff docs (not the rules or hooks — those are phases 2/3). |
 | [`docs/plans/refactor/phase-02-rules-drift.md`](docs/plans/refactor/phase-02-rules-drift.md) | Concern: .claude/rules/ + the rules section of CLAUDE.md. |

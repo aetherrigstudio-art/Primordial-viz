@@ -448,16 +448,29 @@ function buildAgentsMd() {
 }
 
 // ---------------------------------------------------------------------------
+// GEMINI.md — mirror of CLAUDE.md for Gemini CLI + Google Antigravity.
+// ---------------------------------------------------------------------------
+// Gemini CLI and Antigravity (v1.20.3+) both read GEMINI.md, and Gemini CLI
+// supports the same `@file.md` import syntax as Claude — so this mirror keeps the
+// `@import` lines verbatim (full auto-loaded context) rather than flattening them
+// the way AGENTS.md must for import-less harnesses. Generated — do not hand-edit.
+function buildGeminiMd() {
+  const claude = readFileSync(join(root, 'CLAUDE.md'), 'utf8');
+  return `<!-- @generated from CLAUDE.md by tools/gen-docs.mjs — do not edit. Mirror for Gemini CLI / Google Antigravity. -->\n\n${claude}`;
+}
+
+// ---------------------------------------------------------------------------
 // Main — write/check both documents.
 // ---------------------------------------------------------------------------
 // Always include the generated docs themselves so the output converges in a
 // single pass even before the files exist on disk (keeps --check stable in CI).
-const OUTPUTS = ['ENCYCLOPEDIA.md', 'TREE.md', 'AGENTS.md'];
+const OUTPUTS = ['ENCYCLOPEDIA.md', 'TREE.md', 'AGENTS.md', 'GEMINI.md'];
 const files = [...new Set([...listFiles(), ...OUTPUTS])].sort();
 const docs = [
   ['ENCYCLOPEDIA.md', buildEncyclopedia(files)],
   ['TREE.md', buildTree(files)],
   ['AGENTS.md', buildAgentsMd()],
+  ['GEMINI.md', buildGeminiMd()],
 ];
 // Generated regions kept in sync inside hand-written files (markdown markers).
 const regions = [['.claude/skills-router.md', routerRegionUpdated]];

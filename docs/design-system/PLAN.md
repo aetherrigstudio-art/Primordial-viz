@@ -1,179 +1,162 @@
-# Starter Design System — research + plan (review before build)
+# Point-Cloud Design System — refined plan (review before build)
 
-**Status:** plan for operator review · **Date:** 2026-06-21 · No code built yet.
-Backed by 4 deep-research agents (cited at the bottom). This defines a small, real
-React component library — consumable by **Claude Design via `/design-sync`** — whose
-signature is the **gyro + camera "quad-reprojection" botanical hero**.
+**Status:** plan for operator review · **Originated:** 2026-06-21 · **Refined:** 2026-06-22 ·
+No code built yet. This defines the design system that **Claude Design** consumes via
+**`/design-sync`** so its agent composes with your real, on-brand spatial parts.
 
-## Project identity — what this actually is (corrected 2026-06-21)
-This is a **visual-effects artist's PORTFOLIO PIECE** — NOT a wedding-services / decor
-studio site, and **not picture-heavy** (no photo galleries). The operator is a VFX artist
-who builds **enchanting, sensor-driven environments at real weddings** (drapery + flowers
-= the current trend) using **TouchDesigner + LiDAR + depth models**. **Clients never see
-the tech**; they are sold *"a beautiful, enchanting, magic experience with photo
-opportunities, tailored to your palette / theme / setting."* Site copy/voice is therefore
-**poetic + benefit-led, never technical**.
+> **This revision changed direction.** The earlier draft described a conventional
+> React kit (tokens + 2D Button/Card/etc.) with a 3D hero bolted on. Per operator
+> decisions (2026-06-22) it is now a **point-cloud–first system**: the real
+> components are **Gaussian-splat scenes + camera movements**, the UI lives
+> **diegetically inside** those scenes, and `/design-sync` ships the **point clouds
+> and camera moves**. It is also reconciled with the authoritative experience doc
+> (`WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md`, 2026-06-22), which supersedes the
+> stale "open on dark / hallway / webcam" framing below's predecessor.
 
-The **website itself demonstrates the capability**: the visitor moves their **head
-(webcam), mouse XY (desktop), tilts the phone (gyro), or scrolls** → the **CAMERA moves**,
-travelling forward through a draped-and-flowered 3D scene. The site's own UI — buttons,
-containers, text, whatever the components become — **lives INSIDE that scene as spatial
-objects the camera reveals** (diegetic UI), not a flat overlay. Forward motion **continues
-scene → scene** (drapery+flowers = scene 1; **more scenes added later**). Each scene is
-**tailorable to a client's palette / theme / setting**, so it is **parameter-driven** —
-mapping directly onto our existing **"looks = params-only JSON"** DNA.
+## 0. Decisions locked in this revision
+- **Mostly point-cloud.** The DS centers on splat scenes, not 2D primitives.
+- **Full diegetic 3D kit.** Every UI primitive is a real 3D object (R3F/three +
+  troika text) paired with a hidden 2D DOM mirror for a11y / clicks / SEO.
+- **Sync scope = point clouds + camera movements.** That is what goes to Claude
+  Design; the 2D editorial surface is secondary.
+- **No webcam / no interface devices.** Viewpoint is driven by gyro, scroll, and
+  pointer only. (This resolves old decision D3 — the live-camera tier is dropped.)
+- **Splats do not exist yet → full capture pipeline** (capture → poses → train →
+  web-compress), run **on servers, not the dev device.**
+- **Experience arc (authoritative):** dawn → drapery gathers into a tent → a moment
+  inside → drapery flutters away → land in the live Appalachian-rainforest music
+  visualizer (the existing audio-reactive instrument). Source: the experience doc.
 
-Realism approach for the scene = **3D Gaussian splat** (see the pending splat-research
-findings doc), superseding the earlier "MeshPhysicalMaterial cloth" sketch in §3.
+## 1. Project identity (unchanged — only the "how shown" reconciled)
+A visual-effects artist's **portfolio piece** — not a wedding-services/decor site,
+not picture-heavy. The artist builds enchanting, sensor-driven environments at real
+weddings (drapery + flowers) using TouchDesigner + LiDAR + depth models. **Clients
+never see the tech**; they're sold *"a beautiful, enchanting, magic experience,
+tailored to your palette / theme / setting."* Voice = **poetic, benefit-led, never
+technical**. The website itself *is* the demo: the visitor moves (gyro/scroll/
+pointer) and the **viewpoint travels forward** through a draped-and-flowered splat
+volume, the UI embedded inside it, resolving into the living visualizer. Each scene
+is **parameter-driven** — mapping onto the project's existing **"looks = params-only
+JSON"** DNA.
 
-## Hero sequence — the cinematic arc (authoritative, 2026-06-21)
-The bookend: **feathers DOWN to enclose ↔ birds UP to release.**
-1. **Open on dark.** A near-black page — empty Appalachian woods, night / pre-dawn; just
-   trees, depth, quiet. (Entry state; minimal initial load.)
-2. **Drapes fall like feathers.** Sheer ivory drapes drift down from above and settle,
-   until they **enclose** the space into a room within the woods.
-3. **Enter → sunrise.** As the camera moves into the now-enclosed space, **the sun comes
-   up** — morning breaks, backlight floods the drapes (translucency/sheen).
-4. **Deeper → later in the day.** Travelling further through, the light advances from
-   morning toward midday.
-5. **Drapes form a hallway.** The swags resolve into the **corridor** the camera travels down.
-6. **Release → birds up.** At the end the drapes **disappear, fluttering upward like birds**
-   lifting into the sky — releasing the space open.
+## 2. Compute & device model (NEW — mind the dev device, use servers)
+The dev device is a **CPU-only Android/Termux container**: no GPU, no COLMAP/CUDA,
+and the repo's own build/test tooling isn't even installed there. So responsibilities
+split hard:
+- **Phone (dev device):** capture footage, orchestrate/trigger jobs, review results,
+  approve. All operator-facing handoffs stay phone-friendly (one value per block,
+  files via `SendUserFile`, no large copy-paste) per `mobile-ergonomics.md`.
+- **Servers / CI (all heavy work):**
+  - **GPU server** — COLMAP camera poses + **3D Gaussian-splat training** +
+    web-compression. *Mandatory; cannot run on the phone.* (Provider = open
+    decision D-COMPUTE below.)
+  - **CI (GitHub Actions)** — build the R3F library, run the `/design-sync`
+    render-grading harness, deploy. Mirrors the existing push→Actions→FTPS flow.
+- **Web-ready splats are versioned back** into the repo/asset store so the rendering
+  + camera system (built against a placeholder until then) swaps them in.
 
-**Build implication (CORRECTED 2026-06-21 — splats are highly manipulable, not frozen):**
-each splat carries its own position/rotation/scale/color/opacity, so a labelled **subset
-(the drape splats) can be animated at runtime** — drift down + settle (feather-fall), then
-translate up + fade opacity (bird-lift / dissolve). So the drapes can stay **photoreal
-splats AND move**, no separate fake meshes required. The **time-of-day change** is the
-harder axis (true splat relighting is research-stage); the realistic web/mobile path is
-likely **cross-fading 2–3 splats authored at different light** or a **post-grade**.
-Difficulty/mobile-cost of the heavier moves (cloth-like deformation, 4D dynamic splats,
-relighting) is being verified by a dedicated manipulation-research pass → findings doc.
+## 3. The full splat pipeline (per-stage: where it runs)
+1. **Capture** *(phone / camera on-site)* — overlapping video or photo sets of a real
+   draped installation and an Appalachian-rainforest location, ideally in **dawn +
+   day** light variants so they can be cross-faded for the time-of-day shift.
+2. **Poses** *(GPU server)* — COLMAP structure-from-motion → camera intrinsics/extrinsics.
+3. **Train** *(GPU server)* — 3D Gaussian-splat training (e.g. the gsplat / Nerfstudio
+   `splatfacto` family — exact tool + version confirmed at build time, not assumed here).
+4. **Compress for web** *(GPU/CPU server)* — convert raw `.ply` → a compact web format
+   (compressed splat / SOG-style packing) with LOD so it's mobile-deliverable.
+5. **Version + deliver** — store the compressed splats as assets the web app loads
+   (CDN/host; not committed raw into git if large — keep the tree lean per the inode cap).
 
-## Why this exists
-`/design-sync` needs a *real, buildable React component library* (not abstract tokens) so
-your Claude Design agent designs with your **actual on-brand parts**, and every mock maps
-1:1 onto shippable Next.js code. So the starter DS = **design tokens + ~6 primitives + a
-Storybook + the botanical Hero**, built as a Vite library, pushed to Claude Design.
+## 4. Web rendering + camera architecture
+- **Splat rendering:** R3F/three Gaussian-splat renderer (specific package confirmed at
+  build time). Each **scene = a parameter-driven module** (drapery, rainforest, light
+  variants), cross-faded/combined; a **labelled subset (the drape splats) animates at
+  runtime** — drift/gather, then flutter/dissolve — since each splat carries its own
+  position/scale/opacity.
+- **Camera movements (the other half of the synced kit):** forward dolly; **off-axis /
+  anamorphic frustum** (the "window into recessed depth," `setViewOffset` / custom
+  projection); **viewpoint** driven by `useGyro` (iOS `requestPermission()` from a tap,
+  HTTPS), scroll, and pointer — **no webcam.** Writes a smoothed vec to a ref consumed
+  in `useFrame`, never React state per frame.
+- **Diegetic UI + a11y:** primitives are true 3D objects (mesh panels, troika text) that
+  occlude and move with the splat, **plus a slim hidden 2D HTML layer** for a11y/clicks/SEO.
+- **Mobile budget** (matches existing perf rules): DPR ≤ 1.5, KTX2/compressed assets,
+  splat LOD, `PerformanceMonitor` → DPR regression, pause on `visibilitychange`,
+  ≤1–2 heavy post effects. **Fallback tier** (low-end): layered-quad parallax + a
+  depth-displacement shader — the flat version of the same illusion.
+- **Reduced motion:** a composed, calm version; the page still conveys who the studio
+  is and what it offers without the immersive scene.
 
-## 1. Design POV (frontend-design — a deliberate, anti-template direction)
-**Signature (the one bold thing):** *"a pressed-flower archive that breathes"* — a
-**dark, immersive dusk scene** (the head/mouse/gyro-driven camera travelling forward
-through the draped-and-flowered space) **with the site's own UI embedded inside it as
-spatial objects the camera reveals**, everything under a constant fine film-grain haze,
-text that slowly drifts and *blooms* into view like specimens waking in a glasshouse at dusk.
+## 5. The 3D UI primitives (full diegetic kit — secondary to the splats)
+Practical names the design agent + engineers use, each = a 3D object + 2D DOM mirror:
+`Button`, `Text` (display/body), `Section`, `Card`, `Field`, `Nav`. Plus the signature
+**`BotanicalScene`** wrappers (drapery / rainforest) and the **camera-move** components.
+Tokens still define the look of any diegetic text/surfaces:
 
-Spend the boldness in the hero; keep the rest quiet. Two coordinated themes:
+**Type** (Google Fonts / open-license): **Fraunces** display (Wonk + Soft axes on) ·
+**Hanken Grotesk** body · **DM Mono** for dates/labels/captions. *(Decision D2 — confirm
+or pick an alternate pairing.)*
 
-**Light base — "Pressed & Bone"** (content pages):
-`--bone #F6F1E6` · `--pressed-fern #1F4F3A` · `--sage-veil #A9C2B2` · `--cocoa-ink #3A2F2A`
-· `--dusty-rose #C97A6A` · `--brut-champagne #EBDAB0`
+**Palette — two themes** *(Decision D1 — confirm the dusk direction):*
+- Light "Pressed & Bone": `--bone #F6F1E6` · `--pressed-fern #1F4F3A` ·
+  `--sage-veil #A9C2B2` · `--cocoa-ink #3A2F2A` · `--dusty-rose #C97A6A` ·
+  `--brut-champagne #EBDAB0`
+- Dark "Glasshouse at Dusk" (the immersive scenes): `--ink-ivy #0B1F18` ·
+  `--conservatory #1E3F34` · `--verdigris #4C7A68` · `--champagne #E6D7B8` ·
+  `--petal #D9B8C4` · `--gilt #C9B06A`
 
-**Dark mode — "Glasshouse at Dusk"** (the hero / immersive moments):
-`--ink-ivy #0B1F18` · `--conservatory #1E3F34` · `--verdigris #4C7A68` ·
-`--champagne #E6D7B8` · `--petal #D9B8C4` · `--gilt #C9B06A`
+Gold stays champagne/old-gold (never brass); blush stays dusk (never candy-pink).
 
-**Type** (all Google Fonts / open-license): **Fraunces** display with the *Wonk + Soft*
-axes on (the antidote to the default Playfair/Didone — organic, ink-trapped, almost
-botanical) · **Hanken Grotesk** body (warm humanist, premium-not-clinical) · **DM Mono**
-for dates/labels/captions (gallery-catalog cadence).
+## 6. Packaging for `/design-sync`
+- **R3F library** (Vite library-mode → ESM `dist/`, `preserveModules`, externalized
+  React, `vite-plugin-dts`; `"sideEffects":["**/*.css"]`); **Storybook** stories are the
+  preview source (R3F renders via a canvas decorator). Tokens as a `tokens.css` subpath.
+  `'use client'` on leaf interactive components for the Next.js consumer (ADR-012).
+- **What syncs:** the **point-cloud scene modules + camera-movement modules** (and the
+  diegetic primitives). Their `/design-sync` previews are **captured frames/short clips**
+  of the rendered scene — not tidy static cards — so the agent composes *scenes and
+  camera moves.*
+- **Honest fit note:** splats are **large binary assets** and rendering them in the
+  `/design-sync` grading harness is the heaviest case the tool handles. The grading +
+  library build run on **CI**, not the phone. Expect previews to be representative
+  captures, and keep raw splats out of the synced bundle (reference compressed assets).
 
-**Anti-default check (escaped):** NOT the AI cream `#F4F1EA` + Didone + terracotta;
-instead warm bone against deep green, Fraunces-Wonk, and a **muted dusk blush/mauve** —
-gold stays **champagne/old-gold, never brass**; blush stays **dusk, never candy-pink**.
+## 7. Build sequence (only after you approve this plan)
+0. **Stand up compute** — pick the GPU path (D-COMPUTE), wire a repeatable job
+   (capture-in → web-splat-out) and install the repo's dev deps in CI.
+1. **Prove the rendering + camera pipeline against a placeholder splat** (in parallel with
+   capture) — R3F splat render + forward dolly + off-axis frustum + gyro/scroll, mobile
+   budget + fallback tier.
+2. **Create the first real splat** (drapery) through the full pipeline; swap it in.
+3. **Camera-movement + scene modules + tokens** → **first `/design-sync`** (the synced kit).
+4. **Diegetic UI primitives** (3D + a11y mirror) → add to lib + Storybook → sync.
+5. **Rainforest splat + the dawn→tent→flutter→visualizer arc** → integrate on a standalone
+   route (ADR-012); hand off into the existing audio-reactive instrument.
 
-> Note: this *extends* the existing v1 weddings `:root` (champagne/gold) — it doesn't fork
-> it. The Claude Design agent's output (Drive handoff) and these tokens reconcile;
-> newest design wins per the handoff protocol.
+## 8. Open decisions for you
+- **D-COMPUTE (new, gating):** which GPU runs training? A cloud GPU you provision
+  (Colab / RunPod / Lambda / Vast — pay-per-use, you control it) vs a managed capture
+  app's cloud (Luma/Polycam — simplest, less control). You chose the **full pipeline**;
+  it still needs a GPU host — confirm which, and a rough budget (spend-discipline rule).
+- **D1 — dusk direction:** confirm dark immersive scenes + light editorial body.
+- **D2 — type:** confirm Fraunces + Hanken Grotesk + DM Mono (or an alternate pairing).
+- **D3 — camera tier:** RESOLVED — webcam dropped (no interface devices).
+- **D-SPLAT-MOTION:** v1 realism is load + cross-fade authored light variants + camera
+  motion + drape subset animation; true relighting / 4D dynamic splats are research-stage
+  and deferred — confirm that's acceptable for the first ship.
 
-## 2. DS vocabulary (domain-modeling — the ubiquitous language)
-- **Tokens:** `color` (the two themes above), `type` (display/body/mono + a modular scale),
-  `space`, `radius` (minimal — botanical = soft, low radius), `motion` (drift 12–30s eased;
-  bloom-reveal 600–900ms), `texture` (grain density). Runtime layer = **CSS custom
-  properties in `:root`** (`tokens.css`); authoring optional DTCG JSON only if a 2nd consumer appears.
-- **Primitives (~6, practical names the design agent + engineers use):** `Button`, `Text`
-  (heading/body via Fraunces/Hanken), `Section`, `Card`, `Field` (input), `Nav`.
-- **Signature component:** `BotanicalHero` (the gyro/camera parallax scene shell).
-
-## 3. Tech architecture — anamorphic "quad reprojection" (off-axis) hero
-The operator's reference is the **B2BK TouchDesigner *Quad Reprojection / Anamorphosis***
-tutorial — i.e. **off-axis projection**: the screen becomes a **window into a real recessed
-3D space**, with forced-perspective depth that shifts as the viewpoint moves. Confirmed
-doable in three.js via a custom **off-axis / asymmetric-frustum projection** (the "fish-tank
-VR" / head-coupled technique — `PerspectiveCamera.setViewOffset` or a custom projection
-matrix), driven by the gyro.
-- **The space:** a photoreal **Gaussian-splat** draped-and-flowered volume (supersedes the
-  earlier `MeshPhysicalMaterial` cloth idea); the screen is a window peering in.
-- **Diegetic UI + multi-scene.** The site's buttons / containers / text live **inside** the
-  scene as spatial objects the moving camera reveals (NOT a flat overlay). **DECIDED
-  (2026-06-21): diegetic 3D + a11y layer** — components are built as true 3D objects
-  (troika-three-text for crisp type, mesh panels for buttons/containers) that occlude and
-  move WITH the splat, **plus a slim hidden 2D HTML layer** for accessibility / clicks / SEO.
-  Forward motion continues **scene → scene** (drapery+flowers = scene 1; more later), each
-  **tailorable to a client palette/theme/setting** → parameter-driven (looks = params).
-- **The illusion:** gyro → virtual eye position → the off-axis frustum updates each frame, so
-  the draped space reads as true depth behind the screen and shifts anamorphically as you tilt.
-- **Lighter fallback tier** (low-end phones): degrade to layered-quad parallax + the Codrops
-  depth-displacement shader (`uv + tilt·depth`) — the flat version of the same idea.
-- **Camera tier (opt-in):** `getUserMedia` → `useVideoTexture` backdrop with a **baked/painted
-  depth map** (research is firm: **do NOT run live neural depth on a phone** — too heavy;
-  bake it, or reserve live depth for a desktop WebGPU "wow" tier).
-- **Look:** silk drapery via `MeshPhysicalMaterial` **sheen**; instanced **alpha-cutout**
-  flowers/leaves with height-anchored wind-sway; a restrained beauty pass
-  (DOF → selective Bloom → GodRays → golden-hour **LUT** → low grain → subtle vignette);
-  ACES *or* AgX tone mapping (A/B — ACES desaturates the blush).
-- **Input/permission:** a `useGyro` hook owns iOS `requestPermission()` **from a tap**
-  ("Enable motion" CTA, HTTPS); writes a smoothed vec to a ref consumed in `useFrame`
-  (never React state per frame).
-- **Fallbacks:** desktop/no-gyro → **pointer/scroll** parallax; declined camera → painted
-  backdrop; reduced-motion → gentle auto-drift only.
-- **Mobile budget** (matches our existing perf rules): DPR ≤ 1.5, **instancing**, **KTX2**
-  textures, `PerformanceMonitor` → DPR regression, pause on `visibilitychange`, ≤1–2 heavy
-  post effects.
-- **In Next.js:** a `'use client'` component on a **standalone route** (per ADR-012; not
-  under a client-router that would kill the GL context).
-
-## 4. Packaging for `/design-sync`
-> Per the **diegetic-3D decision** (§3): the primitives are **R3F/three components** (mesh +
-> troika text), each paired with a **2D DOM a11y mirror** — so this is a **3D component kit**,
-> not a plain 2D React lib. The Vite-library + Storybook packaging below still applies (R3F
-> renders in Storybook via a canvas decorator); each primitive exports its 3D component + the
-> accessible DOM fallback.
-- **Vite library-mode** React lib → ESM `dist/`, **per-component** output (`preserveModules`),
-  externalized React, **`vite-plugin-dts`** for `.d.ts`. `exports` map; `"sideEffects":["**/*.css"]`.
-- **Storybook 9** (`@storybook/react-vite`) — stories are the **preview source** the design
-  agent reads (each `*.stories.tsx` = a named, real-prop instance).
-- **Tokens** shipped as a `tokens.css` subpath export.
-- **Next.js gotcha:** `'use client'` on the **leaf interactive** components (compiled into
-  `dist/`), tokens CSS imported first.
-- **Folder:** `ui/src/{tokens, Button, Text, Section, Card, Field, Nav, BotanicalHero}/` +
-  `.storybook/` + `vite.config.ts`.
-
-## 5. Build sequence (only after you approve this plan)
-1. Tokens (`tokens.css` + typed `tokens.ts`) + the two themes.
-2. The 6 primitives + a Storybook story each → **first `/design-sync`** (gives Claude Design
-   real on-brand parts fast).
-3. The `BotanicalHero` (heavier; its own milestone) → spike → add to the lib + Storybook.
-4. Integrate into the Next.js studio site (ADR-012), hero on its own route.
-
-## 6. Decisions for you
-- **D1 — the dusk direction:** confirm the **dark immersive hero + light editorial body**
-  system (vs staying all-light champagne). This is the one real brand call.
-- **D2 — type:** Fraunces + Hanken Grotesk + DM Mono (or pick Pairing B "Cormorant +
-  Spectral" / C "Amarante" from the research).
-- **D3 — camera tier:** ship the live-camera backdrop in v1, or start gyro-only and add
-  camera later?
-
-## 7. Risks (from research)
-iOS gyro needs a tap + HTTPS (silently dead otherwise); live video-texture + parallax can
-jank on phones (cap resolution; no live neural depth); displacement smears at depth edges
-(keep offsets subtle / author good depth maps); ACES vs AgX saturation (test live).
+## 9. Risks
+GPU compute is off-device and costs money (provision deliberately). Splat assets are
+heavy → aggressive compression + LOD or phones jank. iOS gyro needs a tap + HTTPS
+(silently dead otherwise). True splat relighting/deformation is research-stage — keep v1
+to cross-fade + subset animation. `/design-sync` previews of splat scenes are captures,
+not crisp component cards — set expectations.
 
 ## Sources
-Packaging: Vite library-mode, Storybook 9, W3C DTCG tokens, Next.js `use client`.
-Gyro/camera: MDN DeviceOrientation, iOS `requestPermission`, Codrops fake-3D, parallax.js,
-drei `useVideoTexture`/`DeviceOrientationControls`, transformers.js depth (desktop only).
-Botanical: R3F scaling-performance, MeshPhysicalMaterial sheen, alpha-cutout grass shaders,
-@react-three/postprocessing (Bloom/DOF/GodRays/Vignette), ACES/AgX tone mapping, KTX2.
-Design language: Fraunces/Hanken/DM Mono, botanical palettes, Immersive Garden (Awwwards).
-(Full URLs in the session research transcript.)
+Packaging: Vite library-mode, Storybook (`@storybook/react-vite`), W3C DTCG tokens,
+Next.js `use client`. Viewpoint: MDN DeviceOrientation, iOS `requestPermission`, Codrops
+fake-3D / depth-displacement, drei `DeviceOrientationControls`. Splats: 3D Gaussian
+Splatting (Inria), gsplat / Nerfstudio `splatfacto`, COLMAP, web splat renderers +
+compression — **specific libraries/versions to be confirmed at build time** via the repo's
+`find-docs`/context7 workflow, not asserted from memory. Botanical/look + palette/type
+research carried over from the prior revision. (Full URLs in the session research transcript.)
