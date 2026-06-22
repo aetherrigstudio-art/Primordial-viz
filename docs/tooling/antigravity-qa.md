@@ -19,7 +19,7 @@ lives in `.claude/agy-setup.sh`.
 
 ## Using agy for QA
 - Non-interactive: `agy -p "<prompt>"` (wrap in `timeout`; connecting 4 MCP servers + a model round-trip can take >2 min). `agy models` lists models; `--add-dir <repo>` adds a workspace; `-c` continues.
-- Typical visual-QA loop for the immersive page: have agy serve + open `immersive/` in its browser, screenshot, and confirm the dyno GLSL compiles on real WebGL2, the splats react to audio, and the camera/skip feel right — the verification the dev device cannot do.
+- **The agy CLI has NO browser / WebGL2 / GPU tool** (verified 2026-06-22): it can esbuild-bundle + serve the immersive app, but it cannot render, screenshot, or interact with it. **Visual QA must run in the Antigravity IDE** (the GUI app — that's where the browser tool lives) or in **CI with a headed browser** — NOT from the `agy` CLI. The CLI's real value here is multi-model reasoning, the MCP tools (NotebookLM research + `primordial`'s `validate_shaders`/`render_check` — which serve the *src/* instrument, not the R3F immersive app), and the verify hook.
 - **Never** pass `--dangerously-skip-permissions` on this device (bypasses the human gate).
 
 ## Caveats
