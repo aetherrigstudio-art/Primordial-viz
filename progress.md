@@ -20,6 +20,30 @@ Started the **immersive point-cloud landing-page** effort + a multi-tool build p
 - **Open gates:** generate first asset (drapery/TRELLIS), Gemini API key, start web build
   vs a placeholder splat, push.
 
+## Session — 2026-06-22 (rainforest asset GENERATION recipe — Ultraplan-approved)
+
+Built out the rainforest *generation* so the output is a realistic, dense, blooming Appalachian
+rainforest. Realism is set upstream (video-gen prompt + reconstruction params), not in app code, and
+the heavy steps are off-device — so the deliverable is an engineered recipe + spec the operator runs.
+
+- **New `docs/design-system/rainforest-asset-spec.md`** — art direction grounded in the experience
+  doc's Appalachian botanical catalog (laurel/rhododendron/azalea/hydrangea/trillium/dogwood/ferns/
+  moss; golden dappled light; god-rays; haze), an **engineered prompt library** (3 variants +
+  negative) tuned for BOTH photoreal bloom AND clean 3DGS reconstruction (one continuous slow move,
+  deep focus, no motion blur, steady light, parallax), an acceptance checklist, a failure→fix
+  iteration loop, and drafted NotebookLM research queries.
+- **Hardened `colab/forest-video-splat.md`** for density: `splatfacto-big` + verified flags
+  (`cull_alpha_thresh=0.005`, `continue_cull_post_densification=False`, `use_scale_regularization=True`
+  — confirmed via docs.nerf.studio), higher `--num-frames-target 300`, sky-masking note, SuperSplat
+  floater-cleanup + decimate-to-budget; points step 0 at the spec.
+- **Enriched `placeholderRainforest.js`** — ~12% bloom flecks (pink laurel/rhododendron, white
+  hydrangea, coral azalea) so the proving ground previews the blooming target, not flat green.
+
+**Verified on-device:** `node --check` + esbuild full bundle 0 errors (placeholder change); docs are
+markdown (no build impact). Research routed to NotebookLM (`688cc151`) per spend discipline — queries
+drafted in the spec; one bounded find-docs check done (splatfacto-big). Plan:
+`melodic-hatching-penguin` (Ultraplan-approved, teleported back). UNCOMMITTED.
+
 ## Session — 2026-06-22 (immersive — Appalachian rainforest splat wired, multi-splat composite)
 
 PLAN §7 step 5 (app side). **Reconciled a research error against the source:** an Explore pass
