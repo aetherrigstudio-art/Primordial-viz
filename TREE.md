@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 429 files in 134 directories.
+> 449 files in 138 directories.
 
 ```
 Primordial-viz/
@@ -372,9 +372,29 @@ Primordial-viz/
 │   │   └── assets/
 │   │       └── README.md
 │   ├── src/
+│   │   ├── audio/
+│   │   │   ├── analyser.js
+│   │   │   ├── audioTexture.js
+│   │   │   ├── bpm.js
+│   │   │   ├── input.js
+│   │   │   └── useAudio.jsx
 │   │   ├── camera/
 │   │   │   ├── CameraRig.jsx
 │   │   │   └── offAxisFrustum.js
+│   │   ├── control/
+│   │   │   ├── sources/
+│   │   │   │   ├── keyboard.js
+│   │   │   │   ├── midi.js
+│   │   │   │   └── osc.js
+│   │   │   ├── schema.js
+│   │   │   ├── store.js
+│   │   │   ├── targets.js
+│   │   │   └── useControls.js
+│   │   ├── mode/
+│   │   │   ├── cameraWaypoints.js
+│   │   │   ├── instrumentCamera.js
+│   │   │   ├── travelDriver.js
+│   │   │   └── useInstrumentMode.js
 │   │   ├── perf/
 │   │   │   └── mobileBudget.js
 │   │   ├── splat/
@@ -382,8 +402,11 @@ Primordial-viz/
 │   │   │   ├── loadRainforest.js
 │   │   │   ├── placeholderRainforest.js
 │   │   │   ├── placeholderSplats.js
+│   │   │   ├── reactiveModifier.js
+│   │   │   ├── semanticMask.js
 │   │   │   ├── SparkScene.jsx
 │   │   │   ├── transform.js
+│   │   │   ├── useReactiveSplat.js
 │   │   │   └── useSplatLayer.js
 │   │   ├── viewpoint/
 │   │   │   └── useViewpoint.js
@@ -559,6 +582,7 @@ Primordial-viz/
 ├── ENCYCLOPEDIA.md
 ├── findings.md
 ├── GEMINI.md
+├── hooks.json
 ├── index.html
 ├── LICENSE
 ├── ONBOARDING.md

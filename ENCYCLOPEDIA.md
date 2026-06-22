@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 429 files across 17 categories.
+> 449 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (25)
 - [CI / Build Config](#ci--build-config) (10)
-- [Other](#other) (80)
+- [Other](#other) (100)
 
 ## Overview & Planning
 
@@ -44,7 +44,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Started the immersive point-cloud landing-page effort + a multi-tool build pipeline. |
+| [`progress.md`](progress.md) | Branch main, everything pushed. |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -512,22 +512,42 @@
 | [`.agents/skills/setup-matt-pocock-skills/triage-labels.md`](.agents/skills/setup-matt-pocock-skills/triage-labels.md) | The skills speak in terms of five canonical triage roles. |
 | [`.env.example`](.env.example) | Example environment variables |
 | [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
+| [`hooks.json`](hooks.json) | Configuration / data file. |
 | [`immersive/README.md`](immersive/README.md) | Standalone Vite + React-Three-Fiber app that proves the point-cloud landing-page rendering + camera pipeline against a procedural placeholder splat,… |
 | [`immersive/index.html`](immersive/index.html) | Primordial — immersive (proving ground) |
 | [`immersive/package-lock.json`](immersive/package-lock.json) | Configuration / data file. |
 | [`immersive/package.json`](immersive/package.json) | Proving ground for the immersive point-cloud landing page (R3F + Spark Gaussian splats). Graduates into the R3F component library consumed by the… |
 | [`immersive/public/assets/README.md`](immersive/public/assets/README.md) | Web-ready splat assets, served by Vite at the site root (/assets/...). |
 | [`immersive/src/App.jsx`](immersive/src/App.jsx) | JSX file. |
+| [`immersive/src/audio/analyser.js`](immersive/src/audio/analyser.js) | AnalyserNode wrapper for the immersive app. |
+| [`immersive/src/audio/audioTexture.js`](immersive/src/audio/audioTexture.js) | 512x2 R8 audio DataTexture for the immersive app — the portability convention from .claude/rules/audio.md (matches Shadertoy's iChannel layout so… |
+| [`immersive/src/audio/bpm.js`](immersive/src/audio/bpm.js) | Dependency-free tempo + beat/bar tracking for the immersive instrument. |
+| [`immersive/src/audio/input.js`](immersive/src/audio/input.js) | Microphone / line-in capture for the immersive app. |
+| [`immersive/src/audio/useAudio.jsx`](immersive/src/audio/useAudio.jsx) | JSX file. |
 | [`immersive/src/camera/CameraRig.jsx`](immersive/src/camera/CameraRig.jsx) | JSX file. |
 | [`immersive/src/camera/offAxisFrustum.js`](immersive/src/camera/offAxisFrustum.js) | Off-axis / anamorphic frustum — the "window into recessed depth" (PLAN §4). |
+| [`immersive/src/control/schema.js`](immersive/src/control/schema.js) | Control-core parameter schema for the immersive instrument. |
+| [`immersive/src/control/sources/keyboard.js`](immersive/src/control/sources/keyboard.js) | Keyboard control source — the BASELINE input adapter for the instrument. |
+| [`immersive/src/control/sources/midi.js`](immersive/src/control/sources/midi.js) | MIDI control source — a FLAGGED adapter (off by default; enabled via useControls flags.midi). |
+| [`immersive/src/control/sources/osc.js`](immersive/src/control/sources/osc.js) | OSC control source — a FLAGGED adapter (off by default; enabled via useControls flags.osc). |
+| [`immersive/src/control/store.js`](immersive/src/control/store.js) | JS file. |
+| [`immersive/src/control/targets.js`](immersive/src/control/targets.js) | JS file. |
+| [`immersive/src/control/useControls.js`](immersive/src/control/useControls.js) | useControls(store, flags) — React hook that wires the enabled control SOURCES to the store. |
 | [`immersive/src/main.jsx`](immersive/src/main.jsx) | JSX file. |
+| [`immersive/src/mode/cameraWaypoints.js`](immersive/src/mode/cameraWaypoints.js) | Camera waypoint graph for the beat-synced instrument camera. |
+| [`immersive/src/mode/instrumentCamera.js`](immersive/src/mode/instrumentCamera.js) | JS file. |
+| [`immersive/src/mode/travelDriver.js`](immersive/src/mode/travelDriver.js) | Travel driver — owns the single 0..1 `travel` scalar the journey is scrubbed by. |
+| [`immersive/src/mode/useInstrumentMode.js`](immersive/src/mode/useInstrumentMode.js) | JS file. |
 | [`immersive/src/perf/mobileBudget.js`](immersive/src/perf/mobileBudget.js) | Mobile perf budget — mirrors .claude/rules/shaders.md and PLAN §4. |
 | [`immersive/src/splat/SparkScene.jsx`](immersive/src/splat/SparkScene.jsx) | JSX file. |
 | [`immersive/src/splat/loadDrapery.js`](immersive/src/splat/loadDrapery.js) | JS file. |
 | [`immersive/src/splat/loadRainforest.js`](immersive/src/splat/loadRainforest.js) | JS file. |
 | [`immersive/src/splat/placeholderRainforest.js`](immersive/src/splat/placeholderRainforest.js) | JS file. |
 | [`immersive/src/splat/placeholderSplats.js`](immersive/src/splat/placeholderSplats.js) | JS file. |
+| [`immersive/src/splat/reactiveModifier.js`](immersive/src/splat/reactiveModifier.js) | JS file. |
+| [`immersive/src/splat/semanticMask.js`](immersive/src/splat/semanticMask.js) | Cheap in-shader "flower-region" mask — authored from blank (write-our-own rule). |
 | [`immersive/src/splat/transform.js`](immersive/src/splat/transform.js) | Apply a { position, quaternion, scale } config to a SplatMesh — shared by every splat layer (real + placeholder) so the orientation/placement logic… |
+| [`immersive/src/splat/useReactiveSplat.js`](immersive/src/splat/useReactiveSplat.js) | JS file. |
 | [`immersive/src/splat/useSplatLayer.js`](immersive/src/splat/useSplatLayer.js) | JS file. |
 | [`immersive/src/viewpoint/useViewpoint.js`](immersive/src/viewpoint/useViewpoint.js) | JS file. |
 | [`immersive/vite.config.js`](immersive/vite.config.js) | JS file. |
