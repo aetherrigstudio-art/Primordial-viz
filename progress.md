@@ -1,6 +1,50 @@
 # Progress Log — primordial
 
-## HANDOFF — 2026-06-22 (immersive build + subagent-orchestration) — RESUME HERE
+## HANDOFF — 2026-06-23 (immersive instrument-handoff: built · reviewed · shipped to preview · merged) — RESUME HERE
+Branch `claude/immersive-instrument-handoff` → merged to `main`; phone-openable preview live.
+
+**Built — the immersive page's end-state instrument (ADR-013).** At `travel===1` the rainforest
+Gaussian-splat scene BECOMES the live audio-reactive, performer-controllable instrument INSIDE the
+R3F app (operator-directed; a scoped supersession of ADR-012's end-state — NOT a handoff to the
+raw-WebGL2 `src/` app). New under `immersive/src/`: `audio/*` (mic + AnalyserNode bands + 512×2 audio
+texture + `BeatClock` beat/bar/downbeat — re-authored from `src/audio/*`, no cross-app import),
+`splat/{reactiveModifier,useReactiveSplat,semanticMask}` (Spark `dyno` `worldModifier` reactivity —
+`updateGenerator()` ONCE / `updateVersion()` per frame), `control/*` (params schema + store + targets
+seam; keyboard baseline, MIDI/OSC flagged off), `mode/*` (travelDriver + one-way instrument latch +
+skip fast-forward + beat-synced waypoint camera). Wired in `App.jsx` + `SparkScene.jsx`.
+
+**Knowledge captured (RAG corpus):** `docs/decisions/013-instrument-in-r3f.md`,
+`docs/design-system/INSTRUMENT-HANDOFF.md` (verified Spark dyno API + architecture),
+`docs/tooling/antigravity-qa.md`, `research/reuse-libraries/REUSE-CATALOG.md`, + an esbuild-bundle
+reconcile lesson in `.claude/rules/gotchas.md`. Index rebuilt off-device by `rag-index.yml` on merge.
+
+**agy (Antigravity CLI):** `.claude/agy-setup.sh` restores it after a cloud wipe — 4 MCP servers
+(context7, mdn, primordial, notebooklm via a zero-dep wrapper) + a PostToolUse verify hook. **KEY:
+the agy CLI has NO browser/WebGL2 tool** — visual QA is the Antigravity IDE or CI, NOT the CLI.
+
+**CI / phone QA:** `immersive.yml` builds → headless WebGL2 screenshot → **deploys a phone-openable
+preview** to `https://primordial.video/Test/immersive/` (`VITE_BASE` drives build+preview; reuses the
+Test@ FTP account). Open it on a phone — real mobile GPU is the true QA.
+
+**Reviewed + fixed:** a budget-tiered adversarial review workflow found 19 issues; applied the
+verified fixes (`2ffaa20`) — bias compounding, AudioContext leak, the preview-base bug, +14 more. No
+critical blockers.
+
+**Roadmap:** consolidated out-of-scope + parked-threads roadmap in the plan file (Tracks 0–5).
+**Appalachian aesthetic is LOCKED for both** the rainforest splat generation (`rainforest-asset-spec.md`
+— explicit Appalachian species + a no-tropical negative prompt) AND the new ambient fallback playlist
+(Track 1.9 — curated CC0 Appalachian folk/old-time-ambient + temperate-forest field recordings; NOT tropical).
+
+**Next:** (1) the gated immersive build sequence — arrow-nav rewrite (`travel` is a stub) → Theatre.js
+journey choreography + focus stations → real Appalachian `.spz` assets (operator, off-device) → drapery
+flutter animation → content slots → MIDI/OSC enablement → atmospherics. (2) Build the Appalachian ambient
+playlist (Track 1.9): shortlist CC0 tracks → operator approval → wire the mechanism.
+
+**Gotchas:** agy CLI has no browser (QA = phone preview / CI / Antigravity IDE); for large multi-agent
+tasks use the budget-efficient pattern (batch-verify per dimension, tiered effort — auto-memory); the
+root `package-lock.json` has a pre-existing uncommitted change left untouched.
+
+## HANDOFF — 2026-06-22 (immersive build + subagent-orchestration)
 Branch `main`, everything pushed. Big session — current state + the next moves:
 
 **Live now (committed/pushed):**
