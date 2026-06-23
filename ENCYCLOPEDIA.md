@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 455 files across 17 categories.
+> 458 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (26)
 - [CI / Build Config](#ci--build-config) (10)
-- [Other](#other) (100)
+- [Other](#other) (103)
 
 ## Overview & Planning
 
@@ -544,6 +544,9 @@
 | [`immersive/src/mode/travelDriver.js`](immersive/src/mode/travelDriver.js) | Travel driver — owns the single 0..1 `travel` scalar the journey is scrubbed by. |
 | [`immersive/src/mode/useInstrumentMode.js`](immersive/src/mode/useInstrumentMode.js) | JS file. |
 | [`immersive/src/perf/mobileBudget.js`](immersive/src/perf/mobileBudget.js) | Mobile perf budget — mirrors .claude/rules/shaders.md and PLAN §4. |
+| [`immersive/src/playlist/ambientGenerator.js`](immersive/src/playlist/ambientGenerator.js) | Procedural Appalachian ambient source for the immersive app — FULLY SYNTHESIZED, license-clear, authored from a blank file (NO audio samples/files;… |
+| [`immersive/src/playlist/playlist.js`](immersive/src/playlist/playlist.js) | Ambient "autonomous vibe" playlist manifest for the immersive app. |
+| [`immersive/src/playlist/useAmbientPlaylist.jsx`](immersive/src/playlist/useAmbientPlaylist.jsx) | JSX file. |
 | [`immersive/src/splat/SparkScene.jsx`](immersive/src/splat/SparkScene.jsx) | JSX file. |
 | [`immersive/src/splat/loadDrapery.js`](immersive/src/splat/loadDrapery.js) | JS file. |
 | [`immersive/src/splat/loadRainforest.js`](immersive/src/splat/loadRainforest.js) | JS file. |

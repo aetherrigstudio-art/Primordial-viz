@@ -10,6 +10,7 @@ import { useControls } from './control/useControls.js'
 import { createTravelDriver } from './mode/travelDriver.js'
 import { useInstrumentMode } from './mode/useInstrumentMode.js'
 import { useInstrumentCamera } from './mode/instrumentCamera.js'
+import { useAmbientPlaylist } from './playlist/useAmbientPlaylist.jsx'
 
 // Proving-ground route. A start gate is mandatory: iOS gyro AND audio both need a user gesture,
 // so the gate's tap calls enableGyro() AND audio.start() (idempotent). Reduced-motion users get a
@@ -56,6 +57,12 @@ function Experience() {
 
   const { mode, requestSkip } = useInstrumentMode(driver)
   const active = mode === 'instrument'
+
+  // Ambient "autonomous vibe" playlist: once the start gate is tapped (the autoplay gesture), it
+  // detects "no live music" (mic denied, or the mic stays quiet) and fades a synthesized Appalachian
+  // ambient bed INTO the existing AnalyserNode so the splats + beat camera keep reacting; it fades
+  // back out when real audio returns. Unobtrusive — no required UI.
+  useAmbientPlaylist(audio, { enabled: started })
 
   // a11y: when the journey latches into the live instrument, move focus to the instrument region
   // and announce it via an aria-live node.
