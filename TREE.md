@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 455 files in 142 directories.
+> 458 files in 143 directories.
 
 ```
 Primordial-viz/
@@ -404,6 +404,10 @@ Primordial-viz/
 │   │   │   └── useInstrumentMode.js
 │   │   ├── perf/
 │   │   │   └── mobileBudget.js
+│   │   ├── playlist/
+│   │   │   ├── ambientGenerator.js
+│   │   │   ├── playlist.js
+│   │   │   └── useAmbientPlaylist.jsx
 │   │   ├── splat/
 │   │   │   ├── loadDrapery.js
 │   │   │   ├── loadRainforest.js
