@@ -38,9 +38,7 @@ ENCYCLOPEDIA/TREE mid-amend, splitting it; squashed back to one clean commit `42
 with lease over my own earlier partial push — no other work was on the branch). `package-lock.json`'s
 pre-existing uncommitted change was rolled IN this time (operator asked).
 
-**Next (Track 1.9 remainder + the gated build sequence):** (1) operator shortlists CC0/CC-BY Appalachian
-old-time-ambient / temperate-forest field recordings → drop in `immersive/public/assets/audio/` → add
-`kind:'file'` entries to the commented slot. (2) The gated immersive sequence is unchanged: arrow-nav
+**Next (The gated build sequence):** The gated immersive sequence is unchanged: arrow-nav
 rewrite (`travel` stub) → Theatre.js journey → real `.spz` assets → flutter → content slots → MIDI/OSC.
 
 ## HANDOFF — 2026-06-23 (immersive instrument-handoff: built · reviewed · shipped to preview · merged)
@@ -81,7 +79,7 @@ critical blockers.
 **Next:** (1) the gated immersive build sequence — arrow-nav rewrite (`travel` is a stub) → Theatre.js
 journey choreography + focus stations → real Appalachian `.spz` assets (operator, off-device) → drapery
 flutter animation → content slots → MIDI/OSC enablement → atmospherics. (2) Build the Appalachian ambient
-playlist (Track 1.9): shortlist CC0 tracks → operator approval → wire the mechanism.
+playlist (Track 1.9): (Completed).
 
 **Gotchas:** agy CLI has no browser (QA = phone preview / CI / Antigravity IDE); for large multi-agent
 tasks use the budget-efficient pattern (batch-verify per dimension, tiered effort — auto-memory); the
