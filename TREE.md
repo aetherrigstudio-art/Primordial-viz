@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 458 files in 143 directories.
+> 460 files in 145 directories.
 
 ```
 Primordial-viz/
@@ -377,6 +377,8 @@ Primordial-viz/
 ├── immersive/
 │   ├── public/
 │   │   └── assets/
+│   │       ├── audio/
+│   │       │   └── README.md
 │   │       └── README.md
 │   ├── src/
 │   │   ├── audio/
@@ -582,6 +584,8 @@ Primordial-viz/
 │   │   ├── _demo/
 │   │   │   ├── _demo.frag.js
 │   │   │   └── _demo.json
+│   │   ├── appalachian-rainforest/
+│   │   │   └── references.md
 │   │   └── frontpage/
 │   │       └── BRIEF.md
 │   ├── sandbox.html

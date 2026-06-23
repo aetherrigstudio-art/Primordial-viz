@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 458 files across 17 categories.
+> 460 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (26)
 - [CI / Build Config](#ci--build-config) (10)
-- [Other](#other) (103)
+- [Other](#other) (105)
 
 ## Overview & Planning
 
@@ -523,6 +523,7 @@
 | [`immersive/package-lock.json`](immersive/package-lock.json) | Configuration / data file. |
 | [`immersive/package.json`](immersive/package.json) | Proving ground for the immersive point-cloud landing page (R3F + Spark Gaussian splats). Graduates into the R3F component library consumed by the… |
 | [`immersive/public/assets/README.md`](immersive/public/assets/README.md) | Web-ready splat assets, served by Vite at the site root (/assets/...). |
+| [`immersive/public/assets/audio/README.md`](immersive/public/assets/audio/README.md) | Ambient "autonomous vibe" playlist tracks, served by Vite at the site root (/assets/audio/<id>). |
 | [`immersive/src/App.jsx`](immersive/src/App.jsx) | JSX file. |
 | [`immersive/src/audio/analyser.js`](immersive/src/audio/analyser.js) | AnalyserNode wrapper for the immersive app. |
 | [`immersive/src/audio/audioTexture.js`](immersive/src/audio/audioTexture.js) | 512x2 R8 audio DataTexture for the immersive app — the portability convention from .claude/rules/audio.md (matches Shadertoy's iChannel layout so… |
@@ -568,5 +569,6 @@
 | [`workshop/sketch-runner.mjs`](workshop/sketch-runner.mjs) | Boots the workshop sandbox: loads one sketch (?sketch=<name>) using the real renderer plumbing, drives it with synthetic audio, and exposes the… |
 | [`workshop/sketches/_demo/_demo.frag.js`](workshop/sketches/_demo/_demo.frag.js) | Reference sketch: audio-reactive warped plasma with neon rings. |
 | [`workshop/sketches/_demo/_demo.json`](workshop/sketches/_demo/_demo.json) | Configuration / data file. |
+| [`workshop/sketches/appalachian-rainforest/references.md`](workshop/sketches/appalachian-rainforest/references.md) | The Appalachian temperate rainforest (or "cloud forest") is defined by high moisture, extreme biodiversity, and elevation-specific zones. |
 | [`workshop/sketches/frontpage/BRIEF.md`](workshop/sketches/frontpage/BRIEF.md) | Durable launch point for a visual-workshop session (run after a /clear). |
 | [`workshop/synth-audio.mjs`](workshop/synth-audio.mjs) | Deterministic synthetic "fake song" for the Visual Workshop sandbox. |

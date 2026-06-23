@@ -27,3 +27,12 @@ immersive/public/assets/*.spz
 immersive/public/assets/*.sog
 immersive/public/assets/*.ply
 immersive/public/assets/*.ksplat
+
+# ambient playlist audio — CC0/CC-BY tracks delivered via host/CDN, never committed
+# (same repo-lean rule as splats). See immersive/public/assets/audio/README.md.
+immersive/public/assets/audio/*.ogg
+immersive/public/assets/audio/*.mp3
+immersive/public/assets/audio/*.m4a
+immersive/public/assets/audio/*.opus
+immersive/public/assets/audio/*.wav
+immersive/public/assets/audio/*.flac

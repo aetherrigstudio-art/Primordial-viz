@@ -56,9 +56,14 @@ export function useAmbientPlaylist(audio, { enabled = true } = {}) {
 
     if (entry.kind === 'file' && entry.src) {
       const el = new Audio();
-      el.src = entry.src;
-      el.loop = true;
+      // CORS mode MUST be set BEFORE src — it governs the load that src kicks off. If a
+      // cross-origin (CDN-hosted) file loads without it, createMediaElementSource taints the graph
+      // and the AnalyserNode reads silence (defeating the whole feature). Same-origin /assets/
+      // files don't need it, but setting it is harmless and makes hosted files work too.
       el.crossOrigin = 'anonymous';
+      el.loop = true;
+      el.preload = 'auto';
+      el.src = entry.src;
       const node = ctx.createMediaElementSource(el);
       node.connect(output);
       el.play().catch(() => { /* autoplay gate not satisfied; silently no source */ });
