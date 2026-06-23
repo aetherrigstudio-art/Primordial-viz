@@ -1,6 +1,49 @@
 # Progress Log — primordial
 
-## HANDOFF — 2026-06-23 (immersive instrument-handoff: built · reviewed · shipped to preview · merged) — RESUME HERE
+## HANDOFF — 2026-06-23 (Track 1.9: synthesized Appalachian ambient playlist — built · merged to main) — RESUME HERE
+Branch `claude/immersive-instrument-handoff` → **merged to `main`** (`6c55158`), pushed. Health green (RAG warn).
+
+**Built — the "autonomous vibe" ambient fallback (Track 1.9), but PROCEDURAL not curated-files.** When
+there's no live music, a fully-synthesized Appalachian ambient bed fades INTO the existing AnalyserNode so
+the rainforest splats + beat camera keep reacting; it fades back out when real audio returns. No samples —
+license-clear / authored (commercial-safe). New under `immersive/src/playlist/`:
+- `ambientGenerator.js` — `createAmbientGenerator(ctx,{mood}) -> { output: GainNode, start(), stop(),
+  setMood() }`. Modal drone (D + open fifth A + Mixolydian flat-7 C, 2 detuned oscs/note), sparse
+  pentatonic plucks (per-note filtered tri/saw envelopes on a randomized timer), a filtered-noise
+  forest-air bed (one reused loop buffer). Evolved by 3 slow LFOs. dawn/forest/dusk moods. CPU-light,
+  zero per-frame alloc, never connects to destination itself.
+- `playlist.js` — `PLAYLIST` manifest `{id,title,kind,src?,license,attribution,mood?}`, seeded with 3
+  `kind:'procedural'`/`license:'authored'` entries + a **documented commented slot** for later CC0/CC-BY
+  `kind:'file'` tracks at `/assets/audio/<id>` (the curated-files half of Track 1.9 — added later, no URLs invented).
+- `useAmbientPlaylist.jsx` — hook `useAmbientPlaylist(audio,{enabled}) -> { playing, current, muted, play,
+  pause, skip, toggleMute }`. Detects "no live music" (status==='visuals-only', OR mic quiet <0.02 for ~6s),
+  crossfades/auto-advances (~90s) via GainNode exp ramps, fades out when real audio returns. Refs, not
+  per-frame state. A 250ms poll loop (not per-frame).
+
+**useAudio.jsx analyser-lifecycle refactor (the load-bearing change).** Previously the AudioContext +
+Analyser were created ONLY on the mic-success path. Now the visuals-only/deny path ALSO stands up a
+ctx + Analyser + per-frame `update()` (reusing the mic's ctx if it was made, else a fresh resumed one) so
+the ambient has a real graph to feed the SAME analyser the bands read. New API: `getContext()`,
+`connectAmbient(node)`/`disconnectAmbient(node)`, `levelRef`. **A SEPARATE mic-only AnalyserNode**
+(`micLevelRef` + `micRms()`, one reused buffer) feeds the silence detector so the ambient bed can't mask
+whether real mic audio is present — the combined analyser carries both, so it can't. Mic path unchanged.
+`App.jsx` mounts the hook, enabled after the start-gate tap (autoplay gesture); no required UI.
+
+**Verified:** `node --check` plain JS; **esbuild full bundle smoke exit 0** (the on-device coherence gate
+for blind-authored R3F/import-graph code — gotchas.md); `npm run health` all local gates pass (RAG warn,
+expected). Visual/GPU QA (does it sound/feel right on a phone) is still OFF-DEVICE — not verified here.
+
+**Note on history:** the commit was rebuilt a couple of times (a PostToolUse gen-docs hook regenerated
+ENCYCLOPEDIA/TREE mid-amend, splitting it; squashed back to one clean commit `42fe84f`, then force-pushed
+with lease over my own earlier partial push — no other work was on the branch). `package-lock.json`'s
+pre-existing uncommitted change was rolled IN this time (operator asked).
+
+**Next (Track 1.9 remainder + the gated build sequence):** (1) operator shortlists CC0/CC-BY Appalachian
+old-time-ambient / temperate-forest field recordings → drop in `immersive/public/assets/audio/` → add
+`kind:'file'` entries to the commented slot. (2) The gated immersive sequence is unchanged: arrow-nav
+rewrite (`travel` stub) → Theatre.js journey → real `.spz` assets → flutter → content slots → MIDI/OSC.
+
+## HANDOFF — 2026-06-23 (immersive instrument-handoff: built · reviewed · shipped to preview · merged)
 Branch `claude/immersive-instrument-handoff` → merged to `main`; phone-openable preview live.
 
 **Built — the immersive page's end-state instrument (ADR-013).** At `travel===1` the rainforest
