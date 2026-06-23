@@ -57,7 +57,9 @@ export function chunkDoc(path, text) {
 
 export function chunkCorpus() {
   const chunks = [];
+  const skip = new Set(['ENCYCLOPEDIA.md', 'TREE.md']);
   for (const path of docFiles()) {
+    if (skip.has(path)) continue;
     chunks.push(...chunkDoc(path, readFileSync(join(root, path), 'utf8')));
   }
   return chunks;

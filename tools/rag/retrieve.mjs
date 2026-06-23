@@ -20,7 +20,7 @@ const LEX_BOOST = 0.15;    // weight of the in-set lexical nudge
 // Aggregator / meta docs mention everything and crowd out specific answer files.
 // Down-weight by path role (structural), not a hand-curated list (chunk count rejected:
 // size ≠ role). A gentle penalty keeps them visible lower in results.
-const DOWNWEIGHT = 0.25;
+const DOWNWEIGHT = 0.08;
 const DOWNWEIGHT_PREFIXES = ['docs/superpowers/', 'research/', 'docs/audits/'];
 const DOWNWEIGHT_EXACT = new Set(['docs/BUILD-SPEC.md']); // lone spec under docs/ root
 const isRootDoc = (p) => !p.includes('/');                // root-level state/index doc
