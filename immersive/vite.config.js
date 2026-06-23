@@ -6,6 +6,9 @@ import react from '@vitejs/plugin-react'
 // proven, the scene/camera modules graduate into a Vite library-mode build (ADR-012, PLAN §6).
 export default defineConfig({
   root: '.',
+  // base comes from VITE_BASE so `build` and `preview` agree (CI sets /Test/immersive/ for the
+  // preview deploy + render-check; default '/' for local dev). Fixes the preview/render-check 404.
+  base: process.env.VITE_BASE || '/',
   plugins: [react()],
   build: { outDir: 'dist', target: 'es2022' },
 })

@@ -47,6 +47,18 @@ export class Analyser {
     // (would cause feedback at a gig).
   }
 
+  // Zero the per-frame state (previous FFT frame + smoothed band/flux EMAs) so a device switch
+  // doesn't carry the old input's energy across — otherwise the first frame on the new source
+  // reads a huge spectral-flux rise (a phantom onset) against the stale _prevFreq.
+  reset() {
+    this._prevFreq.fill(0);
+    this.bass = 0;
+    this.mid = 0;
+    this.treble = 0;
+    this.level = 0;
+    this.flux = 0;
+  }
+
   // Detach the upstream source (used when switching input devices).
   disconnect(sourceNode) {
     try { sourceNode.disconnect(this.node); } catch (_) { /* ignore */ }

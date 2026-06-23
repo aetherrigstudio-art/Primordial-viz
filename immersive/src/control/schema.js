@@ -37,9 +37,8 @@ export const SCHEMA = [
   { key: 'tint', label: 'Flower Tint', type: 'color', default: [0.90, 0.55, 0.66], group: 'flowerColor' },
   { key: 'tintMix', label: 'Tint Mix', type: 'range', min: 0.0, max: 1.0, step: 0.01, default: 0.4, group: 'flowerColor' },
 
-  // atmos — volumetric haze / god-ray density filling the corridor.
-  { key: 'haze', label: 'Haze', type: 'range', min: 0.0, max: 1.0, step: 0.01, default: 0.4, group: 'atmos' },
-  { key: 'hazeColor', label: 'Haze Color', type: 'color', default: [0.74, 0.80, 0.70], group: 'atmos' },
+  // atmos (haze, hazeColor) returns with the atmospherics post-pass (roadmap 1.7) — removed for now
+  // since the modifier doesn't consume it; targets/keyboard/MIDI/OSC derive from SCHEMA so they drop it too.
 ]
 
 export const DEFAULTS = (() => {

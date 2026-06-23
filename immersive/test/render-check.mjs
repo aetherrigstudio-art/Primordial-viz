@@ -44,7 +44,8 @@ try {
   // Start gate: tap "Enter" (the gyro/audio gesture) so the scene mounts.
   const enter = page.getByRole('button', { name: /enter/i })
   if (await enter.count()) await enter.first().click().catch(() => {})
-  await page.waitForTimeout(4000) // let R3F mount + a few frames advance
+  await page.waitForSelector('canvas', { timeout: 15000 }).catch(() => {}) // wait for R3F to mount the canvas
+  await page.waitForTimeout(2000) // settle a few frames before the screenshot
 
   const webgl2 = await page.evaluate(() => !!document.createElement('canvas').getContext('webgl2'))
   checks.push(['WebGL2 available', webgl2])

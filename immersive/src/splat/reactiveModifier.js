@@ -160,7 +160,7 @@ export function makeReactiveModifier() {
           // ---- BLOOM: emissive lift on flower-masked splats, beat-pumped ------------------------
           // Lift above a threshold so only the brighter blooms glow; treble + flux give the beat punch.
           float beat = treble * 0.6 + flux * 0.8 + level * 0.2;
-          float bloomLift = ${inputs.bloomIntensity} * mask * smoothstep(${inputs.bloomThreshold}, 1.0, rgba.r * 0.5 + 0.5) * (0.4 + beat);
+          float bloomLift = ${inputs.bloomIntensity} * mask * smoothstep(min(${inputs.bloomThreshold}, 0.999), 1.0, rgba.r * 0.5 + 0.5) * (0.4 + beat);
           rgba.rgb += rgba.rgb * bloomLift;
 
           // ---- FLOWERCOLOR: performer tint mixed onto bloom splats -------------------------------

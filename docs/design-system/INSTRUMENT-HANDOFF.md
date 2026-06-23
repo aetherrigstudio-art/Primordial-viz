@@ -78,7 +78,7 @@ true the frame a bar starts), updated in the same per-frame pass and exposed via
 
 ## Control layer
 `immersive/src/control/` mirrors the `src/params/schema.js` params-only pattern:
-- `schema.js` — entries `{ key, label, type:'range'|'color', min, max, step, default, group }` across 7 groups: movement, lighting, growth, shadow, bloom, flowerColor, atmos. `coerceValue(key,v)` / `coerceParams(obj)` / `DEFAULTS`.
+- `schema.js` — entries `{ key, label, type:'range'|'color', min, max, step, default, group }` across 6 active groups: movement, lighting, growth, shadow, bloom, flowerColor. `coerceValue(key,v)` / `coerceParams(obj)` / `DEFAULTS`. (An `atmos` group returns when the atmospherics post-pass lands — roadmap 1.7.)
 - `store.js` — `createStore()` → `{ getParams, getParam, setParam, subscribe }`, versioned `localStorage` key `immersiveV1`, coerce-on-load.
 - `targets.js` — the **seam**: a flat registry `targetId → { schemaKey, apply(value01, store) }`. Range params map 0..1 into `[min,max]`; colours expand into per-channel `…R/.G/.B` targets. Every input source maps onto `targetId`s only — it never touches splats.
 - `sources/{keyboard,midi,osc}.js` + `useControls(store, flags)`. **Keyboard is the baseline**; MIDI/OSC are pluggable adapters behind `{ midi:false, osc:false }`.

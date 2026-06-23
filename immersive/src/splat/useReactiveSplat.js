@@ -2,6 +2,9 @@ import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { makeReactiveModifier } from './reactiveModifier.js'
 
+// Neutral tint reused for the fallback path so we don't allocate a [1,1,1] array every active frame.
+const NEUTRAL_TINT = [1, 1, 1]
+
 // useReactiveSplat(mesh, { featuresRef, paramsRef, audioTexture, active })
 //
 // Attaches the reactive dyno modifier (reactiveModifier.js) to a SplatMesh and drives its uniforms.
@@ -43,10 +46,13 @@ export function useReactiveSplat(mesh, { featuresRef, paramsRef, audioTexture, a
     mesh.updateVersion?.()
 
     return () => {
-      // Detach so a disposed/swapped mesh stops referencing our modifier.
+      // Detach so a disposed/swapped mesh stops referencing our modifier. Defensive: a
+      // disposed mesh can throw on the worldModifier write / updateGenerator, so guard it.
       if (mesh.worldModifier === modifier) {
-        mesh.worldModifier = undefined
-        mesh.updateGenerator?.()
+        try {
+          mesh.worldModifier = undefined
+          mesh.updateGenerator?.()
+        } catch { /* mesh already disposed — nothing to detach */ }
       }
     }
   }, [mesh, audioTexture, paramsRef])
@@ -117,7 +123,7 @@ function writeParams(u, p) {
   u.uBloomIntensity.value = num(p.intensity)
   u.uBloomThreshold.value = num(p.threshold)
   // flowerColor
-  const tint = Array.isArray(p.tint) && p.tint.length === 3 ? p.tint : [1, 1, 1]
+  const tint = Array.isArray(p.tint) && p.tint.length === 3 ? p.tint : NEUTRAL_TINT
   const tv = u.uTint.value
   if (Array.isArray(tv)) {
     tv[0] = num(tint[0], 1)

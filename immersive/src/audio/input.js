@@ -14,14 +14,16 @@ export class AudioInput {
     this.devices = [];       // [{deviceId, label}]
     this.started = false;
     this.onDevicesChanged = null; // optional cb(devices, deviceId) on hotplug
+    this._onDeviceChange = null;  // bound devicechange handler, stored so stop() can remove it
 
     // Refresh the device list when inputs are plugged/unplugged (rules/audio.md).
     if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
-      navigator.mediaDevices.addEventListener('devicechange', () => {
+      this._onDeviceChange = () => {
         this.refreshDevices().then(() => {
           if (this.onDevicesChanged) this.onDevicesChanged(this.devices, this.deviceId);
         }).catch(() => { /* ignore enumerate failures */ });
-      });
+      };
+      navigator.mediaDevices.addEventListener('devicechange', this._onDeviceChange);
     }
   }
 
@@ -97,6 +99,12 @@ export class AudioInput {
 
   stop() {
     this._stopStream();
+    // Remove the devicechange listener so a stopped input doesn't leak it (or keep firing).
+    if (this._onDeviceChange && navigator.mediaDevices && navigator.mediaDevices.removeEventListener) {
+      navigator.mediaDevices.removeEventListener('devicechange', this._onDeviceChange);
+    }
+    this._onDeviceChange = null;
+    this.onDevicesChanged = null;
     this.started = false;
   }
 }

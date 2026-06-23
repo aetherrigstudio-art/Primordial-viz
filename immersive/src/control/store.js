@@ -57,9 +57,25 @@ function snapshot(params) {
   return out
 }
 
+const PERSIST_DEBOUNCE_MS = 150 // trailing window — coalesce a MIDI/keyboard sweep into one write
+
 export function createStore() {
   let params = load()
   const subs = new Set()
+
+  // Debounce the localStorage write: a knob sweep fires many setParam() calls per second, and a
+  // synchronous JSON.stringify + setItem on each one hitches frames. The in-memory update + notify
+  // stay synchronous; only the disk write is coalesced to one trailing flush.
+  let persistTimer = null
+  function schedulePersist() {
+    if (persistTimer !== null) return
+    const flush = () => { persistTimer = null; persist(params) }
+    if (typeof setTimeout === 'function') {
+      persistTimer = setTimeout(flush, PERSIST_DEBOUNCE_MS)
+    } else {
+      flush() // no timer available (exotic env) — write through synchronously.
+    }
+  }
 
   function notify() {
     const snap = snapshot(params)
@@ -82,7 +98,7 @@ export function createStore() {
       // No-op if unchanged (cheap equality incl. color arrays) — avoids churn + redundant notifies.
       if (sameValue(prev, coerced)) return
       params = { ...params, [key]: coerced }
-      persist(params)
+      schedulePersist() // coalesced disk write; in-memory state + notify stay synchronous
       notify()
     },
     subscribe(fn) {

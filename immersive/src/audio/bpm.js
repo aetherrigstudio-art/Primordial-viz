@@ -120,8 +120,12 @@ export class BeatClock {
         // 30..240 BPM plausible band
         this._beatIntervals.push(iv);
         if (this._beatIntervals.length > 8) this._beatIntervals.shift();
-        const avg = this._beatIntervals.reduce((a, b) => a + b, 0) / this._beatIntervals.length;
-        this.autoBpm = Math.round(60000 / avg);
+        // MEDIAN of the (≤8-entry) interval window — robust to a single mis-detected beat that a
+        // mean would smear into the tempo estimate.
+        const sorted = this._beatIntervals.slice().sort((a, b) => a - b);
+        const mid = sorted.length >> 1;
+        const median = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+        this.autoBpm = Math.round(60000 / median);
       }
     }
     this._lastBeatMs = now;

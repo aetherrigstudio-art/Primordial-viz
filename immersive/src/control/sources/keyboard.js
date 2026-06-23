@@ -39,6 +39,39 @@ function targetsForGroup(group) {
 
 const clamp01 = (v) => (v <= 0 ? 0 : v >= 1 ? 1 : v)
 
+// schemaKey -> entry, so seeding can read each target's min/max for inverse normalization.
+const SCHEMA_BY_KEY = (() => {
+  const m = {}
+  for (const e of SCHEMA) m[e.key] = e
+  return m
+})()
+
+// Map a color targetId's channel suffix (R/G/B) to its index, or -1 if it isn't a color channel.
+function colorChannelIndex(targetId) {
+  if (targetId.endsWith('.R')) return 0
+  if (targetId.endsWith('.G')) return 1
+  if (targetId.endsWith('.B')) return 2
+  return -1
+}
+
+// Seed a target's normalized 0..1 cursor from the persisted store value, so the first nudge
+// continues from the saved tuning instead of snapping to the 0.5 midpoint. Range targets invert
+// the schema mapping ((v - min)/(max - min)); color channels are already 0..1 (read the channel).
+function seedValue01(target, store) {
+  const entry = SCHEMA_BY_KEY[target.schemaKey]
+  if (!entry) return 0.5
+  if (entry.type === 'color') {
+    const ch = colorChannelIndex(target.targetId)
+    const cur = store.getParam(entry.key)
+    const v = Array.isArray(cur) && ch >= 0 ? Number(cur[ch]) : NaN
+    return Number.isFinite(v) ? clamp01(v) : 0.5
+  }
+  const span = entry.max - entry.min
+  if (!(span > 0)) return 0.5
+  const v = Number(store.getParam(entry.key))
+  return Number.isFinite(v) ? clamp01((v - entry.min) / span) : 0.5
+}
+
 // Is the event target something that owns its own keystrokes? (inputs, selects, textareas,
 // contentEditable). We must not steal keys from those.
 function isEditableTarget(target) {
@@ -69,10 +102,11 @@ export function createKeyboardSource(store, opts = {}) {
   const getEnabled = typeof opts.getEnabled === 'function' ? opts.getEnabled : () => true
 
   const groups = groupOrder()
-  // Normalized 0..1 cursor value we hold per target, so repeated nudges accumulate. Seeded at
-  // the schema midpoint (0.5) since the source only knows normalized space, not stored units.
+  // Normalized 0..1 cursor value we hold per target, so repeated nudges accumulate. Seeded from
+  // the persisted store via inverse normalization so the first nudge continues from the saved
+  // tuning rather than snapping the knob to the 0.5 midpoint and overwriting it.
   const valueByTarget = new Map()
-  for (const t of TARGETS) valueByTarget.set(t.targetId, 0.5)
+  for (const t of TARGETS) valueByTarget.set(t.targetId, seedValue01(t, store))
 
   let activeGroup = 0          // index into `groups`
   let cursor = 0               // index into the active group's targets

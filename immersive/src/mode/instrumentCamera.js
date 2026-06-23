@@ -22,6 +22,7 @@ import { CAMERA_WAYPOINTS } from './cameraWaypoints.js'
 const ADVANCE_BARS = 8 // advance to the next waypoint every N bars (8 or 16; default 8)
 const EASE_SECONDS = 1.6 // wall-clock time to ease into a new waypoint (~1-2s)
 const OVERRIDE_SECONDS = 4 // suspend auto-advance this long after the last manual input
+const WALLCLOCK_ADVANCE_SECONDS = 8 // visuals-only fallback: advance after this long with no bar tick
 
 // Frame-rate-independent damp toward a target. Returns the lerp factor for this dt given a time
 // constant `tau` (seconds): higher tau = slower ease. Authored from blank (exponential smoothing).
@@ -43,6 +44,13 @@ export function useInstrumentCamera({ active, beatRef, paramsStore = null } = {}
   const idxRef = useRef(0) // current waypoint index
   const lastAdvanceBarRef = useRef(0) // bar count at the last advance (for the every-N-bars gate)
   const prevBarRef = useRef(0) // last-seen bar count (to detect a bar boundary crossing)
+  const sinceAdvanceRef = useRef(0) // wall-clock seconds since the last waypoint advance (visuals-only fallback)
+
+  // Frozen UN-biased base params captured once on entering instrument mode. applyBias computes
+  // base + anim from THIS (not the live, already-biased store value) so biases never compound.
+  const baseParamsRef = useRef(null)
+  // Keys the PREVIOUS waypoint biased, so a new waypoint that omits them restores them to base.
+  const prevBiasKeysRef = useRef([])
 
   // Manual-override timer: > 0 means auto-advance is suspended (counts down in seconds).
   const overrideRef = useRef(0)
@@ -62,7 +70,11 @@ export function useInstrumentCamera({ active, beatRef, paramsStore = null } = {}
     const b = beatRef?.current?.bar || 0
     lastAdvanceBarRef.current = b
     prevBarRef.current = b
-  }, [active, beatRef])
+    sinceAdvanceRef.current = 0
+    // Snapshot the UN-biased base params ONCE so applyBias never reads its own (biased) output.
+    baseParamsRef.current = paramsStore ? { ...paramsStore.getParams() } : null
+    prevBiasKeysRef.current = []
+  }, [active, beatRef, paramsStore])
 
   // Apply a waypoint's animation biases: stash them on biasRef (for the splat) and, if a control
   // store is supplied, nudge those params by the bias (clamped by the schema in setParam). Called
@@ -72,10 +84,21 @@ export function useInstrumentCamera({ active, beatRef, paramsStore = null } = {}
       const anim = waypoint?.animation || {}
       biasRef.current = anim
       if (!paramsStore || typeof paramsStore.setParam !== 'function') return
-      for (const key in anim) {
-        const base = Number(paramsStore.getParam?.(key))
-        if (Number.isFinite(base)) paramsStore.setParam(key, base + anim[key])
+      const base = baseParamsRef.current || {}
+      // Revert keys the PREVIOUS waypoint biased but this one doesn't — back to the frozen base.
+      for (const key of prevBiasKeysRef.current) {
+        if (key in anim) continue
+        const b = Number(base[key])
+        if (Number.isFinite(b)) paramsStore.setParam(key, b)
       }
+      // Apply this waypoint's biases from the frozen base (never from the live, biased value).
+      const applied = []
+      for (const key in anim) {
+        const b = Number(base[key])
+        if (Number.isFinite(b)) paramsStore.setParam(key, b + anim[key])
+        applied.push(key)
+      }
+      prevBiasKeysRef.current = applied
     },
     [paramsStore],
   )
@@ -105,22 +128,45 @@ export function useInstrumentCamera({ active, beatRef, paramsStore = null } = {}
       const barNow = beatRef?.current?.bar || 0
       prevBarRef.current = barNow
       lastAdvanceBarRef.current = barNow
+      sinceAdvanceRef.current = 0 // don't backlog a wall-clock advance while overridden
       return // hands off — the host's manual control drives the camera this frame.
     }
 
-    // Bar-boundary advance: when the running bar count ticks up AND we've dwelled ADVANCE_BARS bars
-    // since the last advance, step to the next waypoint on that downbeat.
+    // Helper: step to the next waypoint (shared by the beat path and the wall-clock fallback).
+    const advance = () => {
+      idxRef.current = (idxRef.current + 1) % wps.length
+      const wp = wps[idxRef.current]
+      targetPosRef.current.fromArray(wp.position)
+      targetLookRef.current.fromArray(wp.lookAt)
+      applyBias(wp)
+      sinceAdvanceRef.current = 0
+    }
+
+    // Bar-boundary advance (PRIMARY): when the running bar count ticks up AND we've dwelled
+    // ADVANCE_BARS bars since the last advance, step to the next waypoint on that downbeat.
     const bar = beatRef?.current?.bar || 0
+    let barTicked = false
     if (bar > prevBarRef.current) {
+      barTicked = true
       if (bar - lastAdvanceBarRef.current >= ADVANCE_BARS) {
-        idxRef.current = (idxRef.current + 1) % wps.length
-        const wp = wps[idxRef.current]
-        targetPosRef.current.fromArray(wp.position)
-        targetLookRef.current.fromArray(wp.lookAt)
-        applyBias(wp)
+        advance()
         lastAdvanceBarRef.current = bar
       }
       prevBarRef.current = bar
+    }
+
+    // Wall-clock FALLBACK: when audio is denied/silent the bar count stays put (no tick), so the
+    // beat path never fires. Accumulate dt and advance on a fixed interval if no bar has ticked
+    // for ~WALLCLOCK_ADVANCE_SECONDS (or there's no resolved bpm). Keeps the camera moving solo.
+    const bpm = beatRef?.current?.bpm || 0
+    if (barTicked && bpm) {
+      sinceAdvanceRef.current = 0 // the beat path is live; don't let the fallback double-fire
+    } else {
+      sinceAdvanceRef.current += dt
+      if (sinceAdvanceRef.current >= WALLCLOCK_ADVANCE_SECONDS) {
+        advance()
+        lastAdvanceBarRef.current = bar
+      }
     }
 
     // Ease the pose toward the target and write the camera.

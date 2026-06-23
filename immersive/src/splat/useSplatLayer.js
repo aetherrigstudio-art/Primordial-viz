@@ -24,8 +24,11 @@ export function useSplatLayer(loadFn, placeholderFn, label = 'splat', onMesh) {
         if (cancelled) { m.dispose?.(); return }
         real = m
         setMesh(m)
-        placeholder.dispose?.() // free the placeholder's buffers once the real splat is in
         onMeshRef.current?.(m) // real splat is now active
+        // DEFER the placeholder dispose one frame: let React commit the mesh swap and the reactive
+        // hook's cleanup (which detaches worldModifier + calls updateGenerator) run FIRST, so we
+        // don't free the placeholder's GPU buffers while the modifier still references it (UAF).
+        requestAnimationFrame(() => placeholder.dispose?.())
       })
       .catch(() => {
         console.info(`[immersive] ${label} not found — using placeholder`)

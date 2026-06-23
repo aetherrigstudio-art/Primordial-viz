@@ -68,8 +68,9 @@ export function AudioProvider({ children }) {
       return { ok: true, message: 'starting' };
     }
     startingRef.current = true;
+    let input;
     try {
-      const input = new AudioInput();
+      input = new AudioInput();
       input.onDevicesChanged = (devs) => setDevices(devs);
       const source = await input.start(null); // resumes ctx + getUserMedia in-gesture
       const analyser = new Analyser(input.ctx);
@@ -106,7 +107,13 @@ export function AudioProvider({ children }) {
       return { ok: true, message: 'live' };
     } catch (err) {
       // Deny / no device / in-use / suspended -> visuals-only. Keep zeros in featuresRef and a
-      // zeroed (already-zero) texture so the visuals stay deterministic.
+      // zeroed (already-zero) texture so the visuals stay deterministic. Clean up the orphaned
+      // AudioInput (its AudioContext + devicechange listener) so the deny path doesn't leak.
+      try {
+        input?.stop?.();
+        if (input?.ctx) await input.ctx.close();
+        if (input) input.onDevicesChanged = null;
+      } catch {}
       setStatus('visuals-only');
       const message = (err && err.name === 'NotAllowedError')
         ? 'Microphone permission denied — running visuals only.'
@@ -126,6 +133,7 @@ export function AudioProvider({ children }) {
     try {
       const source = await input.setDevice(deviceId); // stops old stream, opens the new one
       analyser.connect(source);
+      analyser.reset(); // zero prevFreq + band/flux EMAs so the switch doesn't fire a phantom onset
       setDevices(input.devices);
       return { ok: true, message: 'switched' };
     } catch (err) {

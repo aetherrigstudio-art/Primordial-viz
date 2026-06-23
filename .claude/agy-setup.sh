@@ -70,7 +70,7 @@ process.stdin.on('data', (d) => { input += d })
 process.stdin.on('end', () => {
   if (!IMMERSIVE_PATH_RE.test(input)) return done()
   try {
-    execSync(`for f in $(find immersive/src -name '*.js'); do node --check "$f" || exit 1; done`,
+    execSync(`for f in $(find immersive/src -name '*.js' -o -name '*.mjs'); do node --check "$f" || exit 1; done`,
       { cwd: REPO, stdio: 'pipe', timeout: 45000 })
     execSync(`immersive/node_modules/.bin/esbuild immersive/src/main.jsx --bundle --format=esm --jsx=automatic --outfile=/dev/null`,
       { cwd: REPO, stdio: 'pipe', timeout: 90000 })

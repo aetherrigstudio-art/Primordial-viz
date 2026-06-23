@@ -2,7 +2,7 @@ name: immersive
 
 # Off-device build + preview + render-check for the immersive point-cloud landing page.
 # The Android dev box can't run the Vite/Rollup build or Chromium, so this runner does it:
-#   1. builds the R3F + Spark app (base = /Test/immersive/ so asset paths resolve under the preview URL)
+#   1. builds the R3F + Spark app at base=/Test/immersive/ (via VITE_BASE → build AND preview agree)
 #   2. boots it in headless WebGL2 (SwiftShader) → screenshot artifact (phone-viewable QA)
 #   3. deploys the build to https://primordial.video/Test/immersive/ so the operator can open it
 #      on their PHONE'S browser (real mobile GPU = the true QA; the agy CLI has no browser).
@@ -25,6 +25,10 @@ jobs:
     defaults:
       run:
         working-directory: immersive
+    env:
+      # Drives vite.config.js `base` for BOTH `build` and `preview` so the preview URL,
+      # the render-check, and the deployed asset paths all line up at /Test/immersive/.
+      VITE_BASE: /Test/immersive/
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,19 +36,22 @@ jobs:
           node-version: '22'
       - name: Install
         run: npm install --no-audit --no-fund
-      - name: Build (preview base)
-        run: npm run build -- --base=/Test/immersive/
+      - name: Build
+        run: npm run build
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Render check + screenshot
+        # Deliberately non-blocking for now: SwiftShader != a real GPU, so a software-GL quirk
+        # must not block the phone preview deploy (the operator's phone is the real QA). The
+        # screenshot artifact now captures the actual app (base fixed). Flip this off once we've
+        # confirmed the render-check passes cleanly in CI.
         continue-on-error: true
         run: |
           npm run preview -- --port 4173 --host 127.0.0.1 &
-          SERVER=$!
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:4173/Test/immersive/ >/dev/null && break; sleep 1; done
           npm run render-check -- http://127.0.0.1:4173/Test/immersive/
           CODE=$?
-          kill $SERVER 2>/dev/null || true
+          pkill -f 'vite preview' 2>/dev/null || true
           exit $CODE
       - name: Upload build
         uses: actions/upload-artifact@v4
