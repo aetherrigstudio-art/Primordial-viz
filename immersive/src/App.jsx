@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { SparkScene } from './splat/SparkScene.jsx'
+import { PostEffects } from './post/PostEffects.jsx'
 import { CameraRig } from './camera/CameraRig.jsx'
 import { useViewpoint } from './viewpoint/useViewpoint.js'
 import { clampDpr, prefersReducedMotion, pauseOnHidden } from './perf/mobileBudget.js'
@@ -115,6 +116,10 @@ function Experience() {
         {started && !reduced && active && (
           <InstrumentCameraRig beatRef={audio.beatRef} active={active} store={store} />
         )}
+        {/* Post-process glow bleed (soft halo around the bright clearing + lit blooms). Mounted once
+            the scene is entered, off for reduced-motion; audio-pumps only while the instrument is
+            active so the journey scrub stays deterministic. God-rays deferred (off-device GPU QA). */}
+        {started && !reduced && <PostEffects featuresRef={audio.featuresRef} active={active} />}
       </Canvas>
 
       {!started && (

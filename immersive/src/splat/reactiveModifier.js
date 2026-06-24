@@ -8,6 +8,7 @@ import { SEMANTIC_MASK_GLSL } from './semanticMask.js'
 // What it does, cheapest groups first (PLAN: movement + growth + bloom + flowerColor + fake lighting):
 //   movement   — displace gsplat.center by a cheap audio-driven flow/noise sway.
 //   growth     — scale gsplat.scales by an audio-driven "bloom opening" pop on flower splats.
+//   ivy        — slow creeping displacement + thickening of foliage-masked (green) splats.
 //   bloom      — emissive lift (rgb gain) on flower-masked splats, beat-pumped by treble/flux.
 //   flowerColor— mix a performer tint onto flower-masked splats.
 //   lighting/shadow — a cheap fake directional darkening (no real normals): a soft top-down key plus
@@ -42,6 +43,9 @@ export function makeReactiveModifier() {
   // growth
   const uGrowth = dyno.dynoFloat(0)
   const uGrowthSpeed = dyno.dynoFloat(0)
+  // foliage / ivy — slow creeping growth of the green (foliage-masked) splats.
+  const uIvy = dyno.dynoFloat(0)
+  const uIvySpeed = dyno.dynoFloat(0)
   // lighting
   const uAzimuth = dyno.dynoFloat(0)
   const uElevation = dyno.dynoFloat(0)
@@ -62,6 +66,7 @@ export function makeReactiveModifier() {
     uBass, uMid, uTreble, uLevel, uFlux, uAudioTex,
     uSway, uSwaySpeed, uTurbulence,
     uGrowth, uGrowthSpeed,
+    uIvy, uIvySpeed,
     uAzimuth, uElevation, uLightGain,
     uShadowDepth, uShadowSoftness,
     uBloomIntensity, uBloomThreshold,
@@ -79,6 +84,7 @@ export function makeReactiveModifier() {
           bass: 'float', mid: 'float', treble: 'float', level: 'float', flux: 'float',
           sway: 'float', swaySpeed: 'float', turbulence: 'float',
           growth: 'float', growthSpeed: 'float',
+          ivy: 'float', ivySpeed: 'float',
           azimuth: 'float', elevation: 'float', lightGain: 'float',
           shadowDepth: 'float', shadowSoftness: 'float',
           bloomIntensity: 'float', bloomThreshold: 'float',
@@ -144,6 +150,19 @@ export function makeReactiveModifier() {
           float growScale = 1.0 + grow * (0.25 + 0.75 * mask);
           scales *= growScale;
 
+          // ---- IVY: slow creeping growth of the foliage (green) splats --------------------------
+          // foliageMask picks the mossy/fern greens; we let them reach upward + sway outward on a
+          // slow per-splat phase so the canopy reads like ivy growing in over time. bass/level give
+          // it a little life; ivySpeed shapes the creep so tendrils don't move in lockstep. Runs
+          // BEFORE lighting so the displaced foliage is shaded by its (recomputed) normal below.
+          float fol = foliageMask(rgba.rgb);
+          float ivyDrive = ${inputs.ivy} * (0.45 + 0.55 * (bass * 0.5 + level * 0.5));
+          float ivyPhase = t * ${inputs.ivySpeed} * 0.6 + rm_hash(seed + 3.0) * 6.2831;
+          float creep = (0.5 + 0.5 * sin(ivyPhase)) * fol * ivyDrive;
+          center.y += creep * 0.12;                                    // reach toward the canopy
+          center.xz += vec2(sin(ivyPhase * 1.3), cos(ivyPhase * 0.9)) * creep * 0.04;  // tendril sway
+          scales *= 1.0 + creep * 0.22;                                // vines thicken as they grow
+
           // ---- LIGHTING / SHADOW: directional shading from the splat's own surface normal -------
           // A flattened Gaussian's SHORTEST scale axis approximates the local surface normal. Rotate
           // that axis by the splat's quaternion to get a real per-splat normal, then do a soft
@@ -190,6 +209,7 @@ export function makeReactiveModifier() {
         bass: uBass, mid: uMid, treble: uTreble, level: uLevel, flux: uFlux,
         sway: uSway, swaySpeed: uSwaySpeed, turbulence: uTurbulence,
         growth: uGrowth, growthSpeed: uGrowthSpeed,
+        ivy: uIvy, ivySpeed: uIvySpeed,
         azimuth: uAzimuth, elevation: uElevation, lightGain: uLightGain,
         shadowDepth: uShadowDepth, shadowSoftness: uShadowSoftness,
         bloomIntensity: uBloomIntensity, bloomThreshold: uBloomThreshold,
