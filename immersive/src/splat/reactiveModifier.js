@@ -144,18 +144,29 @@ export function makeReactiveModifier() {
           float growScale = 1.0 + grow * (0.25 + 0.75 * mask);
           scales *= growScale;
 
-          // ---- FAKE LIGHTING / SHADOW: cheap directional + ambient darkening (no normals) -------
-          // Build a light direction from azimuth/elevation; key off the splat's vertical position as a
-          // stand-in for facing (top-lit canopy). Shadow darkens by a depth-ish term + softness.
+          // ---- LIGHTING / SHADOW: directional shading from the splat's own surface normal -------
+          // A flattened Gaussian's SHORTEST scale axis approximates the local surface normal. Rotate
+          // that axis by the splat's quaternion to get a real per-splat normal, then do a soft
+          // (wrapped) Lambert key + an away-from-light ambient-occlusion darkening. Authored from
+          // blank. quaternion is xyzw; if off-device QA shows the light inverted, negate q.xyz.
+          vec4  qrot   = ${inputs.gsplat}.quaternion;
+          vec3  absSc  = abs(${inputs.gsplat}.scales);
+          vec3  nAxis  = (absSc.x <= absSc.y && absSc.x <= absSc.z) ? vec3(1.0, 0.0, 0.0)
+                       : (absSc.y <= absSc.z)                       ? vec3(0.0, 1.0, 0.0)
+                                                                    : vec3(0.0, 0.0, 1.0);
+          // Rotate nAxis by qrot: v + 2*cross(q.xyz, cross(q.xyz, v) + q.w*v).
+          vec3  nrm    = normalize(nAxis + 2.0 * cross(qrot.xyz, cross(qrot.xyz, nAxis) + qrot.w * nAxis));
           vec3 lightDir = normalize(vec3(
             cos(${inputs.azimuth}) * cos(${inputs.elevation}),
             sin(${inputs.elevation}),
             sin(${inputs.azimuth}) * cos(${inputs.elevation})
           ));
-          float facing = clamp(0.5 + 0.5 * dot(normalize(seed + vec3(0.0, 1.0, 0.0)), lightDir), 0.0, 1.0);
-          float key = mix(1.0, 0.7 + 0.6 * facing, clamp(${inputs.lightGain} * 0.5, 0.0, 1.0));
-          float ao = 1.0 - ${inputs.shadowDepth} * (1.0 - facing) * (0.4 + 0.6 * ${inputs.shadowSoftness});
-          rgba.rgb *= key * clamp(ao, 0.0, 1.0);
+          float ndl  = dot(nrm, lightDir);            // real facing in [-1,1]
+          float diff = 0.5 + 0.5 * ndl;               // wrapped Lambert — soft terminator, no hard edge
+          float key  = mix(1.0, 0.65 + 0.7 * diff, clamp(${inputs.lightGain} * 0.5, 0.0, 1.0));
+          // Shadow/AO: darken the side facing away from the light; softness lifts the dark floor.
+          float occ  = 1.0 - ${inputs.shadowDepth} * (1.0 - diff) * (0.5 + 0.5 * (1.0 - ${inputs.shadowSoftness}));
+          rgba.rgb *= key * clamp(occ, 0.0, 1.0);
 
           // ---- BLOOM: emissive lift on flower-masked splats, beat-pumped ------------------------
           // Lift above a threshold so only the brighter blooms glow; treble + flux give the beat punch.
