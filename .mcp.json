@@ -8,10 +8,6 @@
       "type": "http",
       "url": "https://mcp.context7.com/mcp"
     },
-    "primordial": {
-      "command": "node",
-      "args": ["tools/mcp/server.mjs"]
-    },
     "primordial-http": {
       "type": "http",
       "url": "http://127.0.0.1:7332/mcp"
