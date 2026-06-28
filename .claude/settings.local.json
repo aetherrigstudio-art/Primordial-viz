@@ -1,0 +1,3 @@
+{
+  "enabledMcpjsonServers": ["primordial", "primordial-http", "mdn", "context7"]
+}

@@ -11,52 +11,29 @@ via AI video → COLMAP → Splatfacto, composited behind the drapery in `immers
 audio-reactive instrument is the visualizer layered at the very end; this splat is the *world*
 it lives in.
 
-## Art direction (botanically accurate — from `WEDDING-PAGE-EXPERIENCE-AND-REFERENCES.md` Part B)
-Native Southern-Appalachian planting in masses — **NOT tropical, NOT florist roses** — in peak bloom:
-- **Signature blooms:** mountain laurel (clustered pink/white), Catawba & rosebay rhododendron
-  (blush/magenta trusses), flame azalea (orange/coral), oakleaf + wild hydrangea (white/blue
-  mopheads), great white trillium (white groundflowers), flowering dogwood; lady's-slipper
-  orchid as a rare accent.
-- **Green structure:** cinnamon & Christmas ferns, galax, partridgeberry, deep moss.
-- **Ground plane:** living moss + wet fieldstone path + leaf litter + exposed roots — humid, dewy.
-- **Light:** dappled, backlit, golden-hour → midday; soft god-rays down the path.
+## Art direction (botanically accurate — updated for large grove)
+Native Southern-Appalachian planting in masses — **NOT tropical, NOT florist roses** — in peak bloom. The environment is a **large area of land with a central grove of trees**, serving as a wide arena for meandering and the visualizer.
+- **Signature blooms:** mountain laurel (clustered pink/white), Catawba & rosebay rhododendron (blush/magenta trusses), flame azalea (orange/coral), oakleaf + wild hydrangea (white/blue mopheads), great white trillium, flowering dogwood.
+- **Green structure:** towering old-growth trees forming the central grove, cinnamon & Christmas ferns, galax, partridgeberry.
+- **Ground plane:** wide expanse of living moss + meandering wet fieldstone paths + exposed roots.
+- **Light:** dappled, backlit, golden-hour → midday; soft god-rays illuminating the central grove.
 - **Air:** faint volumetric haze.
-- **North-star mood:** reference still `fad002c3` ("a wedding that feels exactly like this"); the
-  master motion is the **forward dolly through the mossy fern corridor** — the page literally moves
-  like that clip. Landing beat references: `3093785b` + the centered corridor stills.
+- **Camera Motion:** A slow, continuous 360-degree sweep or wide orbit around the central grove.
 
 ## The core tension — read before prompting
 The video serves **two masters that pull apart**, and reconstructability wins ties:
-- **Beauty:** dense, blooming, cinematic, photoreal.
-- **Reconstructability (3DGS):** ONE continuous slow camera move; **deep focus** (no shallow DOF /
-  rack focus); **no motion blur**; **steady, consistent lighting** (no flicker / sun change);
-  **minimal scene motion** (heavy wind / flowing water → ghosting); **strong parallax** (close
-  foreground); **even coverage**; no cuts, zooms, people, text, or watermarks.
+- **Beauty:** dense, blooming, cinematic, photoreal, large open grove.
+- **Reconstructability (3DGS):** ONE continuous slow camera move; **deep focus** (no shallow DOF / rack focus); **no motion blur**; **steady, consistent lighting** (no flicker / sun change); **minimal scene motion** (heavy wind / flowing water → ghosting); **strong parallax** (close foreground); **even coverage**; no cuts, zooms, people, text, or watermarks.
 
-A clean, dense splat from a slightly less cinematic video beats a gorgeous clip that won't
-reconstruct. Every prompt below encodes both.
+A clean, dense splat from a slightly less cinematic video beats a gorgeous clip that won't reconstruct. Every prompt below encodes both.
 
 ## Video model — use Veo 3.1 (verified June 2026)
-**Google Veo 3.1** is the pick: best photorealism + filmic camera/light (reads as *filmed*, which is
-exactly what clean 3DGS reconstruction needs), and the operator's **Google AI subscription unlocks
-it** (Plus = Veo 3.1 Fast for cheap iteration · Pro = Lite · Ultra = full quality for the final
-keeper). Access via the Gemini app / Google Flow / Google AI Studio. **Caveat:** Veo clips cap
-~8 s, so cover a slow orbit with **2–3 stitched clips**. **Kling 3.0** is the alternate when you
-want one longer continuous shot. **Do NOT use Sora** — OpenAI deprecated Sora 2 (April 2026; API
-ends 2026-09-24). Discard the generated audio (we don't use it).
+**Google Veo 3.1** is the pick: best photorealism + filmic camera/light (reads as *filmed*, which is exactly what clean 3DGS reconstruction needs), and the operator's **Google AI subscription unlocks it**. **Caveat:** Veo clips cap ~8 s, so cover a slow orbit with **2–3 stitched clips**. **Kling 3.0** is the alternate when you want one longer continuous shot.
 
 ## Prompt library (paste into Veo 3.1, or Kling 3.0)
 
-### Variant 1 — forward dolly through the corridor (primary; matches the master clip)
-> A slow, smooth, continuous forward dolly traveling down a mossy stone path through a dense
-> Appalachian temperate rainforest in peak spring bloom. Lining the path in masses: mountain
-> laurel and rosebay rhododendron in blush-pink and magenta clusters, flame azalea in coral,
-> white oakleaf hydrangea, great white trillium at the ground, flowering dogwood overhead,
-> cinnamon and Christmas ferns, deep green moss on wet fieldstone and exposed roots. Dappled
-> golden-hour light and soft god-rays through the canopy; faint volumetric haze. Photoreal,
-> ultra-detailed, deep focus throughout (everything sharp, no shallow depth of field), no motion
-> blur, locked exposure and white balance, perfectly steady gimbal motion, one continuous shot
-> with no cuts, still air with minimal leaf movement, eye-level, strong close foreground foliage.
+### Variant 1 — wide orbit around the central grove (primary; for large environments)
+> A slow, smooth, continuous 360-degree wide orbit at constant height around a large, open grove of towering old-growth trees in the center of an expansive Appalachian temperate rainforest in peak spring bloom. The wide clearing features meandering mossy stone paths surrounding the central grove. Lining the edges of the expansive clearing in masses: mountain laurel and rosebay rhododendron in blush-pink and magenta clusters, flame azalea in coral, white oakleaf hydrangea, great white trillium, ferns, and deep green moss. Dappled golden-hour light and soft god-rays illuminating the central trees; faint volumetric haze. Photoreal, ultra-detailed, deep focus throughout (everything sharp, no shallow depth of field), no motion blur, locked exposure and white balance, perfectly steady sweeping camera motion, one continuous shot with no cuts, still air with minimal leaf movement, strong parallax against the distant trees.
 
 ### Variant 2 — slow orbit around a focal grouping (reconstructs best)
 > A slow, smooth 360-degree orbit at constant radius and height around a focal grouping — blooming
