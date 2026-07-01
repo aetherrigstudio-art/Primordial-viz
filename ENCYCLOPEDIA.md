@@ -7,7 +7,7 @@
 > refreshes via the PostToolUse hook and is gated in CI. For the directory
 > layout see [`TREE.md`](TREE.md).
 >
-> 460 files across 17 categories.
+> 465 files across 17 categories.
 
 ## Contents
 - [Overview & Planning](#overview--planning) (14)
@@ -26,7 +26,7 @@
 - [Deployment](#deployment) (3)
 - [Research](#research) (26)
 - [CI / Build Config](#ci--build-config) (10)
-- [Other](#other) (105)
+- [Other](#other) (110)
 
 ## Overview & Planning
 
@@ -516,14 +516,17 @@
 | [`.agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md`](.agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md) | Issues and PRDs for this repo live as GitLab issues. |
 | [`.agents/skills/setup-matt-pocock-skills/issue-tracker-local.md`](.agents/skills/setup-matt-pocock-skills/issue-tracker-local.md) | Issues and PRDs for this repo live as markdown files in .scratch/. |
 | [`.agents/skills/setup-matt-pocock-skills/triage-labels.md`](.agents/skills/setup-matt-pocock-skills/triage-labels.md) | The skills speak in terms of five canonical triage roles. |
+| [`.cbmignore`](.cbmignore) | codebase-memory exclusions (gitignore syntax). |
 | [`.env.example`](.env.example) | Example environment variables |
 | [`android/README.md`](android/README.md) | This file shows the minimal approach for your Android (Kotlin) client to call the retrieval server. |
+| [`immersive/.env.example`](immersive/.env.example) | ── API keys for the immersive splat tooling ────────────────────────────────── Paste each key right after the = (no quotes, no spaces). |
 | [`immersive/README.md`](immersive/README.md) | Standalone Vite + React-Three-Fiber app that proves the point-cloud landing-page rendering + camera pipeline against a procedural placeholder splat,… |
 | [`immersive/index.html`](immersive/index.html) | Primordial — immersive (proving ground) |
 | [`immersive/package-lock.json`](immersive/package-lock.json) | Configuration / data file. |
 | [`immersive/package.json`](immersive/package.json) | Proving ground for the immersive point-cloud landing page (R3F + Spark Gaussian splats). Graduates into the R3F component library consumed by the… |
 | [`immersive/public/assets/README.md`](immersive/public/assets/README.md) | Web-ready splat assets, served by Vite at the site root (/assets/...). |
 | [`immersive/public/assets/audio/README.md`](immersive/public/assets/audio/README.md) | Ambient "autonomous vibe" playlist tracks, served by Vite at the site root (/assets/audio/<id>). |
+| [`immersive/public/assets/rainforest.spz`](immersive/public/assets/rainforest.spz) | SPZ file. |
 | [`immersive/src/App.jsx`](immersive/src/App.jsx) | JSX file. |
 | [`immersive/src/audio/analyser.js`](immersive/src/audio/analyser.js) | AnalyserNode wrapper for the immersive app. |
 | [`immersive/src/audio/audioTexture.js`](immersive/src/audio/audioTexture.js) | 512x2 R8 audio DataTexture for the immersive app — the portability convention from .claude/rules/audio.md (matches Shadertoy's iChannel layout so… |
@@ -548,6 +551,7 @@
 | [`immersive/src/playlist/ambientGenerator.js`](immersive/src/playlist/ambientGenerator.js) | Procedural Appalachian ambient source for the immersive app — FULLY SYNTHESIZED, license-clear, authored from a blank file (NO audio samples/files;… |
 | [`immersive/src/playlist/playlist.js`](immersive/src/playlist/playlist.js) | Ambient "autonomous vibe" playlist manifest for the immersive app. |
 | [`immersive/src/playlist/useAmbientPlaylist.jsx`](immersive/src/playlist/useAmbientPlaylist.jsx) | JSX file. |
+| [`immersive/src/post/PostEffects.jsx`](immersive/src/post/PostEffects.jsx) | JSX file. |
 | [`immersive/src/splat/SparkScene.jsx`](immersive/src/splat/SparkScene.jsx) | JSX file. |
 | [`immersive/src/splat/loadDrapery.js`](immersive/src/splat/loadDrapery.js) | JS file. |
 | [`immersive/src/splat/loadRainforest.js`](immersive/src/splat/loadRainforest.js) | JS file. |
@@ -560,6 +564,7 @@
 | [`immersive/src/splat/useSplatLayer.js`](immersive/src/splat/useSplatLayer.js) | JS file. |
 | [`immersive/src/viewpoint/useViewpoint.js`](immersive/src/viewpoint/useViewpoint.js) | JS file. |
 | [`immersive/test/render-check.mjs`](immersive/test/render-check.mjs) | immersive/test/render-check.mjs — headless WebGL2 render check for the immersive app. |
+| [`immersive/tools/gen-world.mjs`](immersive/tools/gen-world.mjs) | Marble (World Labs) World API — automated splat generation for the immersive app. |
 | [`immersive/vite.config.js`](immersive/vite.config.js) | JS file. |
 | [`portfolio/Gather-PortfolioMedia.ps1`](portfolio/Gather-PortfolioMedia.ps1) | PS1 file. |
 | [`portfolio/README.md`](portfolio/README.md) | Two ways to pull image/video candidates into one place so you can pick the best for the portfolio. |
