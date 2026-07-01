@@ -1,6 +1,51 @@
 # Progress Log — primordial
 
-## HANDOFF — 2026-06-23 (Track 1.9: synthesized Appalachian ambient playlist — built · merged to main) — RESUME HERE
+## HANDOFF — 2026-07-01 (state audit + coherent plan: FINISH THE IMMERSIVE PAGE; repo → private/proprietary) — RESUME HERE
+Branch `wire/splat-effects` (Windows desktop now, not Termux). Ran `/planning-with-files`: 3 parallel
+explorers established ground truth, then locked a coherent forward plan. Plan file:
+`~/.claude/plans/generic-sniffing-goblet.md` (Phases 0–5).
+
+**Ground truth (the repo is further along than this log implied):**
+- **Product 1 — gig instrument (`src/`, raw WebGL2):** PRODUCTION-READY (audio → bands + 512×2 texture +
+  BeatClock, authored shaders, controls, a11y, mobile budget; deployed `/Test/`). Only the *look* is placeholder.
+- **Product 2 — immersive wedding page (`immersive/`, R3F/Spark):** FEATURE-COMPLETE **except the journey.**
+  splat/audio/playlist/control/camera/mode/perf all REAL. `rainforest.spz` is a **real committed 7.6 MB asset.**
+  Ivy-growth + post-process bloom (this branch, `ffb6dac`) code-complete, awaiting visual QA. **The one true
+  gap: Theatre.js journey isn't built — `travel` is a scroll STUB pending an arrow-nav rewrite.** MIDI/OSC
+  code-complete but flagged off. drapery.spz not yet generated (placeholder fallback holds).
+- **Newest/undocumented:** `immersive/tools/gen-world.mjs` = a **World Labs *Marble* API** asset pipeline
+  (one call → `.spz`), simpler than the documented Veo→COLMAP→Splatfacto runbook (likely how rainforest.spz
+  was made). codebase-memory MCP wired; repo made Windows-runnable (`abe4af7`).
+
+**Decisions locked this session (operator):**
+1. **Near-term focus = finish the immersive wedding page.**
+2. **Repo posture = private + proprietary** → resolves **ADR-005** (was Proposed → now **Accepted, Option A**).
+
+**Done this session (Phase 0):**
+- **Toolchain de-risked on Windows:** `immersive/` `npm install` (fetched the missing `@react-three/postprocessing`
+  — node_modules was stale vs the lock), esbuild bundle smoke exit 0, and **`npm run dev` (Vite) serves HTTP 200
+  on localhost:5173 with JSX transforms** → **local real-GPU browser visual QA is UNBLOCKED** (the immersive
+  effort's biggest standing constraint — "all visual QA is off-device" — no longer holds on this desktop).
+- **License posture reconciled (ADR-005 Option A):** `LICENSE` MIT → proprietary/all-rights-reserved;
+  `README.md` License section → proprietary; `src-tauri/Cargo.toml` `license` → `LicenseRef-Proprietary`;
+  operator email redacted in `research/claude-repo-comparison/BRIEF.md`. `.claude/rules/deploy.md`
+  ("repo is private") + `shaders.md` ("paid/proprietary") now hold as written — no rewrite.
+- Earlier: gitignored local `.cursor/`, refreshed ENCYCLOPEDIA/TREE (`fce8f9c`).
+
+**Operator action (outside repo):** flip the GitHub repo visibility to **Private** (I can't safely undo that).
+Until then, treat as public in practice.
+
+**Next (the plan, in order):** Phase 1 arrow-nav (check for the parked "cloud arrow-camera PR" first, else
+build nav feeding `travelDriver`'s external source, replacing the scroll stub in `App.jsx`) → Phase 2
+Theatre.js journey (dawn→tent→flutter→arrive scrubbed by `travel`; verify API via context7) → Phase 3
+drapery asset (gen-world/World Labs) + validate ivy/bloom/rainforest in the local browser → Phase 4 content +
+diegetic UI (confirm D1 palette / D2 type) → Phase 5 ship (optional MIDI/OSC, review, deploy preview).
+
+**Tracked follow-up (not blocking):** full `grep`-clean of `events.bricem@gmail.com` (still in
+`tools/rag/index.json` — clears on off-device reindex — and two plan docs as example text); see
+`docs/superpowers/plans/2026-06-21-stage1-decision-free-fixes.md`. Going private contains the exposure.
+
+## HANDOFF — 2026-06-23 (Track 1.9: synthesized Appalachian ambient playlist — built · merged to main)
 Branch `claude/immersive-instrument-handoff` → **merged to `main`** (`6c55158`), pushed. Health green (RAG warn).
 
 **Built — the "autonomous vibe" ambient fallback (Track 1.9), but PROCEDURAL not curated-files.** When

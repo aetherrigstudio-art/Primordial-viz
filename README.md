@@ -84,4 +84,4 @@ runs via a hook on edits and is gated in CI, so neither can go stale).
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE).
+Proprietary — © 2026 Primordial Studio LLC, all rights reserved. Not open-source. See [`LICENSE`](LICENSE).

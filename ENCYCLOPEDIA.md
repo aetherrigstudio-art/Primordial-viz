@@ -44,7 +44,7 @@
 | [`TODO.md`](TODO.md) | The app is built and running — scaffold, audio core, visual core, and instrument controls are done. |
 | [`TREE.md`](TREE.md) | Auto-generated — do not edit by hand. |
 | [`findings.md`](findings.md) | Consolidated from 7 deep-research passes this session. |
-| [`progress.md`](progress.md) | Branch claude/immersive-instrument-handoff → merged to main (6c55158), pushed. |
+| [`progress.md`](progress.md) | Branch wire/splat-effects (Windows desktop now, not Termux). |
 | [`task_plan.md`](task_plan.md) | Working name primordial (rename freely). |
 
 ## Specs & Long-form Docs
@@ -57,7 +57,7 @@
 | [`docs/audits/2026-06-20-audit-20pass.md`](docs/audits/2026-06-20-audit-20pass.md) | every file under src-tauri/, workshop/, all 34 skill bodies, every docs/ and research/ file, all tools/.mjs, and all test/ were read in full by six… |
 | [`docs/audits/2026-06-20-audit.md`](docs/audits/2026-06-20-audit.md) | Self-directed ~20-pass audit per AUDIT-BRIEF.md. |
 | [`docs/decisions/001-backend-rule-scope.md`](docs/decisions/001-backend-rule-scope.md) | Accepted |
-| [`docs/decisions/005-public-repo-and-license-posture.md`](docs/decisions/005-public-repo-and-license-posture.md) | Proposed — needs an operator decision. |
+| [`docs/decisions/005-public-repo-and-license-posture.md`](docs/decisions/005-public-repo-and-license-posture.md) | Accepted — Option A (private + proprietary). |
 | [`docs/decisions/006-soften-phone-based-development.md`](docs/decisions/006-soften-phone-based-development.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/012-replatform-target.md`](docs/decisions/012-replatform-target.md) | Accepted — operator-directed 2026-06-21. |
 | [`docs/decisions/013-instrument-in-r3f.md`](docs/decisions/013-instrument-in-r3f.md) | Accepted — operator-directed 2026-06-22. |

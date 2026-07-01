@@ -3,6 +3,13 @@
 > Working name `primordial` (rename freely). New repo, separate from the Perchance repo.
 > Full build spec: see `docs/BUILD-SPEC.md` (copied from the approved plan).
 
+> **ACTIVE FOCUS (2026-07-01): finish the immersive wedding page (`immersive/`), not this
+> gig-instrument plan.** This file is the original Product 1 (the `src/` raw-WebGL2 instrument,
+> which is production-ready). The current effort is Product 2 — the R3F/Spark immersive page —
+> tracked in the top `progress.md` handoff + the Phase 0–5 plan
+> (`~/.claude/plans/generic-sniffing-goblet.md`). Repo posture is now **private + proprietary**
+> (ADR-005 Accepted, Option A).
+
 ## Goal
 
 Build a **static, vanilla-ESM, audio-reactive WebGL2 visual instrument** the artist *operates*
