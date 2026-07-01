@@ -36,3 +36,6 @@ immersive/public/assets/audio/*.m4a
 immersive/public/assets/audio/*.opus
 immersive/public/assets/audio/*.wav
 immersive/public/assets/audio/*.flac
+
+# Local editor MCP config (machine-specific absolute paths)
+.cursor/
