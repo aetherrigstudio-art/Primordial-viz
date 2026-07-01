@@ -13,7 +13,7 @@
 
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -221,7 +221,7 @@ if (existsSync(sketchRoot)) {
     .filter((name) => existsSync(join(sketchRoot, name, name + '.frag.js')));
   for (const name of names) {
     await atest(`workshop sketch ${name} is valid`, async () => {
-      const mod = await import(join(sketchRoot, name, name + '.frag.js'));
+      const mod = await import(pathToFileURL(join(sketchRoot, name, name + '.frag.js')).href);
       assert.ok(typeof mod.SKETCH_FRAG === 'string', 'exports SKETCH_FRAG string');
       assert.ok(mod.SKETCH_FRAG.startsWith('#version 300 es'),
         'frag begins with "#version 300 es" (byte one)');

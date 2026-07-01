@@ -5,7 +5,7 @@
 > via the PostToolUse hook and is gated in CI. For per-file descriptions see
 > [`ENCYCLOPEDIA.md`](ENCYCLOPEDIA.md).
 >
-> 460 files in 145 directories.
+> 468 files in 148 directories.
 
 ```
 Primordial-viz/
@@ -285,6 +285,10 @@ Primordial-viz/
 │   ├── skills-router.md
 │   ├── TODO.md
 │   └── workflows.md
+├── .codebase-memory/
+│   ├── .gitattributes
+│   ├── artifact.json
+│   └── graph.db.zst
 ├── .github/
 │   └── workflows/
 │       ├── deploy.yml
@@ -379,6 +383,7 @@ Primordial-viz/
 │   │   └── assets/
 │   │       ├── audio/
 │   │       │   └── README.md
+│   │       ├── rainforest.spz
 │   │       └── README.md
 │   ├── src/
 │   │   ├── audio/
@@ -410,6 +415,8 @@ Primordial-viz/
 │   │   │   ├── ambientGenerator.js
 │   │   │   ├── playlist.js
 │   │   │   └── useAmbientPlaylist.jsx
+│   │   ├── post/
+│   │   │   └── PostEffects.jsx
 │   │   ├── splat/
 │   │   │   ├── loadDrapery.js
 │   │   │   ├── loadRainforest.js
@@ -427,6 +434,9 @@ Primordial-viz/
 │   │   └── main.jsx
 │   ├── test/
 │   │   └── render-check.mjs
+│   ├── tools/
+│   │   └── gen-world.mjs
+│   ├── .env.example
 │   ├── index.html
 │   ├── package-lock.json
 │   ├── package.json
@@ -591,6 +601,7 @@ Primordial-viz/
 │   ├── sandbox.html
 │   ├── sketch-runner.mjs
 │   └── synth-audio.mjs
+├── .cbmignore
 ├── .cpanel.yml
 ├── .env.example
 ├── .gitignore

@@ -8,6 +8,7 @@ import { SEMANTIC_MASK_GLSL } from './semanticMask.js'
 // What it does, cheapest groups first (PLAN: movement + growth + bloom + flowerColor + fake lighting):
 //   movement   — displace gsplat.center by a cheap audio-driven flow/noise sway.
 //   growth     — scale gsplat.scales by an audio-driven "bloom opening" pop on flower splats.
+//   ivy        — slow creeping displacement + thickening of foliage-masked (green) splats.
 //   bloom      — emissive lift (rgb gain) on flower-masked splats, beat-pumped by treble/flux.
 //   flowerColor— mix a performer tint onto flower-masked splats.
 //   lighting/shadow — a cheap fake directional darkening (no real normals): a soft top-down key plus
@@ -42,6 +43,9 @@ export function makeReactiveModifier() {
   // growth
   const uGrowth = dyno.dynoFloat(0)
   const uGrowthSpeed = dyno.dynoFloat(0)
+  // foliage / ivy — slow creeping growth of the green (foliage-masked) splats.
+  const uIvy = dyno.dynoFloat(0)
+  const uIvySpeed = dyno.dynoFloat(0)
   // lighting
   const uAzimuth = dyno.dynoFloat(0)
   const uElevation = dyno.dynoFloat(0)
@@ -62,6 +66,7 @@ export function makeReactiveModifier() {
     uBass, uMid, uTreble, uLevel, uFlux, uAudioTex,
     uSway, uSwaySpeed, uTurbulence,
     uGrowth, uGrowthSpeed,
+    uIvy, uIvySpeed,
     uAzimuth, uElevation, uLightGain,
     uShadowDepth, uShadowSoftness,
     uBloomIntensity, uBloomThreshold,
@@ -79,6 +84,7 @@ export function makeReactiveModifier() {
           bass: 'float', mid: 'float', treble: 'float', level: 'float', flux: 'float',
           sway: 'float', swaySpeed: 'float', turbulence: 'float',
           growth: 'float', growthSpeed: 'float',
+          ivy: 'float', ivySpeed: 'float',
           azimuth: 'float', elevation: 'float', lightGain: 'float',
           shadowDepth: 'float', shadowSoftness: 'float',
           bloomIntensity: 'float', bloomThreshold: 'float',
@@ -144,18 +150,42 @@ export function makeReactiveModifier() {
           float growScale = 1.0 + grow * (0.25 + 0.75 * mask);
           scales *= growScale;
 
-          // ---- FAKE LIGHTING / SHADOW: cheap directional + ambient darkening (no normals) -------
-          // Build a light direction from azimuth/elevation; key off the splat's vertical position as a
-          // stand-in for facing (top-lit canopy). Shadow darkens by a depth-ish term + softness.
+          // ---- IVY: slow creeping growth of the foliage (green) splats --------------------------
+          // foliageMask picks the mossy/fern greens; we let them reach upward + sway outward on a
+          // slow per-splat phase so the canopy reads like ivy growing in over time. bass/level give
+          // it a little life; ivySpeed shapes the creep so tendrils don't move in lockstep. Runs
+          // BEFORE lighting so the displaced foliage is shaded by its (recomputed) normal below.
+          float fol = foliageMask(rgba.rgb);
+          float ivyDrive = ${inputs.ivy} * (0.45 + 0.55 * (bass * 0.5 + level * 0.5));
+          float ivyPhase = t * ${inputs.ivySpeed} * 0.6 + rm_hash(seed + 3.0) * 6.2831;
+          float creep = (0.5 + 0.5 * sin(ivyPhase)) * fol * ivyDrive;
+          center.y += creep * 0.12;                                    // reach toward the canopy
+          center.xz += vec2(sin(ivyPhase * 1.3), cos(ivyPhase * 0.9)) * creep * 0.04;  // tendril sway
+          scales *= 1.0 + creep * 0.22;                                // vines thicken as they grow
+
+          // ---- LIGHTING / SHADOW: directional shading from the splat's own surface normal -------
+          // A flattened Gaussian's SHORTEST scale axis approximates the local surface normal. Rotate
+          // that axis by the splat's quaternion to get a real per-splat normal, then do a soft
+          // (wrapped) Lambert key + an away-from-light ambient-occlusion darkening. Authored from
+          // blank. quaternion is xyzw; if off-device QA shows the light inverted, negate q.xyz.
+          vec4  qrot   = ${inputs.gsplat}.quaternion;
+          vec3  absSc  = abs(${inputs.gsplat}.scales);
+          vec3  nAxis  = (absSc.x <= absSc.y && absSc.x <= absSc.z) ? vec3(1.0, 0.0, 0.0)
+                       : (absSc.y <= absSc.z)                       ? vec3(0.0, 1.0, 0.0)
+                                                                    : vec3(0.0, 0.0, 1.0);
+          // Rotate nAxis by qrot: v + 2*cross(q.xyz, cross(q.xyz, v) + q.w*v).
+          vec3  nrm    = normalize(nAxis + 2.0 * cross(qrot.xyz, cross(qrot.xyz, nAxis) + qrot.w * nAxis));
           vec3 lightDir = normalize(vec3(
             cos(${inputs.azimuth}) * cos(${inputs.elevation}),
             sin(${inputs.elevation}),
             sin(${inputs.azimuth}) * cos(${inputs.elevation})
           ));
-          float facing = clamp(0.5 + 0.5 * dot(normalize(seed + vec3(0.0, 1.0, 0.0)), lightDir), 0.0, 1.0);
-          float key = mix(1.0, 0.7 + 0.6 * facing, clamp(${inputs.lightGain} * 0.5, 0.0, 1.0));
-          float ao = 1.0 - ${inputs.shadowDepth} * (1.0 - facing) * (0.4 + 0.6 * ${inputs.shadowSoftness});
-          rgba.rgb *= key * clamp(ao, 0.0, 1.0);
+          float ndl  = dot(nrm, lightDir);            // real facing in [-1,1]
+          float diff = 0.5 + 0.5 * ndl;               // wrapped Lambert — soft terminator, no hard edge
+          float key  = mix(1.0, 0.65 + 0.7 * diff, clamp(${inputs.lightGain} * 0.5, 0.0, 1.0));
+          // Shadow/AO: darken the side facing away from the light; softness lifts the dark floor.
+          float occ  = 1.0 - ${inputs.shadowDepth} * (1.0 - diff) * (0.5 + 0.5 * (1.0 - ${inputs.shadowSoftness}));
+          rgba.rgb *= key * clamp(occ, 0.0, 1.0);
 
           // ---- BLOOM: emissive lift on flower-masked splats, beat-pumped ------------------------
           // Lift above a threshold so only the brighter blooms glow; treble + flux give the beat punch.
@@ -179,6 +209,7 @@ export function makeReactiveModifier() {
         bass: uBass, mid: uMid, treble: uTreble, level: uLevel, flux: uFlux,
         sway: uSway, swaySpeed: uSwaySpeed, turbulence: uTurbulence,
         growth: uGrowth, growthSpeed: uGrowthSpeed,
+        ivy: uIvy, ivySpeed: uIvySpeed,
         azimuth: uAzimuth, elevation: uElevation, lightGain: uLightGain,
         shadowDepth: uShadowDepth, shadowSoftness: uShadowSoftness,
         bloomIntensity: uBloomIntensity, bloomThreshold: uBloomThreshold,

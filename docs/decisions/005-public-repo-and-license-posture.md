@@ -1,9 +1,9 @@
 # ADR-005: Repository visibility and license posture
 
 ## Status
-**Proposed** — needs an operator decision. (Numbered 005 to avoid colliding with
-ADR-002–004, which exist on the unmerged `orient-va74sj` branch; renumber if those
-never merge.)
+**Accepted — Option A (private + proprietary).** Operator decided 2026-07-01.
+(Numbered 005 to avoid colliding with ADR-002–004, which exist on the unmerged
+`orient-va74sj` branch; renumber if those never merge.)
 
 ## Date
 2026-06-20
@@ -35,10 +35,27 @@ currently half-one, half-the-other, and the privacy rule's safety net ("it's
 private") is simply void.
 
 ## Decision
-**Deferred to the operator.** This ADR records the decision and its alternatives;
-it does not change code, license, or visibility. Recommended default = **Option A**
-(close the posture) given the repeated "private/proprietary/commercial" intent
-across the docs.
+**Option A — private + proprietary** (operator, 2026-07-01). The repo becomes a
+closed, commercial-instrument posture, matching the "private/proprietary/commercial"
+intent stated across the docs.
+
+Applied in-repo this session:
+
+- `LICENSE` → proprietary / all-rights-reserved (was MIT).
+- `README.md` License section → proprietary (was "MIT").
+- `src-tauri/Cargo.toml` `license` → `LicenseRef-Proprietary` (was empty).
+- `research/claude-repo-comparison/BRIEF.md` owner email → redacted.
+- `.claude/rules/deploy.md` ("repo is private") + `.claude/rules/shaders.md`
+  ("paid/proprietary work") need **no rewrite** — they now hold as written.
+
+Operator action (outside the repo): **flip the GitHub repo visibility to Private.**
+Until that flip lands, treat the repo as public in practice.
+
+Tracked follow-up (not history-rewriting): a full `grep`-clean of the
+`events.bricem@gmail.com` string still present in `tools/rag/index.json` (clears on
+the next off-device RAG reindex) and in two plan docs that cite it as example text —
+see `docs/superpowers/plans/2026-06-21-stage1-decision-free-fixes.md`. Going private
+contains the exposure; the scrub is defense-in-depth for any future re-open.
 
 ## Alternatives Considered
 

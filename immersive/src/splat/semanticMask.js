@@ -46,6 +46,17 @@ export const SEMANTIC_MASK_GLSL = /* glsl */ `
     bloom *= smoothstep(0.12, 0.30, value);
     return clamp(bloom, 0.0, 1.0);
   }
+
+  // foliageMask: the near-inverse of flowerMask — 1.0 on mossy/fern GREENS, 0.0 on blooms and
+  // very dark splats. Used by the ivy effect to creep ONLY the foliage (leaves/vines), never the
+  // flowers or the dark understory. Green is the clear maximum channel for foliage; require a
+  // little brightness so deep shadow isn't swept up, but allow mid-tones (moss reads dim-green).
+  float foliageMask(vec3 rgb) {
+    float greenLead = rgb.g - max(rgb.r, rgb.b);
+    float fol = smoothstep(0.02, 0.14, greenLead);   // 1.0 = clearly green
+    fol *= smoothstep(0.06, 0.20, fm_maxc(rgb));      // reject near-black understory
+    return clamp(fol, 0.0, 1.0);
+  }
 `
 
 // Default export mirror so callers can `import mask from './semanticMask.js'` or the named const.

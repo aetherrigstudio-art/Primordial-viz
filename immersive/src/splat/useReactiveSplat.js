@@ -112,6 +112,9 @@ function writeParams(u, p) {
   // growth
   u.uGrowth.value = num(p.amount)
   u.uGrowthSpeed.value = num(p.growthSpeed)
+  // foliage / ivy
+  u.uIvy.value = num(p.ivy)
+  u.uIvySpeed.value = num(p.ivySpeed)
   // lighting
   u.uAzimuth.value = num(p.azimuth)
   u.uElevation.value = num(p.elevation)

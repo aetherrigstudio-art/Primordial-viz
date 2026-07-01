@@ -4,7 +4,7 @@
 //
 // Each entry: { key, label, type, min, max, step, default, group }
 //   type 'range' = single float; type 'color' = [r,g,b] each 0..1.
-//   group ∈ 'movement' | 'lighting' | 'growth' | 'shadow' | 'bloom' | 'flowerColor' | 'atmos'.
+//   group ∈ 'movement' | 'lighting' | 'growth' | 'foliage' | 'shadow' | 'bloom' | 'flowerColor' | 'atmos'.
 // These params drive the reactive splat modifier (splat/reactiveModifier.js); they are the
 // performer-tunable knobs every control source (keyboard/MIDI/OSC) maps onto via targets.js.
 // store.js validates/coerces against this on load (multiple tools share localStorage at one
@@ -24,6 +24,10 @@ export const SCHEMA = [
   // growth — the audio-driven "bloom opening"/scale-pop of flower splats.
   { key: 'amount', label: 'Growth', type: 'range', min: 0.0, max: 1.5, step: 0.01, default: 0.5, group: 'growth' },
   { key: 'growthSpeed', label: 'Growth Speed', type: 'range', min: 0.0, max: 3.0, step: 0.01, default: 1.0, group: 'growth' },
+
+  // foliage — slow creeping "ivy growing in" on the green (foliage-masked) splats.
+  { key: 'ivy', label: 'Ivy Growth', type: 'range', min: 0.0, max: 1.5, step: 0.01, default: 0.3, group: 'foliage' },
+  { key: 'ivySpeed', label: 'Ivy Speed', type: 'range', min: 0.0, max: 3.0, step: 0.01, default: 1.0, group: 'foliage' },
 
   // shadow — contact/ambient occlusion depth under the canopy.
   { key: 'depth', label: 'Shadow Depth', type: 'range', min: 0.0, max: 1.0, step: 0.01, default: 0.45, group: 'shadow' },

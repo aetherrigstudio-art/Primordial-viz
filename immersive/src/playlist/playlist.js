@@ -41,17 +41,14 @@ export const PLAYLIST = [
   // field recordings (Track 1.9 in progress.md), drop the compressed file in
   // immersive/public/assets/audio/<id> and add an entry like:
   //
-  // {
-  //   id: 'old-time-ambient-01.ogg',          // the served filename under /assets/audio/
-  //   title: 'Old-Time Ambient (field recording)',
-  //   kind: 'file',
-  //   src: '/assets/audio/old-time-ambient-01.ogg',
-  //   license: 'CC0',                          // or 'CC-BY-4.0'
-  //   attribution: 'Author Name — source URL',  // required for CC-BY
-  // },
-  //
-  // Keep it commercial-safe: ONLY CC0 or CC-BY (with attribution). Never bundle copyrighted or
-  // NC-licensed audio.
+  {
+    id: 'temperate-forest-01.ogg',
+    title: 'Temperate Forest Ambient (placeholder)',
+    kind: 'file',
+    src: '/assets/audio/temperate-forest-01.ogg',
+    license: 'CC0',
+    attribution: 'Generated placeholder audio — CC0',
+  },
 ];
 
 export function getEntry(id) {

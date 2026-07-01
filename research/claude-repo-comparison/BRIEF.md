@@ -1,7 +1,7 @@
 # TASK BRIEF - Compare this repo against other Claude-based repos
 
 **Status:** QUEUED for the next agent session. Set up 2026-06-19.
-**Owner:** operator (events.bricem@gmail.com), drives from a phone.
+**Owner:** operator (contact redacted), drives from a phone.
 **You (next agent):** this is your task. Read it fully, then execute. The
 operator expects you to already know what to do from this file - they should not
 have to re-explain.
